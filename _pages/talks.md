@@ -29,7 +29,7 @@ author_profile: true
 - **Agent-based Classical Competition** (2021)  
   *First International Workshop on Agentization, George Mason University*, Fairfax, VA, US
 
-- **Multiplicity of Time Scales in Economic Systems** (2021)  
+- **Multiplicity of Time Scales in Economic Systems** (2021) [slides](../assets/files/research_talk_eco_classical_pol_econ_2.pdf)  
   *Conference on "Multiplicity of Time Scales in Complex Systems: Challenges for Sciences and Dissemination", Roskilde University*, Copenhagen, DK
 
 - **The Green Transition** (2020)  
@@ -48,16 +48,16 @@ author_profile: true
 - **An Ecological Interpretation of the Ricardian Growth Model** (2024) [slides](../assets/files/Pontevedra_2024.pdf) 
   *Ecological Economics Conference*, Pontevedra, ES
 
-- **An Ecological Interpretation of the Ricardian Growth Model** (2024)  
+- **An Ecological Interpretation of the Ricardian Growth Model** (2024) [slides](../assets/files/Pontevedra_2024.pdf)  
   *Eastern Economic Association*, Boston, MA, US
 
 - **The Macroeconomics of a Socially Just Transition to a Circular Economy** (2024) [slides](../assets/files/eea_sfc_mar1.pdf)  
   *Eastern Economic Association*, Boston, MA, US
 
-- **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022)  
+- **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022) [slides](../assets/files/AHE_talk_june6_2022.pdf)  
   *European Association for Evolutionary Political Economy*, Napoli, IT
 
-- **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022)  
+- **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022)  [slides](../assets/filesAHE_talk_june6_2022.pdf 
   *Association for Heterodox Economics*, London, UK
 
 - **Assessing the Speed of Substitution of Carbon Technologies** (2021)  
