@@ -13,19 +13,19 @@ author_profile: true
   *University of Bamberg*, Bamberg, DE  
   Sole Instructor
 
-- **Computational Workshop on Dynamical Systems** (2020)\\
+- **Computational Workshop on Dynamical Systems** (2020) [syllabus](../assets/files/CLW_Syllabus_Spring2020.pdf) \\
   *New School for Social Research*, New York, NY, US  
   Sole Instructor
 
-- **Advanced Mathematical Methods for Economic Modeling** (2020) [teaching notes](../assets/files/Course Notes on Advanced Mathematical Methods for Modeling.pdf) \\
+- **Advanced Mathematical Methods for Economic Modeling** (2020) [teaching notes](../assets/files/Course Notes on Advanced Mathematical Methods for Modeling.pdf) [syllabus](../assets/files/GECO610SyllabusS2020.pdf) \\
+  *New School for Social Research*, New York, NY, US  
+  Graduate Teaching Assistant 
+
+- **Historical Foundations of Political Economy** (2016) \\
   *New School for Social Research*, New York, NY, US  
   Graduate Teaching Assistant
 
-- **Historical Foundations of Political Economy** (2016)\\
-  *New School for Social Research*, New York, NY, US  
-  Graduate Teaching Assistant
-
-- **Introduction to Political Economy** (2016–2020)\\ 
+- **Introduction to Political Economy** (2016–2020) \\ 
   *Eugene Lang College, The New School*, New York, NY, US  
   Undergraduate Teaching Assistant
 
