@@ -8,22 +8,22 @@ author_profile: true
 
 ### Invited Talks and Workshops
 
-- **Stock-flow Consistent Macroeconomics in the Face of the Climate Crisis** (2024)  
+- **Stock-flow Consistent Macroeconomics in the Face of the Climate Crisis** (2024) [slides](../assets/files/AngeloKing.pdf)
   *Angelo King Institute, De la Salle University*, Manila, PH
 
-- **Meeting the Challenges of Climate Change** (2023)  
+- **Meeting the Challenges of Climate Change** (2023) [slides](../assets/files/nssr_workshop_dec2_valles_codina.pdf)
   *New School for Social Research*, New York, NY, US
 
-- **Towards a Macroeconomics of the Just Transition to a Circular Economy: Stabilizing Unstable Economy-Ecology Interactions** (2023)  
+- **Towards a Macroeconomics of the Just Transition to a Circular Economy: Stabilizing Unstable Economy-Ecology Interactions** (2023) [slides](../assets/files/levy_institute_apr19.pdf) 
   *Levy Economics Institute at Bard College*, Red Hook, NY, US
 
 - **Stabilizing Economic Fluctuations and Economy-Environment Interactions with a Novel Macroeconomic Model of Multi-Sector Growth: Ecological Applications of the Bielefeld Disequilibrium Approach** (2022)  
   *Forum for Macroeconomics and Macroeconomic Policies, Hans-Boeckler Stiftung*, Berlin, DE
 
-- **Introduction to Coding Dynamical Systems and Agent-Based Models in Ecological Economics and Classical Political Economy** (2022)  
+- **Introduction to Coding Dynamical Systems and Agent-Based Models in Ecological Economics and Classical Political Economy** (2022)   
   *Bamberg University*, Bamberg, DE
 
-- **Classical Political Economy in the Context of the Uneven Climate Crisis** (2022)  
+- **Classical Political Economy in the Context of the Uneven Climate Crisis** (2022) [slides](../assets/files/research_talk_eco_classical_pol_econ_2.pdf)  
   *University of València*, València, ES
 
 - **Agent-based Classical Competition** (2021)  
@@ -45,13 +45,13 @@ author_profile: true
 
 ### Conference Papers
 
-- **An Ecological Interpretation of the Ricardian Growth Model** (2024)  
+- **An Ecological Interpretation of the Ricardian Growth Model** (2024) [slides](../assets/files/Pontevedra_2024.pdf) 
   *Ecological Economics Conference*, Pontevedra, ES
 
 - **An Ecological Interpretation of the Ricardian Growth Model** (2024)  
   *Eastern Economic Association*, Boston, MA, US
 
-- **The Macroeconomics of a Socially Just Transition to a Circular Economy** (2024)  
+- **The Macroeconomics of a Socially Just Transition to a Circular Economy** (2024) [slides](../assets/files/eea_sfc_mar1.pdf)  
   *Eastern Economic Association*, Boston, MA, US
 
 - **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022)  

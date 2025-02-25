@@ -5,6 +5,8 @@ permalink: /teaching/
 author_profile: true
 ---
 
+- **Data Science for Social Scientists** (proposed) [syllabus](../assets/files/Data_Science_Syllabus.html)
+
 - **Social Networks** (2023) [syllabus](../assets/files/DACSS753 Networks Syllabus Spring 2023.pdf) \\
   *University of Massachusetts Amherst*, Amherst, MA, US  
   Corresponding Instructor
@@ -32,5 +34,3 @@ author_profile: true
 - **Origins of the Crisis in the Eurozone** (2016–2019) [syllabus](../assets/files/LECO2035 Origins of the Crisis in the Eurozone Syllabus 2016.pdf) \\
   *Eugene Lang College, The New School*, New York, NY, US  
   Teaching Fellow (Sole Instructor)
-  
-- **Data Science for Social Scientists** (proposed) [syllabus](../assets/files/Data_Science_Syllabus.html)
