@@ -38,3 +38,10 @@ redirect_from:
 ---
 
 Ecological Macroeconomics, Multi-Sector Growth and Structural Change, Uneven Development, History of Economic Thought, Data Science, Complexity Science
+
+
+## Languages
+---
+
+* **Natural** Catalan (native), Spanish (native), English (expert), Italian (fluent), German (basic)
+* **Artificial** `R`, `Markdown`, `Quarto`, `LATEX`, `C`, `C++`, `Julia`, `Python`, `PERL`, `HTML`, `PHP`, `Matlab` 
