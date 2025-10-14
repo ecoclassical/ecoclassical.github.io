@@ -24,11 +24,11 @@ author:
   # Biographic information
   avatar           : "profile.png"
   name             : "Oriol Vallès Codina"
-  pronouns         : # example: "she/her"  
+  pronouns         : "he/him"
   bio              : "Ecological macroeconomist and computational social scientist"
   location         : "Poughkeepsie, NY, US"
-  employer         : "Net-Zero Industrial Policy Lab, Johns Hopkins University"
-  uri              : 'https://www.netzeropolicylab.com/'
+  employer         : "Johns Hopkins University"
+  uri              : '<a href="https://www.netzeropolicylab.com/" target="_blank">Net-Zero Industrial Policy Lab</a>'
   email            : "oriolvallescodina@gmail.com" 
 
   # Academic websites
