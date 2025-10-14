@@ -27,8 +27,8 @@ author:
   pronouns         : # example: "she/her"  
   bio              : "Ecological macroeconomist and computational social scientist"
   location         : "Poughkeepsie, NY, US"
-  employer         : "Freelance research consultant"
-  uri              : # URL
+  employer         : "Net-Zero Industrial Policy Lab, Johns Hopkins University"
+  uri              : 'https://www.netzeropolicylab.com/'
   email            : "oriolvallescodina@gmail.com" 
 
   # Academic websites
@@ -50,7 +50,7 @@ author:
   stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")    
 
   # Social media
-  bluesky          : # Username "bsky.app" # Replace this with you Bluesky username
+  bluesky          : 'ecoclassical.bsky.social' # Username "bsky.app" # Replace this with you Bluesky username
   facebook         : # Username
   flickr           : # Username
   foursquare       : # Username
@@ -67,7 +67,7 @@ author:
   steam            : # Username
   telegram         : # URL
   tumblr           : # Username
-  twitter          : ecoclassical # Username for X / Twitter
+  twitter          : # Username for X / Twitter
   vine             : # Username
   weibo            : # Username
   wikipedia        : # Username

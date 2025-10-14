@@ -7,7 +7,7 @@ author_profile: true
 
 ### Peer-Reviewed Articles
 
-- Fevereiro, J. B. R. T., Genovese, A., Purvis, B., Passarella, M. V., & **Vallès Codina, O.** (2025). "Macroeconomic Models for Assessing the Transition towards a Circular Economy: A Review." *Ecological Economics*. (Accepted with Minor Revisions) 
+- Fevereiro, J. B. R. T., Genovese, A., Purvis, B., Passarella, M. V., & **Vallès Codina, O.** (2025). "Macroeconomic Models for Assessing the Transition towards a Circular Economy: A Review." *Ecological Economics*. [link](https://www.sciencedirect.com/science/article/abs/pii/S0921800925001521)
 
 - **Vallès Codina, O.** & Semmler, W. (2024). "Time Scales of the Low-Carbon Transition: A Data-Driven Dynamic Multi-Sector Growth Model." *Journal of Economics and Statistics (Jahrbücher für Nationalökonomie und Statistik)*. [link](https://www.degruyter.com/document/doi/10.1515/jbnst-2023-0040/html?srsltid=AfmBOorLaR99jUvI4os1V8eGNkljJg_CkkbDpR7exfEVgNmVwtBc34u8)
 

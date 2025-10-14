@@ -19,7 +19,10 @@ redirect_from:
 
 ## Experience
 ---
-* **2024–Present: Research Consultant**
+* **2025–Present: Research Scientist**
+  * Net Zero Industrial Policy Lab, Johns Hopkins University  (Baltimore, ML, US) 
+
+* **2024–2025: Research Consultant**
   * Agence Française de Développement (Paris, FR) 
   * World Bank (Washington DC, US)
   * De la Salle University (Manila, PH)
@@ -28,7 +31,7 @@ redirect_from:
   * Leeds University Business School (Leeds, UK)
 
 * **2020–2021: Postdoctoral Research Fellow in Innovation Policy**
-  * University College London (London, UK)
+  * Institute for Innovation and Public Purpose, University College London (London, UK)
 
 * **2016–2020: Teaching Assistant and Fellow, Research Fellow**
   * New School for Social Research (New York, NY, US)
