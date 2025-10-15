@@ -12,3 +12,7 @@ Gemfile.lock
 node_modules
 package-lock.json
 .Rproj.user
+_site/
+.sass-cache/
+vendor/
+.DS_Store
