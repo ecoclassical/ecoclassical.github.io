@@ -40,11 +40,30 @@ redirect_from:
 ## Interests
 ---
 
-Ecological Macroeconomics, Multi-Sector Growth and Structural Change, Classical Political Economy, Uneven Development, History of Economic Thought, Data Science, Complexity Science
+- Ecological macroeconomics  
+- Multi-sector growth and structural change  
+- Classical political economy  
+- Uneven development  
+- History of economic thought  
+- Data science  
+- Complexity science
 
 
-## Languages
----
+**Languages**
 
-* **Natural** Catalan (native), Spanish (native), English (expert), Italian (fluent), German (basic), Arabic (basic)
-* **Artificial** `R`, `Julia`, `markdown`, `quarto`, `shiny`, `LATEX`, `C`, `C++`, `Julia`, `Python`, `PERL`, `HTML`, `PHP`, `Matlab` 
+- Catalan (native)
+- Spanish (native)
+- English (near-native)
+- Italian (fluent)
+- German (basic)
+- Arabic (basic)
+
+**Programming, markup, and tools**
+
+- R (expert)
+- Markdown / R Markdown / Quarto (expert)
+- Shiny (advanced)
+- Git / GitHub (advanced)
+- LaTeX (advanced)
+- C, C++ (intermediate)
+- Julia, Python, Perl, MATLAB, HTML, PHP (working knowledge)
