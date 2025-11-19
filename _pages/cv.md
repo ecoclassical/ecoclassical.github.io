@@ -11,6 +11,7 @@ redirect_from:
 
 ## Education
 ---
+
 * Ph.D. in Economics, New School for Social Research, 2021
 * M.A. in Anthropology, Columbia University, 2014
 * M.Sc. in Bioinformatics, Universitat Pompeu Fabra, 2011
@@ -19,6 +20,7 @@ redirect_from:
 
 ## Experience
 ---
+
 * **2025–Present: Research Scientist**
   * Net Zero Industrial Policy Lab, Johns Hopkins University (Baltimore, ML, US)
 
