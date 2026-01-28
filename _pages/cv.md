@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-[Download Full CV (PDF)](../assets/files/CV_OriolVallesCodina.pdf)
+[Download Full CV (PDF)](../assets/files/CV_Oriol_Valles_Codina.pdf)
 
 ## Education
 ---
