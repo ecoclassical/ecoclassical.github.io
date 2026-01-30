@@ -49,7 +49,7 @@ author_profile: true
 
 ### Working Papers
 
-- **Vallès Codina, O.** (2026, forthcoming). "The sustainable transition is not sustainable: social, financial, and macroeconomic implications of unequal ecological exchange." For *Ecological Economics*.
+- **Vallès Codina, O.** (2026). "The sustainable transition is not sustainable: social, financial, and macroeconomic implications of unequal ecological exchange." For *Ecological Economics*.
 
 - **Vallès Codina, O.** (2024). "Environmentalism without class struggle is just gardening: An Ecological Interpretation of the Ricardian Model." For *Ecological Economics*.
 
