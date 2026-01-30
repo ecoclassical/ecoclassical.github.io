@@ -11,20 +11,21 @@ library(scales)
 # ---------  data  ---------
 
 pubs <- tribble(
-  ~year , ~type           , ~title                                                                                      ,
-   2025 , "Article"       , "Macroeconomic Models for Assessing the Transition towards a Circular Economy: A Review"    ,
-   2024 , "Article"       , "Time Scales of the Low-Carbon Transition: A Data-Driven Dynamic Multi-Sector Growth Model" ,
-   2023 , "Article"       , "Business cycles, sectoral price stabilization, and climate change mitigation"              ,
-   2015 , "Article"       , "SeDuS: segmental duplication simulator"                                                    ,
-   2014 , "Article"       , "Interplay of Interlocus Gene Conversion and Crossover"                                     ,
-   2011 , "Article"       , "Traveling echo waves in an array of excitable elements with time-delayed coupling"         ,
-   2024 , "Book"          , "Multiplicity of Time Scales in Complex Systems"                                            ,
-   2024 , "Book chapter"  , "Introduction (Multiplicity of Time Scales, Vol. I)"                                        ,
-   2023 , "Book chapter"  , "Using IO–SFC models to assess circular economy strategies"                               ,
-   2023 , "Book chapter"  , "A human rights-based approach to assistive technology provision"                           ,
-   2023 , "Encyclopedia"  , "Dictionary of Ecological Economics entries"                                                ,
-   2024 , "Working paper" , "Environmentalism without class struggle is just gardening"                                 ,
-   2022 , "Working paper" , "The purely economic case for investing in health for all"                                  ,
+  ~year , ~type           , ~title                                                                                                                                                      ,
+   2026 , "Working paper" , "The sustainable transition is not sustainable: social, financial, and macroeconomic implications of unequal ecological exchange"                           ,
+   2025 , "Article"       , "Macroeconomic Models for Assessing the Transition towards a Circular Economy: A Review"                                                                    ,
+   2024 , "Article"       , "Time Scales of the Low-Carbon Transition: A Data-Driven Dynamic Multi-Sector Growth Model"                                                                 ,
+   2023 , "Article"       , "Business cycles, sectoral price stabilization, and climate change mitigation"                                                                              ,
+   2015 , "Article"       , "SeDuS: segmental duplication simulator"                                                                                                                    ,
+   2014 , "Article"       , "Interplay of Interlocus Gene Conversion and Crossover"                                                                                                     ,
+   2011 , "Article"       , "Traveling echo waves in an array of excitable elements with time-delayed coupling"                                                                         ,
+   2024 , "Book"          , "Multiplicity of Time Scales in Complex Systems"                                                                                                            ,
+   2024 , "Book chapter"  , "Introduction (Multiplicity of Time Scales, Vol. I)"                                                                                                        ,
+   2023 , "Book chapter"  , "Using IO–SFC models to assess circular economy strategies"                                                                                                 ,
+   2023 , "Book chapter"  , "A human rights-based approach to assistive technology provision"                                                                                           ,
+   2023 , "Encyclopedia"  , "Dictionary of Ecological Economics entries"                                                                                                                ,
+   2024 , "Working paper" , "Environmentalism without class struggle is just gardening: an ecological interpretation of the Ricardian model of growth under liminted natural resources" ,
+   2022 , "Working paper" , "The purely economic case for investing in health for all"                                                                                                  ,
    2020 , "Working paper" , "Classical–evolutionary dynamics of price formation"
 )
 
