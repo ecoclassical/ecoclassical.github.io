@@ -168,9 +168,14 @@
       <div class="dataset-tag">PC</div>
       <div class="dataset-name">Predicted Competitiveness</div>
       <ul class="dataset-attrs">
-        <li>Country × technology scores</li>
-        <li>SHAP importance scores</li>
+        <li>Competitiveness scores by country &amp; technology</li>
+        <li>SHAP importance scores for top products</li>
       </ul>
+      <div style="margin:6px 0 4px;">
+        <img src="analysis/tradeseries/thumbs/pc_bubbles.png"
+             onerror="this.style.display='none'"
+             style="width:100%;height:54px;object-fit:cover;border:1px solid #d0d8f0;border-radius:3px;display:block;" alt="PC bubbles"/>
+      </div>
       <div class="dataset-credit">Ishana Ratan · NZIPL</div>
     </div>
     <div class="dataset-card baci">
@@ -178,14 +183,14 @@
       <div class="dataset-name">UN Comtrade Bilateral Trade</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 6px;">
         <div style="text-align:center;">
-          <img src="analysis/tradeseries/thumbs/bil_composition.png"
-               onerror="this.parentNode.innerHTML='<div style=\'height:60px;background:#f0f5f0;display:flex;align-items:center;justify-content:center;border:1px solid #dde;border-radius:3px;\'><span style=\'font-size:9px;color:#999;\'>⏳ Pending</span></div>'"
-               style="width:100%;height:60px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Trade composition"/>
-          <p style="font-size:8px;color:#666;margin:3px 0 0;line-height:1.2;">Trade Composition<br/>by Stage &amp; Function</p>
+          <img src="analysis/tradeseries/thumbs/baci_network.png"
+               onerror="this.style.display='none'"
+               style="width:100%;height:60px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Trade network"/>
+          <p style="font-size:8px;color:#666;margin:3px 0 0;line-height:1.2;">Trade Network<br/>All Technologies</p>
         </div>
         <div style="text-align:center;">
-          <img src="analysis/tradeseries/thumbs/bil_exporters.png"
-               onerror="this.parentNode.innerHTML='<div style=\'height:60px;background:#f0f5f0;display:flex;align-items:center;justify-content:center;border:1px solid #dde;border-radius:3px;\'><span style=\'font-size:9px;color:#999;\'>⏳ Pending</span></div>'"
+          <img src="analysis/tradeseries/thumbs/baci_exporters.png"
+               onerror="this.style.display='none'"
                style="width:100%;height:60px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Export value by tech"/>
           <p style="font-size:8px;color:#666;margin:3px 0 0;line-height:1.2;">Export Value<br/>by Clean Tech</p>
         </div>
@@ -193,11 +198,11 @@
       <div class="dataset-credit">CEPII · Open Source</div>
     </div>
     <div class="dataset-card orbis">
-      <div class="dataset-tag">ORBIS</div>
-      <div class="dataset-name">Geolocated Firm Capabilities</div>
+      <div class="dataset-tag">ORBIS / S&amp;P</div>
+      <div class="dataset-name">Domestic Firm Capabilities</div>
       <ul class="dataset-attrs">
-        <li>Domestic firm capabilities</li>
-        <li>Geo-located establishment data</li>
+        <li>Geolocated firm microdata</li>
+        <li>By NACE activity</li>
       </ul>
       <div class="dataset-credit">S&amp;P Global (Bureau van Dijk) · Private</div>
     </div>
@@ -238,7 +243,7 @@
       <div class="stat-badge-value">200+ countries · 1995–2024</div>
     </div>
     <div class="stat-badge">
-      <div class="stat-badge-label">ORBIS</div>
+      <div class="stat-badge-label">ORBIS / S&amp;P</div>
       <div class="stat-badge-value">2,700+ firms · geolocated</div>
     </div>
     <div class="stat-badge">
