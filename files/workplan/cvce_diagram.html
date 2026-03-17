@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVCE Architecture Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0f1117; --paper: #f5f2eb; --accent: #1a472a; --accent2: #c8522a;
+    --rule: #0f111740; --cib: #2d6a4f; --pc: #1d3557; --baci: #7b2d8b; --orbis: #b5451b;
+    --other: #b07d00; --macro: #1e5f74;
+    --mono: 'DM Mono', monospace; --serif: 'Fraunces', Georgia, serif;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: var(--mono); padding: 48px 24px; }
+  .diagram { width: 100%; max-width: 960px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .header { text-align: center; margin-bottom: 48px; opacity:0; animation: fadeUp 0.6s 0.1s forwards; }
+  .header-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent2); margin-bottom: 8px; }
+  .header h1 { font-family: var(--serif); font-weight: 300; font-size: 28px; letter-spacing: -0.02em; }
+
+  /* ── Dataset cards: 3+3 grid ── */
+  .datasets-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; opacity:0; animation: fadeUp 0.6s 0.25s forwards; }
+  .dataset-card { border: 1.5px solid var(--rule); padding: 16px 14px; position: relative; background: white; }
+  .dataset-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .dataset-card.cib::before   { background: var(--cib); }
+  .dataset-card.pc::before    { background: var(--pc); }
+  .dataset-card.baci::before  { background: var(--baci); }
+  .dataset-card.orbis::before { background: var(--orbis); }
+  .dataset-card.other::before { background: var(--other); }
+  .dataset-card.macro::before { background: var(--macro); }
+  .dataset-tag { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
+  .cib .dataset-tag   { color: var(--cib); }   .pc .dataset-tag    { color: var(--pc); }
+  .baci .dataset-tag  { color: var(--baci); }  .orbis .dataset-tag { color: var(--orbis); }
+  .other .dataset-tag { color: var(--other); } .macro .dataset-tag { color: var(--macro); }
+  .dataset-name { font-family: var(--serif); font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 8px; }
+  .dataset-attrs { list-style: none; padding: 0; font-size: 10px; color: #555; line-height: 1.7; }
+  .dataset-attrs li::before { content: '→ '; color: #aaa; }
+  .dataset-credit { font-size: 9px; color: #999; margin-top: 8px; font-style: italic; }
+  /* CIB mini-tabs */
+  .cib-tabs { display: flex; gap: 0; margin-bottom: 8px; border-bottom: 1.5px solid #e0e0e0; }
+  .cib-tab { font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px 4px; cursor: pointer; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1.5px; transition: all 0.15s; user-select: none; }
+  .cib-tab.active { color: var(--cib); border-bottom-color: var(--cib); font-weight: 500; }
+  .cib-tab:hover:not(.active) { color: #555; }
+  .cib-panel { display: none; }
+  .cib-panel.active { display: block; }
+
+  /* ── Stats row ── */
+  .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 6px; opacity:0; animation: fadeUp 0.5s 0.38s forwards; }
+  .stat-badge { background: white; border: 1px solid var(--rule); padding: 7px 10px; text-align: center; }
+  .stat-badge-label { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 3px; }
+  .stat-badge-value { font-size: 9px; color: var(--ink); line-height: 1.4; }
+
+  /* ── Bracket + Arrow ── */
+  .bracket-wrap { opacity:0; animation: fadeUp 0.5s 0.45s forwards; padding: 0 20px; }
+  .bracket-svg { width: 100%; display: block; overflow: visible; }
+  .arrow-wrap  { display: flex; flex-direction: column; align-items: center; opacity:0; animation: fadeUp 0.5s 0.55s forwards; }
+  .arrow-wrap2 { display: flex; flex-direction: column; align-items: center; opacity:0; animation: fadeUp 0.5s 0.75s forwards; }
+  .arrow-line  { width: 2px; height: 32px; background: var(--ink); }
+  .arrow-head  { width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 10px solid var(--ink); }
+
+  /* ── CVCE box ── */
+  .cvce-wrap { opacity:0; animation: fadeUp 0.6s 0.65s forwards; }
+  .cvce-box { border: 2px solid var(--ink); background: var(--ink); color: var(--paper); padding: 28px 32px; position: relative; }
+  .cvce-box::after { content: ''; position: absolute; inset: 4px; border: 1px solid rgba(255,255,255,0.12); pointer-events: none; }
+  .cvce-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 16px; flex-wrap: wrap; }
+  .cvce-acronym { font-family: var(--serif); font-size: 32px; font-weight: 600; letter-spacing: -0.03em; color: white; }
+  .cvce-full { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.08em; text-transform: uppercase; }
+  .cvce-subtitle { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; margin-left: auto; }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pillar { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; }
+  .pillar-icon { font-size: 18px; margin-bottom: 8px; }
+  .pillar-title { font-family: var(--serif); font-size: 13px; font-weight: 600; color: white; margin-bottom: 10px; line-height: 1.4; }
+  .pillar-desc { font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 12px; }
+  .modules-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+  .mod-chip { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); white-space: nowrap; cursor: default; transition: all 0.15s; }
+  .mod-chip:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); color: white; }
+  .flagship { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; background: var(--accent2); padding: 5px 10px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: white; font-weight: 500; }
+  .flagship::before { content: '★'; }
+
+  /* ── Atlas section — NZIPL dark-green treatment ── */
+  .atlas-wrap { opacity:0; animation: fadeUp 0.6s 0.85s forwards; }
+  .atlas-box { background: var(--accent); color: var(--paper); padding: 32px 36px; position: relative; }
+  .atlas-box::after { content: ''; position: absolute; inset: 5px; border: 1px solid rgba(255,255,255,0.1); pointer-events: none; }
+  .atlas-eyebrow { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px; }
+  .atlas-title { font-family: var(--serif); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: white; margin-bottom: 4px; line-height: 1.2; }
+  .atlas-subtitle { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+  .atlas-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .atlas-col-label { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent2); margin-bottom: 14px; font-weight: 500; }
+
+  /* Key questions: numbered */
+  .atlas-questions { list-style: none; padding: 0; }
+  .atlas-questions li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 10px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+  .atlas-q-num { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--accent2); line-height: 1.2; flex-shrink: 0; min-width: 18px; }
+
+  /* Deliverables */
+  .atlas-deliverables { list-style: none; padding: 0; }
+  .atlas-deliverables li { display: flex; gap: 8px; margin-bottom: 12px; font-size: 10px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+  .atlas-deliverables li::before { content: '→'; color: rgba(255,255,255,0.3); flex-shrink: 0; }
+  .atlas-deliverables li strong { color: rgba(255,255,255,0.95); font-weight: 500; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 640px) {
+    .datasets-row { grid-template-columns: 1fr 1fr; }
+    .pillars, .atlas-cols { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="diagram">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">Architecture Overview</div>
+    <h1>Net Zero Industrial Policy Lab · Data Infrastructure</h1>
+  </div>
+
+  <!-- Dataset cards: 3 + 3 -->
+  <div class="datasets-row">
+    <div class="dataset-card cib">
+      <div class="dataset-tag">CIB</div>
+      <div class="dataset-name">Clean Industrial Base</div>
+      <div class="cib-tabs">
+        <div class="cib-tab active" onclick="cibTab(this,'by-function')">By Function</div>
+        <div class="cib-tab" onclick="cibTab(this,'by-tree')">By Tree (Dendrite)</div>
+      </div>
+      <!-- Panel 1: typestage legend -->
+      <div class="cib-panel active" id="by-function">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 8px;margin-bottom:6px;">
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#8A4200;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Upstream<br>Raw Material</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#C17A2E;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Upstream<br>Processed Material</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#2D5A00;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Midstream<br>Raw Material</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#073309;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Midstream<br>Processed Material</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#5B7266;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Midstream<br>Process Equipment</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#1A8C28;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Midstream<br>Product Component</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#34D045;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Downstream<br>Product Component</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#9AAE9E;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Downstream<br>Process Equipment</span>
+          </span>
+          <span style="display:inline-flex;align-items:flex-start;gap:5px;font-size:8px;color:#444;line-height:1.3;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#CB5B1D;flex-shrink:0;margin-top:1px;display:inline-block;"></span><span>Final Product<br>Final Product</span>
+          </span>
+        </div>
+      </div>
+      <!-- Panel 2: Solar dendrite thumbnail -->
+      <div class="cib-panel" id="by-tree">
+        <a href="analysis/dendrite/dendrite_Solar.html" target="_blank" style="display:block;">
+          <img src="analysis/dendrite/thumbs/dendrite_Solar.png"
+               style="width:100%;border:1px solid #d0e8d0;border-radius:4px;margin-bottom:4px;"
+               alt="Solar dendrite"/>
+        </a>
+        <p style="font-size:8px;color:#888;text-align:center;">Solar — click to open interactive viewer</p>
+      </div>
+      <div class="dataset-credit">Jonas Goldman · NZIPL</div>
+    </div>
+    <div class="dataset-card pc">
+      <div class="dataset-tag">PC</div>
+      <div class="dataset-name">Predicted Competitiveness</div>
+      <ul class="dataset-attrs">
+        <li>Country × technology scores</li>
+        <li>SHAP importance scores</li>
+      </ul>
+      <div class="dataset-credit">Ishana Ratan · NZIPL</div>
+    </div>
+    <div class="dataset-card baci">
+      <div class="dataset-tag">BACI</div>
+      <div class="dataset-name">UN Comtrade Bilateral Trade</div>
+      <ul class="dataset-attrs">
+        <li>6-digit HS product codes</li>
+        <li>HS92–HS22 revision harmonized</li>
+        <li>1995–2024 panel</li>
+      </ul>
+      <div class="dataset-credit">CEPII · Open Source</div>
+    </div>
+    <div class="dataset-card orbis">
+      <div class="dataset-tag">ORBIS</div>
+      <div class="dataset-name">Geolocated Firm Microdata</div>
+      <ul class="dataset-attrs">
+        <li>Domestic firm capabilities</li>
+        <li>Geo-located establishment data</li>
+      </ul>
+      <div class="dataset-credit">S&amp;P Global (Bureau van Dijk) · Private</div>
+    </div>
+    <div class="dataset-card other">
+      <div class="dataset-tag">Other</div>
+      <div class="dataset-name">Other Datasets</div>
+      <ul class="dataset-attrs">
+        <li>Regional Industrial Policies Observatory (NZIPL)</li>
+        <li>EMBER energy generation data</li>
+        <li>Chinese FDI flows</li>
+      </ul>
+      <div class="dataset-credit">Various · Mixed Access</div>
+    </div>
+    <div class="dataset-card macro">
+      <div class="dataset-tag">Macro</div>
+      <div class="dataset-name">Macroeconomic Model</div>
+      <ul class="dataset-attrs">
+        <li>Multi-regional input-output framework</li>
+        <li>GEMMES ecological macro model</li>
+        <li>Clean industrial policy simulations</li>
+      </ul>
+      <div class="dataset-credit">NZIPL · Phase III/IV</div>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="stats-row">
+    <div class="stat-badge">
+      <div class="stat-badge-label">CIB</div>
+      <div class="stat-badge-value">370 HS6 codes · 10 technologies</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-badge-label">PC</div>
+      <div class="stat-badge-value">155 countries · 2003–2024</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-badge-label">BACI</div>
+      <div class="stat-badge-value">200+ countries · 1995–2024</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-badge-label">ORBIS</div>
+      <div class="stat-badge-value">2,700+ firms · geolocated</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-badge-label">Macro</div>
+      <div class="stat-badge-value">Multi-Regional Clean I-O Simulations of Clean Industrial Policy</div>
+    </div>
+  </div>
+
+  <!-- Bracket -->
+  <div class="bracket-wrap">
+    <svg class="bracket-svg" height="36" viewBox="0 0 960 36" preserveAspectRatio="none">
+      <path d="M10,2 L10,34 L950,34 L950,2" fill="none" stroke="#0f1117" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <!-- Arrow down to CVCE -->
+  <div class="arrow-wrap">
+    <div class="arrow-line"></div>
+    <div class="arrow-head"></div>
+  </div>
+
+  <!-- CVCE box -->
+  <div class="cvce-wrap">
+    <div class="cvce-box">
+      <div class="cvce-header">
+        <span class="cvce-acronym">CVCE</span>
+        <span class="cvce-full">Clean Value Chain Explorer</span>
+        <span class="cvce-subtitle">NZIPL Internal Intelligence Platform</span>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-icon">⬡</div>
+          <div class="pillar-title">Catalogue of Visualisations &amp; Analytics</div>
+          <div class="pillar-desc">Interactive modules combining NZIPL proprietary and open-source data into a unified analytical website.</div>
+          <div class="modules-grid">
+            <span class="mod-chip">Bubbles</span><span class="mod-chip">Dendrite</span>
+            <span class="mod-chip">Sankey</span><span class="mod-chip">Treemap</span>
+            <span class="mod-chip">Map</span><span class="mod-chip">Network</span>
+            <span class="mod-chip">Radar</span><span class="mod-chip">Timeseries</span>
+            <span class="mod-chip">Trade Balance</span><span class="mod-chip">Trade Series</span>
+            <span class="mod-chip">PC Rankings</span><span class="mod-chip">Gallery</span>
+            <span class="mod-chip">Data</span><span class="mod-chip">Workflow</span>
+            <span class="mod-chip">Documentation</span>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">◈</div>
+          <div class="pillar-title">Deep Dives: Top Highlights on Clean Industrial Policy</div>
+          <div class="pillar-desc">Comprehensive statistical analytics and AI-summarized executive summaries for specific technology × country pairs. Integrates all four datasets into a single actionable intelligence report.</div>
+          <div class="pillar-desc" style="color:rgba(255,255,255,0.35);font-size:9px;margin-bottom:4px;">COMPONENTS PER REPORT</div>
+          <div class="modules-grid" style="margin-bottom:10px;">
+            <span class="mod-chip">Trade flows</span><span class="mod-chip">Dendrite position</span>
+            <span class="mod-chip">Competitiveness</span><span class="mod-chip">Firm capabilities</span>
+            <span class="mod-chip">AI highlights</span><span class="mod-chip">Visual report</span>
+          </div>
+          <div class="flagship">Flagship: Solar · India</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrow down to Atlas -->
+  <div class="arrow-wrap2">
+    <div class="arrow-line"></div>
+    <div class="arrow-head"></div>
+  </div>
+
+  <!-- Atlas section — NZIPL dark-green -->
+  <div class="atlas-wrap">
+    <div class="atlas-box">
+      <div class="atlas-eyebrow">Phase II Deliverable · Net Zero Industrial Policy Lab</div>
+      <div class="atlas-title">Atlas of the Global Clean Industrial Base</div>
+      <div class="atlas-subtitle">Annual intelligence report tracking the structure and evolution of global clean energy supply chains</div>
+      <div class="atlas-cols">
+        <div>
+          <div class="atlas-col-label">Key Questions</div>
+          <ol class="atlas-questions">
+            <li><span class="atlas-q-num">01</span><span>How is the global industrial base for clean energy evolving?</span></li>
+            <li><span class="atlas-q-num">02</span><span>What are the flows of resources and technologies through the international system?</span></li>
+            <li><span class="atlas-q-num">03</span><span>What are the opportunities for truly global clean energy supply chain cooperation, especially south-south and north-south linkages?</span></li>
+            <li><span class="atlas-q-num">04</span><span>What policies and guardrails are needed to build an international system safe for industrial policy?</span></li>
+          </ol>
+        </div>
+        <div>
+          <div class="atlas-col-label">Deliverables</div>
+          <ul class="atlas-deliverables">
+            <li><strong>Electronic report &amp; dynamic webpage</strong> — data visualizations on critical materials and supply chain flows across 5–6 supply chains (solar, wind, batteries, grid equipment, green ammonia)</li>
+            <li><strong>2–3 country deep dives</strong> per edition — e.g., is India moving upstream in solar? What countries does India's clean-tech sector depend on?</li>
+            <li><strong>Clean energy corridors assessment</strong> — which bilateral relationships and networks are most important, and what drives successful corridors?</li>
+            <li><strong>Two annual editions</strong> — first Atlas presented November 2025 on NZIPL's main webpage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+function cibTab(el, panelId) {
+  el.closest('.dataset-card').querySelectorAll('.cib-tab').forEach(t => t.classList.remove('active'));
+  el.closest('.dataset-card').querySelectorAll('.cib-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+</script>
+</body>
+</html>
