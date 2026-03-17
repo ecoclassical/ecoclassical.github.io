@@ -152,6 +152,10 @@
         <div style="display:flex;flex-direction:column;gap:4px;">
           <span style="font-size:6.5px;color:#bbb;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:1px;">Downstream</span>
           <span style="display:inline-flex;align-items:center;gap:4px;">
+            <span style="width:7px;height:7px;border-radius:50%;background:#6B7B8C;flex-shrink:0;display:inline-block;"></span>
+            <span style="font-size:7.5px;color:#444;line-height:1.2;">Process Equipment</span>
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:4px;">
             <span style="width:7px;height:7px;border-radius:50%;background:#34D045;flex-shrink:0;display:inline-block;"></span>
             <span style="font-size:7.5px;color:#444;line-height:1.2;">Product Component</span>
           </span>
@@ -162,20 +166,18 @@
           </span>
         </div>
       </div>
-      <!-- CIB snapshots: Product Codes + Solar Dendrite -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px;">
+      <!-- CIB snapshots: left = Product Codes, right = Solar Dendrite (portrait → side-by-side) -->
+      <div style="display:grid;grid-template-columns:3fr 2fr;gap:6px;margin-top:4px;">
         <div style="text-align:center;">
           <img src="snapshots/cib_product_codes.png"
                onerror="this.style.display='none'"
-               style="width:100%;height:54px;object-fit:cover;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Product codes by stage"/>
+               style="width:100%;height:88px;object-fit:cover;object-position:left top;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Product codes by stage"/>
           <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Product Codes<br/>by Stage &amp; Function</p>
         </div>
         <div style="text-align:center;">
-          <div style="height:54px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #d0e8d0;border-radius:3px;">
-            <img src="snapshots/cib_dendrite_solar.png"
-                 onerror="this.style.display='none'"
-                 style="width:100%;height:100%;object-fit:contain;" alt="Solar dendrite"/>
-          </div>
+          <img src="snapshots/cib_dendrite_solar.png"
+               onerror="this.style.display='none'"
+               style="width:100%;height:88px;object-fit:cover;object-position:top center;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Solar dendrite"/>
           <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Technology Dendrite<br/>Solar</p>
         </div>
       </div>
@@ -198,26 +200,23 @@
     <div class="dataset-card baci">
       <div class="dataset-tag">BACI</div>
       <div class="dataset-name">UN Comtrade Bilateral Trade</div>
-      <!-- Mini-tabs -->
-      <div style="display:flex;gap:0;border-bottom:1.5px solid #e0e0e0;margin-bottom:6px;">
-        <div style="font-size:7.5px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 6px 4px;cursor:pointer;color:var(--baci);border-bottom:2px solid var(--baci);margin-bottom:-1.5px;font-weight:500;" onclick="baciTab(this,'baci-comp')">Composition</div>
-        <div style="font-size:7.5px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 6px 4px;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1.5px;" onclick="baciTab(this,'baci-net')">Network</div>
-        <div style="font-size:7.5px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 6px 4px;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1.5px;" onclick="baciTab(this,'baci-sank')">Sankey</div>
-      </div>
-      <div id="baci-comp" style="display:block;">
-        <img src="snapshots/baci_composition.png" onerror="this.style.display='none'"
-             style="width:100%;height:60px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Trade composition over time"/>
-        <p style="font-size:7.5px;color:#aaa;margin:3px 0 0;">Trade Composition over Time</p>
-      </div>
-      <div id="baci-net" style="display:none;">
-        <img src="snapshots/baci_solar_network.png" onerror="this.style.display='none'"
-             style="width:100%;height:60px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Solar trade network"/>
-        <p style="font-size:7.5px;color:#aaa;margin:3px 0 0;">Trade Network · Solar</p>
-      </div>
-      <div id="baci-sank" style="display:none;">
-        <img src="snapshots/baci_lithium_sankey.png" onerror="this.style.display='none'"
-             style="width:100%;height:60px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Lithium sankey"/>
-        <p style="font-size:7.5px;color:#aaa;margin:3px 0 0;">Material Sankey · Lithium</p>
+      <!-- Fixed 3-image cards: Composition | Network | Sankey -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:4px 0;">
+        <div style="text-align:center;">
+          <img src="snapshots/baci_composition.png" onerror="this.style.display='none'"
+               style="width:100%;height:54px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Trade composition"/>
+          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Composition</p>
+        </div>
+        <div style="text-align:center;">
+          <img src="snapshots/baci_solar_network.png" onerror="this.style.display='none'"
+               style="width:100%;height:54px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Solar network"/>
+          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Network</p>
+        </div>
+        <div style="text-align:center;">
+          <img src="snapshots/baci_lithium_sankey.png" onerror="this.style.display='none'"
+               style="width:100%;height:54px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Lithium sankey"/>
+          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Sankey</p>
+        </div>
       </div>
       <div class="dataset-credit" style="margin-top:6px;">CEPII · Open Source</div>
     </div>
@@ -375,16 +374,5 @@
   </div>
 
 </div>
-<script>
-function baciTab(el, panelId) {
-  var card = el.closest('.dataset-card');
-  card.querySelectorAll('[id^="baci-"]').forEach(p => p.style.display = 'none');
-  card.querySelectorAll('[onclick^="baciTab"]').forEach(t => {
-    t.style.color = '#888'; t.style.borderBottomColor = 'transparent'; t.style.fontWeight = '';
-  });
-  document.getElementById(panelId).style.display = 'block';
-  el.style.color = 'var(--baci)'; el.style.borderBottomColor = 'var(--baci)'; el.style.fontWeight = '500';
-}
-</script>
 </body>
 </html>
