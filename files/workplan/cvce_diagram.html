@@ -147,16 +147,20 @@
           <span style="display:flex;flex-direction:column;"><span style="font-size:7px;color:#aaa;">Final Product</span><span style="font-size:8px;color:#444;">Final Product</span></span>
         </span>
       </div>
-      <!-- Solar dendrite thumbnail (rotated CW — final product on right) -->
-      <div style="text-align:center;margin-top:4px;">
-        <div style="height:72px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-          <a href="analysis/dendrite/dendrite_Solar.html" target="_blank">
-            <img src="analysis/dendrite/thumbs/dendrite_Solar.png"
-                 style="transform:rotate(90deg);height:120px;width:auto;border:1px solid #d0e8d0;border-radius:3px;"
-                 alt="Solar dendrite"/>
-          </a>
+      <!-- Bilateral trade evolution snapshots -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
+        <div style="text-align:center;">
+          <img src="analysis/tradeseries/thumbs/bil_composition.png"
+               onerror="this.parentNode.innerHTML='<div style=\'height:54px;background:#f5f2eb;display:flex;align-items:center;justify-content:center;border:1px solid #ddd;border-radius:3px;\'><span style=\'font-size:8px;color:#bbb;\'>⏳</span></div>'"
+               style="width:100%;height:54px;object-fit:cover;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Trade by typestage"/>
+          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">By Stage</p>
         </div>
-        <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;">Solar · click to explore</p>
+        <div style="text-align:center;">
+          <img src="analysis/tradeseries/thumbs/bil_exporters.png"
+               onerror="this.parentNode.innerHTML='<div style=\'height:54px;background:#f5f2eb;display:flex;align-items:center;justify-content:center;border:1px solid #ddd;border-radius:3px;\'><span style=\'font-size:8px;color:#bbb;\'>⏳</span></div>'"
+               style="width:100%;height:54px;object-fit:cover;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Export value by tech"/>
+          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">By Technology</p>
+        </div>
       </div>
       <div class="dataset-credit">Jonas Goldman · NZIPL</div>
     </div>
