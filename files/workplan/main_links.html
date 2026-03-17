@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NZIPL Main Links</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink:    #2A1500;
+    --paper:  #FBF6EE;
+    --rule:   #D4A97040;
+    --brown:  #6B3200;
+    --amber:  #C17A2E;
+    --orange: #CB5B1D;
+    --peach:  #E8C49A;
+    --cream:  #F5EAD8;
+    --mono:   'DM Mono', monospace;
+    --serif:  'Fraunces', Georgia, serif;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: var(--mono); padding: 40px 24px; }
+  .diagram { width: 100%; max-width: 960px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .header { text-align: center; margin-bottom: 36px; opacity:0; animation: fadeUp 0.5s 0.05s forwards; }
+  .header-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #C17A2E; margin-bottom: 6px; }
+  .header h1 { font-family: var(--mono); font-weight: 400; font-size: 13px; letter-spacing: 0.08em; color: #8A5020; }
+
+  /* ── Two-panel grid ── */
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  /* ── Panel ── */
+  .panel { border: 2px solid var(--rule); position: relative; background: white; overflow: hidden; opacity:0; animation: fadeUp 0.6s forwards; }
+  .panel-infra { animation-delay: 0.15s; }
+  .panel-engage { animation-delay: 0.28s; }
+  .panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .panel-infra::before  { background: linear-gradient(90deg, var(--brown), var(--amber)); }
+  .panel-engage::before { background: linear-gradient(90deg, var(--orange), var(--peach)); }
+
+  .panel-header { padding: 16px 18px 12px; border-bottom: 1px solid var(--rule); }
+  .panel-icon { font-size: 18px; margin-bottom: 6px; }
+  .panel-title { font-family: var(--serif); font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .panel-infra  .panel-title { color: var(--brown); }
+  .panel-engage .panel-title { color: var(--orange); }
+
+  /* ── Sub-sections ── */
+  .subsection { padding: 14px 18px; border-bottom: 1px solid var(--rule); }
+  .subsection:last-child { border-bottom: none; }
+  .sub-label {
+    font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 500; margin-bottom: 10px;
+  }
+  .panel-infra  .sub-label { color: var(--amber); }
+  .panel-engage .sub-label { color: var(--orange); }
+
+  /* ── Link rows ── */
+  .link-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+  .link-row:last-child { margin-bottom: 0; }
+  .link-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .panel-infra  .link-dot { background: var(--amber); }
+  .panel-engage .link-dot { background: var(--orange); }
+  .link-body { font-size: 10px; line-height: 1.55; color: #3D2000; }
+  .link-name { font-weight: 500; color: var(--ink); }
+  .link-sub  { font-size: 9px; color: #8A6040; margin-top: 1px; }
+
+  a.link-anchor {
+    color: var(--orange); text-decoration: none; border-bottom: 1px solid var(--peach);
+    transition: border-color 0.15s;
+  }
+  a.link-anchor:hover { border-bottom-color: var(--orange); }
+
+  .badge-private {
+    display: inline-block; font-size: 8px; letter-spacing: 0.08em;
+    padding: 1px 5px; border: 1px solid var(--peach); color: var(--amber);
+    border-radius: 2px; margin-left: 4px; vertical-align: middle;
+  }
+  .badge-deadline {
+    display: inline-block; font-size: 8px; letter-spacing: 0.06em;
+    padding: 1px 5px; border: 1px solid var(--peach); background: #FBF0E4;
+    color: var(--brown); border-radius: 2px; margin-left: 4px; vertical-align: middle;
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  @media (max-width: 600px) { .panels { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="diagram">
+
+  <div class="header">
+    <div class="header-label">Net Zero Industrial Policy Lab</div>
+    <h1>Main Links — Data Infrastructure &amp; Engagement</h1>
+  </div>
+
+  <div class="panels">
+
+    <!-- ── DATA INFRASTRUCTURE ── -->
+    <div class="panel panel-infra">
+      <div class="panel-header">
+        <div class="panel-icon">⬡</div>
+        <div class="panel-title">Data Infrastructure</div>
+      </div>
+
+      <!-- Websites -->
+      <div class="subsection">
+        <div class="sub-label">Websites</div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            <span class="link-name">Public Phase I Website</span><br/>
+            <a class="link-anchor" href="https://cice.netzeropolicylab.com/" target="_blank">cice.netzeropolicylab.com</a>
+          </div>
+        </div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            <span class="link-name">Internal Tool — Posit Connect</span><br/>
+            <a class="link-anchor" href="https://ecoclassical-nzipl-globalgreenvaluechainexplorer.share.connect.posit.cloud/" target="_blank">World Net Zero Value Chain Explorer</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GitHub Repositories -->
+      <div class="subsection">
+        <div class="sub-label">GitHub Repositories</div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            <a class="link-anchor" href="https://github.com/ecoclassical/NZIPL-CVCE" target="_blank">NZIPL-CVCE — Internal Website Tool</a>
+          </div>
+        </div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            GEMMES Mexico Data <span class="badge-private">private</span>
+          </div>
+        </div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            LEEDS Model <span class="badge-private">private</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ENGAGEMENT ── -->
+    <div class="panel panel-engage">
+      <div class="panel-header">
+        <div class="panel-icon">◈</div>
+        <div class="panel-title">Engagement</div>
+      </div>
+
+      <!-- Conference Presentations & Papers -->
+      <div class="subsection">
+        <div class="sub-label">Conference Presentations &amp; Papers</div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            29th Forum for Macroeconomics and Macroeconomic Policies — <em>Gendering Macroeconomics</em><br/>
+            <a class="link-anchor" href="#" target="_blank">Conference Presentation Slides</a>
+          </div>
+        </div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            <em>Climate policies exclusively centered in the Global North harm the economy of the Global South</em> — Presentation Slides
+          </div>
+        </div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            <em>Ecological Macroeconomics Modelling: Exploring Alternative Futures</em> — Special Issue, <strong>Ecological Economics</strong>
+            <span class="badge-deadline">Jan 31 2026</span>
+          </div>
+        </div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            <em>The transition to a sustainable economy is not sustainable</em> — Leeds Model Paper Draft
+          </div>
+        </div>
+      </div>
+
+      <!-- Workshops -->
+      <div class="subsection">
+        <div class="sub-label">Workshops</div>
+        <div class="link-row">
+          <span class="link-dot"></span>
+          <div class="link-body">
+            Third International Workshop on Empirical Stock-Flow Consistent Modeling<br/>
+            Cassino University · January 14–16, 2026 &nbsp;
+            <a class="link-anchor" href="#" target="_blank">Schedule</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .panels -->
+
+</div>
+</body>
+</html>
