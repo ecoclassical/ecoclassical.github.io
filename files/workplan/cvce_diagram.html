@@ -166,19 +166,20 @@
           </span>
         </div>
       </div>
-      <!-- CIB snapshots: left = Product Codes, right = Solar Dendrite (portrait → side-by-side) -->
-      <div style="display:grid;grid-template-columns:3fr 2fr;gap:6px;margin-top:4px;">
+      <!-- CIB snapshots: product codes left (wide), dendrite right (narrow portrait) -->
+      <div style="display:grid;grid-template-columns:4fr 1.4fr;gap:6px;margin-top:4px;align-items:start;">
         <div style="text-align:center;">
           <img src="snapshots/cib_product_codes.png"
                onerror="this.style.display='none'"
-               style="width:100%;height:88px;object-fit:cover;object-position:left top;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Product codes by stage"/>
+               style="width:100%;height:118px;object-fit:cover;object-position:left top;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Product codes by stage"/>
           <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Product Codes<br/>by Stage &amp; Function</p>
         </div>
         <div style="text-align:center;">
+          <!-- portrait 650×1200 — column ~60px wide → height ~133px → nearly full portrait -->
           <img src="snapshots/cib_dendrite_solar.png"
                onerror="this.style.display='none'"
-               style="width:100%;height:88px;object-fit:cover;object-position:top center;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Solar dendrite"/>
-          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Technology Dendrite<br/>Solar</p>
+               style="width:100%;aspect-ratio:650/1200;object-fit:cover;object-position:center center;border:1px solid #d0e8d0;border-radius:3px;display:block;" alt="Solar dendrite"/>
+          <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Dendrite<br/>Solar</p>
         </div>
       </div>
       <div class="dataset-credit">Jonas Goldman · NZIPL</div>
@@ -200,21 +201,21 @@
     <div class="dataset-card baci">
       <div class="dataset-tag">BACI</div>
       <div class="dataset-name">UN Comtrade Bilateral Trade</div>
-      <!-- Fixed 3-image cards: Composition | Network | Sankey -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:4px 0;">
-        <div style="text-align:center;">
+      <!-- Stacked 3-image column: Composition / Network / Sankey -->
+      <div style="display:flex;flex-direction:column;gap:5px;margin:4px 0;">
+        <div>
           <img src="snapshots/baci_composition.png" onerror="this.style.display='none'"
-               style="width:100%;height:54px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Trade composition"/>
+               style="width:100%;height:44px;object-fit:cover;object-position:left top;border:1px solid #dde;border-radius:3px;display:block;" alt="Trade composition"/>
           <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Composition</p>
         </div>
-        <div style="text-align:center;">
+        <div>
           <img src="snapshots/baci_solar_network.png" onerror="this.style.display='none'"
-               style="width:100%;height:54px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Solar network"/>
+               style="width:100%;height:44px;object-fit:cover;object-position:center center;border:1px solid #dde;border-radius:3px;display:block;" alt="Solar network"/>
           <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Network</p>
         </div>
-        <div style="text-align:center;">
+        <div>
           <img src="snapshots/baci_lithium_sankey.png" onerror="this.style.display='none'"
-               style="width:100%;height:54px;object-fit:cover;border:1px solid #dde;border-radius:3px;display:block;" alt="Lithium sankey"/>
+               style="width:100%;height:44px;object-fit:cover;object-position:left center;border:1px solid #dde;border-radius:3px;display:block;" alt="Lithium sankey"/>
           <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;line-height:1.2;">Sankey</p>
         </div>
       </div>
