@@ -88,11 +88,10 @@
   .atlas-questions li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 10px; color: rgba(255,255,255,0.8); line-height: 1.6; }
   .atlas-q-num { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--accent2); line-height: 1.2; flex-shrink: 0; min-width: 18px; }
 
-  /* Deliverables */
-  .atlas-deliverables { list-style: none; padding: 0; }
-  .atlas-deliverables li { display: flex; gap: 8px; margin-bottom: 12px; font-size: 10px; color: rgba(255,255,255,0.75); line-height: 1.6; }
-  .atlas-deliverables li::before { content: '→'; color: rgba(255,255,255,0.3); flex-shrink: 0; }
-  .atlas-deliverables li strong { color: rgba(255,255,255,0.95); font-weight: 500; }
+  /* Deliverables table */
+  .atlas-deliverables { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; padding: 0; }
+  .atlas-del-label { font-family: var(--serif); font-size: 10px; font-weight: 600; color: var(--accent2); line-height: 1.4; white-space: nowrap; padding-top: 1px; }
+  .atlas-del-desc { font-size: 10px; color: rgba(255,255,255,0.7); line-height: 1.5; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 6px; margin-bottom: 2px; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   @media (max-width: 640px) {
@@ -230,6 +229,11 @@
         <li>Geolocated firm microdata</li>
         <li>By NACE activity</li>
       </ul>
+      <div style="margin:6px 0 4px;">
+        <img src="analysis/tradeseries/thumbs/orbis_solar.png" onerror="this.style.display='none'"
+             style="width:100%;height:54px;object-fit:cover;border:1px solid #f0d8c8;border-radius:3px;display:block;" alt="ORBIS Solar viewer"/>
+        <p style="font-size:7.5px;color:#aaa;margin:2px 0 0;">Solar · Asia · Firm Locations</p>
+      </div>
       <div class="dataset-credit">S&amp;P Global (Bureau van Dijk) · Private</div>
     </div>
     <div class="dataset-card other">
@@ -355,12 +359,16 @@
         </div>
         <div>
           <div class="atlas-col-label">Deliverables</div>
-          <ul class="atlas-deliverables">
-            <li><strong>Electronic report &amp; dynamic webpage</strong> — data visualizations on critical materials and supply chain flows across 5–6 supply chains (solar, wind, batteries, grid equipment, green ammonia)</li>
-            <li><strong>2–3 country deep dives</strong> per edition — e.g., is India moving upstream in solar? What countries does India's clean-tech sector depend on?</li>
-            <li><strong>Clean energy corridors assessment</strong> — which bilateral relationships and networks are most important, and what drives successful corridors?</li>
-            <li><strong>Two annual editions</strong> — first Atlas presented November 2025 on NZIPL's main webpage</li>
-          </ul>
+          <div class="atlas-deliverables">
+            <div class="atlas-del-label">Electronic report &amp;<br/>dynamic webpage</div>
+            <div class="atlas-del-desc">Data visualizations on critical materials and supply chain flows across 5–6 supply chains (solar, wind, batteries, grid equipment, green ammonia)</div>
+            <div class="atlas-del-label">2–3 country<br/>deep dives</div>
+            <div class="atlas-del-desc">Per edition — e.g., is India moving upstream in solar? What countries does India's clean-tech sector depend on?</div>
+            <div class="atlas-del-label">Clean energy<br/>corridors</div>
+            <div class="atlas-del-desc">Which bilateral relationships and networks are most important, and what drives successful corridors?</div>
+            <div class="atlas-del-label">Two annual<br/>editions</div>
+            <div class="atlas-del-desc" style="border-bottom:none;">First Atlas presented November 2025 on NZIPL's main webpage</div>
+          </div>
         </div>
       </div>
     </div>
