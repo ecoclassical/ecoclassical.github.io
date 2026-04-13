@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Korea Transmission — ATLAS Panel | NZIPL</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:#f8f9fa;color:#1a1a2e;min-height:100vh}
+  .header{background:#073309;color:#fff;padding:16px 28px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .header-title{font-size:1.05rem;font-weight:700;letter-spacing:.02em}
+  .header-sub{font-size:.78rem;opacity:.65}
+  .header-tech{font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1)}
+  .wrap{max-width:1060px;margin:0 auto;padding:24px 20px 48px}
+  .section-tabs{display:flex;gap:5px;margin-bottom:22px;background:#e8eaed;padding:4px;border-radius:9px;width:fit-content}
+  .sec-btn{padding:7px 18px;border:none;border-radius:6px;background:transparent;cursor:pointer;font-weight:600;font-size:.82rem;color:#6b7280;transition:all .18s}
+  .sec-btn.active{background:#fff;color:#073309;box-shadow:0 1px 5px rgba(0,0,0,.12)}
+  .sec-btn:hover:not(.active){color:#073309;background:rgba(255,255,255,.5)}
+  .section{display:none}.section.active{display:block}
+  .section-title{font-size:1rem;font-weight:700;color:#073309;margin-bottom:3px}
+  .section-sub{font-size:.8rem;color:#666;margin-bottom:14px}
+  .tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+  .tab-btn{padding:6px 14px;border:2px solid #d1d5db;border-radius:18px;background:#fff;cursor:pointer;font-size:.79rem;font-weight:600;color:#555;transition:all .18s;display:flex;align-items:center;gap:5px}
+  .tab-btn:hover{border-color:#073309;color:#073309}
+  .tab-btn.active{background:#073309;border-color:#073309;color:#fff}
+  .tab-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .nav-strip{background:#fff;border:1px solid #e5e7eb;border-radius:9px;padding:10px 16px;margin-bottom:13px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .vc-rail{display:flex;align-items:flex-end;gap:0;flex-shrink:0}
+  .vc-stop{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:60px}
+  .vc-dot{width:12px;height:12px;border-radius:50%;background:#e5e7eb;border:2px solid #d1d5db;transition:all .25s}
+  .vc-stop.active .vc-dot{width:16px;height:16px;box-shadow:0 0 0 4px rgba(7,51,9,.12)}
+  .vc-label{font-size:.65rem;color:#b0b8c1;white-space:nowrap;font-weight:600;text-transform:uppercase;letter-spacing:.04em;transition:color .2s}
+  .vc-stop.active .vc-label{font-weight:700}
+  .vc-edge{width:30px;height:2px;margin-bottom:16px;background:#e5e7eb;flex-shrink:0}
+  .nav-info{padding-left:16px;border-left:1.5px solid #e5e7eb;flex:1;min-width:160px}
+  .nav-pname{font-size:.85rem;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+  .nav-rbadge{display:inline-block;padding:2px 8px;border-radius:9px;font-size:.67rem;font-weight:600;color:#fff;margin-right:4px}
+  .nav-chain{font-size:.69rem;color:#9ca3af;margin-top:3px}
+  .nav-hs{font-size:.7rem;color:#9ca3af}
+  .card{background:#fff;border-radius:11px;border:1px solid #e5e7eb;box-shadow:0 2px 10px rgba(0,0,0,.055);overflow:hidden}
+  .card-inner{padding:18px 22px 10px}
+  .kpi-strip{display:flex;gap:0;border-bottom:1px solid #f0f0f0;padding:0 22px}
+  .kpi{flex:1;padding:12px 10px;text-align:center;border-right:1px solid #f0f0f0}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-size:1.1rem;font-weight:700}
+  .kpi-lbl{font-size:.68rem;color:#888;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+  .kpi-val.import{color:#d97706}.kpi-val.export{color:#0369a1}.kpi-val.hs{color:#073309;font-size:.9rem}
+  .chart-area{padding:10px 0 0}
+  svg{display:block;width:100%}
+  .legend{display:flex;align-items:center;gap:18px;padding:10px 22px 14px;font-size:.75rem;color:#666;flex-wrap:wrap}
+  .legend-item{display:flex;align-items:center;gap:5px}
+  .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .tooltip{position:fixed;background:rgba(15,15,25,.92);color:#fff;padding:8px 12px;border-radius:7px;font-size:.75rem;pointer-events:none;opacity:0;transition:opacity .15s;z-index:999;max-width:230px;line-height:1.45}
+  .tooltip strong{font-size:.82rem;display:block;margin-bottom:2px}
+  .foot-note{font-size:.69rem;color:#aaa;margin-top:16px;text-align:center}
+  .tl-controls,.sc-controls{display:flex;align-items:center;gap:9px;margin-bottom:14px;flex-wrap:wrap}
+  .tl-toggle,.sc-toggle{display:flex;gap:3px;background:#e8eaed;padding:3px;border-radius:7px}
+  .tl-btn,.sc-btn{padding:5px 14px;border:none;border-radius:5px;background:transparent;cursor:pointer;font-size:.78rem;font-weight:600;color:#6b7280;transition:all .15s}
+  .tl-btn.active,.sc-btn.active{background:#fff;color:#073309;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .tl-note{font-size:.69rem;color:#9ca3af;margin-left:auto}
+  #timeline-svg{width:100%;height:380px;background:#fff;border-radius:9px;border:1px solid #e5e7eb}
+  .tl-legend,.sc-legend{display:flex;gap:14px;margin-top:9px;flex-wrap:wrap}
+  .tl-leg-item,.sc-leg-item{display:flex;align-items:center;gap:5px;font-size:.75rem;color:#555}
+  .tl-leg-dot,.sc-leg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+  #scatter-svg{width:100%;height:450px;background:#fff;border-radius:9px;border:1px solid #e5e7eb}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-title">NZIPL · ATLAS Panel</span>
+  <span class="header-tech" style="border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.15);">Transmission</span>
+  <span class="header-sub">🇰🇷 South Korea · Power transmission — conductors to grid infrastructure · BACI 2024</span>
+</div>
+
+<div class="wrap">
+  <div class="section-tabs">
+    <button class="sec-btn active" data-sec="network">Trade Network</button>
+    <button class="sec-btn" data-sec="timeline">Value Chain Timeline</button>
+    <button class="sec-btn" data-sec="scatter">Country Scatterplot</button>
+  </div>
+
+  <!-- TRADE NETWORK -->
+  <div class="section active" id="sec-network">
+    <div class="section-title">🇰🇷 South Korea Transmission Trade Network</div>
+    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2024. Click a product tab to explore its trade structure.</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="nav-strip" id="nav-strip">
+      <div class="vc-rail" id="vc-rail"></div>
+      <div class="nav-info">
+        <div class="nav-pname" id="nav-pname">—</div>
+        <div><span class="nav-rbadge" id="nav-rbadge"></span><span class="nav-hs" id="nav-hs"></span></div>
+        <div class="nav-chain" id="nav-chain"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="kpi-strip" id="kpi-strip"></div>
+      <div class="card-inner chart-area"><svg id="network-svg" viewBox="0 0 960 420"></svg></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div><span>Supplier → South Korea</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0369a1"></div><span>South Korea → Buyer</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#073309;width:15px;height:15px"></div><span>South Korea (focal)</span></div>
+        <div style="margin-left:auto;font-size:.72rem;color:#aaa;font-style:italic">Node size ∝ trade value</div>
+      </div>
+    </div>
+    <div class="foot-note">Source: BACI (CEPII) 2024 · Green Dictionary (NZIPL) · Transmission HS codes.<br>Values in thousands USD.</div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section" id="sec-timeline">
+    <div class="section-title">🇰🇷 South Korea Transmission Trade Decomposition (2003–2024)</div>
+    <div class="section-sub">Trade flows by value-chain stage. Growth and structural shifts over 20+ years.</div>
+    <div class="tl-controls">
+      <div class="tl-toggle">
+        <button class="tl-btn active" id="tl-imp">Imports</button>
+        <button class="tl-btn" id="tl-exp">Exports</button>
+        <button class="tl-btn" id="tl-bal">Balance</button>
+      </div>
+      <span class="tl-note">Data: all Transmission HS codes (28 products). Stage grouping from NZIPL Green Dictionary.</span>
+    </div>
+    <svg id="timeline-svg"></svg>
+    <div class="tl-legend">
+      <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#CB5B1D"></div>Final Product</div>
+      <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#0369a1"></div>Downstream</div>
+      <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#073309"></div>Midstream</div>
+      <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#8A4200"></div>Upstream</div>
+    </div>
+    <div class="foot-note" style="margin-top:10px">Source: BACI (CEPII) 2003–2024 · Green Dictionary (NZIPL). Values in USD millions.</div>
+  </div>
+
+  <!-- SCATTERPLOT -->
+  <div class="section" id="sec-scatter">
+    <div class="section-title">Transmission Competitiveness: PC Score vs Trade Exposure (2023)</div>
+    <div class="section-sub">ML-derived Predicted Competitiveness (PC) score vs exports across 155 countries. 🇰🇷 South Korea highlighted.</div>
+    <div class="sc-controls">
+      <div class="sc-toggle">
+        <button class="sc-btn active" id="sc-abs">Exports $B</button>
+        <button class="sc-btn" id="sc-pct">Exports % GDP</button>
+      </div>
+    </div>
+    <svg id="scatter-svg"></svg>
+    <div class="sc-legend">
+      <div class="sc-leg-item"><div class="sc-leg-dot" style="background:#0369a1"></div>East Asia &amp; Pacific</div>
+      <div class="sc-leg-item"><div class="sc-leg-dot" style="background:#6366f1"></div>Europe &amp; Central Asia</div>
+      <div class="sc-leg-item"><div class="sc-leg-dot" style="background:#10b981"></div>South Asia</div>
+      <div class="sc-leg-item"><div class="sc-leg-dot" style="background:#f59e0b"></div>North America</div>
+      <div class="sc-leg-item"><div class="sc-leg-dot" style="background:#ef4444"></div>Latin America</div>
+      <div class="sc-leg-item"><div class="sc-leg-dot" style="background:#8b5cf6"></div>Middle East &amp; N. Africa</div>
+    </div>
+    <div class="foot-note" style="margin-top:10px">Source: BACI (CEPII) 2023 · PC Scores (NZIPL ML, ranger+SHAP). PC score = probability of sustained Transmission competitiveness.</div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ═══ DATA ═══════════════════════════════════════════════════════
+const FOCAL_ISO  = "KOR";
+const FOCAL_NAME = "South Korea";
+const TECH       = "Transmission";
+const TECH_COLOR = "#06b6d4";
+
+const RAW = {
+  sources: [{"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"CHN","exp_name":"China","value":95241.672},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"BRA","exp_name":"Brazil","value":45636.376},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"JPN","exp_name":"Japan","value":39735.480},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"DEU","exp_name":"Germany","value":28063.360},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"CHE","exp_name":"Switzerland","value":17458.440},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"CHN","exp_name":"China","value":125414.352},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"NLD","exp_name":"Netherlands","value":62151.734},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"JPN","exp_name":"Japan","value":52545.568},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"DEU","exp_name":"Germany","value":46655.670},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"USA","exp_name":"United States","value":37869.034},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"JPN","exp_name":"Japan","value":1459.230},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"CHN","exp_name":"China","value":376.282},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"S19","exp_name":"S19","value":107.036},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"CHN","exp_name":"China","value":74585.553},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"ITA","exp_name":"Italy","value":31110.756},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"USA","exp_name":"United States","value":26259.930},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"SWE","exp_name":"Sweden","value":14531.658},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"JPN","exp_name":"Japan","value":11281.890},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"CHN","exp_name":"China","value":1635636.170},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"JPN","exp_name":"Japan","value":877103.775},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"DEU","exp_name":"Germany","value":775152.230},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"USA","exp_name":"United States","value":492039.605},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"BRA","exp_name":"Brazil","value":363832.995}],
+  sinks:   [{"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"USA","imp_name":"United States","value":377431.564},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"RUS","imp_name":"Russia","value":89860.320},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"CAN","imp_name":"Canada","value":42897.884},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"VNM","imp_name":"Vietnam","value":41388.096},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"CHN","imp_name":"China","value":34911.252},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"USA","imp_name":"United States","value":1023069.410},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"CHN","imp_name":"China","value":111449.052},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"MYS","imp_name":"Malaysia","value":94842.162},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"SWE","imp_name":"Sweden","value":65167.606},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"CAN","imp_name":"Canada","value":63744.238},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"GBR","imp_name":"United Kingdom","value":3264.018},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"ARE","imp_name":"United Arab Emirates","value":2202.423},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"PHL","imp_name":"Philippines","value":1760.626},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"IND","imp_name":"India","value":1640.626},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"USA","imp_name":"United States","value":928.419},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"CHN","imp_name":"China","value":239985.027},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"MEX","imp_name":"Mexico","value":72640.179},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"USA","imp_name":"United States","value":56333.463},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"BGR","imp_name":"Bulgaria","value":24676.827},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"JPN","imp_name":"Japan","value":15916.362},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"USA","imp_name":"United States","value":9078569.220},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"CHN","imp_name":"China","value":2662577.510},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"VNM","imp_name":"Vietnam","value":2004834.260},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"MEX","imp_name":"Mexico","value":1262053.640},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"SWE","imp_name":"Sweden","value":675880.215}],
+  products:[{"product_code":"847989","label":"Tank Fabrication; Vacuum & Press…","hs":"HS 847989"},
+    {"product_code":"842890","label":"Core Production; Core Assembly/S…","hs":"HS 842890"},
+    {"product_code":"841939","label":"Core Coil Assembly; Drying","hs":"HS 841939"},
+    {"product_code":"847981","label":"Coil Production; HV Coil Winding","hs":"HS 847981"},
+    {"product_code":"846249","label":"Core Production; Transformer Cor…","hs":"HS 846249"}]
+};
+
+const PRODUCT_META = {
+  "847989":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Tank Fabrication; Vacuum & P… ★</strong>", "in Downstream stage"]},
+  "842890":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Production; Core Assemb… ★</strong>", "in Downstream stage"]},
+  "841939":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Coil Assembly; Drying ★</strong>", "in Downstream stage"]},
+  "847981":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Coil Production; HV Coil Win… ★</strong>", "in Downstream stage"]},
+  "846249":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Production; Transformer… ★</strong>", "in Downstream stage"]}
+};
+
+const TIMELINE = [
+  {year:2003,stage:"Downstream",exports:   33.7,imports:  48.2},
+  {year:2004,stage:"Downstream",exports:   42.0,imports:  53.4},
+  {year:2005,stage:"Downstream",exports:   32.9,imports:  40.0},
+  {year:2006,stage:"Downstream",exports:   47.5,imports:  38.8},
+  {year:2007,stage:"Downstream",exports:  116.9,imports: 144.7},
+  {year:2008,stage:"Downstream",exports:  136.3,imports: 130.4},
+  {year:2009,stage:"Downstream",exports:  119.8,imports: 151.0},
+  {year:2010,stage:"Downstream",exports:  165.1,imports: 130.4},
+  {year:2011,stage:"Downstream",exports:  195.6,imports: 144.8},
+  {year:2012,stage:"Downstream",exports:  778.5,imports: 587.5},
+  {year:2013,stage:"Downstream",exports:  785.2,imports: 572.1},
+  {year:2014,stage:"Downstream",exports:  778.5,imports: 738.8},
+  {year:2015,stage:"Downstream",exports:  907.4,imports: 778.4},
+  {year:2016,stage:"Downstream",exports: 1430.6,imports: 444.8},
+  {year:2017,stage:"Downstream",exports: 5999.8,imports:2006.2},
+  {year:2018,stage:"Downstream",exports: 6750.7,imports:1925.1},
+  {year:2019,stage:"Downstream",exports: 6852.4,imports:1870.5},
+  {year:2020,stage:"Downstream",exports: 5361.5,imports:1707.1},
+  {year:2021,stage:"Downstream",exports: 5736.8,imports:2149.9},
+  {year:2022,stage:"Downstream",exports:22113.4,imports:7050.7},
+  {year:2023,stage:"Downstream",exports:24206.4,imports:7152.9},
+  {year:2024,stage:"Downstream",exports:25240.0,imports:6946.2}
+];
+
+const SCATTER = [
+  {iso3:"CHN",name:"China",region:"East Asia & Pacific",pc:0.9867,exp_b:46.902,exp_pct:0.2636,gdp:17794781},
+  {iso3:"ITA",name:"Italy",region:"Europe & Central Asia",pc:0.9800,exp_b:16.972,exp_pct:0.7594,gdp: 2234938},
+  {iso3:"DEU",name:"Germany",region:"Europe & Central Asia",pc:0.9795,exp_b:56.216,exp_pct:1.2616,gdp: 4456081},
+  {iso3:"TUR",name:"Turkey",region:"Europe & Central Asia",pc:0.9727,exp_b: 2.338,exp_pct:0.2106,gdp: 1110016},
+  {iso3:"CZE",name:"Czechia",region:"Europe & Central Asia",pc:0.9662,exp_b: 3.938,exp_pct:1.1859,gdp:  332025},
+  {iso3:"AUT",name:"Austria",region:"Europe & Central Asia",pc:0.9660,exp_b: 4.313,exp_pct:0.8304,gdp:  519408},
+  {iso3:"DNK",name:"Denmark",region:"Europe & Central Asia",pc:0.9657,exp_b: 2.630,exp_pct:0.6492,gdp:  405199},
+  {iso3:"HKG",name:"Hong Kong SAR China",region:"East Asia & Pacific",pc:0.9532,exp_b: 0.419,exp_pct:0.1110,gdp:  377194},
+  {iso3:"IND",name:"India",region:"South Asia",pc:0.9529,exp_b: 3.314,exp_pct:0.0910,gdp: 3639376},
+  {iso3:"MEX",name:"Mexico",region:"Latin America & Caribbean",pc:0.9398,exp_b: 5.521,exp_pct:0.3086,gdp: 1788897},
+  {iso3:"FIN",name:"Finland",region:"Europe & Central Asia",pc:0.9259,exp_b: 2.471,exp_pct:0.8207,gdp:  301075},
+  {iso3:"EST",name:"Estonia",region:"Europe & Central Asia",pc:0.9133,exp_b: 0.311,exp_pct:0.7601,gdp:   40918},
+  {iso3:"TUN",name:"Tunisia",region:"Middle East & North Africa",pc:0.8996,exp_b: 0.096,exp_pct:0.1880,gdp:   51326},
+  {iso3:"PHL",name:"Philippines",region:"East Asia & Pacific",pc:0.8989,exp_b: 0.127,exp_pct:0.0292,gdp:  436622},
+  {iso3:"ESP",name:"Spain",region:"Europe & Central Asia",pc:0.8840,exp_b: 2.631,exp_pct:0.1664,gdp: 1580890},
+  {iso3:"LBN",name:"Lebanon",region:"Middle East & North Africa",pc:0.8723,exp_b: 0.012,exp_pct:0.0455,gdp:   25441},
+  {iso3:"LKA",name:"Sri Lanka",region:"South Asia",pc:0.8381,exp_b: 0.006,exp_pct:0.0082,gdp:   74404},
+  {iso3:"ROU",name:"Romania",region:"Europe & Central Asia",pc:0.8316,exp_b: 1.587,exp_pct:0.4598,gdp:  345226},
+  {iso3:"BGR",name:"Bulgaria",region:"Europe & Central Asia",pc:0.8267,exp_b: 0.267,exp_pct:0.2635,gdp:  101376},
+  {iso3:"HUN",name:"Hungary",region:"Europe & Central Asia",pc:0.8129,exp_b: 1.707,exp_pct:0.8066,gdp:  211675},
+  {iso3:"NZL",name:"New Zealand",region:"East Asia & Pacific",pc:0.7864,exp_b: 0.198,exp_pct:0.0784,gdp:  252632},
+  {iso3:"ALB",name:"Albania",region:"Europe & Central Asia",pc:0.7764,exp_b: 0.004,exp_pct:0.0162,gdp:   22544},
+  {iso3:"KGZ",name:"Kyrgyzstan",region:"Europe & Central Asia",pc:0.7343,exp_b: 0.009,exp_pct:0.0723,gdp:   12635},
+  {iso3:"SVN",name:"Slovenia",region:"Europe & Central Asia",pc:0.7262,exp_b: 0.481,exp_pct:0.7049,gdp:   68182},
+  {iso3:"HRV",name:"Croatia",region:"Europe & Central Asia",pc:0.7130,exp_b: 0.381,exp_pct:0.4655,gdp:   81924},
+  {iso3:"DOM",name:"Dominican Republic",region:"Latin America & Caribbean",pc:0.6842,exp_b: 0.001,exp_pct:0.0012,gdp:  119612},
+  {iso3:"HTI",name:"Haiti",region:"Latin America & Caribbean",pc:0.6622,exp_b: 0.000,exp_pct:0.0000,gdp:   21997},
+  {iso3:"LAO",name:"Laos",region:"East Asia & Pacific",pc:0.6465,exp_b: 0.000,exp_pct:0.0000,gdp:   15547},
+  {iso3:"MMR",name:"Myanmar (Burma)",region:"East Asia & Pacific",pc:0.5208,exp_b: 0.003,exp_pct:0.0041,gdp:   65015},
+  {iso3:"SVK",name:"Slovakia",region:"Europe & Central Asia",pc:0.4524,exp_b: 2.398,exp_pct:1.8168,gdp:  132018},
+  {iso3:"KOR",name:"South Korea",region:"East Asia & Pacific",pc:0.2602,exp_b:24.206,exp_pct:1.4133,gdp: 1712793},
+  {iso3:"JPN",name:"Japan",region:"East Asia & Pacific",pc:0.0200,exp_b:24.895,exp_pct:0.5909,gdp: 4212945},
+  {iso3:"USA",name:"United States",region:"North America",pc:0.0133,exp_b:24.190,exp_pct:0.0884,gdp:27357834},
+  {iso3:"CHE",name:"Switzerland",region:"Europe & Central Asia",pc:0.1534,exp_b: 7.652,exp_pct:0.8648,gdp:  884907},
+  {iso3:"CAN",name:"Canada",region:"North America",pc:0.1733,exp_b: 7.616,exp_pct:0.3559,gdp: 2140086},
+  {iso3:"NLD",name:"Netherlands",region:"Europe & Central Asia",pc:0.0333,exp_b: 6.984,exp_pct:0.6257,gdp: 1116223},
+  {iso3:"GBR",name:"United Kingdom",region:"Europe & Central Asia",pc:0.0600,exp_b: 6.615,exp_pct:0.1985,gdp: 3332837},
+  {iso3:"POL",name:"Poland",region:"Europe & Central Asia",pc:0.1341,exp_b: 5.672,exp_pct:0.7018,gdp:  808288},
+  {iso3:"FRA",name:"France",region:"Europe & Central Asia",pc:0.0340,exp_b: 4.634,exp_pct:0.1529,gdp: 3030316},
+  {iso3:"MYS",name:"Malaysia",region:"East Asia & Pacific",pc:0.0133,exp_b: 4.177,exp_pct:1.0052,gdp:  415569},
+  {iso3:"SGP",name:"Singapore",region:"East Asia & Pacific",pc:0.1002,exp_b: 4.097,exp_pct:0.8725,gdp:  469553},
+  {iso3:"SWE",name:"Sweden",region:"Europe & Central Asia",pc:0.0467,exp_b: 3.625,exp_pct:0.6096,gdp:  594582}
+];
+
+const LABEL_ISOS = new Set(["KOR","CHN","USA","DEU","JPN","FRA","GBR","IND","VNM","KHM","MYS","THA","SGP","CAN","AUS","RUS","NLD","BRA","ZAF"]);
+
+// ═══ PALETTE ════════════════════════════════════════════════════
+const FOCAL_COLOR  = "#073309";
+const SRC_COLOR    = "#d97706";
+const SNK_COLOR    = "#0369a1";
+const SRC_LIGHT    = "#fef3c7";
+const SNK_LIGHT    = "#dbeafe";
+const TAB_COLORS   = ["#f59e0b","#6366f1","#10b981","#0ea5e9","#8b5cf6"];
+const STAGE_COLORS = {
+  "Upstream":      "#8A4200",
+  "Midstream":     "#073309",
+  "Downstream":    "#0369a1",
+  "Final Product": "#CB5B1D"
+};
+const REGION_COLOR = {
+  EAP:"#0369a1", ECA:"#6366f1", SAS:"#10b981",
+  NAC:"#f59e0b", LCN:"#ef4444", MEA:"#8b5cf6", SSF:"#84cc16"
+};
+const STAGES_ORDER = ["Upstream","Midstream","Downstream","Final Product"];
+
+// ═══ UTILITIES ══════════════════════════════════════════════════
+const fmt = v => v>=1e6 ? `$${(v/1e6).toFixed(1)}B` : v>=1e3 ? `$${(v/1e3).toFixed(0)}M` : `$${v.toFixed(0)}K`;
+const fmtFull = v => `$${d3.format(",.0f")(v)}K`;
+const tip = d3.select("#tooltip");
+function showTip(html,ev){tip.style("opacity",1).html(html).style("left",(ev.clientX+14)+"px").style("top",(ev.clientY-10)+"px")}
+function hideTip(){tip.style("opacity",0)}
+
+// ═══ SECTION TABS ═══════════════════════════════════════════════
+document.querySelectorAll(".sec-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".sec-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("sec-"+btn.dataset.sec).classList.add("active");
+    if(btn.dataset.sec==="timeline") initTimeline();
+    if(btn.dataset.sec==="scatter")  initScatter();
+  });
+});
+
+// ═══ NAVIGATOR ══════════════════════════════════════════════════
+const ALL_STAGES = ["Upstream","Midstream","Downstream","Final Product"];
+const PRESENT_STAGES = ALL_STAGES.filter(s =>
+  RAW.products.some(p => PRODUCT_META[p.product_code]?.stage === s));
+const SHOWN_STAGES = PRESENT_STAGES.length > 0 ? PRESENT_STAGES : ["Downstream","Final Product"];
+
+(function buildRail(){
+  const rail = d3.select("#vc-rail");
+  SHOWN_STAGES.forEach((s,i) => {
+    if(i>0) rail.append("div").attr("class","vc-edge").attr("id","vc-e"+i);
+    rail.append("div").attr("class","vc-stop").attr("id","vc-"+s.replace(/\s/g,"_"))
+      .html(`<div class="vc-dot"></div><div class="vc-label">${s}</div>`);
+  });
+})();
+
+function updateNavigator(code) {
+  const m = PRODUCT_META[code]; if(!m) return;
+  SHOWN_STAGES.forEach(s => {
+    const el = document.getElementById("vc-"+s.replace(/\s/g,"_")); if(!el) return;
+    el.classList.remove("active");
+    el.querySelector(".vc-dot").style.cssText = "background:#e5e7eb;border-color:#d1d5db;width:12px;height:12px";
+    el.querySelector(".vc-label").style.color = "#b0b8c1";
+  });
+  const el = document.getElementById("vc-"+m.stage.replace(/\s/g,"_"));
+  if(el){ el.classList.add("active");
+    el.querySelector(".vc-dot").style.cssText = `background:${m.color};border-color:${m.color};width:16px;height:16px;box-shadow:0 0 0 4px ${m.color}22`;
+    el.querySelector(".vc-label").style.color = m.color; }
+  document.getElementById("nav-pname").textContent = RAW.products.find(p=>p.product_code===code)?.label||"";
+  const b = document.getElementById("nav-rbadge");
+  b.textContent=m.role; b.style.background=m.color;
+  document.getElementById("nav-hs").textContent = "HS "+code;
+  document.getElementById("nav-chain").innerHTML = m.chain.join(" → ");
+}
+
+// ═══ NETWORK ════════════════════════════════════════════════════
+const productMap={};
+RAW.products.forEach(p=>{
+  const srcs=RAW.sources.filter(d=>d.product_code===p.product_code);
+  const snks=RAW.sinks.filter(d=>d.product_code===p.product_code);
+  productMap[p.product_code]={...p,srcs,snks,
+    totalImport:d3.sum(srcs,d=>d.value),totalExport:d3.sum(snks,d=>d.value)};
+});
+const tabsEl=d3.select("#tabs");
+RAW.products.forEach((p,i)=>{
+  tabsEl.append("button").attr("class","tab-btn"+(i===0?" active":"")).attr("data-code",p.product_code)
+    .html(`<span class="tab-dot" style="background:${TAB_COLORS[i]||"#aaa"}"></span>${p.label}`)
+    .on("click",function(){
+      d3.selectAll(".tab-btn").classed("active",false);
+      d3.select(this).classed("active",true);
+      renderNetwork(p.product_code,i); updateNavigator(p.product_code);
+    });
+});
+
+const VW=960,VH=420;
+const svg=d3.select("#network-svg");
+const defs=svg.append("defs");
+function mkArrow(id,col){defs.append("marker").attr("id",id).attr("viewBox","0 -5 10 10").attr("refX",10).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,-5L10,0L0,5").attr("fill",col);}
+mkArrow("arr-src",SRC_COLOR); mkArrow("arr-snk",SNK_COLOR);
+const layerE=svg.append("g"); const layerN=svg.append("g");
+const CX=VW/2,CY=VH/2,SX=165,SK=VW-165;
+function yPos(n){const pad=50,use=VH-2*pad,step=n>1?use/(n-1):0;return Array.from({length:n},(_,i)=>pad+i*step)}
+
+function renderNetwork(code,ci){
+  const pd=productMap[code]; if(!pd) return;
+  const col=TAB_COLORS[ci]||TECH_COLOR;
+  d3.select("#kpi-strip").html(`
+    <div class="kpi"><div class="kpi-val hs">${pd.hs}</div><div class="kpi-lbl">HS Code</div></div>
+    <div class="kpi"><div class="kpi-val import">${fmt(pd.totalImport)}</div><div class="kpi-lbl">${FOCAL_NAME} Imports</div></div>
+    <div class="kpi"><div class="kpi-val export">${fmt(pd.totalExport)}</div><div class="kpi-lbl">${FOCAL_NAME} Exports</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#6b7280">${pd.srcs.length}</div><div class="kpi-lbl">Suppliers</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#6b7280">${pd.snks.length}</div><div class="kpi-lbl">Buyers</div></div>
+  `);
+  layerE.selectAll("*").remove(); layerN.selectAll("*").remove();
+  const {srcs,snks}=pd;
+  const maxV=d3.max([...srcs,...snks],d=>d.value)||1;
+  const rSc=d3.scaleSqrt().domain([0,maxV]).range([5,30]);
+  const wSc=d3.scaleLinear().domain([0,maxV]).range([1,9]);
+  const srcY=yPos(srcs.length), snkY=yPos(snks.length);
+
+  srcs.forEach((d,i)=>{
+    const[x1,y1,x2,y2]=[SX,srcY[i],CX,CY],r2=26;
+    const ang=Math.atan2(y2-y1,x2-x1);
+    const ex=x2-Math.cos(ang)*(r2+3),ey=y2-Math.sin(ang)*(r2+3);
+    const mx=(x1+ex)/2+(y1-ey)*.18,my=(y1+ey)/2+(ex-x1)*.08;
+    layerE.append("path").attr("d",`M${x1},${y1} Q${mx},${my} ${ex},${ey}`).attr("fill","none").attr("stroke",SRC_COLOR).attr("stroke-width",wSc(d.value)).attr("stroke-opacity",.55).attr("marker-end","url(#arr-src)").on("mousemove",ev=>showTip(`<strong>${d.exp_name} → ${FOCAL_NAME}</strong>${pd.label}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
+  });
+  snks.forEach((d,i)=>{
+    const[x1,y1,x2,y2]=[CX,CY,SK,snkY[i]],r1=26;
+    const ang=Math.atan2(y2-y1,x2-x1);
+    const sx=x1+Math.cos(ang)*(r1+3),sy=y1+Math.sin(ang)*(r1+3);
+    const rx=rSc(d.value),ex=x2-Math.cos(ang)*(rx+3),ey=y2-Math.sin(ang)*(rx+3);
+    const mx=(sx+ex)/2+(sy-ey)*.18,my=(sy+ey)/2+(ex-sx)*.08;
+    layerE.append("path").attr("d",`M${sx},${sy} Q${mx},${my} ${ex},${ey}`).attr("fill","none").attr("stroke",SNK_COLOR).attr("stroke-width",wSc(d.value)).attr("stroke-opacity",.55).attr("marker-end","url(#arr-snk)").on("mousemove",ev=>showTip(`<strong>${FOCAL_NAME} → ${d.imp_name}</strong>${pd.label}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
+  });
+
+  const sG=layerN.selectAll(".sn").data(srcs).enter().append("g").attr("class","sn").attr("transform",(d,i)=>`translate(${SX},${srcY[i]})`);
+  sG.append("circle").attr("r",d=>rSc(d.value)).attr("fill",SRC_LIGHT).attr("stroke",SRC_COLOR).attr("stroke-width",2);
+  sG.append("text").attr("text-anchor","middle").attr("dy",".35em").attr("font-size",d=>Math.min(10,rSc(d.value)*.7)).attr("font-weight","700").attr("fill","#92400e").text(d=>d.exp_iso3);
+  sG.append("text").attr("text-anchor","end").attr("x",d=>-(rSc(d.value)+6)).attr("dy",".35em").attr("font-size","10").attr("fill","#374151").text(d=>d.exp_name);
+  sG.on("mousemove",(ev,d)=>showTip(`<strong>${d.exp_name}</strong>Exports to ${FOCAL_NAME}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
+
+  const kG=layerN.selectAll(".kn").data(snks).enter().append("g").attr("class","kn").attr("transform",(d,i)=>`translate(${SK},${snkY[i]})`);
+  kG.append("circle").attr("r",d=>rSc(d.value)).attr("fill",SNK_LIGHT).attr("stroke",SNK_COLOR).attr("stroke-width",2);
+  kG.append("text").attr("text-anchor","middle").attr("dy",".35em").attr("font-size",d=>Math.min(10,rSc(d.value)*.7)).attr("font-weight","700").attr("fill","#1e40af").text(d=>d.imp_iso3);
+  kG.append("text").attr("text-anchor","start").attr("x",d=>rSc(d.value)+6).attr("dy",".35em").attr("font-size","10").attr("fill","#374151").text(d=>d.imp_name);
+  kG.on("mousemove",(ev,d)=>showTip(`<strong>${d.imp_name}</strong>Imports from ${FOCAL_NAME}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
+
+  const cG=layerN.append("g").attr("transform",`translate(${CX},${CY})`);
+  cG.append("circle").attr("r",34).attr("fill","none").attr("stroke",FOCAL_COLOR).attr("stroke-width",2).attr("stroke-opacity",.15);
+  cG.append("circle").attr("r",26).attr("fill",FOCAL_COLOR).attr("stroke","#fff").attr("stroke-width",2.5);
+  cG.append("text").attr("text-anchor","middle").attr("dy","-.3em").attr("font-size","12").attr("font-weight","800").attr("fill","#fff").text(FOCAL_ISO);
+  cG.append("text").attr("text-anchor","middle").attr("dy","1em").attr("font-size","9").attr("fill","rgba(255,255,255,.75)").text(FOCAL_NAME.split(" ")[0]);
+
+  layerN.append("text").attr("x",SX).attr("y",16).attr("text-anchor","middle").attr("font-size","10").attr("font-weight","700").attr("fill",SRC_COLOR).attr("letter-spacing",".05em").text("▶ SUPPLIERS");
+  layerN.append("text").attr("x",SK).attr("y",16).attr("text-anchor","middle").attr("font-size","10").attr("font-weight","700").attr("fill",SNK_COLOR).attr("letter-spacing",".05em").text("BUYERS ▶");
+  layerN.append("text").attr("x",CX).attr("y",20).attr("text-anchor","middle").attr("font-size","11").attr("font-weight","700").attr("fill",col).text(pd.label);
+}
+
+if(RAW.products.length>0){
+  renderNetwork(RAW.products[0].product_code,0);
+  updateNavigator(RAW.products[0].product_code);
+}
+
+// ═══ TIMELINE ═══════════════════════════════════════════════════
+let tlMode="imports", tlDone=false;
+["tl-imp","tl-exp","tl-bal"].forEach((id,k)=>{
+  const modes=["imports","exports","balance"];
+  document.getElementById(id).addEventListener("click",()=>{
+    tlMode=modes[k];
+    document.querySelectorAll(".tl-btn").forEach(b=>b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    if(tlDone) window._drawTl && window._drawTl();
+  });
+});
+
+function initTimeline(){
+  if(tlDone) return; tlDone=true;
+  const el=document.getElementById("timeline-svg");
+  const W=el.clientWidth||1020, H=380;
+  const m={top:22,right:22,bottom:38,left:62};
+  const w=W-m.left-m.right, h=H-m.top-m.bottom;
+  const s=d3.select("#timeline-svg").attr("viewBox",`0 0 ${W} ${H}`);
+  s.append("defs").append("clipPath").attr("id","tl-cl").append("rect").attr("width",w).attr("height",h);
+  const g=s.append("g").attr("transform",`translate(${m.left},${m.top})`);
+  const xG=g.append("g").attr("transform",`translate(0,${h})`);
+  const yG=g.append("g");
+  const cG=g.append("g").attr("clip-path","url(#tl-cl)");
+  const years=[...new Set(TIMELINE.map(d=>d.year))].sort();
+  const xSc=d3.scaleBand().domain(years).range([0,w]).paddingInner(.1);
+  const xC=y=>xSc(y)+xSc.bandwidth()/2;
+
+  function draw(){
+    cG.selectAll("*").remove();
+    g.selectAll(".yl,.yt").remove();
+    const isB=tlMode==="balance";
+    const data=years.map(yr=>{
+      const row={year:yr};
+      STAGES_ORDER.forEach(s=>{row[s]=0;});
+      TIMELINE.filter(d=>d.year===yr).forEach(d=>{
+        const v=isB?d.exports-d.imports:d[tlMode];
+        row[d.stage]=(row[d.stage]||0)+(v||0);
+      });
+      return row;
+    });
+    const allV=data.flatMap(d=>STAGES_ORDER.map(s=>d[s]));
+    const maxV=(d3.max(allV.filter(v=>v>0))||1)*1.1;
+    const minV=isB?(d3.min(allV)||0)*1.1:0;
+    const ySc=d3.scaleLinear().domain([minV,maxV]).range([h,0]).nice();
+    xG.call(d3.axisBottom(xSc).tickValues(years.filter((_,i)=>i%4===0)).tickFormat(d3.format("d")).tickSize(0)).selectAll("text").attr("font-size","10").attr("fill","#9ca3af");
+    xG.select(".domain").remove();
+    yG.call(d3.axisLeft(ySc).ticks(5).tickFormat(d=>d>=1000?`${(d/1000).toFixed(0)}B`:d+"M")).selectAll("text").attr("font-size","10").attr("fill","#9ca3af");
+    yG.select(".domain").remove();
+    yG.selectAll(".tick line").attr("stroke","#f0f0f0").attr("x2",w);
+    if(isB){
+      cG.append("line").attr("x1",0).attr("x2",w).attr("y1",ySc(0)).attr("y2",ySc(0)).attr("stroke","#9ca3af").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+      const bw=xSc.bandwidth()*0.7/4;
+      STAGES_ORDER.forEach((st,si)=>{
+        cG.selectAll(`.br-${si}`).data(data).enter().append("rect").attr("class",`br-${si}`)
+          .attr("x",d=>xC(d.year)-xSc.bandwidth()*.35+si*bw)
+          .attr("width",bw).attr("y",d=>d[st]>=0?ySc(d[st]):ySc(0))
+          .attr("height",d=>Math.abs(ySc(d[st])-ySc(0)))
+          .attr("fill",STAGE_COLORS[st]||"#ccc").attr("opacity",.75)
+          .on("mousemove",(ev,d)=>showTip(`<strong>${d.year} · ${st}</strong>Balance: ${d3.format(",.0f")(d[st])} $M`,ev))
+          .on("mouseleave",hideTip);
+      });
+    } else {
+      const stack=d3.stack().keys(STAGES_ORDER)(data);
+      const area=d3.area().x(d=>xC(d.data.year)).y0(d=>ySc(d[0])).y1(d=>ySc(d[1])).curve(d3.curveCatmullRom);
+      cG.selectAll(".al").data(stack).enter().append("path").attr("class","al")
+        .attr("d",area).attr("fill",(d,i)=>STAGE_COLORS[STAGES_ORDER[i]]).attr("opacity",.75)
+        .on("mousemove",(ev,d)=>showTip(`<strong>${d.key}</strong>`,ev)).on("mouseleave",hideTip);
+      const ln=d3.line().x(d=>xC(d.year)).y(d=>ySc(STAGES_ORDER.reduce((s,k)=>s+d[k],0))).curve(d3.curveCatmullRom);
+      cG.append("path").datum(data).attr("d",ln).attr("fill","none").attr("stroke","#1a1a2e").attr("stroke-width",2).attr("stroke-opacity",.4).attr("stroke-dasharray","5,3");
+    }
+    g.append("text").attr("class","yl").attr("transform","rotate(-90)").attr("x",-h/2).attr("y",-50).attr("text-anchor","middle").attr("font-size","10").attr("fill","#9ca3af")
+      .text(tlMode==="imports"?"Imports ($M USD)":tlMode==="exports"?"Exports ($M USD)":"Balance ($M USD)");
+  }
+  window._drawTl=draw; draw();
+}
+
+// ═══ SCATTER ════════════════════════════════════════════════════
+let scMode="abs", scDone=false;
+["sc-abs","sc-pct"].forEach((id,k)=>{
+  document.getElementById(id).addEventListener("click",()=>{
+    scMode=k===0?"abs":"pct";
+    document.querySelectorAll(".sc-btn").forEach(b=>b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    if(scDone) window._drawSc && window._drawSc();
+  });
+});
+
+function initScatter(){
+  if(scDone) return; scDone=true;
+  const el=document.getElementById("scatter-svg");
+  const W=el.clientWidth||1020, H=450;
+  const m={top:28,right:28,bottom:50,left:65};
+  const w=W-m.left-m.right, h=H-m.top-m.bottom;
+  const s=d3.select("#scatter-svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const g=s.append("g").attr("transform",`translate(${m.left},${m.top})`);
+  const xG=g.append("g").attr("transform",`translate(0,${h})`);
+  const yG=g.append("g");
+
+  function draw(){
+    g.selectAll(".dot,.dl,.ql,.ax").remove();
+    const xk=scMode==="abs"?"exp_b":"exp_pct";
+    const xl=scMode==="abs"?"Solar Exports 2023 ($B)":"Solar Exports 2023 (% GDP)";
+    const valid=SCATTER.filter(d=>d[xk]!=null&&d[xk]!==null&&!isNaN(d[xk]));
+    const xMax=(d3.max(valid,d=>d[xk])||1)*1.08;
+    const xSc=d3.scaleLinear().domain([0,xMax]).range([0,w]).nice();
+    const ySc=d3.scaleLinear().domain([0,1.05]).range([h,0]);
+    xG.call(d3.axisBottom(xSc).ticks(5).tickFormat(d=>scMode==="abs"?`$${d}B`:`${d}%`)).selectAll("text").attr("font-size","10").attr("fill","#9ca3af");
+    xG.select(".domain").remove(); xG.selectAll(".tick line").remove();
+    yG.call(d3.axisLeft(ySc).ticks(5).tickFormat(d3.format(".1f"))).selectAll("text").attr("font-size","10").attr("fill","#9ca3af");
+    yG.select(".domain").remove(); yG.selectAll(".tick line").remove();
+    g.selectAll(".gh").data(ySc.ticks(5)).enter().append("line").attr("class","ql")
+      .attr("x1",0).attr("x2",w).attr("y1",d=>ySc(d)).attr("y2",d=>ySc(d)).attr("stroke","#f0f0f0");
+    g.append("line").attr("class","ql").attr("x1",0).attr("x2",w).attr("y1",ySc(.5)).attr("y2",ySc(.5)).attr("stroke","#e5e7eb").attr("stroke-width",1.5).attr("stroke-dasharray","5,4");
+    g.append("text").attr("class","ql").attr("x",w-4).attr("y",ySc(.5)-5).attr("text-anchor","end").attr("font-size","9").attr("fill","#9ca3af").text("PC = 0.5");
+    const rSc=d3.scaleSqrt().domain([0,d3.max(valid,d=>d.exp_b)||1]).range([4,24]);
+    g.selectAll(".dot").data(valid).enter().append("circle").attr("class","dot")
+      .attr("cx",d=>xSc(d[xk])).attr("cy",d=>ySc(d.pc))
+      .attr("r",d=>d.iso3===FOCAL_ISO?10:rSc(d.exp_b))
+      .attr("fill",d=>d.iso3===FOCAL_ISO?FOCAL_COLOR:REGION_COLOR[d.region]||"#9ca3af")
+      .attr("stroke",d=>d.iso3===FOCAL_ISO?"#fff":"rgba(255,255,255,.6)")
+      .attr("stroke-width",d=>d.iso3===FOCAL_ISO?2.5:1)
+      .attr("opacity",d=>d.iso3===FOCAL_ISO?1:.7)
+      .on("mousemove",(ev,d)=>showTip(`<strong>${d.name} (${d.iso3})</strong>PC: ${d.pc.toFixed(3)}<br>Exports: $${d.exp_b.toFixed(1)}B (${d.exp_pct!=null?d.exp_pct.toFixed(2)+"% GDP":"n/a"})`,ev))
+      .on("mouseleave",hideTip);
+    g.selectAll(".dl").data(valid.filter(d=>LABEL_ISOS.has(d.iso3))).enter()
+      .append("text").attr("class","dl")
+      .attr("x",d=>xSc(d[xk])+(d.iso3===FOCAL_ISO?13:rSc(d.exp_b)+4))
+      .attr("y",d=>ySc(d.pc)+4)
+      .attr("font-size",d=>d.iso3===FOCAL_ISO?"12":"9.5")
+      .attr("font-weight",d=>d.iso3===FOCAL_ISO?"700":"500")
+      .attr("fill",d=>d.iso3===FOCAL_ISO?FOCAL_COLOR:"#374151")
+      .text(d=>d.iso3===FOCAL_ISO?FOCAL_ISO+" ★":d.iso3);
+    g.append("text").attr("class","ax").attr("x",w/2).attr("y",h+42).attr("text-anchor","middle").attr("font-size","11").attr("fill","#6b7280").text(xl);
+    g.append("text").attr("class","ax").attr("transform","rotate(-90)").attr("x",-h/2).attr("y",-53).attr("text-anchor","middle").attr("font-size","11").attr("fill","#6b7280").text("PC Score (", TECH, " Competitiveness, 2023)");
+  }
+  window._drawSc=draw; draw();
+}
+</script>
+</body>
+</html>
