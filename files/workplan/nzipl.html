@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NZIPL CVCE — Atlas of the Global Clean Industrial Base</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #060d08;
+    --surface:  #0b1a0d;
+    --surface2: #0f2312;
+    --border:   rgba(255,255,255,0.07);
+    --border-hi:rgba(255,255,255,0.14);
+    --text:     #dde8dd;
+    --muted:    #7a9b7d;
+    --accent:   #3cb54a;    /* bright green for dark bg */
+    --accent2:  #f9c84f;    /* amber */
+    --accent3:  #4fa8f9;    /* blue */
+    --accent4:  #c084fc;    /* purple */
+    --glow:     rgba(60,181,74,0.12);
+    --font:     -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background mesh */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 10% 8%,  rgba(60,181,74,0.08)  0%, transparent 60%),
+      radial-gradient(ellipse 50% 45% at 88% 78%, rgba(249,200,79,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 55% 35%, rgba(79,168,249,0.04) 0%, transparent 50%);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto; padding: 0 28px;
+  }
+
+  /* ── HEADER ── */
+  header { padding: 72px 0 56px; border-bottom: 1px solid var(--border); }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .eyebrow::before {
+    content: ""; display: inline-block; width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .eyebrow-badge {
+    background: rgba(60,181,74,0.12); border: 1px solid rgba(60,181,74,0.3);
+    border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  header h1 {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+    color: #fff; margin-bottom: 12px;
+  }
+  header h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, #a8f5b1 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header .sub {
+    font-size: 15.5px; color: var(--muted); max-width: 600px; margin-bottom: 28px;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 28px;
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 2px; }
+  .stat-val { font-size: 1.5rem; font-weight: 700; color: #fff; line-height: 1; }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .header-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border: 1px solid var(--border-hi); border-radius: 999px;
+    font-size: 12px; font-weight: 500; color: var(--muted); text-decoration: none;
+    transition: all 0.2s; background: rgba(255,255,255,0.03);
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); background: var(--glow); }
+
+  /* ── SECTIONS ── */
+  section { padding: 52px 0 0; }
+  section:last-of-type { padding-bottom: 80px; }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── TECH BADGES ── */
+  .tech-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .tech-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid rgba(60,181,74,0.25);
+    background: rgba(60,181,74,0.07);
+    font-size: 12.5px; font-weight: 600; color: #c0e8c3;
+    letter-spacing: 0.01em;
+  }
+  .tech-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+  /* ── DATASET CARDS ── */
+  .dataset-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(310px,1fr));
+    gap: 14px;
+  }
+  .d-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px 26px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.25s, transform 0.22s;
+  }
+  .d-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--card-accent, var(--accent)); opacity: 0; transition: opacity 0.25s;
+  }
+  .d-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+  .d-card:hover::before { opacity: 1; }
+  .d-card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .d-icon {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; background: var(--card-icon-bg, rgba(60,181,74,0.12));
+  }
+  .d-card h3 { font-size: 14.5px; font-weight: 650; color: #fff; margin-bottom: 3px; }
+  .d-card .source { font-size: 11.5px; color: var(--card-accent, var(--accent)); font-weight: 600; }
+  .d-card p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .d-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+  .pill {
+    font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 5px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 0.03em;
+  }
+
+  /* ── TOOL CARDS ── */
+  .tools-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    gap: 13px;
+  }
+  .t-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 22px 24px;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .t-card:hover {
+    border-color: var(--card-accent, var(--accent));
+    background: var(--surface2); transform: translateY(-2px);
+  }
+  .t-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 11px; }
+  .t-icon { font-size: 21px; line-height: 1; }
+  .t-arrow { color: var(--muted); font-size: 16px; transition: transform 0.2s, color 0.2s; }
+  .t-card:hover .t-arrow { transform: translate(2px,-2px); color: var(--card-accent, var(--accent)); }
+  .t-card h3 { font-size: 13.5px; font-weight: 650; color: #fff; margin-bottom: 5px; }
+  .t-card p  { font-size: 12.5px; color: var(--muted); line-height: 1.6; flex: 1; }
+  .t-badge {
+    margin-top: 13px; font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--card-accent, var(--accent)); opacity: 0.85;
+  }
+  .t-card.disabled { opacity: 0.45; cursor: default; pointer-events: none; }
+  .t-card.disabled .t-arrow { display: none; }
+
+  /* Accordion for tech-specific tools */
+  .tech-tools-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 10px; margin-top: 14px;
+  }
+  .sub-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 9px; padding: 14px 16px;
+    text-decoration: none; color: inherit;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; font-weight: 600; color: #c0e8c3;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sub-card:hover { border-color: var(--accent); background: var(--surface2); }
+  .sub-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border); padding: 28px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+  .fdot { opacity: 0.3; }
+
+  @media (max-width: 640px) {
+    header { padding: 48px 0 40px; }
+    section { padding: 36px 0 0; }
+    .dataset-grid, .tools-grid, .tech-tools-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="eyebrow">
+      <span class="eyebrow-badge">NZIPL</span>
+      Johns Hopkins SAIS · Net Zero Industrial Policy Lab
+    </div>
+    <h1>Atlas of the<br><span>Global Clean Industrial Base</span></h1>
+    <p class="sub">
+      A trade-based intelligence platform mapping the value chains of clean technologies worldwide —
+      from raw material extraction to final product deployment. Phase II data platform, 2025–2026.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-val">10</div><div class="stat-lbl">Technologies</div></div>
+      <div class="stat-item"><div class="stat-val">200+</div><div class="stat-lbl">Countries</div></div>
+      <div class="stat-item"><div class="stat-val">30 yrs</div><div class="stat-lbl">Coverage (1995–2024)</div></div>
+      <div class="stat-item"><div class="stat-val">51+</div><div class="stat-lbl">Solar HS Codes</div></div>
+      <div class="stat-item"><div class="stat-val">2,700+</div><div class="stat-lbl">ORBIS Firms</div></div>
+    </div>
+
+    <div class="header-links">
+      <a class="chip" href="workplan.html" target="_blank">
+        📋 Full Work Plan
+      </a>
+      <a class="chip" href="https://www.netzeropolicylab.com/" target="_blank">
+        🌐 NZIPL Website
+      </a>
+      <a class="chip" href="docs/reports/solar_india_report.html" target="_blank">
+        🇮🇳 India Solar Report
+      </a>
+      <a class="chip" href="docs/reports/chile_rawmaterials_report.html" target="_blank">
+        🇨🇱 Chile Report
+      </a>
+    </div>
+  </header>
+
+  <!-- ══ TECHNOLOGIES ══ -->
+  <section>
+    <div class="section-label">Clean Technologies Covered</div>
+    <div class="tech-grid">
+      <div class="tech-badge"><div class="tech-dot" style="background:#f59e0b;"></div>Batteries</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#10b981;"></div>Biofuel</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#6366f1;"></div>Electrolyzers</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#ef4444;"></div>Geothermal</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#f97316;"></div>Heat Pumps</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#8b5cf6;"></div>Magnets</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#0ea5e9;"></div>Nuclear</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#eab308;"></div>Solar</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#06b6d4;"></div>Transmission</div>
+      <div class="tech-badge"><div class="tech-dot" style="background:#3b82f6;"></div>Wind</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">
+      Value chain stages: <strong style="color:#c0e8c3;">Extraction → Processing → Manufacturing → Final Product</strong>
+      &nbsp;·&nbsp; Roles: Raw Material · Processed Material · Product Component · Final Product · Process Equipment
+    </p>
+  </section>
+
+  <!-- ══ DATASETS ══ -->
+  <section>
+    <div class="section-label">Data Sources</div>
+    <div class="dataset-grid">
+
+      <div class="d-card" style="--card-accent: var(--accent);">
+        <div class="d-card-header">
+          <div class="d-icon">📦</div>
+          <div>
+            <h3>BACI Bilateral Trade</h3>
+            <div class="source">CEPII</div>
+          </div>
+        </div>
+        <p>Harmonised bilateral trade flows at HS 6-digit level. Backbone of all trade analytics and value chain mapping.</p>
+        <div class="d-pills">
+          <span class="pill">1995–2024</span>
+          <span class="pill">~200 countries</span>
+          <span class="pill">HS 6-digit</span>
+          <span class="pill">6 revisions</span>
+        </div>
+      </div>
+
+      <div class="d-card" style="--card-accent: var(--accent2); --card-icon-bg: rgba(249,200,79,0.12);">
+        <div class="d-card-header">
+          <div class="d-icon">📗</div>
+          <div>
+            <h3>Green Dictionary</h3>
+            <div class="source" style="color:var(--accent2);">NZIPL Curated</div>
+          </div>
+        </div>
+        <p>Expert-curated mapping of HS codes to clean tech × value-chain stage × product role. Enables precise value chain filtering.</p>
+        <div class="d-pills">
+          <span class="pill">10 technologies</span>
+          <span class="pill">4 stages</span>
+          <span class="pill">5 roles</span>
+          <span class="pill">HS92–HS22</span>
+        </div>
+      </div>
+
+      <div class="d-card" style="--card-accent: var(--accent3); --card-icon-bg: rgba(79,168,249,0.12);">
+        <div class="d-card-header">
+          <div class="d-icon">🔗</div>
+          <div>
+            <h3>WCO HS Concordance</h3>
+            <div class="source" style="color:var(--accent3);">World Customs Organization</div>
+          </div>
+        </div>
+        <p>Cross-revision HS code concordance enabling consistent time series across HS92→HS96→HS02→HS07→HS12→HS17→HS22.</p>
+        <div class="d-pills">
+          <span class="pill">6 revisions</span>
+          <span class="pill">3,499 edges</span>
+          <span class="pill">Network crosswalk</span>
+        </div>
+      </div>
+
+      <div class="d-card" style="--card-accent: var(--accent4); --card-icon-bg: rgba(192,132,252,0.12);">
+        <div class="d-card-header">
+          <div class="d-icon">🏭</div>
+          <div>
+            <h3>ORBIS Firm Data</h3>
+            <div class="source" style="color:var(--accent4);">Bureau van Dijk</div>
+          </div>
+        </div>
+        <p>Firm-level location and NACE code data for clean tech manufacturers, linked to Green Dictionary via NACE→HS concordance.</p>
+        <div class="d-pills">
+          <span class="pill">~2,700 firms</span>
+          <span class="pill">Global</span>
+          <span class="pill">NACE 4-digit</span>
+        </div>
+      </div>
+
+      <div class="d-card" style="--card-accent: #f97316; --card-icon-bg: rgba(249,115,22,0.12);">
+        <div class="d-card-header">
+          <div class="d-icon">🤖</div>
+          <div>
+            <h3>Predicted Competitiveness (PC)</h3>
+            <div class="source" style="color:#f97316;">NZIPL ML Model</div>
+          </div>
+        </div>
+        <p>Random Forest–derived competitiveness scores with SHAP feature importance. Identifies which trade patterns predict future industrial leadership.</p>
+        <div class="d-pills">
+          <span class="pill">155 countries</span>
+          <span class="pill">10 technologies</span>
+          <span class="pill">2003–2024</span>
+          <span class="pill">ranger + SHAP</span>
+        </div>
+      </div>
+
+      <div class="d-card" style="--card-accent: var(--muted); --card-icon-bg: rgba(122,155,125,0.12);">
+        <div class="d-card-header">
+          <div class="d-icon">🌍</div>
+          <div>
+            <h3>World Bank Indicators</h3>
+            <div class="source" style="color:var(--muted);">World Bank Open Data</div>
+          </div>
+        </div>
+        <p>GDP (current USD) and population series for normalising trade exposure (exports % GDP). Used across all scatter and ranking visualisations.</p>
+        <div class="d-pills">
+          <span class="pill">200+ countries</span>
+          <span class="pill">GDP + Population</span>
+          <span class="pill">1995–2024</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ ATLAS PANELS ══ -->
+  <section>
+    <div class="section-label">Atlas Panels &amp; Interactive Tools</div>
+    <div class="tools-grid">
+
+      <a class="t-card" href="solar_india_trade_network.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">🇮🇳</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ATLAS Panel 1 — India Solar</h3>
+        <p>Trade network, value chain timeline (2003–2024), and country competitiveness scatterplot for India's solar sector. Dendrite navigator showing value chain position per product.</p>
+        <div class="t-badge">D3.js · BACI 2024 · PC Scores</div>
+      </a>
+
+      <a class="t-card" href="chile_rawmaterials_trade_network.html" target="_blank" style="--card-accent: #ef4444;">
+        <div class="t-card-header">
+          <span class="t-icon">🇨🇱</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ATLAS Panel — Chile Raw Materials</h3>
+        <p>Bilateral trade network for Chile's strategic raw materials position across clean tech value chains.</p>
+        <div class="t-badge">D3.js · BACI 2024</div>
+      </a>
+
+      <a class="t-card" href="analysis/pc_scatter.html" target="_blank" style="--card-accent: #f97316;">
+        <div class="t-card-header">
+          <span class="t-icon">⚡</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>PC Competitiveness Scatter</h3>
+        <p>Predicted Competitiveness scores vs trade exposure for all 10 technologies and 155 countries. SHAP-weighted feature importance overlay.</p>
+        <div class="t-badge">Top 20 economies · 10 techs · 2018–2024</div>
+      </a>
+
+      <a class="t-card" href="workplan.html" target="_blank" style="--card-accent: var(--accent);">
+        <div class="t-card-header">
+          <span class="t-icon">📋</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>Full CVCE Work Plan</h3>
+        <p>Phase II methodology documentation: pipeline architecture, data coverage, bilateral trade datasets, dendrite galleries, Sankey flows, and case study previews.</p>
+        <div class="t-badge">Quarto · self-contained</div>
+      </a>
+
+      <a class="t-card" href="analysis/ml_model/ml_pipeline_explainer.html" target="_blank" style="--card-accent: #8b5cf6;">
+        <div class="t-card-header">
+          <span class="t-icon">🤖</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ML Pipeline Explainer</h3>
+        <p>Technical documentation of the Random Forest + SHAP competitiveness model: feature engineering, model architecture, validation, and key findings.</p>
+        <div class="t-badge">ranger · fastshap · Python sklearn</div>
+      </a>
+
+      <a class="t-card" href="analysis/ml_model/ml_model_trade_variables.html" target="_blank" style="--card-accent: #8b5cf6;">
+        <div class="t-card-header">
+          <span class="t-icon">📊</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ML Trade Variables</h3>
+        <p>Detailed breakdown of the trade-derived features used in the competitiveness model, with SHAP importance rankings by technology.</p>
+        <div class="t-badge">SHAP · Feature importance</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ DENDRITES ══ -->
+  <section>
+    <div class="section-label">HS Code Dendrites — Technology Trees</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
+      Interactive tree visualisations of the full HS code hierarchy for each clean technology —
+      from raw materials upstream to final products, with value chain stage and role annotations.
+    </p>
+    <div class="tech-tools-grid">
+      <a class="sub-card" href="analysis/dendrite/dendrite_Batteries.html" target="_blank"><div class="sub-dot" style="background:#f59e0b;"></div>Batteries</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Biofuel.html" target="_blank"><div class="sub-dot" style="background:#10b981;"></div>Biofuel</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Electrolyzers.html" target="_blank"><div class="sub-dot" style="background:#6366f1;"></div>Electrolyzers</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Geothermal.html" target="_blank"><div class="sub-dot" style="background:#ef4444;"></div>Geothermal</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Heat_Pumps.html" target="_blank"><div class="sub-dot" style="background:#f97316;"></div>Heat Pumps</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Magnets.html" target="_blank"><div class="sub-dot" style="background:#8b5cf6;"></div>Magnets</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Nuclear.html" target="_blank"><div class="sub-dot" style="background:#0ea5e9;"></div>Nuclear</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Solar.html" target="_blank"><div class="sub-dot" style="background:#eab308;"></div>Solar</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Transmission.html" target="_blank"><div class="sub-dot" style="background:#06b6d4;"></div>Transmission</a>
+      <a class="sub-card" href="analysis/dendrite/dendrite_Wind.html" target="_blank"><div class="sub-dot" style="background:#3b82f6;"></div>Wind</a>
+    </div>
+  </section>
+
+  <!-- ══ SANKEYS ══ -->
+  <section>
+    <div class="section-label">Trade Flow Sankeys</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
+      UNCTAD-style Sankey flow diagrams tracing trade volume through each stage of the value chain (2022 data).
+      Material-specific sankeys for critical minerals are also available.
+    </p>
+    <div style="margin-bottom:8px;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">By Technology</div>
+    <div class="tech-tools-grid">
+      <a class="sub-card" href="analysis/sankey/sankey_tech_batteries_2022.html"     target="_blank"><div class="sub-dot" style="background:#f59e0b;"></div>Batteries</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_biofuel_2022.html"       target="_blank"><div class="sub-dot" style="background:#10b981;"></div>Biofuel</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_electrolyzers_2022.html" target="_blank"><div class="sub-dot" style="background:#6366f1;"></div>Electrolyzers</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_geothermal_2022.html"    target="_blank"><div class="sub-dot" style="background:#ef4444;"></div>Geothermal</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_heat_pumps_2022.html"    target="_blank"><div class="sub-dot" style="background:#f97316;"></div>Heat Pumps</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_magnets_2022.html"       target="_blank"><div class="sub-dot" style="background:#8b5cf6;"></div>Magnets</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_nuclear_2022.html"       target="_blank"><div class="sub-dot" style="background:#0ea5e9;"></div>Nuclear</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_solar_2022.html"         target="_blank"><div class="sub-dot" style="background:#eab308;"></div>Solar</a>
+      <a class="sub-card" href="analysis/sankey/sankey_tech_transmission_2022.html"  target="_blank"><div class="sub-dot" style="background:#06b6d4;"></div>Transmission</a>
+    </div>
+    <div style="margin:16px 0 8px;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">Critical Minerals</div>
+    <div class="tech-tools-grid" style="grid-template-columns: repeat(auto-fill,minmax(180px,1fr));">
+      <a class="sub-card" href="analysis/sankey/sankey_lithium_2022.html"           target="_blank"><div class="sub-dot" style="background:#c084fc;"></div>Lithium</a>
+      <a class="sub-card" href="analysis/sankey/sankey_cobalt_ore_2022.html"         target="_blank"><div class="sub-dot" style="background:#fb923c;"></div>Cobalt Ore</a>
+      <a class="sub-card" href="analysis/sankey/sankey_natural_graphite_2022.html"  target="_blank"><div class="sub-dot" style="background:#94a3b8;"></div>Natural Graphite</a>
+    </div>
+  </section>
+
+  <!-- ══ CASE STUDY REPORTS ══ -->
+  <section>
+    <div class="section-label">Country Case Study Reports</div>
+    <div class="tools-grid">
+
+      <a class="t-card" href="docs/reports/solar_india_report.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">📄</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>India × Solar — Full Report</h3>
+        <p>Comprehensive trade diagnostics: value chain position, bilateral flows, competitiveness benchmarking, ORBIS firms, and policy recommendations.</p>
+        <div class="t-badge">Full Diagnostics · 1995–2024</div>
+      </a>
+
+      <a class="t-card" href="docs/reports/solar_india_highlights.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">💡</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>India × Solar — AI Highlights</h3>
+        <p>AI digest of key findings: KPI cards, structural position, bottlenecks, and upgrading pathways.</p>
+        <div class="t-badge">AI Digest · Key Findings</div>
+      </a>
+
+      <a class="t-card" href="docs/reports/solar_india_executive_summary.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">📑</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>India × Solar — Executive Summary</h3>
+        <p>800-word policy brief: structural position, bottlenecks, upgrade pathways, and strategic interpretation.</p>
+        <div class="t-badge">Executive Brief · Policy</div>
+      </a>
+
+      <a class="t-card" href="docs/reports/chile_rawmaterials_report.html" target="_blank" style="--card-accent: #ef4444;">
+        <div class="t-card-header">
+          <span class="t-icon">📄</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>Chile × Raw Materials — Full Report</h3>
+        <p>Trade diagnostics for Chile's upstream raw material position across all clean technology value chains.</p>
+        <div class="t-badge">Full Diagnostics · 1995–2024</div>
+      </a>
+
+      <a class="t-card" href="docs/reports/chile_rawmaterials_highlights.html" target="_blank" style="--card-accent: #ef4444;">
+        <div class="t-card-header">
+          <span class="t-icon">💡</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>Chile × Raw Materials — AI Highlights</h3>
+        <p>KPI summary and six-section AI digest of Chile's critical mineral export position and policy options.</p>
+        <div class="t-badge">AI Digest · Critical Minerals</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <span>
+      Oriol Vallès Codina
+      <span class="fdot"> · </span>
+      Net Zero Industrial Policy Lab
+      <span class="fdot"> · </span>
+      Johns Hopkins SAIS
+    </span>
+    <span>
+      PIs: Bentley Allan &amp; Tim Sahay
+      <span class="fdot"> · </span>
+      <a href="mailto:ovalles1@jhu.edu">ovalles1@jhu.edu</a>
+    </span>
+  </footer>
+
+</div>
+</body>
+</html>
