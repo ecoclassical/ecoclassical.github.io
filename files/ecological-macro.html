@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecological Macroeconomics & Multi-Sector Growth — Oriol Vallès Codina</title>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b22;
+    --card:     #1c2230;
+    --border:   #30363d;
+    --accent:   #3fb950;
+    --accent2:  #58a6ff;
+    --accent3:  #f78166;
+    --text:     #e6edf3;
+    --muted:    #8b949e;
+    --tag-bg:   #21262d;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: .75rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  nav a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
+  nav a:hover { color: var(--text); }
+  nav .home { font-weight: 600; color: var(--text); }
+  nav .sep { color: var(--border); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0d1f0d 0%, #0d1117 50%, #0d1a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+  .hero-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: .75rem; }
+  .hero h1 span { color: var(--accent); }
+  .hero .subtitle { color: var(--muted); max-width: 680px; margin: 0 auto 1.5rem; font-size: 1rem; }
+  .tags { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; }
+  .tag {
+    background: var(--tag-bg); border: 1px solid var(--border);
+    border-radius: 2rem; padding: .25rem .85rem;
+    font-size: .78rem; color: var(--muted);
+  }
+  .tag.green  { border-color: var(--accent);  color: var(--accent); }
+  .tag.blue   { border-color: var(--accent2); color: var(--accent2); }
+  .tag.red    { border-color: var(--accent3); color: var(--accent3); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 1080px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  section { margin-bottom: 4rem; }
+  h2 {
+    font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem;
+    padding-bottom: .5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: .6rem;
+  }
+  h2 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  h2 .dot.blue { background: var(--accent2); }
+
+  /* ── PAPER CARDS ── */
+  .paper-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .paper-card .journal-badge {
+    display: inline-block;
+    background: var(--tag-bg); border: 1px solid var(--accent);
+    color: var(--accent); border-radius: 4px;
+    font-size: .72rem; font-weight: 600; letter-spacing: .04em;
+    padding: .2rem .6rem; margin-bottom: .9rem; text-transform: uppercase;
+  }
+  .paper-card .journal-badge.blue { border-color: var(--accent2); color: var(--accent2); }
+  .paper-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .4rem; line-height: 1.35; }
+  .paper-card .authors { color: var(--muted); font-size: .85rem; margin-bottom: .75rem; }
+  .paper-card p { color: #c9d1d9; font-size: .9rem; margin-bottom: 1rem; }
+  .paper-card .links { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: .35rem .9rem;
+    border-radius: 6px; font-size: .82rem; font-weight: 500;
+    text-decoration: none; transition: opacity .2s;
+    border: 1px solid;
+  }
+  .btn:hover { opacity: .8; }
+  .btn-green { background: rgba(63,185,80,.12); border-color: var(--accent); color: var(--accent); }
+  .btn-blue  { background: rgba(88,166,255,.12); border-color: var(--accent2); color: var(--accent2); }
+  .btn-ghost { background: transparent; border-color: var(--border); color: var(--muted); }
+
+  /* ── KEY FINDINGS ── */
+  .findings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .finding {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0; padding: 1rem 1.25rem;
+  }
+  .finding.blue { border-left-color: var(--accent2); }
+  .finding.red  { border-left-color: var(--accent3); }
+  .finding strong { display: block; font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+  .finding p { font-size: .88rem; color: #c9d1d9; }
+
+  /* ── FIGURES ── */
+  .fig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+  .fig-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .fig-card img { width: 100%; display: block; background: #fff; }
+  .fig-card .fig-caption {
+    padding: .85rem 1rem;
+    font-size: .8rem; color: var(--muted); line-height: 1.5;
+  }
+  .fig-card .fig-caption strong { color: var(--text); display: block; margin-bottom: .2rem; }
+
+  /* ── METHOD BOX ── */
+  .method-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem 2rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem;
+  }
+  .method-item strong { color: var(--accent2); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: .3rem; }
+  .method-item span { font-size: .88rem; color: #c9d1d9; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem; text-align: center;
+    color: var(--muted); font-size: .82rem;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://ecoclassical.github.io" class="home">ecoclassical.github.io</a>
+  <span class="sep">›</span>
+  <a href="https://ecoclassical.github.io/files/projects.html">Research Projects</a>
+  <span class="sep">›</span>
+  <a href="#">Ecological Macroeconomics</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-icon">🌍</div>
+  <h1>Ecological Macroeconomics &amp;<br><span>Multi-Sector Growth</span></h1>
+  <p class="subtitle">
+    How resource metabolism, income distribution, and structural change interact
+    within a multi-sector dynamical systems framework — bridging classical political
+    economy with modern computational methods.
+  </p>
+  <div class="tags">
+    <span class="tag green">Dynamical systems</span>
+    <span class="tag green">Input-output</span>
+    <span class="tag green">Growth theory</span>
+    <span class="tag blue">Climate policy</span>
+    <span class="tag blue">Directed technical change</span>
+    <span class="tag">Flaschel-Semmler</span>
+    <span class="tag">EU KLEMS · WIOD · EORA</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── OVERVIEW ── -->
+  <section>
+    <h2><span class="dot"></span>Research Programme</h2>
+    <p style="color:#c9d1d9; max-width:820px; margin-bottom:1rem;">
+      This research programme develops a family of multi-sector dynamical models rooted in the
+      classical political-economy tradition — specifically the Flaschel–Semmler framework of
+      cross-dual price-quantity adjustment — and calibrates them empirically against large
+      international databases (EU KLEMS, WIOD, EORA). The unifying question is: how do
+      sector-level fluctuations in prices, quantities, and environmental flows propagate through
+      the input-output structure of production, and how can fiscal policy steer that propagation
+      toward decarbonisation and macroeconomic stabilisation simultaneously?
+    </p>
+    <div class="method-box">
+      <div class="method-item">
+        <strong>Theoretical framework</strong>
+        <span>Cross-dual adjustment (laws of excess demand &amp; excess profitability); composite Walrasian–Keynesian dynamics</span>
+      </div>
+      <div class="method-item">
+        <strong>Empirical strategy</strong>
+        <span>Mixed-effects varying-slopes regression on EU KLEMS; WIOD &amp; EORA technology matrices</span>
+      </div>
+      <div class="method-item">
+        <strong>Policy tools studied</strong>
+        <span>Carbon taxes, green subsidies, price caps, profit caps, revenue-neutral tax-subsidy mixes</span>
+      </div>
+      <div class="method-item">
+        <strong>Countries</strong>
+        <span>Germany, France, Italy, Japan, Netherlands, United States (plus global EORA coverage)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAPER 1: JES ── -->
+  <section>
+    <h2><span class="dot blue"></span>Paper I — Journal of Economics and Statistics</h2>
+
+    <div class="paper-card">
+      <span class="journal-badge blue">Jahrbücher f. Nationalökonomie u. Statistik · 2024</span>
+      <h3>Assessing the Speed of the Green Transition: Directed Technical Change in a Multi-Sector Growth Model</h3>
+      <p class="authors">Oriol Vallès Codina &amp; Willi Semmler</p>
+      <p>
+        How fast can a modern economy decarbonise — and what does it take to hit the IPCC 1.5°C
+        targets on time? This paper answers these questions using a multi-sector growth model in
+        which a green sector and a carbon sector compete through cross-dual price-quantity dynamics.
+        The adjustment coefficients are estimated empirically for six developed economies from EU KLEMS
+        and WIOD data. Over 14,000 simulations varying tax rates, subsidy rates, cost efficiency, and
+        initial investment ratios reveal a clear policy hierarchy: <strong>without fiscal policy, no
+        economy reaches the IPCC target within any reasonable horizon</strong>. Carbon taxes on profits
+        have the largest impact, green subsidies come second, and cost efficiency alone — even orders
+        of magnitude above current levels — cannot compensate for the absence of public policy.
+      </p>
+      <div class="links">
+        <a href="publications/valles-codina-semmler-2024-jes.pdf" class="btn btn-blue">PDF</a>
+        <a href="https://doi.org/10.1515/jbnst-2024-0046" class="btn btn-ghost" target="_blank">DOI ↗</a>
+      </div>
+    </div>
+
+    <div class="findings-grid">
+      <div class="finding blue">
+        <strong>Key finding 1</strong>
+        <p>Carbon taxes on profits are the single most powerful lever for decarbonisation speed — more than twice as effective as green subsidies in the simulation ensemble.</p>
+      </div>
+      <div class="finding blue">
+        <strong>Key finding 2</strong>
+        <p>Fiscal policy has its greatest effect at the earliest stages of the transition, supporting a "big push" logic: early public investment mobilises private capital into green sectors.</p>
+      </div>
+      <div class="finding blue">
+        <strong>Key finding 3</strong>
+        <p>Cost efficiency (relative capital intensity of the green sector) has a negligible impact on speed within realistic time frames — challenging pure technology-optimist narratives.</p>
+      </div>
+      <div class="finding red">
+        <strong>Policy implication</strong>
+        <p>A revenue-neutral tax-subsidy mix — taxing carbon output to subsidise green output — is the minimum necessary instrument to reach IPCC targets. No policy = no target.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:2rem 0 1rem; font-size:1rem; color:var(--muted); font-weight:500;">Selected figures</h3>
+    <div class="fig-grid">
+      <div class="fig-card">
+        <img src="fig2_jes.png" alt="Cross-dual adjustment dynamics">
+        <div class="fig-caption">
+          <strong>Figure 1 — Phase-space dynamics</strong>
+          Cross-dual adjustment of prices and quantities around the model's equilibrium.
+          The oscillatory paths trace the competition between the carbon and green sector.
+        </div>
+      </div>
+      <div class="fig-card">
+        <img src="fig4_coefs_and_imbalances_jes.png" alt="Estimated adjustment coefficients">
+        <div class="fig-caption">
+          <strong>Figure 2 — Empirical adjustment coefficients</strong>
+          Mixed-effects varying-slopes estimates across six countries (EU KLEMS).
+          Posterior distributions capture cross-country heterogeneity in price and quantity responsiveness.
+        </div>
+      </div>
+      <div class="fig-card">
+        <img src="fig5_No_Policy_jes.png" alt="No-policy baseline simulation">
+        <div class="fig-caption">
+          <strong>Figure 3 — No-policy baseline</strong>
+          Without fiscal intervention, the green sector's output share rises too slowly
+          to meet IPCC decarbonisation targets within any realistic horizon.
+        </div>
+      </div>
+      <div class="fig-card">
+        <img src="fig8_Tax_Subsidy_Mix_jes.png" alt="Tax-subsidy policy simulation">
+        <div class="fig-caption">
+          <strong>Figure 4 — Revenue-neutral tax-subsidy mix</strong>
+          A carbon tax recycled as a green subsidy dramatically accelerates the phase-out
+          of the carbon sector and the phase-in of green energy — meeting the IPCC target.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAPER 2: JEBO ── -->
+  <section>
+    <h2><span class="dot"></span>Paper II — Journal of Economic Behavior &amp; Organization</h2>
+
+    <div class="paper-card">
+      <span class="journal-badge">JEBO · 2024</span>
+      <h3>Stabilising Economy-Environment Interactions: A Multi-Sector Growth Model with Empirical Adjustment Dynamics</h3>
+      <p class="authors">Oriol Vallès Codina &amp; Willi Semmler</p>
+      <p>
+        The COVID-19 pandemic and the Ukraine war exposed how poorly understood the propagation of
+        macroeconomic shocks through input-output networks remains. This paper proposes a
+        "composite" multi-sector growth model — integrating long-run Walrasian price dynamics,
+        classical quantity adjustment, and short-run Keynesian markup pricing and demand-led
+        investment — calibrated from the EORA global input-output database and EU KLEMS.
+        The model functions like a machine-learning algorithm: adjustment coefficients are
+        estimated via a mixed-effects hierarchical regression, then fed into forward simulations.
+        The framework is then used to evaluate how <strong>taxes, subsidies, price caps, and
+        profit caps</strong> can simultaneously stabilise macroeconomic fluctuations and reduce
+        environmental pressures (carbon emissions, land use, water waste).
+      </p>
+      <div class="links">
+        <a href="publications/valles-codina-semmler-2024-jebo.pdf" class="btn btn-green">PDF</a>
+        <a href="https://www.sciencedirect.com/science/article/pii/S0167268123003451" class="btn btn-ghost" target="_blank">DOI ↗</a>
+      </div>
+    </div>
+
+    <div class="findings-grid">
+      <div class="finding">
+        <strong>Key finding 1</strong>
+        <p>The composite model reproduces the empirical spectral properties of sector-level price and quantity fluctuations — validating the Flaschel cross-dual framework as a data-driven alternative to DSGE.</p>
+      </div>
+      <div class="finding">
+        <strong>Key finding 2</strong>
+        <p>Price caps and profit caps outperform pure tax-subsidy instruments at stabilising economic volatility, but must be combined with green incentives to achieve environmental co-benefits.</p>
+      </div>
+      <div class="finding red">
+        <strong>Key finding 3</strong>
+        <p>Input-output network structure matters: hub sectors (energy, food, chemicals) amplify or dampen shocks non-linearly — standard representative-agent models miss this topology.</p>
+      </div>
+      <div class="finding red">
+        <strong>Policy implication</strong>
+        <p>Sector-specific industrial policy targeting the most central nodes of the production network is more effective than uniform carbon pricing at achieving simultaneous stabilisation goals.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:2rem 0 1rem; font-size:1rem; color:var(--muted); font-weight:500;">Selected figures</h3>
+    <div class="fig-grid">
+      <div class="fig-card">
+        <img src="network_jul28_jebo.png" alt="Input-output network">
+        <div class="fig-caption">
+          <strong>Figure 1 — Global input-output network</strong>
+          Network visualisation of the EORA input-output structure. Hub sectors (energy,
+          food, trade) exhibit high betweenness centrality — their price-quantity dynamics
+          propagate disproportionately to the rest of the economy.
+        </div>
+      </div>
+      <div class="fig-card">
+        <img src="stable_oscillatory_eigenvalues_oct3_jebo.png" alt="Eigenvalue stability analysis">
+        <div class="fig-caption">
+          <strong>Figure 2 — Stability &amp; oscillatory regimes</strong>
+          Eigenvalue analysis of the composite adjustment matrix. The model admits both
+          stable convergent and oscillatory trajectories depending on empirical coefficient
+          magnitudes — captured fully in the mixed-effects estimates.
+        </div>
+      </div>
+      <div class="fig-card">
+        <img src="empirical_composite_dynamics_oct3_jebo.png" alt="Empirical composite dynamics">
+        <div class="fig-caption">
+          <strong>Figure 3 — Calibrated composite dynamics</strong>
+          Simulated sector-level price and quantity paths using empirical EU KLEMS
+          coefficients. The model reproduces cyclical patterns consistent with observed
+          macroeconomic fluctuations across all six countries.
+        </div>
+      </div>
+      <div class="fig-card">
+        <img src="ecologicalsimulationoct3_jebo.png" alt="Ecological simulation">
+        <div class="fig-caption">
+          <strong>Figure 4 — Economy-environment co-stabilisation</strong>
+          Policy simulation showing how combined taxes and price caps reduce both
+          economic volatility and environmental pressures (carbon, land, water) relative
+          to the no-policy baseline.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SHARED FRAMEWORK ── -->
+  <section>
+    <h2><span class="dot"></span>Shared Theoretical Architecture</h2>
+    <p style="color:#c9d1d9; max-width:820px; margin-bottom:1.5rem;">
+      Both papers draw on the same underlying framework — the Flaschel-Semmler cross-dual
+      adjustment system — and use the same empirical strategy (mixed-effects varying-slopes
+      on EU KLEMS). They differ in focus: the JES paper isolates the <em>speed of structural
+      change</em> (the green transition as directed technical substitution); the JEBO paper
+      studies <em>simultaneous macroeconomic and ecological stabilisation</em> under a richer
+      set of policies and a global input-output network.
+    </p>
+    <div class="method-box">
+      <div class="method-item">
+        <strong>Core equation</strong>
+        <span>Cross-dual dynamics: <em>ṗ = α(Ap − p)</em> &amp; <em>q̇ = β(q − Aq)</em> with composite markup and free-entry terms</span>
+      </div>
+      <div class="method-item">
+        <strong>Estimation</strong>
+        <span>Stan/MCMC hierarchical regression; varying slopes by sector, no intercept; posterior predictive checks</span>
+      </div>
+      <div class="method-item">
+        <strong>Simulation</strong>
+        <span>Forward ODE integration with empirical initial conditions from EU KLEMS; 14,000+ scenario ensemble for JES</span>
+      </div>
+      <div class="method-item">
+        <strong>Lineage</strong>
+        <span>Flaschel (1987, 1992, 2010), Semmler (2011), Duménil &amp; Lévy (1987, 1993), Goodwin (1967)</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    <a href="https://ecoclassical.github.io">ecoclassical.github.io</a> ·
+    <a href="https://ecoclassical.github.io/files/projects.html">All projects</a> ·
+    Oriol Vallès Codina
+  </p>
+</footer>
+
+</body>
+</html>
