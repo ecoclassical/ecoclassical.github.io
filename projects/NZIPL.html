@@ -259,10 +259,10 @@
       <a class="chip" href="https://www.netzeropolicylab.com/" target="_blank">
         🌐 NZIPL Website
       </a>
-      <a class="chip" href="docs/reports/solar_india_report.html" target="_blank">
+      <a class="chip" href="NZIPL/docs/reports/solar_india_report.html" target="_blank">
         🇮🇳 India Solar Report
       </a>
-      <a class="chip" href="docs/reports/chile_rawmaterials_report.html" target="_blank">
+      <a class="chip" href="NZIPL/docs/reports/chile_rawmaterials_report.html" target="_blank">
         🇨🇱 Chile Report
       </a>
     </div>
@@ -287,6 +287,249 @@
       Value chain stages: <strong style="color:#c0e8c3;">Extraction → Processing → Manufacturing → Final Product</strong>
       &nbsp;·&nbsp; Roles: Raw Material · Processed Material · Product Component · Final Product · Process Equipment
     </p>
+  </section>
+
+  <!-- ══ ATLAS PANELS ══ -->
+  <section>
+    <div class="section-label">Atlas Panels &amp; Interactive Tools</div>
+    <div class="tools-grid">
+
+      <a class="t-card" href="NZIPL/solar_india_trade_network.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">🇮🇳</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ATLAS Panel 1 — India Solar</h3>
+        <p>Trade network, value chain timeline (2003–2024), and country competitiveness scatterplot for India's solar sector. Dendrite navigator showing value chain position per product.</p>
+        <div class="t-badge">D3.js · BACI 2024 · PC Scores</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/chile_rawmaterials_trade_network.html" target="_blank" style="--card-accent: #ef4444;">
+        <div class="t-card-header">
+          <span class="t-icon">🇨🇱</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ATLAS Panel — Chile Raw Materials</h3>
+        <p>Bilateral trade network for Chile's strategic raw materials position across clean tech value chains.</p>
+        <div class="t-badge">D3.js · BACI 2024</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/analysis/pc/pc_scatter.html" target="_blank" style="--card-accent: #f97316;">
+        <div class="t-card-header">
+          <span class="t-icon">⚡</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>PC Competitiveness Scatter</h3>
+        <p>Predicted Competitiveness scores vs trade exposure for all 10 technologies and 155 countries. SHAP-weighted feature importance overlay.</p>
+        <div class="t-badge">Top 20 economies · 10 techs · 2018–2024</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/workplan.html" target="_blank" style="--card-accent: var(--accent);">
+        <div class="t-card-header">
+          <span class="t-icon">📋</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>Full CVCE Work Plan</h3>
+        <p>Phase II methodology documentation: pipeline architecture, data coverage, bilateral trade datasets, dendrite galleries, Sankey flows, and case study previews.</p>
+        <div class="t-badge">Quarto · self-contained</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/analysis/ml_model/ml_pipeline_explainer.html" target="_blank" style="--card-accent: #8b5cf6;">
+        <div class="t-card-header">
+          <span class="t-icon">🤖</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ML Pipeline Explainer</h3>
+        <p>Technical documentation of the Random Forest + SHAP competitiveness model: feature engineering, model architecture, validation, and key findings.</p>
+        <div class="t-badge">ranger · fastshap · Python sklearn</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/analysis/ml_model/ml_model_trade_variables.html" target="_blank" style="--card-accent: #8b5cf6;">
+        <div class="t-card-header">
+          <span class="t-icon">📊</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>ML Trade Variables</h3>
+        <p>Detailed breakdown of the trade-derived features used in the competitiveness model, with SHAP importance rankings by technology.</p>
+        <div class="t-badge">SHAP · Feature importance</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ COUNTRY × TECH ATLAS PANELS ══ -->
+  <section>
+    <div class="section-label">Country × Technology ATLAS Panels</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">
+      Interactive 3-tab panels per country × clean technology: bilateral trade network, value chain timeline (2003–2024), and country competitiveness scatterplot. Nuclear panels use 2021 data (most recent available).
+    </p>
+
+    <!-- Solar -->
+    <div style="margin-bottom:8px;font-size:11.5px;color:#eab308;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">☀ Solar</div>
+    <div class="tech-tools-grid" style="margin-bottom:18px;">
+      <a class="sub-card" href="NZIPL/analysis/atlas/solar_india.html" target="_blank" style="--card-accent:#eab308;border-color:rgba(234,179,8,0.25);">
+        <div class="sub-dot" style="background:#eab308;"></div>India 🇮🇳
+      </a>
+    </div>
+
+    <!-- Nuclear -->
+    <div style="margin-bottom:8px;font-size:11.5px;color:#0ea5e9;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">⚛ Nuclear</div>
+    <div class="tech-tools-grid" style="margin-bottom:18px;">
+      <a class="sub-card" href="NZIPL/analysis/atlas/japan_nuclear.html" target="_blank" style="border-color:rgba(14,165,233,0.25);">
+        <div class="sub-dot" style="background:#0ea5e9;"></div>Japan 🇯🇵
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/korea_nuclear.html" target="_blank" style="border-color:rgba(14,165,233,0.25);">
+        <div class="sub-dot" style="background:#0ea5e9;"></div>South Korea 🇰🇷
+      </a>
+    </div>
+
+    <!-- Batteries -->
+    <div style="margin-bottom:8px;font-size:11.5px;color:#f59e0b;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">🔋 Batteries</div>
+    <div class="tech-tools-grid" style="margin-bottom:18px;">
+      <a class="sub-card" href="NZIPL/analysis/atlas/japan_batteries.html" target="_blank" style="border-color:rgba(245,158,11,0.25);">
+        <div class="sub-dot" style="background:#f59e0b;"></div>Japan 🇯🇵
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/korea_batteries.html" target="_blank" style="border-color:rgba(245,158,11,0.25);">
+        <div class="sub-dot" style="background:#f59e0b;"></div>South Korea 🇰🇷
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/india_batteries.html" target="_blank" style="border-color:rgba(245,158,11,0.25);">
+        <div class="sub-dot" style="background:#f59e0b;"></div>India 🇮🇳
+      </a>
+    </div>
+
+    <!-- Transmission -->
+    <div style="margin-bottom:8px;font-size:11.5px;color:#06b6d4;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">⚡ Transmission</div>
+    <div class="tech-tools-grid" style="margin-bottom:18px;">
+      <a class="sub-card" href="NZIPL/analysis/atlas/japan_transmission.html" target="_blank" style="border-color:rgba(6,182,212,0.25);">
+        <div class="sub-dot" style="background:#06b6d4;"></div>Japan 🇯🇵
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/korea_transmission.html" target="_blank" style="border-color:rgba(6,182,212,0.25);">
+        <div class="sub-dot" style="background:#06b6d4;"></div>South Korea 🇰🇷
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/vietnam_transmission.html" target="_blank" style="border-color:rgba(6,182,212,0.25);">
+        <div class="sub-dot" style="background:#06b6d4;"></div>Vietnam 🇻🇳
+      </a>
+    </div>
+
+    <!-- Wind -->
+    <div style="margin-bottom:8px;font-size:11.5px;color:#3b82f6;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">💨 Wind</div>
+    <div class="tech-tools-grid">
+      <a class="sub-card" href="NZIPL/analysis/atlas/japan_wind.html" target="_blank" style="border-color:rgba(59,130,246,0.25);">
+        <div class="sub-dot" style="background:#3b82f6;"></div>Japan 🇯🇵
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/vietnam_wind.html" target="_blank" style="border-color:rgba(59,130,246,0.25);">
+        <div class="sub-dot" style="background:#3b82f6;"></div>Vietnam 🇻🇳
+      </a>
+      <a class="sub-card" href="NZIPL/analysis/atlas/india_wind.html" target="_blank" style="border-color:rgba(59,130,246,0.25);">
+        <div class="sub-dot" style="background:#3b82f6;"></div>India 🇮🇳
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ CASE STUDY REPORTS ══ -->
+  <section>
+    <div class="section-label">Country Case Study Reports</div>
+    <div class="tools-grid">
+
+      <a class="t-card" href="NZIPL/docs/reports/solar_india_report.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">📄</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>India × Solar — Full Report</h3>
+        <p>Comprehensive trade diagnostics: value chain position, bilateral flows, competitiveness benchmarking, ORBIS firms, and policy recommendations.</p>
+        <div class="t-badge">Full Diagnostics · 1995–2024</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/docs/reports/solar_india_highlights.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">💡</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>India × Solar — AI Highlights</h3>
+        <p>AI digest of key findings: KPI cards, structural position, bottlenecks, and upgrading pathways.</p>
+        <div class="t-badge">AI Digest · Key Findings</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/docs/reports/solar_india_executive_summary.html" target="_blank" style="--card-accent: #eab308;">
+        <div class="t-card-header">
+          <span class="t-icon">📑</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>India × Solar — Executive Summary</h3>
+        <p>800-word policy brief: structural position, bottlenecks, upgrade pathways, and strategic interpretation.</p>
+        <div class="t-badge">Executive Brief · Policy</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/docs/reports/chile_rawmaterials_report.html" target="_blank" style="--card-accent: #ef4444;">
+        <div class="t-card-header">
+          <span class="t-icon">📄</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>Chile × Raw Materials — Full Report</h3>
+        <p>Trade diagnostics for Chile's upstream raw material position across all clean technology value chains.</p>
+        <div class="t-badge">Full Diagnostics · 1995–2024</div>
+      </a>
+
+      <a class="t-card" href="NZIPL/docs/reports/chile_rawmaterials_highlights.html" target="_blank" style="--card-accent: #ef4444;">
+        <div class="t-card-header">
+          <span class="t-icon">💡</span>
+          <span class="t-arrow">↗</span>
+        </div>
+        <h3>Chile × Raw Materials — AI Highlights</h3>
+        <p>KPI summary and six-section AI digest of Chile's critical mineral export position and policy options.</p>
+        <div class="t-badge">AI Digest · Critical Minerals</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ DENDRITES ══ -->
+  <section>
+    <div class="section-label">HS Code Dendrites — Technology Trees</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
+      Interactive tree visualisations of the full HS code hierarchy for each clean technology —
+      from raw materials upstream to final products, with value chain stage and role annotations.
+    </p>
+    <div class="tech-tools-grid">
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Batteries.html" target="_blank"><div class="sub-dot" style="background:#f59e0b;"></div>Batteries</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Biofuel.html" target="_blank"><div class="sub-dot" style="background:#10b981;"></div>Biofuel</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Electrolyzers.html" target="_blank"><div class="sub-dot" style="background:#6366f1;"></div>Electrolyzers</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Geothermal.html" target="_blank"><div class="sub-dot" style="background:#ef4444;"></div>Geothermal</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Heat_Pumps.html" target="_blank"><div class="sub-dot" style="background:#f97316;"></div>Heat Pumps</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Magnets.html" target="_blank"><div class="sub-dot" style="background:#8b5cf6;"></div>Magnets</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Nuclear.html" target="_blank"><div class="sub-dot" style="background:#0ea5e9;"></div>Nuclear</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Solar.html" target="_blank"><div class="sub-dot" style="background:#eab308;"></div>Solar</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Transmission.html" target="_blank"><div class="sub-dot" style="background:#06b6d4;"></div>Transmission</a>
+      <a class="sub-card" href="NZIPL/analysis/dendrite/dendrite_Wind.html" target="_blank"><div class="sub-dot" style="background:#3b82f6;"></div>Wind</a>
+    </div>
+  </section>
+
+  <!-- ══ SANKEYS ══ -->
+  <section>
+    <div class="section-label">Trade Flow Sankeys</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
+      UNCTAD-style Sankey flow diagrams tracing trade volume through each stage of the value chain (2022 data).
+      Material-specific sankeys for critical minerals are also available.
+    </p>
+    <div style="margin-bottom:8px;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">By Technology</div>
+    <div class="tech-tools-grid">
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_batteries_2022.html"     target="_blank"><div class="sub-dot" style="background:#f59e0b;"></div>Batteries</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_biofuel_2022.html"       target="_blank"><div class="sub-dot" style="background:#10b981;"></div>Biofuel</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_electrolyzers_2022.html" target="_blank"><div class="sub-dot" style="background:#6366f1;"></div>Electrolyzers</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_geothermal_2022.html"    target="_blank"><div class="sub-dot" style="background:#ef4444;"></div>Geothermal</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_heat_pumps_2022.html"    target="_blank"><div class="sub-dot" style="background:#f97316;"></div>Heat Pumps</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_magnets_2022.html"       target="_blank"><div class="sub-dot" style="background:#8b5cf6;"></div>Magnets</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_nuclear_2022.html"       target="_blank"><div class="sub-dot" style="background:#0ea5e9;"></div>Nuclear</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_solar_2022.html"         target="_blank"><div class="sub-dot" style="background:#eab308;"></div>Solar</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_tech_transmission_2022.html"  target="_blank"><div class="sub-dot" style="background:#06b6d4;"></div>Transmission</a>
+    </div>
+    <div style="margin:16px 0 8px;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">Critical Minerals</div>
+    <div class="tech-tools-grid" style="grid-template-columns: repeat(auto-fill,minmax(180px,1fr));">
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_lithium_2022.html"           target="_blank"><div class="sub-dot" style="background:#c084fc;"></div>Lithium</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_cobalt_ore_2022.html"         target="_blank"><div class="sub-dot" style="background:#fb923c;"></div>Cobalt Ore</a>
+      <a class="sub-card" href="NZIPL/analysis/sankey/sankey_natural_graphite_2022.html"  target="_blank"><div class="sub-dot" style="background:#94a3b8;"></div>Natural Graphite</a>
+    </div>
   </section>
 
   <!-- ══ DATASETS ══ -->
@@ -392,249 +635,6 @@
           <span class="pill">1995–2024</span>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- ══ ATLAS PANELS ══ -->
-  <section>
-    <div class="section-label">Atlas Panels &amp; Interactive Tools</div>
-    <div class="tools-grid">
-
-      <a class="t-card" href="solar_india_trade_network.html" target="_blank" style="--card-accent: #eab308;">
-        <div class="t-card-header">
-          <span class="t-icon">🇮🇳</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>ATLAS Panel 1 — India Solar</h3>
-        <p>Trade network, value chain timeline (2003–2024), and country competitiveness scatterplot for India's solar sector. Dendrite navigator showing value chain position per product.</p>
-        <div class="t-badge">D3.js · BACI 2024 · PC Scores</div>
-      </a>
-
-      <a class="t-card" href="chile_rawmaterials_trade_network.html" target="_blank" style="--card-accent: #ef4444;">
-        <div class="t-card-header">
-          <span class="t-icon">🇨🇱</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>ATLAS Panel — Chile Raw Materials</h3>
-        <p>Bilateral trade network for Chile's strategic raw materials position across clean tech value chains.</p>
-        <div class="t-badge">D3.js · BACI 2024</div>
-      </a>
-
-      <a class="t-card" href="analysis/pc_scatter.html" target="_blank" style="--card-accent: #f97316;">
-        <div class="t-card-header">
-          <span class="t-icon">⚡</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>PC Competitiveness Scatter</h3>
-        <p>Predicted Competitiveness scores vs trade exposure for all 10 technologies and 155 countries. SHAP-weighted feature importance overlay.</p>
-        <div class="t-badge">Top 20 economies · 10 techs · 2018–2024</div>
-      </a>
-
-      <a class="t-card" href="NZIPL/workplan.html" target="_blank" style="--card-accent: var(--accent);">
-        <div class="t-card-header">
-          <span class="t-icon">📋</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>Full CVCE Work Plan</h3>
-        <p>Phase II methodology documentation: pipeline architecture, data coverage, bilateral trade datasets, dendrite galleries, Sankey flows, and case study previews.</p>
-        <div class="t-badge">Quarto · self-contained</div>
-      </a>
-
-      <a class="t-card" href="analysis/ml_model/ml_pipeline_explainer.html" target="_blank" style="--card-accent: #8b5cf6;">
-        <div class="t-card-header">
-          <span class="t-icon">🤖</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>ML Pipeline Explainer</h3>
-        <p>Technical documentation of the Random Forest + SHAP competitiveness model: feature engineering, model architecture, validation, and key findings.</p>
-        <div class="t-badge">ranger · fastshap · Python sklearn</div>
-      </a>
-
-      <a class="t-card" href="analysis/ml_model/ml_model_trade_variables.html" target="_blank" style="--card-accent: #8b5cf6;">
-        <div class="t-card-header">
-          <span class="t-icon">📊</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>ML Trade Variables</h3>
-        <p>Detailed breakdown of the trade-derived features used in the competitiveness model, with SHAP importance rankings by technology.</p>
-        <div class="t-badge">SHAP · Feature importance</div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ══ COUNTRY × TECH ATLAS PANELS ══ -->
-  <section>
-    <div class="section-label">Country × Technology ATLAS Panels</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">
-      Interactive 3-tab panels per country × clean technology: bilateral trade network, value chain timeline (2003–2024), and country competitiveness scatterplot. Nuclear panels use 2021 data (most recent available).
-    </p>
-
-    <!-- Solar -->
-    <div style="margin-bottom:8px;font-size:11.5px;color:#eab308;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">☀ Solar</div>
-    <div class="tech-tools-grid" style="margin-bottom:18px;">
-      <a class="sub-card" href="analysis/atlas/solar_india.html" target="_blank" style="--card-accent:#eab308;border-color:rgba(234,179,8,0.25);">
-        <div class="sub-dot" style="background:#eab308;"></div>India 🇮🇳
-      </a>
-    </div>
-
-    <!-- Nuclear -->
-    <div style="margin-bottom:8px;font-size:11.5px;color:#0ea5e9;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">⚛ Nuclear</div>
-    <div class="tech-tools-grid" style="margin-bottom:18px;">
-      <a class="sub-card" href="analysis/atlas/japan_nuclear.html" target="_blank" style="border-color:rgba(14,165,233,0.25);">
-        <div class="sub-dot" style="background:#0ea5e9;"></div>Japan 🇯🇵
-      </a>
-      <a class="sub-card" href="analysis/atlas/korea_nuclear.html" target="_blank" style="border-color:rgba(14,165,233,0.25);">
-        <div class="sub-dot" style="background:#0ea5e9;"></div>South Korea 🇰🇷
-      </a>
-    </div>
-
-    <!-- Batteries -->
-    <div style="margin-bottom:8px;font-size:11.5px;color:#f59e0b;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">🔋 Batteries</div>
-    <div class="tech-tools-grid" style="margin-bottom:18px;">
-      <a class="sub-card" href="analysis/atlas/japan_batteries.html" target="_blank" style="border-color:rgba(245,158,11,0.25);">
-        <div class="sub-dot" style="background:#f59e0b;"></div>Japan 🇯🇵
-      </a>
-      <a class="sub-card" href="analysis/atlas/korea_batteries.html" target="_blank" style="border-color:rgba(245,158,11,0.25);">
-        <div class="sub-dot" style="background:#f59e0b;"></div>South Korea 🇰🇷
-      </a>
-      <a class="sub-card" href="analysis/atlas/india_batteries.html" target="_blank" style="border-color:rgba(245,158,11,0.25);">
-        <div class="sub-dot" style="background:#f59e0b;"></div>India 🇮🇳
-      </a>
-    </div>
-
-    <!-- Transmission -->
-    <div style="margin-bottom:8px;font-size:11.5px;color:#06b6d4;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">⚡ Transmission</div>
-    <div class="tech-tools-grid" style="margin-bottom:18px;">
-      <a class="sub-card" href="analysis/atlas/japan_transmission.html" target="_blank" style="border-color:rgba(6,182,212,0.25);">
-        <div class="sub-dot" style="background:#06b6d4;"></div>Japan 🇯🇵
-      </a>
-      <a class="sub-card" href="analysis/atlas/korea_transmission.html" target="_blank" style="border-color:rgba(6,182,212,0.25);">
-        <div class="sub-dot" style="background:#06b6d4;"></div>South Korea 🇰🇷
-      </a>
-      <a class="sub-card" href="analysis/atlas/vietnam_transmission.html" target="_blank" style="border-color:rgba(6,182,212,0.25);">
-        <div class="sub-dot" style="background:#06b6d4;"></div>Vietnam 🇻🇳
-      </a>
-    </div>
-
-    <!-- Wind -->
-    <div style="margin-bottom:8px;font-size:11.5px;color:#3b82f6;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">💨 Wind</div>
-    <div class="tech-tools-grid">
-      <a class="sub-card" href="analysis/atlas/japan_wind.html" target="_blank" style="border-color:rgba(59,130,246,0.25);">
-        <div class="sub-dot" style="background:#3b82f6;"></div>Japan 🇯🇵
-      </a>
-      <a class="sub-card" href="analysis/atlas/vietnam_wind.html" target="_blank" style="border-color:rgba(59,130,246,0.25);">
-        <div class="sub-dot" style="background:#3b82f6;"></div>Vietnam 🇻🇳
-      </a>
-      <a class="sub-card" href="analysis/atlas/india_wind.html" target="_blank" style="border-color:rgba(59,130,246,0.25);">
-        <div class="sub-dot" style="background:#3b82f6;"></div>India 🇮🇳
-      </a>
-    </div>
-  </section>
-
-  <!-- ══ DENDRITES ══ -->
-  <section>
-    <div class="section-label">HS Code Dendrites — Technology Trees</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
-      Interactive tree visualisations of the full HS code hierarchy for each clean technology —
-      from raw materials upstream to final products, with value chain stage and role annotations.
-    </p>
-    <div class="tech-tools-grid">
-      <a class="sub-card" href="analysis/dendrite/dendrite_Batteries.html" target="_blank"><div class="sub-dot" style="background:#f59e0b;"></div>Batteries</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Biofuel.html" target="_blank"><div class="sub-dot" style="background:#10b981;"></div>Biofuel</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Electrolyzers.html" target="_blank"><div class="sub-dot" style="background:#6366f1;"></div>Electrolyzers</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Geothermal.html" target="_blank"><div class="sub-dot" style="background:#ef4444;"></div>Geothermal</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Heat_Pumps.html" target="_blank"><div class="sub-dot" style="background:#f97316;"></div>Heat Pumps</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Magnets.html" target="_blank"><div class="sub-dot" style="background:#8b5cf6;"></div>Magnets</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Nuclear.html" target="_blank"><div class="sub-dot" style="background:#0ea5e9;"></div>Nuclear</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Solar.html" target="_blank"><div class="sub-dot" style="background:#eab308;"></div>Solar</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Transmission.html" target="_blank"><div class="sub-dot" style="background:#06b6d4;"></div>Transmission</a>
-      <a class="sub-card" href="analysis/dendrite/dendrite_Wind.html" target="_blank"><div class="sub-dot" style="background:#3b82f6;"></div>Wind</a>
-    </div>
-  </section>
-
-  <!-- ══ SANKEYS ══ -->
-  <section>
-    <div class="section-label">Trade Flow Sankeys</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
-      UNCTAD-style Sankey flow diagrams tracing trade volume through each stage of the value chain (2022 data).
-      Material-specific sankeys for critical minerals are also available.
-    </p>
-    <div style="margin-bottom:8px;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">By Technology</div>
-    <div class="tech-tools-grid">
-      <a class="sub-card" href="analysis/sankey/sankey_tech_batteries_2022.html"     target="_blank"><div class="sub-dot" style="background:#f59e0b;"></div>Batteries</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_biofuel_2022.html"       target="_blank"><div class="sub-dot" style="background:#10b981;"></div>Biofuel</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_electrolyzers_2022.html" target="_blank"><div class="sub-dot" style="background:#6366f1;"></div>Electrolyzers</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_geothermal_2022.html"    target="_blank"><div class="sub-dot" style="background:#ef4444;"></div>Geothermal</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_heat_pumps_2022.html"    target="_blank"><div class="sub-dot" style="background:#f97316;"></div>Heat Pumps</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_magnets_2022.html"       target="_blank"><div class="sub-dot" style="background:#8b5cf6;"></div>Magnets</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_nuclear_2022.html"       target="_blank"><div class="sub-dot" style="background:#0ea5e9;"></div>Nuclear</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_solar_2022.html"         target="_blank"><div class="sub-dot" style="background:#eab308;"></div>Solar</a>
-      <a class="sub-card" href="analysis/sankey/sankey_tech_transmission_2022.html"  target="_blank"><div class="sub-dot" style="background:#06b6d4;"></div>Transmission</a>
-    </div>
-    <div style="margin:16px 0 8px;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">Critical Minerals</div>
-    <div class="tech-tools-grid" style="grid-template-columns: repeat(auto-fill,minmax(180px,1fr));">
-      <a class="sub-card" href="analysis/sankey/sankey_lithium_2022.html"           target="_blank"><div class="sub-dot" style="background:#c084fc;"></div>Lithium</a>
-      <a class="sub-card" href="analysis/sankey/sankey_cobalt_ore_2022.html"         target="_blank"><div class="sub-dot" style="background:#fb923c;"></div>Cobalt Ore</a>
-      <a class="sub-card" href="analysis/sankey/sankey_natural_graphite_2022.html"  target="_blank"><div class="sub-dot" style="background:#94a3b8;"></div>Natural Graphite</a>
-    </div>
-  </section>
-
-  <!-- ══ CASE STUDY REPORTS ══ -->
-  <section>
-    <div class="section-label">Country Case Study Reports</div>
-    <div class="tools-grid">
-
-      <a class="t-card" href="docs/reports/solar_india_report.html" target="_blank" style="--card-accent: #eab308;">
-        <div class="t-card-header">
-          <span class="t-icon">📄</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>India × Solar — Full Report</h3>
-        <p>Comprehensive trade diagnostics: value chain position, bilateral flows, competitiveness benchmarking, ORBIS firms, and policy recommendations.</p>
-        <div class="t-badge">Full Diagnostics · 1995–2024</div>
-      </a>
-
-      <a class="t-card" href="docs/reports/solar_india_highlights.html" target="_blank" style="--card-accent: #eab308;">
-        <div class="t-card-header">
-          <span class="t-icon">💡</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>India × Solar — AI Highlights</h3>
-        <p>AI digest of key findings: KPI cards, structural position, bottlenecks, and upgrading pathways.</p>
-        <div class="t-badge">AI Digest · Key Findings</div>
-      </a>
-
-      <a class="t-card" href="docs/reports/solar_india_executive_summary.html" target="_blank" style="--card-accent: #eab308;">
-        <div class="t-card-header">
-          <span class="t-icon">📑</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>India × Solar — Executive Summary</h3>
-        <p>800-word policy brief: structural position, bottlenecks, upgrade pathways, and strategic interpretation.</p>
-        <div class="t-badge">Executive Brief · Policy</div>
-      </a>
-
-      <a class="t-card" href="docs/reports/chile_rawmaterials_report.html" target="_blank" style="--card-accent: #ef4444;">
-        <div class="t-card-header">
-          <span class="t-icon">📄</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>Chile × Raw Materials — Full Report</h3>
-        <p>Trade diagnostics for Chile's upstream raw material position across all clean technology value chains.</p>
-        <div class="t-badge">Full Diagnostics · 1995–2024</div>
-      </a>
-
-      <a class="t-card" href="docs/reports/chile_rawmaterials_highlights.html" target="_blank" style="--card-accent: #ef4444;">
-        <div class="t-card-header">
-          <span class="t-icon">💡</span>
-          <span class="t-arrow">↗</span>
-        </div>
-        <h3>Chile × Raw Materials — AI Highlights</h3>
-        <p>KPI summary and six-section AI digest of Chile's critical mineral export position and policy options.</p>
-        <div class="t-badge">AI Digest · Critical Minerals</div>
-      </a>
 
     </div>
   </section>
