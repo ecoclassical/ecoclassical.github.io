@@ -96,7 +96,7 @@
     </div>
     <div class="card">
       <div class="kpi-strip" id="kpi-strip"></div>
-      <div class="card-inner chart-area"><svg id="network-svg" viewBox="0 0 960 420"></svg></div>
+      <div class="card-inner chart-area"><svg id="network-svg" viewBox="0 0 960 480"></svg></div>
       <div class="legend">
         <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div><span>Supplier → South Korea</span></div>
         <div class="legend-item"><div class="legend-dot" style="background:#0369a1"></div><span>South Korea → Buyer</span></div>
@@ -358,7 +358,7 @@ const STAGES_ORDER = ["Upstream","Midstream","Downstream","Final Product"];
 
 // ═══ UTILITIES ══════════════════════════════════════════════════
 const fmt = v => v>=1e6 ? `$${(v/1e6).toFixed(1)}B` : v>=1e3 ? `$${(v/1e3).toFixed(0)}M` : `$${v.toFixed(0)}K`;
-const fmtFull = v => `$${d3.format(",.0f")(v)}K`;
+const fmtFull = v => v>=1e6?`$${(v/1e6).toFixed(1)}B`:v>=1e3?`$${(v/1e3).toFixed(1)}M`:`$${v.toFixed(0)}K`;
 const tip = d3.select("#tooltip");
 function showTip(html,ev){tip.style("opacity",1).html(html).style("left",(ev.clientX+14)+"px").style("top",(ev.clientY-10)+"px")}
 function hideTip(){tip.style("opacity",0)}
@@ -428,69 +428,74 @@ RAW.products.forEach((p,i)=>{
     });
 });
 
-const VW=960,VH=420;
+const VW=960,VH=480;
 const svg=d3.select("#network-svg");
 const defs=svg.append("defs");
 function mkArrow(id,col){defs.append("marker").attr("id",id).attr("viewBox","0 -5 10 10").attr("refX",10).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,-5L10,0L0,5").attr("fill",col);}
 mkArrow("arr-src",SRC_COLOR); mkArrow("arr-snk",SNK_COLOR);
 const layerE=svg.append("g"); const layerN=svg.append("g");
-const CX=VW/2,CY=VH/2,SX=165,SK=VW-165;
-function yPos(n){const pad=50,use=VH-2*pad,step=n>1?use/(n-1):0;return Array.from({length:n},(_,i)=>pad+i*step)}
+const CX=VW/2,CY=VH/2,SY=78,BY=VH-78;
+function xPos(n,pad=110){const use=VW-2*pad,step=n>1?use/(n-1):0;return Array.from({length:n},(_,i)=>pad+i*step)}
 
 function renderNetwork(code,ci){
   const pd=productMap[code]; if(!pd) return;
   const col=TAB_COLORS[ci]||TECH_COLOR;
+  const netBal=pd.totalExport-pd.totalImport;
   d3.select("#kpi-strip").html(`
     <div class="kpi"><div class="kpi-val hs">${pd.hs}</div><div class="kpi-lbl">HS Code</div></div>
     <div class="kpi"><div class="kpi-val import">${fmt(pd.totalImport)}</div><div class="kpi-lbl">${FOCAL_NAME} Imports</div></div>
     <div class="kpi"><div class="kpi-val export">${fmt(pd.totalExport)}</div><div class="kpi-lbl">${FOCAL_NAME} Exports</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:#6b7280">${pd.srcs.length}</div><div class="kpi-lbl">Suppliers</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:#6b7280">${pd.snks.length}</div><div class="kpi-lbl">Buyers</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:${netBal>=0?"#0369a1":"#d97706"}">${netBal>=0?"+":""}${fmtFull(Math.abs(netBal))}</div><div class="kpi-lbl">Net Balance</div></div>
   `);
   layerE.selectAll("*").remove(); layerN.selectAll("*").remove();
   const {srcs,snks}=pd;
   const maxV=d3.max([...srcs,...snks],d=>d.value)||1;
   const rSc=d3.scaleSqrt().domain([0,maxV]).range([5,30]);
   const wSc=d3.scaleLinear().domain([0,maxV]).range([1,9]);
-  const srcY=yPos(srcs.length), snkY=yPos(snks.length);
+  const srcX=xPos(srcs.length), snkX=xPos(snks.length);
 
+  // Supplier arcs: top → focal
   srcs.forEach((d,i)=>{
-    const[x1,y1,x2,y2]=[SX,srcY[i],CX,CY],r2=26;
+    const[x1,y1,x2,y2]=[srcX[i],SY,CX,CY],r2=26;
     const ang=Math.atan2(y2-y1,x2-x1);
     const ex=x2-Math.cos(ang)*(r2+3),ey=y2-Math.sin(ang)*(r2+3);
-    const mx=(x1+ex)/2+(y1-ey)*.18,my=(y1+ey)/2+(ex-x1)*.08;
+    const mx=(x1+ex)/2,my=(y1+ey)/2-Math.abs(x2-x1)*.12;
     layerE.append("path").attr("d",`M${x1},${y1} Q${mx},${my} ${ex},${ey}`).attr("fill","none").attr("stroke",SRC_COLOR).attr("stroke-width",wSc(d.value)).attr("stroke-opacity",.55).attr("marker-end","url(#arr-src)").on("mousemove",ev=>showTip(`<strong>${d.exp_name} → ${FOCAL_NAME}</strong>${pd.label}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
   });
+  // Buyer arcs: focal → bottom
   snks.forEach((d,i)=>{
-    const[x1,y1,x2,y2]=[CX,CY,SK,snkY[i]],r1=26;
+    const[x1,y1,x2,y2]=[CX,CY,snkX[i],BY],r1=26;
     const ang=Math.atan2(y2-y1,x2-x1);
     const sx=x1+Math.cos(ang)*(r1+3),sy=y1+Math.sin(ang)*(r1+3);
     const rx=rSc(d.value),ex=x2-Math.cos(ang)*(rx+3),ey=y2-Math.sin(ang)*(rx+3);
-    const mx=(sx+ex)/2+(sy-ey)*.18,my=(sy+ey)/2+(ex-sx)*.08;
+    const mx=(sx+ex)/2,my=(sy+ey)/2+Math.abs(x2-x1)*.12;
     layerE.append("path").attr("d",`M${sx},${sy} Q${mx},${my} ${ex},${ey}`).attr("fill","none").attr("stroke",SNK_COLOR).attr("stroke-width",wSc(d.value)).attr("stroke-opacity",.55).attr("marker-end","url(#arr-snk)").on("mousemove",ev=>showTip(`<strong>${FOCAL_NAME} → ${d.imp_name}</strong>${pd.label}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
   });
 
-  const sG=layerN.selectAll(".sn").data(srcs).enter().append("g").attr("class","sn").attr("transform",(d,i)=>`translate(${SX},${srcY[i]})`);
+  // Supplier nodes (top row)
+  const sG=layerN.selectAll(".sn").data(srcs).enter().append("g").attr("class","sn").attr("transform",(d,i)=>`translate(${srcX[i]},${SY})`);
   sG.append("circle").attr("r",d=>rSc(d.value)).attr("fill",SRC_LIGHT).attr("stroke",SRC_COLOR).attr("stroke-width",2);
   sG.append("text").attr("text-anchor","middle").attr("dy",".35em").attr("font-size",d=>Math.min(10,rSc(d.value)*.7)).attr("font-weight","700").attr("fill","#92400e").text(d=>d.exp_iso3);
-  sG.append("text").attr("text-anchor","end").attr("x",d=>-(rSc(d.value)+6)).attr("dy",".35em").attr("font-size","10").attr("fill","#374151").text(d=>d.exp_name);
+  sG.append("text").attr("text-anchor","middle").attr("y",d=>-(rSc(d.value)+9)).attr("font-size","10").attr("fill","#374151").text(d=>d.exp_name);
   sG.on("mousemove",(ev,d)=>showTip(`<strong>${d.exp_name}</strong>Exports to ${FOCAL_NAME}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
 
-  const kG=layerN.selectAll(".kn").data(snks).enter().append("g").attr("class","kn").attr("transform",(d,i)=>`translate(${SK},${snkY[i]})`);
+  // Buyer nodes (bottom row)
+  const kG=layerN.selectAll(".kn").data(snks).enter().append("g").attr("class","kn").attr("transform",(d,i)=>`translate(${snkX[i]},${BY})`);
   kG.append("circle").attr("r",d=>rSc(d.value)).attr("fill",SNK_LIGHT).attr("stroke",SNK_COLOR).attr("stroke-width",2);
   kG.append("text").attr("text-anchor","middle").attr("dy",".35em").attr("font-size",d=>Math.min(10,rSc(d.value)*.7)).attr("font-weight","700").attr("fill","#1e40af").text(d=>d.imp_iso3);
-  kG.append("text").attr("text-anchor","start").attr("x",d=>rSc(d.value)+6).attr("dy",".35em").attr("font-size","10").attr("fill","#374151").text(d=>d.imp_name);
+  kG.append("text").attr("text-anchor","middle").attr("y",d=>rSc(d.value)+14).attr("font-size","10").attr("fill","#374151").text(d=>d.imp_name);
   kG.on("mousemove",(ev,d)=>showTip(`<strong>${d.imp_name}</strong>Imports from ${FOCAL_NAME}<br>${fmtFull(d.value)}`,ev)).on("mouseleave",hideTip);
 
+  // Focal node (centre)
   const cG=layerN.append("g").attr("transform",`translate(${CX},${CY})`);
   cG.append("circle").attr("r",34).attr("fill","none").attr("stroke",FOCAL_COLOR).attr("stroke-width",2).attr("stroke-opacity",.15);
   cG.append("circle").attr("r",26).attr("fill",FOCAL_COLOR).attr("stroke","#fff").attr("stroke-width",2.5);
   cG.append("text").attr("text-anchor","middle").attr("dy","-.3em").attr("font-size","12").attr("font-weight","800").attr("fill","#fff").text(FOCAL_ISO);
   cG.append("text").attr("text-anchor","middle").attr("dy","1em").attr("font-size","9").attr("fill","rgba(255,255,255,.75)").text(FOCAL_NAME.split(" ")[0]);
 
-  layerN.append("text").attr("x",SX).attr("y",16).attr("text-anchor","middle").attr("font-size","10").attr("font-weight","700").attr("fill",SRC_COLOR).attr("letter-spacing",".05em").text("▶ SUPPLIERS");
-  layerN.append("text").attr("x",SK).attr("y",16).attr("text-anchor","middle").attr("font-size","10").attr("font-weight","700").attr("fill",SNK_COLOR).attr("letter-spacing",".05em").text("BUYERS ▶");
-  layerN.append("text").attr("x",CX).attr("y",20).attr("text-anchor","middle").attr("font-size","11").attr("font-weight","700").attr("fill",col).text(pd.label);
+  layerN.append("text").attr("x",CX).attr("y",14).attr("text-anchor","middle").attr("font-size","10").attr("font-weight","700").attr("fill",SRC_COLOR).attr("letter-spacing",".05em").text("▼ SUPPLIERS");
+  layerN.append("text").attr("x",CX).attr("y",VH-6).attr("text-anchor","middle").attr("font-size","10").attr("font-weight","700").attr("fill",SNK_COLOR).attr("letter-spacing",".05em").text("▼ BUYERS");
+  layerN.append("text").attr("x",CX).attr("y",CY-38).attr("text-anchor","middle").attr("font-size","11").attr("font-weight","700").attr("fill",col).text(pd.label);
 }
 
 if(RAW.products.length>0){
