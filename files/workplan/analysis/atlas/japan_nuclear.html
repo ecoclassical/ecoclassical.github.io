@@ -71,7 +71,7 @@
 <div class="header">
   <span class="header-title">NZIPL · ATLAS Panel</span>
   <span class="header-tech" style="border-color:rgba(14,165,233,.4);background:rgba(14,165,233,.15);">Nuclear</span>
-  <span class="header-sub">🇯🇵 Japan · Nuclear energy supply chain — fuel to power plant · BACI 2024</span>
+  <span class="header-sub">🇯🇵 Japan · Nuclear energy supply chain — fuel to power plant · BACI 2014</span>
 </div>
 
 <div class="wrap">
@@ -84,7 +84,7 @@
   <!-- TRADE NETWORK -->
   <div class="section active" id="sec-network">
     <div class="section-title">🇯🇵 Japan Nuclear Trade Network</div>
-    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2024. Click a product tab to explore its trade structure.</div>
+    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2014. Click a product tab to explore its trade structure.</div>
     <div class="tabs" id="tabs"></div>
     <div class="nav-strip" id="nav-strip">
       <div class="vc-rail" id="vc-rail"></div>
@@ -162,21 +162,21 @@ const TECH       = "Nuclear";
 const TECH_COLOR = "#0ea5e9";
 
 const RAW = {
-  sources: [{"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"FRA","exp_name":"France","value":15073.151},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"USA","exp_name":"United States","value":3067.661},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"SWE","exp_name":"Sweden","value":2422.784},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"ITA","exp_name":"Italy","value":523.359},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"CHN","exp_name":"China","value":410.357}],
-  sinks:   [{"product_code":"810990","product_name":"Fuel Cladding; Zirconium","imp_iso3":"USA","imp_name":"United States","value":3518.057},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","imp_iso3":"THA","imp_name":"Thailand","value":1075.786},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","imp_iso3":"DEU","imp_name":"Germany","value":855.921},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","imp_iso3":"RUS","imp_name":"Russia","value":325.627},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","imp_iso3":"S19","imp_name":"S19","value":275.890}],
-  products:[{"product_code":"810990","label":"Fuel Cladding; Zirconium","hs":"HS 810990"}]
+  sources: [{"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"KOR","exp_name":"South Korea","value":331884.280},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"CHN","exp_name":"China","value":230926.590},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"USA","exp_name":"United States","value":202450.240},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"DEU","exp_name":"Germany","value":166077.720},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"SGP","exp_name":"Singapore","value":95448.480}],
+  sinks:   [{"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"RUS","imp_name":"Russia","value":1097300.600},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"CHN","imp_name":"China","value":440363.200},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"KOR","imp_name":"South Korea","value":303411.500},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"S19","imp_name":"Areas n.e.s.","value":292324.200},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"BLR","imp_name":"Belarus","value":253689.200}],
+  products:[{"product_code":"841989","label":"UF6 Conversion; Fluidized Bed Re…","hs":"HS 841989"}]
 };
 
 const PRODUCT_META = {
-  "810990":{"stage":"Midstream","role":"Processed Material","color":"#073309","chain":["Raw material extraction", "<strong>Fuel Cladding; Zirconium ★</strong>", "→ Further processing"]}
+  "841989":{"stage":"Midstream","role":"Process Equipment","color":"#073309","chain":["Enables manufacturing of", "<strong>UF6 Conversion; Fluidized Be… ★</strong>", "in Midstream stage"]}
 };
 
 const TIMELINE = [

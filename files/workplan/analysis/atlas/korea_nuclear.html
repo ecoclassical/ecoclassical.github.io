@@ -71,7 +71,7 @@
 <div class="header">
   <span class="header-title">NZIPL · ATLAS Panel</span>
   <span class="header-tech" style="border-color:rgba(14,165,233,.4);background:rgba(14,165,233,.15);">Nuclear</span>
-  <span class="header-sub">🇰🇷 South Korea · Nuclear energy supply chain — fuel to power plant · BACI 2024</span>
+  <span class="header-sub">🇰🇷 South Korea · Nuclear energy supply chain — fuel to power plant · BACI 2012</span>
 </div>
 
 <div class="wrap">
@@ -84,7 +84,7 @@
   <!-- TRADE NETWORK -->
   <div class="section active" id="sec-network">
     <div class="section-title">🇰🇷 South Korea Nuclear Trade Network</div>
-    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2024. Click a product tab to explore its trade structure.</div>
+    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2012. Click a product tab to explore its trade structure.</div>
     <div class="tabs" id="tabs"></div>
     <div class="nav-strip" id="nav-strip">
       <div class="vc-rail" id="vc-rail"></div>
@@ -162,17 +162,21 @@ const TECH       = "Nuclear";
 const TECH_COLOR = "#0ea5e9";
 
 const RAW = {
-  sources: [{"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"USA","exp_name":"United States","value":36812.805},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"FRA","exp_name":"France","value":11299.682},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"RUS","exp_name":"Russia","value":7977.142},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"CAN","exp_name":"Canada","value":314.284},
-    {"product_code":"810990","product_name":"Fuel Cladding; Zirconium","exp_iso3":"HKG","exp_name":"Hong Kong SAR China","value":308.176}],
-  sinks:   [],
-  products:[{"product_code":"810990","label":"Fuel Cladding; Zirconium","hs":"HS 810990"}]
+  sources: [{"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"JPN","exp_name":"Japan","value":731814.100},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"CHN","exp_name":"China","value":405052.480},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"DEU","exp_name":"Germany","value":337653.970},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"USA","exp_name":"United States","value":161377.460},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","exp_iso3":"ITA","exp_name":"Italy","value":87127.170}],
+  sinks:   [{"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"SAU","imp_name":"Saudi Arabia","value":947135.600},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"USA","imp_name":"United States","value":433077.200},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"ARE","imp_name":"United Arab Emirates","value":414554.300},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"IRN","imp_name":"Iran","value":389167.100},
+    {"product_code":"841989","product_name":"UF6 Conversion; Fluidized Bed Re…","imp_iso3":"KWT","imp_name":"Kuwait","value":349209.600}],
+  products:[{"product_code":"841989","label":"UF6 Conversion; Fluidized Bed Re…","hs":"HS 841989"}]
 };
 
 const PRODUCT_META = {
-  "810990":{"stage":"Midstream","role":"Processed Material","color":"#073309","chain":["Raw material extraction", "<strong>Fuel Cladding; Zirconium ★</strong>", "→ Further processing"]}
+  "841989":{"stage":"Midstream","role":"Process Equipment","color":"#073309","chain":["Enables manufacturing of", "<strong>UF6 Conversion; Fluidized Be… ★</strong>", "in Midstream stage"]}
 };
 
 const TIMELINE = [

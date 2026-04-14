@@ -71,7 +71,7 @@
 <div class="header">
   <span class="header-title">NZIPL · ATLAS Panel</span>
   <span class="header-tech" style="border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.15);">Transmission</span>
-  <span class="header-sub">🇯🇵 Japan · Power transmission — conductors to grid infrastructure · BACI 2024</span>
+  <span class="header-sub">🇯🇵 Japan · Power transmission — conductors to grid infrastructure · BACI 2022</span>
 </div>
 
 <div class="wrap">
@@ -84,7 +84,7 @@
   <!-- TRADE NETWORK -->
   <div class="section active" id="sec-network">
     <div class="section-title">🇯🇵 Japan Transmission Trade Network</div>
-    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2024. Click a product tab to explore its trade structure.</div>
+    <div class="section-sub">Top 5 supplier and buyer countries per product. BACI 2022. Click a product tab to explore its trade structure.</div>
     <div class="tabs" id="tabs"></div>
     <div class="nav-strip" id="nav-strip">
       <div class="vc-rail" id="vc-rail"></div>
@@ -162,65 +162,68 @@ const TECH       = "Transmission";
 const TECH_COLOR = "#06b6d4";
 
 const RAW = {
-  sources: [{"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"CHN","exp_name":"China","value":87598.096},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"KOR","exp_name":"South Korea","value":21223.824},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"S19","exp_name":"S19","value":16955.268},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"ITA","exp_name":"Italy","value":14444.984},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"POL","exp_name":"Poland","value":13420.212},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"CHN","exp_name":"China","value":278695.020},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"DEU","exp_name":"Germany","value":72343.818},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"SGP","exp_name":"Singapore","value":40581.132},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"USA","exp_name":"United States","value":30065.786},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"KOR","exp_name":"South Korea","value":16371.522},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"USA","exp_name":"United States","value":138.084},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"KOR","exp_name":"South Korea","value":132.789},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"CHN","exp_name":"China","value":41651.031},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"KOR","exp_name":"South Korea","value":15916.362},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"S19","exp_name":"S19","value":6804.594},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"DEU","exp_name":"Germany","value":5500.134},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"THA","exp_name":"Thailand","value":2248.431},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"CHN","exp_name":"China","value":1486460.225},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"USA","exp_name":"United States","value":779493.485},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"DEU","exp_name":"Germany","value":610792.680},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"KOR","exp_name":"South Korea","value":291000.045},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"S19","exp_name":"S19","value":185048.210}],
-  sinks:   [{"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"CHN","imp_name":"China","value":175272.048},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"USA","imp_name":"United States","value":80878.492},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"KOR","imp_name":"South Korea","value":39735.480},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"THA","imp_name":"Thailand","value":30403.364},
-    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"GBR","imp_name":"United Kingdom","value":28494.876},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"USA","imp_name":"United States","value":409501.914},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"S19","imp_name":"S19","value":204987.878},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"CHN","imp_name":"China","value":124086.888},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"IND","imp_name":"India","value":90528.104},
-    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"KOR","imp_name":"South Korea","value":52545.568},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"IND","imp_name":"India","value":7563.222},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"CHN","imp_name":"China","value":4303.506},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"KOR","imp_name":"South Korea","value":1459.230},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"MEX","imp_name":"Mexico","value":420.417},
-    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"SAU","imp_name":"Saudi Arabia","value":360.000},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"CHN","imp_name":"China","value":212218.047},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"USA","imp_name":"United States","value":76038.552},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"THA","imp_name":"Thailand","value":24443.271},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"VNM","imp_name":"Vietnam","value":20904.072},
-    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"IDN","imp_name":"Indonesia","value":20470.647},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"CHN","imp_name":"China","value":7677354.575},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"USA","imp_name":"United States","value":3308773.685},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"S19","imp_name":"S19","value":1495614.465},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"IND","imp_name":"India","value":1074946.715},
-    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"KOR","imp_name":"South Korea","value":877103.775}],
+  sources: [{"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"CHN","exp_name":"China","value":77291.816},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"THA","exp_name":"Thailand","value":15190.756},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"USA","exp_name":"United States","value":13468.644},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"S19","exp_name":"Areas n.e.s.","value":11060.504},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","exp_iso3":"DEU","exp_name":"Germany","value":6560.432},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"CHN","exp_name":"China","value":185368.954},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"DEU","exp_name":"Germany","value":67526.426},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"USA","exp_name":"United States","value":65775.102},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"GBR","exp_name":"United Kingdom","value":15786.666},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","exp_iso3":"NLD","exp_name":"Netherlands","value":15356.440},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"ITA","exp_name":"Italy","value":4135.975},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"DEU","exp_name":"Germany","value":637.658},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"THA","exp_name":"Thailand","value":406.470},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"S19","exp_name":"Areas n.e.s.","value":283.525},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","exp_iso3":"KOR","exp_name":"South Korea","value":252.765},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"CHN","exp_name":"China","value":39198.897},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"CHE","exp_name":"Switzerland","value":17809.602},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"KOR","exp_name":"South Korea","value":11776.941},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"S19","exp_name":"Areas n.e.s.","value":8740.116},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","exp_iso3":"DEU","exp_name":"Germany","value":5239.290},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"CHN","exp_name":"China","value":1286698.385},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"DEU","exp_name":"Germany","value":666284.825},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"USA","exp_name":"United States","value":494975.940},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"KOR","exp_name":"South Korea","value":329892.965},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","exp_iso3":"S19","exp_name":"Areas n.e.s.","value":202220.420}],
+  sinks:   [{"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"CHN","imp_name":"China","value":125841.272},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"USA","imp_name":"United States","value":49767.404},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"S19","imp_name":"Areas n.e.s.","value":33673.448},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"VNM","imp_name":"Vietnam","value":26858.460},
+    {"product_code":"841939","product_name":"Core Coil Assembly; Drying","imp_iso3":"THA","imp_name":"Thailand","value":25626.196},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"USA","imp_name":"United States","value":309126.656},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"LUX","imp_name":"LUX","value":248461.028},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"DEU","imp_name":"Germany","value":228486.728},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"CHN","imp_name":"China","value":211012.732},
+    {"product_code":"842890","product_name":"Core Production; Core Assembly/S…","imp_iso3":"KOR","imp_name":"South Korea","value":78277.436},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"IND","imp_name":"India","value":7077.159},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"CHN","imp_name":"China","value":3399.349},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"IDN","imp_name":"Indonesia","value":1257.956},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"THA","imp_name":"Thailand","value":1189.745},
+    {"product_code":"846249","product_name":"Core Production; Transformer Cor…","imp_iso3":"PAK","imp_name":"Pakistan","value":944.158},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"CHN","imp_name":"China","value":813942.714},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"VNM","imp_name":"Vietnam","value":55384.044},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"PHL","imp_name":"Philippines","value":41430.516},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"S19","imp_name":"Areas n.e.s.","value":34953.825},
+    {"product_code":"847981","product_name":"Coil Production; HV Coil Winding","imp_iso3":"KOR","imp_name":"South Korea","value":34841.571},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"CHN","imp_name":"China","value":10697217.150},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"USA","imp_name":"United States","value":2483560.760},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"S19","imp_name":"Areas n.e.s.","value":1538767.140},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"HKG","imp_name":"Hong Kong SAR China","value":1295747.445},
+    {"product_code":"847989","product_name":"Tank Fabrication; Vacuum & Press…","imp_iso3":"VNM","imp_name":"Vietnam","value":1095167.140}],
   products:[{"product_code":"847989","label":"Tank Fabrication; Vacuum & Press…","hs":"HS 847989"},
     {"product_code":"842890","label":"Core Production; Core Assembly/S…","hs":"HS 842890"},
-    {"product_code":"841939","label":"Core Coil Assembly; Drying","hs":"HS 841939"},
     {"product_code":"847981","label":"Coil Production; HV Coil Winding","hs":"HS 847981"},
+    {"product_code":"841939","label":"Core Coil Assembly; Drying","hs":"HS 841939"},
     {"product_code":"846249","label":"Core Production; Transformer Cor…","hs":"HS 846249"}]
 };
 
 const PRODUCT_META = {
   "847989":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Tank Fabrication; Vacuum & P… ★</strong>", "in Downstream stage"]},
   "842890":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Production; Core Assemb… ★</strong>", "in Downstream stage"]},
-  "841939":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Coil Assembly; Drying ★</strong>", "in Downstream stage"]},
   "847981":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Coil Production; HV Coil Win… ★</strong>", "in Downstream stage"]},
+  "841939":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Coil Assembly; Drying ★</strong>", "in Downstream stage"]},
   "846249":{"stage":"Downstream","role":"Process Equipment","color":"#0369a1","chain":["Enables manufacturing of", "<strong>Core Production; Transformer… ★</strong>", "in Downstream stage"]}
 };
 
