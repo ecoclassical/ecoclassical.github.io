@@ -1,0 +1,108 @@
+naics6,description,n_hs6,n_techs,techs,ambiguity
+325180,"Sulfur, Refined, Other than Sublimed, Precipitated or Colloidal",37,8,Batteries; Biofuel; Electrolyzers; Geothermal; Magnets; Nuclear; Transmission; Wind,High
+331110,Roasted Iron Pyrites,16,6,Batteries; Geothermal; Magnets; Nuclear; Transmission; Wind,High
+333517,Die Casting Machines,15,8,Batteries; Electrolyzers; Geothermal; Heat Pumps; Magnets; Solar; Transmission; Wind,High
+212290,"Manganese Ores and Concentrates, Including Ferruginous Manganese Ores and Concentrates, Gt=20% Manganese Dry Weight",12,10,Batteries; Biofuel; Electrolyzers; Geothermal; Heat Pumps; Magnets; Nuclear; Solar; Transmission; Wind,High
+325211,"Bisphenol A, Diphenylolpropane (4,4'-Isopropylidenediphenol) and Its Salts",12,5,Batteries; Electrolyzers; Geothermal; Solar; Wind,High
+331410,Hard Zinc Spelter,12,6,Batteries; Biofuel; Electrolyzers; Heat Pumps; Solar; Wind,High
+333248,Dryers for Wood,10,7,Batteries; Electrolyzers; Geothermal; Magnets; Nuclear; Solar; Wind,High
+332410,Nuclear Reactors,8,5,Biofuel; Electrolyzers; Geothermal; Heat Pumps; Nuclear,Medium
+332991,Ball Bearings with Integral Shafts,8,2,Geothermal; Wind,Medium
+335312,Spring-Operated and Weight-Operated Motors,8,2,Solar; Wind,Medium
+325199,"Wool Grease, Except Crude, and Fatty Substances Derived Therefrom (Including Lanolin)",6,3,Batteries; Biofuel; Wind,Medium
+333310,Solar Water Heaters,6,5,Batteries; Biofuel; Electrolyzers; Geothermal; Wind,Medium
+333415,"Compressors, Refrigerating and Air-Conditioning, not Exceeding 1/4 Horsepower",6,3,Biofuel; Electrolyzers; Heat Pumps,Medium
+334515,Signal Generators,6,2,Batteries; Wind,Medium
+333519,Tube Rolling Mills,5,4,Batteries; Electrolyzers; Geothermal; Transmission,Medium
+333611,Steam Turbines for Marine Propulsion,5,3,Geothermal; Nuclear; Wind,Medium
+333912,Vacuum Pumps,5,6,Batteries; Biofuel; Electrolyzers; Geothermal; Heat Pumps; Wind,Medium
+212230,"Copper Ores and Concentrates, Copper Content",4,10,Batteries; Biofuel; Electrolyzers; Geothermal; Heat Pumps; Magnets; Nuclear; Solar; Transmission; Wind,Medium
+325212,"Polymers of Ethylene in Primary Form,elastomeric",4,3,Batteries; Electrolyzers; Geothermal,Medium
+326113,"Other Plates,sheets,film,foil & Strip,of Plastic, Noncelluar & not Reinforced,laminated,supported or Combined with Oth Mat,of Polymers of Ethylene",4,2,Batteries; Solar,Medium
+326122,"Tubes,pipes and Hoses,rigid,of Polymers of Ethylene",4,1,Wind,Medium
+333992,"Coated Electrodes of Base Metal, for Electric Arc-Welding",4,4,Geothermal; Heat Pumps; Solar; Wind,Medium
+333994,"Furnaces & Ovens for Roasting, Melting or Other Heat Treatment of Ores, Pyrites or of Metals, Industrial or Laboratory, Nonelectric",4,5,Geothermal; Magnets; Nuclear; Solar; Transmission,Medium
+333998,Isotopic Separation Machinery and Apparatus and Parts Thereof,4,8,Batteries; Biofuel; Electrolyzers; Geothermal; Magnets; Nuclear; Solar; Wind,Medium
+334413,"Smart Cards, Unrecorded",4,1,Solar,Medium
+335999,Ultrasonic Cleaning Devices,4,3,Electrolyzers; Magnets; Wind,Medium
+212390,"Salt Inc Table & Denatured & Pure Sodium Chloride, Wh/not in Aqueous Solution or Containing Added Anti-Cracking or Free-Flowing Agents; Sea Water",3,3,Batteries; Geothermal; Heat Pumps,Low
+325110,"Ethylene, Propylene, Butylene and Butadiene Liqified",3,3,Batteries; Biofuel; Geothermal,Low
+325120,Hydrogen,3,2,Biofuel; Solar,Low
+325998,Vegetable Waxes (Other than Triglycerides),3,3,Biofuel; Geothermal; Solar,Low
+327910,"Pumice, Except Crude or Crushed, Whether or not Heat-Treated",3,3,Geothermal; Magnets; Wind,Low
+331313,"Aluminum Oxide, Except Artificial Corundum, Nesoi",3,7,Batteries; Biofuel; Heat Pumps; Magnets; Solar; Transmission; Wind,Low
+331318,Aluminum Profiles not Alloyed,3,3,Heat Pumps; Transmission; Wind,Low
+331420,Master Alloys of Copper,3,3,Heat Pumps; Transmission; Wind,Low
+332996,Stainless Steel Flanges,3,2,Geothermal; Wind,Low
+332999,Stamping Foils,3,3,Batteries; Magnets; Wind,Low
+333120,Concrete Pumps,3,3,Geothermal; Transmission; Wind,Low
+333242,Machines and Apparatus for the Manufacture of Boules or Wafers,3,1,Solar,Low
+333515,"Tools for Pressing, Stamping or Punching, Suitable for Cutting Metal, and Parts Thereof",3,2,Geothermal; Wind,Low
+335311,Ballasts for Discharge Lamps or Tubes,3,1,Transmission,Low
+335910,"Primary Cells and Primary Batteries, Manganese Dioxide",3,1,Batteries,Low
+111998,"Cassava (Manioc) Fresh, Chilled or Dried, Whether or not Sliced or in the Form of Pellets",2,1,Biofuel,Low
+212210,Iron Ore Nonagglomerated Concentrates,2,4,Batteries; Geothermal; Nuclear; Transmission,Low
+212323,"Kaolin and Other Kaolinic Clays, Whether or not Calcined",2,3,Geothermal; Heat Pumps; Solar,Low
+311221,"Starch, Wheat",2,1,Biofuel,Low
+311224,Flours and Meals of Soybeans,2,1,Biofuel,Low
+321113,"Wood in Chips or Particles, Coniferous",2,1,Biofuel,Low
+322220,"Self-Adhesive Plates,sheets,film,foil,tape,etc,of Plastic,in Rolls not Ovr 20 Cm Wide with Light-Reflecting Surfac Produced by Glass Grains(Ballotini)",2,1,Batteries,Low
+325520,Caulking Compounds,2,2,Solar; Wind,Low
+326199,"Floor Coverings of Vinyl Tile, Whether or not Self-Adhesive",2,1,Wind,Low
+327211,"Cast Glass & Rolled Glass,in Nonwired Sheets Colored Throughout Mass (Body Tinted), Opacified, Flashed or Having an Absorbent/Reflect/Non-Reflect",2,1,Solar,Low
+327992,Natural Graphite in Powder or in Flakes,2,3,Batteries; Geothermal; Nuclear,Low
+327999,Artifical Graphite,2,3,Batteries; Nuclear; Wind,Low
+331210,"Line Pipe of a Kind Used for Oil or Gas Pipelines, Seamless, of Stainless Steel",2,2,Geothermal; Wind,Low
+331491,"Silver, Semimanufactured",2,2,Batteries; Solar,Low
+331492,Silver Powder,2,2,Biofuel; Electrolyzers,Low
+332312,Bridges and Bridge Sections of Iron or Steel,2,2,Solar; Wind,Low
+333131,"Rock Drilling or Earth Boring Tools with Working Part of Cermets, and Parts Thereof",2,1,Geothermal,Low
+333241,"Bakery Ovens, Including Biscuit Ovens, Industrial, Nonelectric",2,5,Batteries; Biofuel; Electrolyzers; Nuclear; Transmission,Low
+333514,"Dies for Drawing or Extruding Metal, and Parts Thereof",2,3,Electrolyzers; Heat Pumps; Magnets,Low
+333914,"Pumps for Dispensing Fuel or Lubricants, Type Used in Filling-Stations or Garages",2,3,Biofuel; Electrolyzers; Heat Pumps,Low
+333993,Machinery for Cleaning or Drying Bottles or Other Containers,2,2,Batteries; Transmission,Low
+333995,Linear Acting Hydraulic Motors with Tie-Rod Type Cylinders,2,1,Wind,Low
+334416,"Transformers, Having a Power Handling Capacity not Exceeding 1 Kva, Unrated, Nesoi",2,2,Transmission; Wind,Low
+335991,Colloidal/Semi-Colloidal Graphite,2,2,Batteries; Wind,Low
+336310,"Spark-Ignition Reciprocating Piston Engines of a Kind Used for the Propulsion of Vehicles of Chapter 87, not Exceeding 50 Cc Cylinder Capacity",2,2,Geothermal; Wind,Low
+212220,"Silver Ores and Concentrates, Silver Content",1,1,Solar,Unique
+212319,"Limestone, Except Pebbles and Gravel",1,1,Geothermal,Unique
+212322,Natural Silica Sands and Quartz Sands,1,1,Solar,Unique
+311225,"Soybean Oil and Its Fractions, Fully Refined, Washed, Bleached or Deodorized but not Chemically Modified, Nesoi",1,1,Biofuel,Unique
+325130,Synthetic Pigments of Iron Oxides and Hydroxides,1,2,Biofuel; Electrolyzers,Unique
+325193,"Ethyl Alcohol, Undenatured, of an Alcoholic Strength by Volume of 80 Percent Vol. or Higher, for Fuel Use",1,1,Biofuel,Unique
+325311,Nitric Acid and Sulfonitric Acids,1,1,Solar,Unique
+325510,"Vitrifiable Enamels and Glazes,engobes (Slips) and Similar Preparations",1,2,Solar; Wind,Unique
+326220,"Flexible Tubes, Pipes & Hoses, Having a Minimum Burst Pressure of 27.6 Mpa",1,1,Wind,Unique
+326299,"Reclaimed Rubber in Primary Forms or in Plates, Sheets or Strip",1,1,Wind,Unique
+327120,Dolomite Ramming Mix,1,1,Biofuel,Unique
+327215,"Glass of Heading 7003, 7004, or 7005, Bent, Edge Worked, Engraved, Drilled, Enameled or Otherwise Worked, not Framed or Fitted",1,1,Solar,Unique
+327310,Cement Clinkers,1,1,Geothermal,Unique
+327410,Dolomite Calcined or Sintered,1,1,Biofuel,Unique
+327991,"Setts, Curbstones and Flagstones, of Natural Stone (Except Slate)",1,1,Nuclear,Unique
+331314,Aluminum Powders of Non-Lamellar Structure,1,1,Solar,Unique
+332215,"Table, Kitchen or Other Household Articles and Parts of Cast Iron not Enameled",1,1,Wind,Unique
+332510,Padlocks of Base Metal,1,1,Solar,Unique
+332618,"Catalysts, Platinum, in the Form of Wire Cloth or Grill",1,1,Geothermal,Unique
+332722,"Coach Screws, Threaded, of Iron or Steel",1,1,Geothermal,Unique
+333132,"Boring or Sinking Machinery, Rotary, for Oil Well and Gas Field Drilling",1,1,Geothermal,Unique
+333243,"Dryers for Paper Pulp, Paper or Paperboard",1,2,Biofuel; Electrolyzers,Unique
+333413,"Fans, Nesoi",1,3,Biofuel; Electrolyzers; Geothermal,Unique
+333612,"Fixed Ratio Speed Changers, Each Ratio Selected by Manual Manipulation",1,1,Wind,Unique
+333613,"Transmission Shafts and Cranks, Except Camshafts and Crankshafts",1,1,Wind,Unique
+333924,Mobile Lifting Frames on Tires and Straddle Carriers,1,1,Wind,Unique
+333996,Hydrojet Engines for Marine Propulsion,1,1,Wind,Unique
+334412,"Pc, Plastics Impregnated, not Flexible Type, Having a Base Wholly of Impregnated Glass with 3 or more Layers of Conducting Materials",1,1,Heat Pumps,Unique
+334417,"Electrical Connectors, for a Voltage Exceeding 1,000 V, Nesoi",1,1,Wind,Unique
+334510,Electrical Nerve Stimulation Machines and Apparatus,1,1,Solar,Unique
+334511,Radar Detectors of a Kind Used in Motor Vehicles,1,1,Wind,Unique
+334513,Indicator Panels Incorporating Liquid Crystal Devices (Lcd's),1,1,Wind,Unique
+334519,Theodolites and Tachyometers,1,1,Wind,Unique
+335220,"Portable Cooking Appliances and Plate Warmers for Gas Fuel or for both Gas and Other Fuels, of Iron or Steel",1,5,Batteries; Magnets; Solar; Transmission; Wind,Unique
+335931,"Wirewound Variable Resistors, Dimmers",1,1,Wind,Unique
+335932,"Electrical Junction Boxes, for a Voltage not Exceeding 1,000 v",1,1,Transmission,Unique
+336330,Gear Boxes for Passenger Motor Vehicles,1,1,Wind,Unique
+336340,"Brake Hoses with Fittings for Vehicles of 8701.21, 8701.22, 8701.23, 8701.24, 8701.29 or of 8702, 8703, 8704, 8705 or 8711, not Reinforced or Combined",1,1,Wind,Unique
+339991,"Gaskets,washers & Other Seals",1,2,Geothermal; Wind,Unique
+339999,"Feathers of a Kind Used for Stuffing, Down, not Further Worked than Cleaned, Disinfected or Treated for Preservation",1,2,Magnets; Wind,Unique
+910000,Coffee Husks and Skins,1,1,Nuclear,Unique
