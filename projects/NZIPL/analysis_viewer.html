@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZIPL Analysis Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: #05260a;
+      color: #e8f5e9;
+      min-height: 100vh;
+      padding: 0 0 64px;
+    }
+    header {
+      background: #0b3d12;
+      border-bottom: 1px solid #1b5e20;
+      padding: 24px 32px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    header h1 { font-size: 20px; font-weight: 700; color: #f1f8f1; }
+    header .sub { font-size: 13px; color: #81c784; margin-top: 3px; }
+    header a.back {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 600;
+      color: #66bb6a;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    header a.back:hover { color: #a5d6a7; }
+
+    nav {
+      display: flex;
+      gap: 6px;
+      padding: 16px 32px;
+      flex-wrap: wrap;
+      background: #07300c;
+      border-bottom: 1px solid #1b5e20;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav a {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a5d6a7;
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 4px;
+      border: 1px solid #2e7d32;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: #1b5e20; color: #e8f5e9; }
+
+    .section {
+      padding: 32px 32px 8px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #1b5e20;
+    }
+    .section-header h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #f1f8f1;
+    }
+    .section-header .count {
+      font-size: 12px;
+      color: #66bb6a;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      padding-bottom: 24px;
+    }
+    a.item, div.item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 14px 16px 12px;
+      background: #0b3d12;
+      border: 1px solid #1b5e20;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #e8f5e9;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    a.item:hover { border-color: #4caf50; background: #0e4a16; }
+    a.item.item-featured { border-color: #2e7d32; }
+    a.item.item-featured:hover { border-color: #66bb6a; }
+    .item-icon { font-size: 18px; line-height: 1; }
+    .item-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #c8e6c9;
+      line-height: 1.35;
+      text-transform: capitalize;
+    }
+    .item-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #66bb6a;
+      background: #1b5e20;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .item-img img {
+      width: 100%;
+      border-radius: 4px;
+      object-fit: cover;
+      max-height: 120px;
+    }
+    .empty { font-size: 13px; color: #4caf50; opacity: 0.5; padding-bottom: 24px; }
+
+    .ts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      padding-bottom: 24px;
+    }
+    .ts-grid .item-img img { max-height: 90px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>NZIPL Analysis Viewer</h1>
+    <div class="sub">Catalogue of all HTML and PNG outputs · Atlas of the Global Clean Industrial Base</div>
+  </div>
+  <a class="back" href="index.html">← Back to Index</a>
+</header>
+
+<nav>
+  <a href="#atlas">Atlas Panels</a>
+  <a href="#dendrite">Dendrites</a>
+  <a href="#sankey">Sankey</a>
+  <a href="#orbis">ORBIS</a>
+  <a href="#pc">Pred. Competitiveness</a>
+  <a href="#ml">ML Model</a>
+  <a href="#networks">Trade Networks</a>
+  <a href="#thumbs">Trade Series</a>
+  <a href="#snapshots">Snapshots</a>
+</nav>
+
+<section class="section" id="atlas">
+  <div class="section-header"><h2>🌍 Atlas Panels</h2><span class="count">14 HTML files</span></div>
+<div class="card-grid">
+  <a class="item item-featured" href="atlas/global_atlas.html" target="_blank">
+    <span class="item-icon">🌍</span>
+    <span class="item-label">Global Atlas of the Clean Industrial Base</span>
+    <span class="item-badge">Main Atlas</span>
+  </a>
+  <a class="item item-featured" href="atlas/Chile_Atlas_of_Raw_Materials.html" target="_blank">
+    <span class="item-icon">🌍</span>
+    <span class="item-label">Chile Atlas of Clean Raw Materials</span>
+    <span class="item-badge">Main Atlas</span>
+  </a>
+  <a class="item" href="atlas/india_batteries.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">india batteries</span>
+  </a>
+  <a class="item" href="atlas/india_wind.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">india wind</span>
+  </a>
+  <a class="item" href="atlas/japan_batteries.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">japan batteries</span>
+  </a>
+  <a class="item" href="atlas/japan_nuclear.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">japan nuclear</span>
+  </a>
+  <a class="item" href="atlas/japan_transmission.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">japan transmission</span>
+  </a>
+  <a class="item" href="atlas/japan_wind.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">japan wind</span>
+  </a>
+  <a class="item" href="atlas/korea_batteries.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">korea batteries</span>
+  </a>
+  <a class="item" href="atlas/korea_nuclear.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">korea nuclear</span>
+  </a>
+  <a class="item" href="atlas/korea_transmission.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">korea transmission</span>
+  </a>
+  <a class="item" href="atlas/solar_india.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">solar india</span>
+  </a>
+  <a class="item" href="atlas/vietnam_transmission.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">vietnam transmission</span>
+  </a>
+  <a class="item" href="atlas/vietnam_wind.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">vietnam wind</span>
+  </a>
+</div>
+</section>
+<section class="section" id="dendrite">
+  <div class="section-header"><h2>🌿 Technology Dendrites</h2><span class="count">10 HTML files</span></div>
+<div class="card-grid">
+  <a class="item" href="dendrite/dendrite_Batteries.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Batteries</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Biofuel.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Biofuel</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Electrolyzers.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Electrolyzers</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Geothermal.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Geothermal</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Heat_Pumps.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Heat Pumps</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Magnets.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Magnets</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Nuclear.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Nuclear</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Solar.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Solar</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Transmission.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Transmission</span>
+  </a>
+  <a class="item" href="dendrite/dendrite_Wind.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">dendrite Wind</span>
+  </a>
+</div>
+</section>
+<section class="section" id="sankey">
+  <div class="section-header"><h2>🔀 Sankey Diagrams</h2><span class="count">13 HTML files</span></div>
+<div class="card-grid">
+  <a class="item" href="sankey/sankey_cobalt_ore_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey cobalt ore 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_lithium_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey lithium 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_natural_graphite_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey natural graphite 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_batteries_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech batteries 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_biofuel_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech biofuel 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_electrolyzers_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech electrolyzers 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_geothermal_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech geothermal 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_heat_pumps_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech heat pumps 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_magnets_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech magnets 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_nuclear_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech nuclear 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_solar_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech solar 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_transmission_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech transmission 2022</span>
+  </a>
+  <a class="item" href="sankey/sankey_tech_wind_2022.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">sankey tech wind 2022</span>
+  </a>
+</div>
+</section>
+<section class="section" id="orbis">
+  <div class="section-header"><h2>🏭 ORBIS Firm Viewers</h2><span class="count">10 HTML files</span></div>
+<div class="card-grid">
+  <a class="item" href="orbis/orbis_viewer_batteries.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer batteries</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_biofuel.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer biofuel</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_electrolyzers.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer electrolyzers</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_geothermal.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer geothermal</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_heat_pumps.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer heat pumps</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_magnets.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer magnets</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_nuclear.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer nuclear</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_solar.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer solar</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_transmission.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer transmission</span>
+  </a>
+  <a class="item" href="orbis/orbis_viewer_wind.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">orbis viewer wind</span>
+  </a>
+</div>
+</section>
+<section class="section" id="pc">
+  <div class="section-header"><h2>📈 Predicted Competitiveness</h2></div>
+<div class="card-grid">
+</div>
+</section>
+<section class="section" id="ml">
+  <div class="section-header"><h2>🤖 ML Model</h2><span class="count">4 HTML files</span></div>
+<div class="card-grid">
+  <a class="item" href="ml_model/ml_model_trade_variables.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">ml model trade variables</span>
+  </a>
+  <a class="item" href="ml_model/ml_pipeline_explainer.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">ml pipeline explainer</span>
+  </a>
+  <a class="item" href="ml_model/ml_pipeline_review.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">ml pipeline review</span>
+  </a>
+  <a class="item" href="ml_model/nature_industrial_base_summary.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">nature industrial base summary</span>
+  </a>
+</div>
+</section>
+<section class="section" id="networks">
+  <div class="section-header"><h2>🕸️ Trade Networks</h2></div>
+<div class="card-grid">
+  <a class="item" href="chile_rawmaterials_trade_network.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">chile rawmaterials Trade Network</span>
+  </a>
+  <a class="item" href="solar_india_trade_network.html" target="_blank">
+    <span class="item-icon">⬡</span>
+    <span class="item-label">solar india Trade Network</span>
+  </a>
+</div>
+</section>
+<section class="section" id="thumbs">
+  <div class="section-header"><h2>📊 Trade Series Thumbnails</h2><span class="count">9 PNGs</span></div>
+<div class="ts-grid">
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/baci_exporters.png" alt="baci exporters" loading="lazy" />
+    <span class="item-label">baci exporters</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/baci_lithium_sankey.png" alt="baci lithium sankey" loading="lazy" />
+    <span class="item-label">baci lithium sankey</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/baci_network.png" alt="baci network" loading="lazy" />
+    <span class="item-label">baci network</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/baci_solar_network.png" alt="baci solar network" loading="lazy" />
+    <span class="item-label">baci solar network</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/bil_composition.png" alt="bil composition" loading="lazy" />
+    <span class="item-label">bil composition</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/bil_exporters.png" alt="bil exporters" loading="lazy" />
+    <span class="item-label">bil exporters</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/cib_product_codes.png" alt="cib product codes" loading="lazy" />
+    <span class="item-label">cib product codes</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/orbis_solar.png" alt="orbis solar" loading="lazy" />
+    <span class="item-label">orbis solar</span>
+  </div>
+  <div class="item item-img">
+    <img src="tradeseries/thumbs/pc_bubbles.png" alt="pc bubbles" loading="lazy" />
+    <span class="item-label">pc bubbles</span>
+  </div>
+</div>
+</section>
+</body></html>
