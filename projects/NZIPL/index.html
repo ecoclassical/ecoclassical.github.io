@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZIPL — Atlas of the Global Clean Industrial Base</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: #05260a;
+      color: #e8f5e9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px 64px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 56px;
+      max-width: 680px;
+    }
+
+    .lab-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #81c784;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 700;
+      color: #f1f8f1;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #a5d6a7;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    a.card {
+      display: flex;
+      flex-direction: column;
+      background: #0b3d12;
+      border: 1px solid #1b5e20;
+      border-radius: 10px;
+      padding: 28px 26px 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.18s, background 0.18s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    a.card:hover {
+      border-color: #4caf50;
+      background: #0e4a16;
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 26px;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e8f5e9;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #a5d6a7;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-arrow {
+      margin-top: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #66bb6a;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #1b5e20;
+      color: #a5d6a7;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    footer {
+      margin-top: 64px;
+      text-align: center;
+      font-size: 12px;
+      color: #4caf50;
+      opacity: 0.6;
+    }
+
+    footer a { color: inherit; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="lab-tag">Net Zero Industrial Policy Lab · Johns Hopkins SAIS</div>
+    <h1>Atlas of the Global Clean Industrial Base</h1>
+    <p class="subtitle">Trade-based intelligence platform mapping global value chains of clean technologies — batteries, solar, wind, electrolyzers, magnets, and more.</p>
+  </header>
+
+  <div class="grid">
+
+    <a class="card" href="global_atlas.html">
+      <div class="card-badge">Live</div>
+      <div class="card-icon">🌍</div>
+      <div class="card-title">Global Atlas of the Clean Industrial Base</div>
+      <div class="card-desc">Interactive explorer of trade flows, competitiveness rankings, and value chain structure for 10 clean technologies across 200 countries.</div>
+      <div class="card-arrow">Open Atlas →</div>
+    </a>
+
+    <a class="card" href="Chile_Atlas_of_Raw_Materials.html">
+      <div class="card-badge">New</div>
+      <div class="card-icon">🇨🇱</div>
+      <div class="card-title">Chile Atlas of Clean Raw Materials</div>
+      <div class="card-desc">Deep-dive atlas of Chile's role as a supplier of critical raw and processed materials — copper, lithium, nickel, cobalt, and more — across clean tech value chains.</div>
+      <div class="card-arrow">Open Atlas →</div>
+    </a>
+
+    <a class="card" href="workplan.html">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Phase II Work Plan</div>
+      <div class="card-desc">Six-month research and development plan including methodology, data architecture, deliverables, and progress tracking for the CVCE platform.</div>
+      <div class="card-arrow">View Work Plan →</div>
+    </a>
+
+    <a class="card" href="docs/reports/">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Case Studies &amp; Reports</div>
+      <div class="card-desc">Country-technology deep dives: Solar India, Chile Raw Materials. Executive summaries, visual reports, and full analytical briefs.</div>
+      <div class="card-arrow">Browse Reports →</div>
+    </a>
+
+  </div>
+
+  <footer>
+    <p>Net Zero Industrial Policy Lab · Johns Hopkins University SAIS · <a href="https://ecoclassical.github.io">ecoclassical.github.io</a></p>
+  </footer>
+
+</body>
+</html>
