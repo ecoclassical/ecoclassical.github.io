@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZIPL — Case Studies &amp; Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: #05260a;
+      color: #e8f5e9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px 64px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 680px;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #66bb6a;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .back-link:hover { color: #a5d6a7; }
+
+    .lab-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #81c784;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 700;
+      color: #f1f8f1;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #a5d6a7;
+      line-height: 1.6;
+    }
+
+    .cases {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .case-block {
+      background: #0b3d12;
+      border: 1px solid #1b5e20;
+      border-radius: 10px;
+      padding: 24px 26px 20px;
+    }
+
+    .case-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .case-flag { font-size: 20px; line-height: 1; }
+
+    .case-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e8f5e9;
+    }
+
+    .case-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #81c784;
+      background: #1b5e20;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    a.btn {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #c8e6c9;
+      background: #134d1a;
+      border: 1px solid #2e7d32;
+      border-radius: 6px;
+      padding: 6px 14px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    a.btn:hover {
+      background: #1b6e24;
+      border-color: #4caf50;
+      color: #f1f8f1;
+    }
+
+    a.btn.primary {
+      background: #1b5e20;
+      border-color: #4caf50;
+      color: #f1f8f1;
+    }
+    a.btn.primary:hover { background: #256328; }
+
+    a.btn.muted {
+      background: #0b3d12;
+      border-color: #1b5e20;
+      color: #81c784;
+    }
+
+    footer {
+      margin-top: 56px;
+      text-align: center;
+      font-size: 12px;
+      color: #4caf50;
+      opacity: 0.6;
+    }
+    footer a { color: inherit; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="back-link" href="../../nzipl_index.html">← Back to Index</a>
+    <div class="lab-tag">Net Zero Industrial Policy Lab · Johns Hopkins SAIS</div>
+    <h1>Case Studies &amp; Reports</h1>
+    <p class="subtitle">Country-technology deep dives: executive summaries, visual reports, full diagnostics, and policy briefs.</p>
+  </header>
+
+  <div class="cases">
+
+    <div class="case-block">
+      <div class="case-header">
+        <span class="case-flag">🇮🇳</span>
+        <span class="case-title">India — Solar</span>
+        <span class="case-tag">Case Study</span>
+      </div>
+      <div class="btn-row">
+        <a class="btn primary" href="solar_india_report.html" target="_blank">Full Report</a>
+        <a class="btn" href="solar_india_visual_report.html" target="_blank">Visual Report</a>
+        <a class="btn" href="solar_india_executive_summary.html" target="_blank">Executive Summary</a>
+        <a class="btn" href="solar_india_highlights.html" target="_blank">Highlights</a>
+        <a class="btn" href="solar_india_policy_synthesis.html" target="_blank">Policy Synthesis</a>
+      </div>
+    </div>
+
+    <div class="case-block">
+      <div class="case-header">
+        <span class="case-flag">🇨🇱</span>
+        <span class="case-title">Chile — Raw Materials</span>
+        <span class="case-tag">Case Study</span>
+      </div>
+      <div class="btn-row">
+        <a class="btn primary" href="chile_rawmaterials_report.html" target="_blank">Full Report</a>
+        <a class="btn" href="chile_rawmaterials_visual_report.html" target="_blank">Visual Report</a>
+        <a class="btn" href="chile_rawmaterials_executive_summary.html" target="_blank">Executive Summary</a>
+        <a class="btn" href="chile_rawmaterials_highlights.html" target="_blank">Highlights</a>
+      </div>
+    </div>
+
+    <div class="case-block">
+      <div class="case-header">
+        <span class="case-flag">📐</span>
+        <span class="case-title">Methodology &amp; Concordance</span>
+        <span class="case-tag">Technical</span>
+      </div>
+      <div class="btn-row">
+        <a class="btn" href="naics_hs_concordance_audit.html" target="_blank">NAICS–HS Concordance Audit</a>
+        <a class="btn" href="hs_naics_granularity.html" target="_blank">HS→NAICS Granularity Loss</a>
+        <a class="btn" href="hs_revision_concordance_brief.html" target="_blank">HS Revision Concordance Brief</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Net Zero Industrial Policy Lab · Johns Hopkins University SAIS · <a href="https://ecoclassical.github.io">ecoclassical.github.io</a></p>
+  </footer>
+
+</body>
+</html>
