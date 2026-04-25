@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: site.title }} — Oriol Vallès Codina</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080d18;
+      --surface:  #0f1726;
+      --surface2: #162035;
+      --border:   rgba(255,255,255,0.07);
+      --bhi:      rgba(255,255,255,0.13);
+      --text:     #e2e8f0;
+      --muted:    #7a8aa0;
+      --green:    #38d9a9;
+      --blue:     #4f9cf9;
+      --orange:   #f9a84f;
+      --font:     -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+      --max:      740px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.75;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 5%,  rgba(56,217,169,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 85%, rgba(79,156,249,0.04) 0%, transparent 55%);
+    }
+    body::after {
+      content: "";
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,13,24,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      gap: 1rem;
+    }
+    .nav-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .nav-links { display: flex; gap: 0.1rem; flex-wrap: wrap; }
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--green); background: rgba(56,217,169,0.08); }
+    .nav-links a[data-active="true"] { color: var(--green); background: rgba(56,217,169,0.08); }
+
+    /* ── Page wrapper ── */
+    .wrap {
+      position: relative; z-index: 1;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px 5rem;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      padding: 3.5rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .page-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .page-label::before {
+      content: ""; display: inline-block;
+      width: 16px; height: 1px; background: var(--green);
+    }
+    .page-title {
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #fff;
+    }
+
+    /* ── Content typography ── */
+    .page-content { color: var(--text); }
+    .page-content a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(56,217,169,0.3); transition: border-color 0.15s; }
+    .page-content a:hover { border-color: var(--green); }
+
+    .page-content h2 {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-content h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--green);
+      margin: 1.8rem 0 0.5rem;
+    }
+    .page-content h4 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 1.2rem 0 0.3rem;
+    }
+    .page-content p { margin-bottom: 0.8em; max-width: 60ch; }
+    .page-content ul, .page-content ol {
+      padding-left: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .page-content li { margin-bottom: 0.55rem; }
+    .page-content li p { margin-bottom: 0.3em; }
+    .page-content strong { color: #fff; font-weight: 600; }
+    .page-content em { color: var(--muted); }
+
+    /* ── CV specifics ── */
+    .page-content hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0.5rem 0 1rem;
+    }
+    .page-content blockquote {
+      border-left: 2px solid var(--green);
+      padding-left: 1rem;
+      color: var(--muted);
+      margin: 1rem 0;
+    }
+
+    /* ── Iframe / embeds ── */
+    .page-content iframe {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+    }
+
+    /* ── Contact strip ── */
+    .contact-strip {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .contact-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .contact-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: none;
+      transition: color 0.15s;
+    }
+    .contact-links a:hover { color: var(--green); }
+    .contact-note { font-size: 0.75rem; color: rgba(122,138,160,0.4); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="/">Oriol Vallès Codina</a>
+    <div class="nav-links">
+      <a href="/cv/"         {% if page.url == '/cv/'           %}data-active="true"{% endif %}>CV</a>
+      <a href="/publications/" {% if page.url == '/publications/' %}data-active="true"{% endif %}>Publications</a>
+      <a href="/talks/"      {% if page.url == '/talks/'        %}data-active="true"{% endif %}>Talks</a>
+      <a href="/teaching/"   {% if page.url == '/teaching/'     %}data-active="true"{% endif %}>Teaching</a>
+      <a href="/research/"   {% if page.url == '/research/'     %}data-active="true"{% endif %}>Research</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  {% if page.title and page.title != "" %}
+  <div class="page-header">
+    <div class="page-label">{{ page.title }}</div>
+    <h1 class="page-title">{{ page.title }}</h1>
+  </div>
+  {% endif %}
+
+  <div class="page-content">
+    {{ content }}
+  </div>
+
+  <div class="contact-strip">
+    <div class="contact-links">
+      <a href="mailto:oriolvallescodina@gmail.com">Email</a>
+      <a href="https://scholar.google.com/citations?user=jQttkoQAAAAJ" target="_blank">Google Scholar</a>
+      <a href="https://orcid.org/0000-0002-1361-8243" target="_blank">ORCID</a>
+      <a href="/files/cv.pdf">CV</a>
+    </div>
+    <span class="contact-note">ecoclassical.github.io</span>
+  </div>
+</div>
+
+</body>
+</html>

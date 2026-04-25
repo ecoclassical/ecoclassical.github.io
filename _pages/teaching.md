@@ -1,8 +1,8 @@
 ---
-layout: archive
+layout: dark
 title: "Teaching"
 permalink: /teaching/
-author_profile: true
+author_profile: false
 ---
 
 - **Data Science for Social Scientists** (proposed) [syllabus](../assets/files/Data_Science_Syllabus.html)

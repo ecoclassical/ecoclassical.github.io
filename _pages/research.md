@@ -1,6 +1,7 @@
 ---
 permalink: /research/
 title: "Research"
+layout: dark
 author_profile: false
 ---
 

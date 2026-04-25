@@ -1,8 +1,8 @@
 ---
-layout: archive
-title: ""
+layout: dark
+title: "CV"
 permalink: /cv/
-author_profile: true
+author_profile: false
 redirect_from:
   - /resume
 ---
@@ -21,8 +21,8 @@ redirect_from:
 ## Experience
 ---
 
-* **2025–Present: Research Scientist**
-  * Net Zero Industrial Policy Lab, Johns Hopkins University (Baltimore, ML, US)
+* **2025–Present: Senior Research Associate**
+  * Net Zero Industrial Policy Lab, Johns Hopkins University (Baltimore, MD, US)
 
 * **2024–2025: Research Consultant**
   * Agence Française de Développement (Paris, FR) 

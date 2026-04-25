@@ -1,8 +1,8 @@
 ---
-layout: archive
+layout: dark
 title: "Talks"
 permalink: /talks/
-author_profile: true
+author_profile: false
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-layout: archive
+layout: dark
 title: "Publications"
 permalink: /publications/
-author_profile: true
+author_profile: false
 ---
 
 <div style="margin-bottom: 2rem;">
