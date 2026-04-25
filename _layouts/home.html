@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.locale | slice: 0,2 | default: "en" }}" class="no-js">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +10,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #f9f9f8;
-      --text:    #111827;
-      --muted:   #6b7280;
-      --border:  #e5e7eb;
-      --accent:  #1d4ed8;
-      --max:     680px;
-      --font:    -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+      --bg:       #080d18;
+      --surface:  #0f1726;
+      --surface2: #162035;
+      --border:   rgba(255,255,255,0.07);
+      --bhi:      rgba(255,255,255,0.13);
+      --text:     #e2e8f0;
+      --muted:    #7a8aa0;
+      --green:    #38d9a9;
+      --blue:     #4f9cf9;
+      --orange:   #f9a84f;
+      --purple:   #c084fc;
+      --font:     -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+      --max:      740px;
     }
 
     html { scroll-behavior: smooth; }
@@ -25,106 +31,232 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
-      font-size: 16px;
-      line-height: 1.75;
-      padding: 5rem 1.5rem 6rem;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container {
+    /* Grid + glow background */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 5%,  rgba(56,217,169,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 85%, rgba(79,156,249,0.05) 0%, transparent 55%);
+    }
+    body::after {
+      content: "";
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .wrap {
+      position: relative; z-index: 1;
       max-width: var(--max);
       margin: 0 auto;
+      padding: 0 24px;
     }
 
-    /* ── Header ── */
-    .site-header { margin-bottom: 3.5rem; }
-    .site-name {
-      font-size: 1.4rem;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      color: var(--text);
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,13,24,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    .site-role {
-      margin-top: 0.3rem;
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      gap: 1rem;
+    }
+    .nav-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.1rem;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--green);
+      background: rgba(56,217,169,0.08);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 5rem 0 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 1.2rem;
+    }
+    .eyebrow::before {
+      content: ""; display: inline-block;
+      width: 20px; height: 1px; background: var(--green);
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+    .hero-role {
       font-size: 0.9rem;
       color: var(--muted);
+      margin-bottom: 1.8rem;
       line-height: 1.5;
     }
+    .hero-bio {
+      color: var(--text);
+      max-width: 58ch;
+      font-size: 0.95rem;
+    }
+    .hero-bio p + p { margin-top: 0.85em; }
 
-    /* ── Section ── */
-    section { margin-top: 3rem; }
+    /* ── Research questions ── */
+    .questions {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
     .section-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
     }
-
-    /* ── Bio ── */
-    .bio { color: var(--text); max-width: 58ch; }
-    .bio p + p { margin-top: 0.9em; }
-
-    /* ── Paper list ── */
-    .paper-list { list-style: none; }
-    .paper-list li {
+    .q-list { list-style: none; }
+    .q-list li {
+      display: flex;
+      gap: 1rem;
       padding: 0.9rem 0;
       border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
     }
-    .paper-list li:first-child { border-top: 1px solid var(--border); }
-    .paper-title {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--text);
+    .q-list li:last-child { border-bottom: none; }
+    .q-dot {
+      flex-shrink: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-top: 0.55rem;
     }
-    .paper-title a {
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      transition: border-color 0.15s;
-    }
-    .paper-title a:hover { border-color: var(--accent); color: var(--accent); }
-    .paper-meta {
-      font-size: 0.83rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
-    .paper-links { margin-top: 0.3rem; }
-    .paper-links a {
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-decoration: none;
-      margin-right: 0.8rem;
-      border-bottom: 1px dotted var(--border);
-    }
-    .paper-links a:hover { color: var(--accent); }
+    .q-dot.green  { background: var(--green); }
+    .q-dot.blue   { background: var(--blue); }
+    .q-dot.orange { background: var(--orange); }
+    .q-dot.purple { background: var(--purple); }
 
-    /* ── Contact ── */
+    /* ── Visualizations ── */
+    .visuals {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .vis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 540px) { .vis-grid { grid-template-columns: 1fr; } }
+    .vis-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .vis-card img { width: 100%; display: block; }
+    .vis-caption {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Contact strip ── */
+    .contact-strip {
+      padding: 2.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
     .contact-links {
       display: flex;
+      gap: 1.2rem;
       flex-wrap: wrap;
-      gap: 0.25rem 1.5rem;
     }
     .contact-links a {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       color: var(--muted);
       text-decoration: none;
+      transition: color 0.15s;
     }
-    .contact-links a:hover { color: var(--accent); }
-
-    /* ── Footer ── */
-    .site-footer {
-      margin-top: 5rem;
-      font-size: 0.78rem;
-      color: var(--border);
+    .contact-links a:hover { color: var(--green); }
+    .contact-note {
+      font-size: 0.75rem;
+      color: rgba(122,138,160,0.5);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    {{ content }}
-    <footer class="site-footer">ecoclassical.github.io</footer>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="/">Oriol Vallès Codina</a>
+    <div class="nav-links">
+      <a href="/cv/">CV</a>
+      <a href="/publications/">Publications</a>
+      <a href="/talks/">Talks</a>
+      <a href="/teaching/">Teaching</a>
+      <a href="/research/">Research</a>
+    </div>
   </div>
+</nav>
+
+<div class="wrap">
+  {{ content }}
+
+  <div class="contact-strip">
+    <div class="contact-links">
+      <a href="mailto:oriolvallescodina@gmail.com">Email</a>
+      <a href="https://scholar.google.com/citations?user=jQttkoQAAAAJ" target="_blank">Google Scholar</a>
+      <a href="https://orcid.org/0000-0002-1361-8243" target="_blank">ORCID</a>
+      <a href="/files/cv.pdf">CV</a>
+      <a href="https://www.netzeropolicylab.com/" target="_blank">NZIPL</a>
+    </div>
+    <span class="contact-note">ecoclassical.github.io</span>
+  </div>
+</div>
+
 </body>
 </html>

@@ -1,0 +1,39 @@
+/* ── Custom overrides for ecoclassical.github.io ── */
+
+:root {
+  --green: #38d9a9;
+  --blue:  #4f9cf9;
+}
+
+/* Tighter page padding */
+.page__content { font-size: 0.95rem; line-height: 1.7; }
+
+/* Nav: compact, green accent on active */
+.masthead { border-bottom: 1px solid #eee; }
+.masthead__menu-item a { font-size: 0.8rem; }
+.masthead__menu-item a:hover { color: #1a7a5e; }
+.site-title { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+
+/* Publications: tighter list */
+.archive__item { margin-bottom: 1.2rem; }
+.archive__item-title { font-size: 1rem; margin-bottom: 0.15rem; }
+.archive__item-excerpt { font-size: 0.85rem; color: #555; margin: 0; }
+
+/* Talks + Teaching: compact */
+.list__item { padding-bottom: 0.8rem; }
+
+/* Links: green accent */
+a { color: #1a7a5e; }
+a:hover { color: #0f5c42; }
+
+/* Research page: headings */
+h2 { font-size: 1.05rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.4rem; border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
+h3 { font-size: 0.9rem; font-weight: 700; color: #1a7a5e; margin-top: 1.4rem; margin-bottom: 0.4rem; }
+hr { border: none; border-top: 1px solid #eee; margin: 2rem 0; }
+
+/* Sidebar: hide if no author profile */
+.sidebar { display: none; }
+.page { float: none; width: 100%; padding: 0 2rem; max-width: 740px; margin: 0 auto; }
+
+/* Publications charts: center */
+.archive__item img { max-width: 100%; }
