@@ -109,8 +109,8 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 0.6rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
       display: flex; align-items: center; gap: 8px;
     }
     .page-label::before {
@@ -118,10 +118,14 @@
       width: 16px; height: 1px; background: var(--green);
     }
     .page-title {
-      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
       font-weight: 700;
-      letter-spacing: -0.025em;
-      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     /* ── Content typography ── */
@@ -222,7 +226,8 @@
 <div class="wrap">
   {% if page.title and page.title != "" %}
   <div class="page-header">
-    <div class="page-label">{{ page.title }}</div>
+    <div class="page-label">Oriol Vallès Codina</div>
+    <h1 class="page-title">{{ page.title }}</h1>
   </div>
   {% endif %}
 
