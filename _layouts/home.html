@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="{{ site.locale | slice: 0,2 | default: "en" }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #f9f9f8;
+      --text:    #111827;
+      --muted:   #6b7280;
+      --border:  #e5e7eb;
+      --accent:  #1d4ed8;
+      --max:     680px;
+      --font:    -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.75;
+      padding: 5rem 1.5rem 6rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .site-header { margin-bottom: 3.5rem; }
+    .site-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--text);
+    }
+    .site-role {
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Section ── */
+    section { margin-top: 3rem; }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Bio ── */
+    .bio { color: var(--text); max-width: 58ch; }
+    .bio p + p { margin-top: 0.9em; }
+
+    /* ── Paper list ── */
+    .paper-list { list-style: none; }
+    .paper-list li {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .paper-list li:first-child { border-top: 1px solid var(--border); }
+    .paper-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .paper-title a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.15s;
+    }
+    .paper-title a:hover { border-color: var(--accent); color: var(--accent); }
+    .paper-meta {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .paper-links { margin-top: 0.3rem; }
+    .paper-links a {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-right: 0.8rem;
+      border-bottom: 1px dotted var(--border);
+    }
+    .paper-links a:hover { color: var(--accent); }
+
+    /* ── Contact ── */
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.5rem;
+    }
+    .contact-links a {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .contact-links a:hover { color: var(--accent); }
+
+    /* ── Footer ── */
+    .site-footer {
+      margin-top: 5rem;
+      font-size: 0.78rem;
+      color: var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {{ content }}
+    <footer class="site-footer">ecoclassical.github.io</footer>
+  </div>
+</body>
+</html>
