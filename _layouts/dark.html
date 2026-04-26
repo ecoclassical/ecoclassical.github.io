@@ -122,6 +122,9 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.1;
+      color: #fff;
+    }
+    .page-title span {
       background: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -227,7 +230,7 @@
   {% if page.title and page.title != "" %}
   <div class="page-header">
     <div class="page-label">Oriol Vallès Codina</div>
-    <h1 class="page-title">{{ page.title }}</h1>
+    <h1 class="page-title"><span>{{ page.title }}</span></h1>
   </div>
   {% endif %}
 
