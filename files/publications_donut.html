@@ -1963,7 +1963,7 @@ e.exports=function(t){return null!=t&&(n(t)||function(t){return"function"==typeo
 window.addEventListener('load', function() {
   var graphs = document.querySelectorAll('.plotly-graph-div');
   graphs.forEach(function(g) {
-    Plotly.relayout(g, {
+    Plotly.relayout(g, { showlegend: false,
       paper_bgcolor: '#080d18',
       plot_bgcolor: '#080d18',
       font: { color: '#e2e8f0' },

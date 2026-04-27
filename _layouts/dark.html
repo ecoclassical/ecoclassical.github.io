@@ -10,17 +10,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #080d18;
-      --surface:  #0f1726;
-      --surface2: #162035;
-      --border:   rgba(255,255,255,0.07);
-      --bhi:      rgba(255,255,255,0.13);
-      --text:     #e2e8f0;
-      --muted:    #7a8aa0;
-      --green:    #38d9a9;
-      --blue:     #4f9cf9;
-      --orange:   #f9a84f;
-      --font:     -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+      --bg:      #080d18;
+      --surface: #0f1726;
+      --border:  rgba(255,255,255,0.07);
+      --text:    #e2e8f0;
+      --muted:   #7a8aa0;
+      --green:   #38d9a9;
+      --blue:    #4f9cf9;
+      --font:    -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+      --max:     920px;
     }
 
     html { scroll-behavior: smooth; }
@@ -51,32 +49,32 @@
       background-size: 60px 60px;
     }
 
-    /* ── Top nav (thin, stays on all widths) ── */
-    .topnav {
+    /* ── Nav ── */
+    nav {
       position: sticky; top: 0; z-index: 100;
       border-bottom: 1px solid var(--border);
       background: rgba(8,13,24,0.88);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
-    .topnav-inner {
-      max-width: 1140px;
+    .nav-inner {
+      max-width: var(--max);
       margin: 0 auto;
-      padding: 0 28px;
+      padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 48px;
     }
-    .topnav-name {
+    .nav-name {
       font-size: 0.88rem;
       font-weight: 600;
       color: var(--text);
       text-decoration: none;
       letter-spacing: -0.01em;
     }
-    .topnav-links { display: flex; gap: 0; }
-    .topnav-links a {
+    .nav-links { display: flex; }
+    .nav-links a {
       font-size: 0.78rem;
       color: var(--muted);
       text-decoration: none;
@@ -84,77 +82,23 @@
       border-radius: 4px;
       transition: color 0.15s, background 0.15s;
     }
-    .topnav-links a:hover,
-    .topnav-links a[data-active="true"] {
+    .nav-links a:hover,
+    .nav-links a[data-active="true"] {
       color: var(--green);
       background: rgba(56,217,169,0.08);
     }
 
-    /* ── Two-column layout ── */
-    .layout {
+    /* ── Wrapper ── */
+    .wrap {
       position: relative; z-index: 1;
-      max-width: 1140px;
+      max-width: var(--max);
       margin: 0 auto;
-      padding: 0 28px 5rem;
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 4rem;
-      align-items: start;
+      padding: 0 24px 5rem;
     }
 
-    /* ── Left sidebar ── */
-    .sidebar {
-      position: sticky;
-      top: 68px; /* below topnav */
-      padding-top: 3rem;
-    }
-    .sidebar-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: -0.015em;
-      margin-bottom: 0.2rem;
-    }
-    .sidebar-role {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 2rem;
-    }
-    .sidebar-nav { margin-bottom: 2rem; }
-    .sidebar-nav a {
-      display: block;
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 5px 0;
-      border-left: 2px solid transparent;
-      padding-left: 10px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .sidebar-nav a:hover,
-    .sidebar-nav a[data-active="true"] {
-      color: var(--green);
-      border-left-color: var(--green);
-    }
-    .sidebar-contact { display: flex; flex-direction: column; gap: 0.4rem; }
-    .sidebar-contact a {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .sidebar-contact a:hover { color: var(--green); }
-
-    /* ── Right content ── */
-    .content-col {
-      padding-top: 3rem;
-      min-width: 0; /* prevent grid blowout */
-    }
-
-    /* ── Page header ── */
+    /* ── Page header (full width always) ── */
     .page-header {
-      padding-bottom: 2rem;
+      padding: 3.5rem 0 2rem;
       border-bottom: 1px solid var(--border);
       margin-bottom: 2.5rem;
     }
@@ -172,7 +116,7 @@
       width: 16px; height: 1px; background: var(--green);
     }
     .page-title {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.1;
@@ -185,8 +129,28 @@
       background-clip: text;
     }
 
-    /* ── Content typography ── */
-    .page-content { color: var(--text); }
+    /* ── Two-column body on wide screens ── */
+    .page-content {
+      color: var(--text);
+    }
+
+    @media (min-width: 700px) {
+      .page-content {
+        column-count: 2;
+        column-gap: 2.8rem;
+        column-rule: 1px solid var(--border);
+      }
+      /* Section headings span both columns */
+      .page-content h2,
+      .page-content h3,
+      .page-content > div,
+      .page-content iframe,
+      .page-content > p:first-child {
+        column-span: all;
+      }
+    }
+
+    /* ── Typography ── */
     .page-content a {
       color: var(--green);
       text-decoration: none;
@@ -194,77 +158,81 @@
       transition: border-color 0.15s;
     }
     .page-content a:hover { border-color: var(--green); }
+
     .page-content h2 {
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
-      margin: 2.5rem 0 1rem;
+      margin: 2.2rem 0 0.8rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border);
     }
     .page-content h3 {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       color: var(--green);
-      margin: 1.8rem 0 0.5rem;
+      margin: 1.5rem 0 0.4rem;
     }
     .page-content h4 {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--text);
-      margin: 1.2rem 0 0.3rem;
+      margin: 1rem 0 0.3rem;
     }
-    .page-content p { margin-bottom: 0.8em; }
+    .page-content p { margin-bottom: 0.7em; }
     .page-content ul, .page-content ol {
-      padding-left: 1.3rem;
-      margin-bottom: 1rem;
+      padding-left: 1.2rem;
+      margin-bottom: 0.9rem;
     }
-    .page-content li { margin-bottom: 0.55rem; }
-    .page-content li p { margin-bottom: 0.3em; }
+    .page-content li { margin-bottom: 0.45rem; }
+    .page-content li p { margin-bottom: 0.2em; }
     .page-content strong { color: #fff; font-weight: 600; }
     .page-content em { color: var(--muted); font-style: italic; }
     .page-content hr {
       border: none;
       border-top: 1px solid var(--border);
-      margin: 2rem 0;
+      margin: 1.5rem 0;
+      column-span: all;
     }
     .page-content iframe {
       border: 1px solid var(--border);
       border-radius: 6px;
       background: var(--surface);
+      display: block;
+      width: 100%;
     }
 
-    /* ── Responsive: collapse to single column ── */
-    @media (max-width: 860px) {
-      .layout {
-        grid-template-columns: 1fr;
-        gap: 0;
-        padding: 0 20px 4rem;
-      }
-      .sidebar {
-        position: static;
-        padding-top: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: baseline;
-      }
-      .sidebar-role { display: none; }
-      .sidebar-nav { display: none; }
-      .sidebar-contact { flex-direction: row; gap: 1rem; }
+    /* ── Footer contact ── */
+    .contact-strip {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
+    .contact-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .contact-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: none;
+      transition: color 0.15s;
+    }
+    .contact-links a:hover { color: var(--green); }
+    .contact-note { font-size: 0.75rem; color: rgba(122,138,160,0.4); }
   </style>
 </head>
 <body>
 
-<nav class="topnav">
-  <div class="topnav-inner">
-    <a class="topnav-name" href="/">Oriol Vallès Codina</a>
-    <div class="topnav-links">
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="/">Oriol Vallès Codina</a>
+    <div class="nav-links">
       <a href="/cv/"          {% if page.url == '/cv/'          %}data-active="true"{% endif %}>CV</a>
       <a href="/publications/" {% if page.url == '/publications/' %}data-active="true"{% endif %}>Publications</a>
       <a href="/talks/"       {% if page.url == '/talks/'       %}data-active="true"{% endif %}>Talks</a>
@@ -274,43 +242,27 @@
   </div>
 </nav>
 
-<div class="layout">
+<div class="wrap">
+  {% if page.title and page.title != "" %}
+  <div class="page-header">
+    <div class="page-eyebrow">Oriol Vallès Codina</div>
+    <h1 class="page-title"><span>{{ page.title }}</span></h1>
+  </div>
+  {% endif %}
 
-  <!-- Left sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-name">Oriol Vallès Codina</div>
-    <div class="sidebar-role">Senior Research Associate<br>Net Zero Industrial Policy Lab<br>Johns Hopkins University</div>
+  <div class="page-content">
+    {{ content }}
+  </div>
 
-    <nav class="sidebar-nav">
-      <a href="/cv/"          {% if page.url == '/cv/'          %}data-active="true"{% endif %}>CV</a>
-      <a href="/publications/" {% if page.url == '/publications/' %}data-active="true"{% endif %}>Publications</a>
-      <a href="/talks/"       {% if page.url == '/talks/'       %}data-active="true"{% endif %}>Talks</a>
-      <a href="/teaching/"    {% if page.url == '/teaching/'    %}data-active="true"{% endif %}>Teaching</a>
-      <a href="/research/"    {% if page.url == '/research/'    %}data-active="true"{% endif %}>Research</a>
-    </nav>
-
-    <div class="sidebar-contact">
+  <div class="contact-strip">
+    <div class="contact-links">
       <a href="mailto:oriolvallescodina@gmail.com">Email</a>
       <a href="https://scholar.google.com/citations?user=jQttkoQAAAAJ" target="_blank">Google Scholar</a>
       <a href="https://orcid.org/0000-0002-1361-8243" target="_blank">ORCID</a>
       <a href="/files/cv.pdf">Download CV</a>
     </div>
-  </aside>
-
-  <!-- Right content -->
-  <main class="content-col">
-    {% if page.title and page.title != "" %}
-    <div class="page-header">
-      <div class="page-eyebrow">Oriol Vallès Codina</div>
-      <h1 class="page-title"><span>{{ page.title }}</span></h1>
-    </div>
-    {% endif %}
-
-    <div class="page-content">
-      {{ content }}
-    </div>
-  </main>
-
+    <span class="contact-note">ecoclassical.github.io</span>
+  </div>
 </div>
 
 </body>
