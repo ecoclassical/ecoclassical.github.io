@@ -142,6 +142,20 @@
     }
     .hero-bio p + p { margin-top: 0.85em; }
 
+    /* ── Bio two-column grid ── */
+    .bio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    @media (max-width: 640px) {
+      .bio-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    .bio p { font-size: 0.95rem; color: var(--text); }
+    .bio p + p { margin-top: 0.85em; }
+
     /* ── Research questions ── */
     .questions {
       padding: 3rem 0;

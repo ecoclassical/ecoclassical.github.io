@@ -7,6 +7,21 @@ author_profile: false
 
 ## Lines of Research
 
+### Net Zero Industrial Policy
+
+My applied policy research programme at the [Net Zero Industrial Policy Lab](https://www.netzeropolicylab.com/) at Johns Hopkins University. The central question: what does the industrial base of the new energy economy look like, and what policy instruments can accelerate its development while managing distributional consequences across regions and income groups?
+
+Using multi-region input-output analysis, supply chain mapping, and sectoral network methods applied to global trade and production data, I study:
+
+- The structure and geography of green value chains — batteries, solar, wind, and electrolysis — and their upstream industrial dependencies
+- How industrial policy instruments (subsidies, domestic content requirements, green public procurement) reshape comparative advantage and value capture across the North-South divide
+- The macroeconomic implications of rapid sectoral reallocation: which sectors are keystone nodes in the production network, and what happens when they are disrupted by the low-carbon transition?
+- The intersection of climate policy and global inequality: how decarbonisation strategies in the Global North transmit through trade and value chains to shape development trajectories in the Global South
+
+**Current output**: The Net Zero Value Chain Explorer — a computational tool mapping the industrial base of the clean energy transition across 54 industries and multiple countries, built for policy audiences.
+
+---
+
 ### Classical Economic Thermodynamics
 
 The central programme of my theoretical work. The classical political economy tradition — Smith, Ricardo, Marx, Sraffa — provides the correct thermodynamic analogue to energy conservation in physics: both a **first law** (the MELT conservation identity: value is conserved in exchange for any price system) and a **second law** (labour as irreversible thermodynamic work, abstract labour as metabolic irreversibility). The Hamiltonian formalism of Goodwin and Flaschel–Semmler describes the conservative redistribution dynamics under simple reproduction; Foley's circuit of capital provides the explicit connection between monetary flows and labour-time accounting. The neoclassical conservation programme fails because its only invariant — the Hicksian expenditure function — exists in unobservable compensated demand space.
