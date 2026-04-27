@@ -5,15 +5,12 @@ permalink: /publications/
 author_profile: false
 ---
 
-<div style="margin-bottom: 2rem;">
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; column-span:all;">
   <iframe src="/files/publications_donut.html"
-          style="width: 100%; height: 260px; border: none; overflow: hidden;">
+          style="width:100%; height:340px; border:none; overflow:hidden; border-radius:6px;">
   </iframe>
-</div>
-
-<div style="margin-bottom: 2rem;">
   <iframe src="/files/publications_timeline.html"
-          style="width: 100%; height: 420px; border: none; overflow: hidden;">
+          style="width:100%; height:340px; border:none; overflow:hidden; border-radius:6px;">
   </iframe>
 </div>
 
