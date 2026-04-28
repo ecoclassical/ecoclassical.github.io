@@ -1,6 +1,25 @@
-date,vendor,description,amount_usd,receipt_file
-,,Anthropic (Claude Pro),,
-,,OpenAI (ChatGPT Plus),,
-,,Posit Connect,,
-,,Windsurf,,
-TOTAL,,,=SUM_ABOVE,
+date,vendor,description,amount_eur,amount_usd,receipt_number,notes
+2026-04-15,Anthropic,Prepaid extra usage – Individual plan,46.28,,2669-3794-2061,38.25 EUR + 21% Spanish VAT
+2026-04-08,Anthropic,Prepaid extra usage – Individual plan,46.28,,2406-3235-5400,38.25 EUR + 21% Spanish VAT
+2026-04-06,Anthropic,Claude Pro – monthly subscription,21.78,,2647-3304-7140,18.00 EUR + 21% Spanish VAT
+2026-04-02,Anthropic,Prepaid extra usage – Individual plan,24.20,,2272-1458-3637,20.00 EUR + 21% Spanish VAT
+2026-04-02,Anthropic,Prepaid extra usage – Individual plan,24.20,,2927-0608-9734,20.00 EUR + 21% Spanish VAT; second charge on same day
+2026-04-01,Anthropic,Prepaid extra usage – Individual plan,24.20,,2478-7739-8337,20.00 EUR + 21% Spanish VAT
+2026-03-31,Anthropic,Prepaid extra usage – Individual plan,6.05,,2757-2799-3163,5.00 EUR + 21% Spanish VAT
+2026-03-23,Anthropic,Prepaid extra usage – Individual plan,6.05,,2322-5147-9107,5.00 EUR + 21% Spanish VAT
+2026-03-06,Anthropic,Claude Pro – monthly subscription (first month),21.78,,2975-9840-3921,18.00 EUR + 21% Spanish VAT; invoice NJJAFZLE-0001 (first ever)
+2026-03-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2421-4789,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2026-02-27,Posit,Connect Cloud Basic – monthly subscription,,49.00,,Amount in PDF attachment only; 49 USD/month list price
+2026-02-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2478-2713,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2026-01-27,Posit,Connect Cloud Basic – monthly subscription,,49.00,,Amount in PDF attachment only; 49 USD/month list price
+2026-01-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2264-7801,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2025-12-27,Posit,Connect Cloud Basic – monthly subscription,,49.00,,Amount in PDF attachment only; 49 USD/month list price
+2025-12-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2576-4678,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2025-11-27,Posit,Connect Cloud Basic – monthly subscription,,49.00,,Amount in PDF attachment only; 49 USD/month list price
+2025-11-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2762-2564,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2025-10-27,Posit,Connect Cloud Basic – monthly subscription,,49.00,,Amount in PDF attachment only; 49 USD/month list price
+2025-10-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2049-1914,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2025-09-27,Posit,Connect Cloud Basic – monthly subscription,,49.00,,Amount in PDF attachment only; 49 USD/month list price; earliest payment on record
+2025-09-04,Windsurf/Exafunction,Windsurf Pro – monthly subscription,,16.22,2881-7261,Exafunction Inc.; 15.00 USD + 8.125% NY Sales Tax
+2025-01-17,ChatGPT/OpenAI,ChatGPT Plus – new plan (first documented charge),,21.63,sub_1QiGvRC6h1nxGoI3ekuoZ1OO,20.00 USD + 1.63 USD CA tax; OpenAI does not email monthly receipts; subsequent renewals at 21.63/month not emailed
+TOTAL,,,220.82,429.17,,EUR total = Anthropic only (9 receipts); USD total documented = Windsurf 7x16.22 (113.54) + Posit 6x49.00 (294.00) + ChatGPT 1 documented charge (21.63); ChatGPT monthly renewals (~$21.63/month) not emailed and not included
