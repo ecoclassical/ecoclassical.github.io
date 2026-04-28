@@ -411,7 +411,7 @@ function irShowPane(id) {
   if (!pane) return;
   pane.classList.add("active");
   document.querySelectorAll(".ir-nav-link").forEach(function(l) { l.classList.remove("active"); });
-  var link = document.querySelector("[data-pane="" + id + ""]");
+  var link = null; document.querySelectorAll(".ir-nav-link").forEach(function(l){ if(l.dataset.pane===id) link=l; });
   if (link) {
     link.classList.add("active");
     var sub = link.closest(".ir-nav-sub");
@@ -592,7 +592,7 @@ function drawSeriesGrowth() {
 // ── Key Products ──────────────────────────────────────────────────────────────
 function buildProducts() {
   if (!KP_DATA || KP_DATA.length===0) {
-    document.getElementById("prod-charts").innerHTML = "<p style="color:#7a9b7d;">No key products defined.</p>";
+    document.getElementById("prod-charts").innerHTML = `<p style="color:#7a9b7d;">No key products defined.</p>`;
     return;
   }
   const sel = document.getElementById("prod-selector");
