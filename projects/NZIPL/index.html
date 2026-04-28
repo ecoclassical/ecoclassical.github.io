@@ -325,21 +325,50 @@ section:last-of-type { padding-bottom: 80px; }
   .tools-grid-inner { grid-template-columns: 1fr; }
 }
 
-/* ── IR tab cards (Image #8 style) ── */
-.ir-tabs-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+/* ── IR tab cards (Image #9 style — no flag, no emoji) ── */
+.ir-tabs-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
 .ir-tab-card {
-  background: var(--surface); border: 1px solid var(--border-hi);
-  border-radius: 8px; padding: 12px 18px; cursor: pointer;
-  min-width: 110px; text-align: center;
+  background: #0d1117; border: 1px solid rgba(255,255,255,.06);
+  border-radius: 7px; padding: 13px 22px; cursor: pointer;
+  min-width: 100px; text-align: center;
   transition: border-color .2s, background .2s; text-decoration: none;
-  display: flex; flex-direction: column; gap: 3px;
+  display: flex; flex-direction: column; gap: 1px;
 }
-.ir-tab-card:hover { border-color: var(--accent); background: rgba(60,181,74,.06); }
-.ir-tab-card.active { border-color: var(--accent); background: rgba(60,181,74,.1); }
-.ir-tab-tech { font-size: 14px; font-weight: 800; color: var(--accent2); }
-.ir-tab-country { font-size: 12px; font-weight: 500; color: var(--text); }
+.ir-tab-card:hover { border-color: rgba(255,255,255,.18); background: #111820; }
+.ir-tab-card.active { border-color: var(--accent2); background: #0d1117; }
+.ir-tab-tech { font-size: 15px; font-weight: 800; color: var(--accent2); letter-spacing: -.01em; }
+.ir-tab-country { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -.01em; }
 .ir-tab-content { display: none; }
 .ir-tab-content.active { display: block; }
+
+/* ── Tech thumbnail cards ── */
+.tech-thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.tech-thumb {
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border-hi);
+  border-radius: 7px; overflow: hidden;
+  text-decoration: none; transition: border-color .2s, transform .15s;
+}
+.tech-thumb:hover { transform: translateY(-2px); }
+.tech-thumb-banner {
+  height: 48px; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  background-image: repeating-linear-gradient(
+    45deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px,
+    transparent 1px, transparent 8px
+  );
+}
+.tech-thumb-label {
+  padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--text);
+  border-top: 1px solid var(--border);
+}
+.tech-thumb-label span { font-size: 10px; color: var(--muted); font-weight: 400; display: block; margin-top: 1px; }
 
 /* ── Flagship two-column ── */
 .flagship-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -677,23 +706,62 @@ section:last-of-type { padding-bottom: 80px; }
   <div class="wrap">
     <div class="section-label"><span class="sl-accent">06 —</span> Sankey Diagrams</div>
     <div class="rp-sub">Trade Flow Sankeys — By Technology</div>
-    <div class="section-pills pill-row" style="margin-bottom:16px;">
-      <a class="pill" href="analysis/sankey/sankey_tech_batteries_2022.html">Batteries</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_biofuel_2022.html">Biofuel</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_electrolyzers_2022.html">Electrolyzers</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_geothermal_2022.html">Geothermal</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_heat_pumps_2022.html">Heat Pumps</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_magnets_2022.html">Magnets</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_nuclear_2022.html">Nuclear</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_solar_2022.html">Solar</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_transmission_2022.html">Transmission</a>
-      <a class="pill" href="analysis/sankey/sankey_tech_wind_2022.html">Wind</a>
+    <div class="tech-thumb-grid" style="margin-bottom:18px;">
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_batteries_2022.html" style="border-color:rgba(245,158,11,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid #f59e0b;">🔋</div>
+        <div class="tech-thumb-label">Batteries<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_biofuel_2022.html" style="border-color:rgba(132,204,22,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid #84cc16;">🌿</div>
+        <div class="tech-thumb-label">Biofuel<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_electrolyzers_2022.html" style="border-color:rgba(6,182,212,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid #06b6d4;">⚗️</div>
+        <div class="tech-thumb-label">Electrolyzers<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_geothermal_2022.html" style="border-color:rgba(249,115,22,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid #f97316;">🌋</div>
+        <div class="tech-thumb-label">Geothermal<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_magnets_2022.html" style="border-color:rgba(139,92,246,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.03));border-bottom:2px solid #8b5cf6;">🧲</div>
+        <div class="tech-thumb-label">Magnets<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_nuclear_2022.html" style="border-color:rgba(14,165,233,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid #0ea5e9;">⚛️</div>
+        <div class="tech-thumb-label">Nuclear<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_solar_2022.html" style="border-color:rgba(234,179,8,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid #eab308;">☀️</div>
+        <div class="tech-thumb-label">Solar<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_transmission_2022.html" style="border-color:rgba(34,211,238,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(34,211,238,.03));border-bottom:2px solid #22d3ee;">⚡</div>
+        <div class="tech-thumb-label">Transmission<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_wind_2022.html" style="border-color:rgba(59,130,246,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid #3b82f6;">💨</div>
+        <div class="tech-thumb-label">Wind<span>Trade flow Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_tech_heat_pumps_2022.html" style="border-color:rgba(236,72,153,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid #ec4899;">♨️</div>
+        <div class="tech-thumb-label">Heat Pumps<span>Trade flow Sankey · 2022</span></div>
+      </a>
     </div>
     <div class="rp-sub">Material-Level Sankeys</div>
-    <div class="section-pills pill-row">
-      <a class="pill" href="analysis/sankey/sankey_cobalt_ore_2022.html">Cobalt Ore</a>
-      <a class="pill" href="analysis/sankey/sankey_lithium_2022.html">Lithium</a>
-      <a class="pill" href="analysis/sankey/sankey_natural_graphite_2022.html">Natural Graphite</a>
+    <div class="tech-thumb-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+      <a class="tech-thumb" href="analysis/sankey/sankey_cobalt_ore_2022.html" style="border-color:rgba(139,92,246,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.03));border-bottom:2px solid #8b5cf6;">⬡</div>
+        <div class="tech-thumb-label">Cobalt Ore<span>Material Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_lithium_2022.html" style="border-color:rgba(6,182,212,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid #06b6d4;">Li</div>
+        <div class="tech-thumb-label">Lithium<span>Material Sankey · 2022</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/sankey/sankey_natural_graphite_2022.html" style="border-color:rgba(107,114,128,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(107,114,128,.12),rgba(107,114,128,.03));border-bottom:2px solid #6b7280;">C</div>
+        <div class="tech-thumb-label">Natural Graphite<span>Material Sankey · 2022</span></div>
+      </a>
     </div>
   </div>
 </section>
@@ -704,17 +772,47 @@ section:last-of-type { padding-bottom: 80px; }
 <section id="dendrites">
   <div class="wrap">
     <div class="section-label"><span class="sl-accent">07 —</span> Value Chain Dendrites</div>
-    <div class="section-pills pill-row">
-      <a class="pill" href="analysis/dendrite/dendrite_Batteries.html"><span class="pill-dot dot-bat"></span>Batteries</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Biofuel.html"><span class="pill-dot dot-bio"></span>Biofuel</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Electrolyzers.html"><span class="pill-dot dot-ele"></span>Electrolyzers</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Geothermal.html"><span class="pill-dot dot-geo"></span>Geothermal</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Heat_Pumps.html"><span class="pill-dot dot-hp"></span>Heat Pumps</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Magnets.html"><span class="pill-dot dot-mag"></span>Magnets</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Nuclear.html"><span class="pill-dot dot-nuc"></span>Nuclear</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Solar.html"><span class="pill-dot dot-sol"></span>Solar</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Transmission.html"><span class="pill-dot dot-trn"></span>Transmission</a>
-      <a class="pill" href="analysis/dendrite/dendrite_Wind.html"><span class="pill-dot dot-wnd"></span>Wind</a>
+    <div class="tech-thumb-grid">
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Batteries.html" style="border-color:rgba(245,158,11,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.04));border-bottom:2px solid #f59e0b;">🔋</div>
+        <div class="tech-thumb-label">Batteries<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Biofuel.html" style="border-color:rgba(132,204,22,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.15),rgba(132,204,22,.04));border-bottom:2px solid #84cc16;">🌿</div>
+        <div class="tech-thumb-label">Biofuel<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Electrolyzers.html" style="border-color:rgba(6,182,212,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(6,182,212,.04));border-bottom:2px solid #06b6d4;">⚗️</div>
+        <div class="tech-thumb-label">Electrolyzers<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Geothermal.html" style="border-color:rgba(249,115,22,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(249,115,22,.04));border-bottom:2px solid #f97316;">🌋</div>
+        <div class="tech-thumb-label">Geothermal<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Heat_Pumps.html" style="border-color:rgba(236,72,153,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(236,72,153,.04));border-bottom:2px solid #ec4899;">♨️</div>
+        <div class="tech-thumb-label">Heat Pumps<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Magnets.html" style="border-color:rgba(139,92,246,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(139,92,246,.04));border-bottom:2px solid #8b5cf6;">🧲</div>
+        <div class="tech-thumb-label">Magnets<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Nuclear.html" style="border-color:rgba(14,165,233,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(14,165,233,.04));border-bottom:2px solid #0ea5e9;">⚛️</div>
+        <div class="tech-thumb-label">Nuclear<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Solar.html" style="border-color:rgba(234,179,8,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.15),rgba(234,179,8,.04));border-bottom:2px solid #eab308;">☀️</div>
+        <div class="tech-thumb-label">Solar<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Transmission.html" style="border-color:rgba(34,211,238,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(34,211,238,.15),rgba(34,211,238,.04));border-bottom:2px solid #22d3ee;">⚡</div>
+        <div class="tech-thumb-label">Transmission<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Wind.html" style="border-color:rgba(59,130,246,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.04));border-bottom:2px solid #3b82f6;">💨</div>
+        <div class="tech-thumb-label">Wind<span>HS6 value chain tree</span></div>
+      </a>
     </div>
   </div>
 </section>
