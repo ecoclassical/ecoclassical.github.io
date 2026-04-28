@@ -1,0 +1,6 @@
+date,vendor,description,amount_usd,receipt_file
+,,Anthropic (Claude Pro),,
+,,OpenAI (ChatGPT Plus),,
+,,Posit Connect,,
+,,Windsurf,,
+TOTAL,,,=SUM_ABOVE,

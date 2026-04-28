@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.27.0/plotly.min.js" charset="utf-8"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -842,22 +842,23 @@ function irUpdateMap() {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function() {
-  renderKPI();
-  renderSRTable();
+  // Core UI — always runs first
+  try { renderKPI(); } catch(e) { console.error("renderKPI failed:", e); }
+  try { renderSRTable(); } catch(e) { console.error("renderSRTable failed:", e); }
+  try { renderPolicy(); } catch(e) { console.error("renderPolicy failed:", e); }
 
-  // Render charts for all panes upfront (they're hidden via CSS display:none)
-  drawSeriesLevels();
-  drawSeriesGrowth();
-  buildProducts();
-  buildPartnersCard("partners-imp-card", PARTNERS_IMP, "Import Sources", "#8A4200");
-  buildPartnersCard("partners-exp-card", PARTNERS_EXP, "Export Destinations", "#1A8C28");
-  chartPartners("chart-partners-imp", PARTNERS_IMP, "#8A4200", `${COUNTRY} | ${TECH} — Top Import Sources`);
-  chartPartners("chart-partners-exp", PARTNERS_EXP, "#1A8C28", `${COUNTRY} | ${TECH} — Top Export Destinations`);
-  drawBench();
-  drawTreemap("chart-tm-exp", "exp", `${COUNTRY} | ${TECH} — Export Composition`);
-  drawTreemap("chart-tm-imp", "imp", `${COUNTRY} | ${TECH} — Import Composition`);
-  drawPC();
-  renderPolicy();
+  // Charts — each wrapped so one failure doesn't kill others
+  try { drawSeriesLevels(); } catch(e) { console.error("drawSeriesLevels:", e); }
+  try { drawSeriesGrowth(); } catch(e) { console.error("drawSeriesGrowth:", e); }
+  try { buildProducts(); } catch(e) { console.error("buildProducts:", e); }
+  try { buildPartnersCard("partners-imp-card", PARTNERS_IMP, "Import Sources", "#8A4200"); } catch(e) { console.error("partners-imp card:", e); }
+  try { buildPartnersCard("partners-exp-card", PARTNERS_EXP, "Export Destinations", "#1A8C28"); } catch(e) { console.error("partners-exp card:", e); }
+  try { chartPartners("chart-partners-imp", PARTNERS_IMP, "#8A4200", COUNTRY + " | " + TECH + " — Top Import Sources"); } catch(e) { console.error("chart-partners-imp:", e); }
+  try { chartPartners("chart-partners-exp", PARTNERS_EXP, "#1A8C28", COUNTRY + " | " + TECH + " — Top Export Destinations"); } catch(e) { console.error("chart-partners-exp:", e); }
+  try { drawBench(); } catch(e) { console.error("drawBench:", e); }
+  try { drawTreemap("chart-tm-exp", "exp", COUNTRY + " | " + TECH + " — Export Composition"); } catch(e) { console.error("treemap-exp:", e); }
+  try { drawTreemap("chart-tm-imp", "imp", COUNTRY + " | " + TECH + " — Import Composition"); } catch(e) { console.error("treemap-imp:", e); }
+  try { drawPC(); } catch(e) { console.error("drawPC:", e); }
 });
 
 </script>
