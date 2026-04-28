@@ -180,15 +180,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   </div>
 </div>
     <div class="ir-nav-sep"></div>
-    <div class="ir-nav-group">
-  <div class="ir-nav-ghd" onclick="irToggleGroup(this)">
-    <span class="ir-nav-chevron">›</span>Trade Partners
-  </div>
-  <div class="ir-nav-sub open">
-    <button class="ir-nav-link sub" onclick="irShowPane('partners-imp')" data-pane="partners-imp">Top Importers</button>
-<button class="ir-nav-link sub" onclick="irShowPane('partners-exp')" data-pane="partners-exp">Top Exporters</button>
-  </div>
-</div>
+    <button class="ir-nav-link" onclick="irShowPane('partners')" data-pane="partners">Trade Partners</button>
     <div class="ir-nav-sep"></div>
     <div class="ir-nav-group">
   <div class="ir-nav-ghd" onclick="irToggleGroup(this)">
@@ -202,14 +194,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="ir-nav-sep"></div>
     <div class="ir-nav-group">
   <div class="ir-nav-ghd" onclick="irToggleGroup(this)">
-    <span class="ir-nav-chevron">›</span>Key Products
+    <span class="ir-nav-chevron">›</span>Averages
   </div>
   <div class="ir-nav-sub open">
-    <button class="ir-nav-link sub" onclick="irShowPane('products')" data-pane="products">Products →</button>
+    <button class="ir-nav-link sub" onclick="irShowPane('avg-levels')" data-pane="avg-levels">Levels</button>
+<button class="ir-nav-link sub" onclick="irShowPane('avg-growth')" data-pane="avg-growth">Growth Rates</button>
   </div>
 </div>
     <div class="ir-nav-sep"></div>
-    <button class="ir-nav-link" onclick="irShowPane('bench')" data-pane="bench">vs. World</button>
+    <button class="ir-nav-link" onclick="irShowPane('products')" data-pane="products">Key Products</button>
+    <div class="ir-nav-sep"></div>
+    <div class="ir-nav-group">
+  <div class="ir-nav-ghd" onclick="irToggleGroup(this)">
+    <span class="ir-nav-chevron">›</span>Benchmarking
+  </div>
+  <div class="ir-nav-sub open">
+    <button class="ir-nav-link sub" onclick="irShowPane('bench-wb')" data-pane="bench-wb">vs. WB Region</button>
+<button class="ir-nav-link sub" onclick="irShowPane('bench-un')" data-pane="bench-un">vs. UN Subregion</button>
+<button class="ir-nav-link sub" onclick="irShowPane('bench-world')" data-pane="bench-world">vs. World</button>
+  </div>
+</div>
     <div class="ir-nav-sep"></div>
     <div class="ir-nav-group">
   <div class="ir-nav-ghd" onclick="irToggleGroup(this)">
@@ -269,23 +273,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   <iframe src="../../analysis/orbis/orbis_viewer_solar.html" style="width:100%;height:680px;border:none;border-radius:8px;background:#0b1a0d;" allowfullscreen></iframe>
 </div>
 
-<!-- ═══ TOP IMPORTERS ════════════════════════════════════════════════════════ -->
-<div id="ir-pane-partners-imp" class="ir-pane">
-  <div class="ir-pane-title"><span class="accent">04a —</span> Top Importers</div>
-  <div id="partners-imp-card"></div>
-  <div class="ir-sdiv" style="margin-top:18px;">Chart</div>
-  <div id="chart-partners-imp" style="height:320px;"></div>
+<!-- ═══ TRADE PARTNERS ═══════════════════ -->
+<div id="ir-pane-partners" class="ir-pane">
+  <div class="ir-pane-title"><span class="accent">04 —</span> Trade Partners</div>
+  <div class="tl-row">
+    <button class="tl-btn active" id="tp-imp-btn" onclick="tpToggle('imp')">Import Sources</button>
+    <button class="tl-btn" id="tp-exp-btn" onclick="tpToggle('exp')">Export Destinations</button>
+  </div>
+  <div id="chart-tp-imp" style="height:420px;"></div>
+  <div id="chart-tp-exp" style="height:420px;display:none;"></div>
 </div>
 
-<!-- ═══ TOP EXPORTERS ════════════════════════════════════════════════════════ -->
-<div id="ir-pane-partners-exp" class="ir-pane">
-  <div class="ir-pane-title"><span class="accent">04b —</span> Top Exporters</div>
-  <div id="partners-exp-card"></div>
-  <div class="ir-sdiv" style="margin-top:18px;">Chart</div>
-  <div id="chart-partners-exp" style="height:320px;"></div>
-</div>
-
-<!-- ═══ SERIES LEVELS ═════════════════════════════════════════════════════════ -->
 <div id="ir-pane-series-levels" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">05a —</span> Time Series · Levels</div>
   <div class="tl-row">
@@ -298,26 +296,48 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   <div id="chart-ts-bal" style="height:280px;display:none;"></div>
 </div>
 
-<!-- ═══ SERIES GROWTH ═════════════════════════════════════════════════════════ -->
 <div id="ir-pane-series-growth" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">05b —</span> Time Series · Growth Rates</div>
-  <div id="chart-growth" style="height:340px;"></div>
+  <div id="chart-ts-growth" style="height:360px;"></div>
 </div>
 
-<!-- ═══ KEY PRODUCTS ══════════════════════════════════════════════════════════ -->
+<div id="ir-pane-avg-levels" class="ir-pane">
+  <div class="ir-pane-title"><span class="accent">06a —</span> Averages · Levels</div>
+  <div class="tl-row">
+    <button class="tl-btn active" id="av-imp-btn" onclick="avToggle('imp')">Imports</button>
+    <button class="tl-btn" id="av-exp-btn" onclick="avToggle('exp')">Exports</button>
+    <button class="tl-btn" id="av-bal-btn" onclick="avToggle('bal')">Net Balance</button>
+  </div>
+  <div id="chart-av-imp" style="height:340px;"></div>
+  <div id="chart-av-exp" style="height:340px;display:none;"></div>
+  <div id="chart-av-bal" style="height:340px;display:none;"></div>
+</div>
+
+<div id="ir-pane-avg-growth" class="ir-pane">
+  <div class="ir-pane-title"><span class="accent">06b —</span> Averages · Growth Rates</div>
+  <div id="chart-av-growth" style="height:360px;"></div>
+</div>
+
 <div id="ir-pane-products" class="ir-pane">
-  <div class="ir-pane-title"><span class="accent">06 —</span> Key Products</div>
+  <div class="ir-pane-title"><span class="accent">07 —</span> Key Products</div>
   <div class="prod-selector" id="prod-selector"></div>
   <div id="prod-charts"></div>
 </div>
 
-<!-- ═══ BENCHMARKING ══════════════════════════════════════════════════════════ -->
-<div id="ir-pane-bench" class="ir-pane">
-  <div class="ir-pane-title"><span class="accent">07 —</span> vs. World — Import Structure</div>
-  <div id="chart-bench" style="height:360px;"></div>
+<div id="ir-pane-bench-wb" class="ir-pane">
+  <div class="ir-pane-title"><span class="accent">08a —</span> vs. WB Region</div>
+  <div id="chart-bench-wb" style="height:380px;"></div>
 </div>
 
-<!-- ═══ TREEMAP EXPORTS ═══════════════════════════════════════════════════════ -->
+<div id="ir-pane-bench-un" class="ir-pane">
+  <div class="ir-pane-title"><span class="accent">08b —</span> vs. UN Subregion</div>
+  <div id="chart-bench-un" style="height:380px;"></div>
+</div>
+
+<div id="ir-pane-bench-world" class="ir-pane">
+  <div class="ir-pane-title"><span class="accent">08c —</span> vs. World</div>
+  <div id="chart-bench-world" style="height:380px;"></div>
+</div>
 <div id="ir-pane-treemap-exp" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">08a —</span> Treemap · Exports</div>
   <div id="chart-tm-exp" style="height:460px;"></div>
@@ -368,9 +388,11 @@ const PROD_AVG    = [{"product_code":"250510","product":"Silica","stage_role":"U
 const SR_AVG_DATA = [{"stage_role":"Downstream | Process Equipment","avg_imp_mn":5438.5,"avg_exp_mn":2170.3,"avg_bal_mn":-3268.2},{"stage_role":"Midstream | Processed Material","avg_imp_mn":4741.1,"avg_exp_mn":1564.7,"avg_bal_mn":-3176.4},{"stage_role":"Final Product | Final Product","avg_imp_mn":4098.2,"avg_exp_mn":1542,"avg_bal_mn":-2556.3},{"stage_role":"Downstream | Product Component","avg_imp_mn":4060.8,"avg_exp_mn":1536.4,"avg_bal_mn":-2524.4},{"stage_role":"Upstream | Raw Material","avg_imp_mn":3316.6,"avg_exp_mn":100.8,"avg_bal_mn":-3215.8},{"stage_role":"Midstream | Product Component","avg_imp_mn":393.2,"avg_exp_mn":14.8,"avg_bal_mn":-378.4},{"stage_role":"Midstream | Process Equipment","avg_imp_mn":40.7,"avg_exp_mn":13.2,"avg_bal_mn":-27.5}];
 const PARTNERS_IMP= [{"iso3":"CHL","val":212.7141,"cname":"Chile"},{"iso3":"PAN","val":188.1646,"cname":"Panama"},{"iso3":"CHN","val":136.0696,"cname":"China"},{"iso3":"PER","val":130.0366,"cname":"Peru"},{"iso3":"GIN","val":102.898,"cname":"Guinea"},{"iso3":"COD","val":86.3127,"cname":"Congo - Kinshasa"},{"iso3":"PNG","val":77.7516,"cname":"Papua New Guinea"},{"iso3":"UZB","val":74.1327,"cname":"Uzbekistan"},{"iso3":"KAZ","val":50.7822,"cname":"Kazakhstan"},{"iso3":"IDN","val":38.859,"cname":"Indonesia"},{"iso3":"KGZ","val":38.0402,"cname":"Kyrgyzstan"},{"iso3":"BHR","val":30.196,"cname":"Bahrain"},{"iso3":"QAT","val":28.5294,"cname":"Qatar"},{"iso3":"AUS","val":26.618,"cname":"Australia"},{"iso3":"VNM","val":26.5613,"cname":"Vietnam"},{"iso3":"TZA","val":24.7109,"cname":"Tanzania"},{"iso3":"BWA","val":24.6301,"cname":"Botswana"},{"iso3":"SAU","val":23.268,"cname":"Saudi Arabia"},{"iso3":"IRN","val":22.0793,"cname":"Iran"},{"iso3":"MYS","val":17.9719,"cname":"Malaysia"}];
 const PARTNERS_EXP= [{"iso3":"USA","val":45.2437,"cname":"United States"},{"iso3":"ARE","val":8.4117,"cname":"United Arab Emirates"},{"iso3":"MEX","val":8.2657,"cname":"Mexico"},{"iso3":"VEN","val":6.7908,"cname":"Venezuela"},{"iso3":"CHN","val":6.0938,"cname":"China"},{"iso3":"OMN","val":5.9826,"cname":"Oman"},{"iso3":"DEU","val":5.231,"cname":"Germany"},{"iso3":"RUS","val":5.2287,"cname":"Russia"},{"iso3":"JPN","val":4.902,"cname":"Japan"},{"iso3":"ITA","val":4.5237,"cname":"Italy"},{"iso3":"SAU","val":4.1911,"cname":"Saudi Arabia"},{"iso3":"MNE","val":4.1063,"cname":"MNE"},{"iso3":"TUR","val":3.8755,"cname":"Turkey"},{"iso3":"BGD","val":3.8029,"cname":"Bangladesh"},{"iso3":"BRA","val":3.6368,"cname":"Brazil"},{"iso3":"HTI","val":3.5469,"cname":"Haiti"},{"iso3":"MYS","val":3.3981,"cname":"Malaysia"},{"iso3":"ESP","val":3.2445,"cname":"Spain"},{"iso3":"S19","val":3.0832,"cname":"S19"},{"iso3":"IRN","val":2.9081,"cname":"Iran"}];
+const TP_IMP_SR   = [{"iso3":"AUS","cname":"Australia","stage_role":"Downstream | Process Equipment","val":0.46},{"iso3":"AUS","cname":"Australia","stage_role":"Downstream | Product Component","val":2.51},{"iso3":"AUS","cname":"Australia","stage_role":"Final Product | Final Product","val":0.01},{"iso3":"AUS","cname":"Australia","stage_role":"Midstream | Process Equipment","val":0.56},{"iso3":"AUS","cname":"Australia","stage_role":"Midstream | Processed Material","val":54.94},{"iso3":"AUS","cname":"Australia","stage_role":"Midstream | Product Component","val":0.03},{"iso3":"AUS","cname":"Australia","stage_role":"Upstream | Raw Material","val":271.45},{"iso3":"BHR","cname":"Bahrain","stage_role":"Downstream | Process Equipment","val":0.1},{"iso3":"BHR","cname":"Bahrain","stage_role":"Downstream | Product Component","val":93.09},{"iso3":"BHR","cname":"Bahrain","stage_role":"Midstream | Processed Material","val":41.33},{"iso3":"BWA","cname":"Botswana","stage_role":"Upstream | Raw Material","val":24.63},{"iso3":"CHL","cname":"Chile","stage_role":"Downstream | Product Component","val":0.25},{"iso3":"CHL","cname":"Chile","stage_role":"Final Product | Final Product","val":0.07},{"iso3":"CHL","cname":"Chile","stage_role":"Midstream | Product Component","val":0.11},{"iso3":"CHL","cname":"Chile","stage_role":"Upstream | Raw Material","val":708.79},{"iso3":"CHN","cname":"China","stage_role":"Downstream | Process Equipment","val":143.9},{"iso3":"CHN","cname":"China","stage_role":"Downstream | Product Component","val":154.45},{"iso3":"CHN","cname":"China","stage_role":"Final Product | Final Product","val":502.21},{"iso3":"CHN","cname":"China","stage_role":"Midstream | Process Equipment","val":3.63},{"iso3":"CHN","cname":"China","stage_role":"Midstream | Processed Material","val":41.28},{"iso3":"CHN","cname":"China","stage_role":"Midstream | Product Component","val":176.29},{"iso3":"CHN","cname":"China","stage_role":"Upstream | Raw Material","val":11.42},{"iso3":"COD","cname":"Congo - Kinshasa","stage_role":"Upstream | Raw Material","val":86.31},{"iso3":"GIN","cname":"Guinea","stage_role":"Downstream | Product Component","val":0.11},{"iso3":"GIN","cname":"Guinea","stage_role":"Upstream | Raw Material","val":108.04},{"iso3":"IDN","cname":"Indonesia","stage_role":"Downstream | Process Equipment","val":0.16},{"iso3":"IDN","cname":"Indonesia","stage_role":"Downstream | Product Component","val":5.86},{"iso3":"IDN","cname":"Indonesia","stage_role":"Final Product | Final Product","val":0.66},{"iso3":"IDN","cname":"Indonesia","stage_role":"Midstream | Process Equipment","val":0.21},{"iso3":"IDN","cname":"Indonesia","stage_role":"Midstream | Processed Material","val":69.81},{"iso3":"IDN","cname":"Indonesia","stage_role":"Midstream | Product Component","val":0.38},{"iso3":"IDN","cname":"Indonesia","stage_role":"Upstream | Raw Material","val":737.29},{"iso3":"IRN","cname":"Iran","stage_role":"Downstream | Product Component","val":0.28},{"iso3":"IRN","cname":"Iran","stage_role":"Midstream | Processed Material","val":32.34},{"iso3":"KAZ","cname":"Kazakhstan","stage_role":"Midstream | Processed Material","val":50.78},{"iso3":"KGZ","cname":"Kyrgyzstan","stage_role":"Midstream | Processed Material","val":38.04},{"iso3":"MYS","cname":"Malaysia","stage_role":"Downstream | Process Equipment","val":2.18},{"iso3":"MYS","cname":"Malaysia","stage_role":"Downstream | Product Component","val":35.6},{"iso3":"MYS","cname":"Malaysia","stage_role":"Final Product | Final Product","val":34.85},{"iso3":"MYS","cname":"Malaysia","stage_role":"Midstream | Process Equipment","val":0.69},{"iso3":"MYS","cname":"Malaysia","stage_role":"Midstream | Processed Material","val":15.85},{"iso3":"MYS","cname":"Malaysia","stage_role":"Midstream | Product Component","val":2.22},{"iso3":"MYS","cname":"Malaysia","stage_role":"Upstream | Raw Material","val":18.26},{"iso3":"PAN","cname":"Panama","stage_role":"Upstream | Raw Material","val":188.16},{"iso3":"PER","cname":"Peru","stage_role":"Midstream | Processed Material","val":17.51},{"iso3":"PER","cname":"Peru","stage_role":"Upstream | Raw Material","val":205.05},{"iso3":"PNG","cname":"Papua New Guinea","stage_role":"Upstream | Raw Material","val":77.75},{"iso3":"QAT","cname":"Qatar","stage_role":"Downstream | Process Equipment","val":0.11},{"iso3":"QAT","cname":"Qatar","stage_role":"Downstream | Product Component","val":120.42},{"iso3":"QAT","cname":"Qatar","stage_role":"Midstream | Processed Material","val":103.78},{"iso3":"QAT","cname":"Qatar","stage_role":"Upstream | Raw Material","val":0.12},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Downstream | Process Equipment","val":0.26},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Downstream | Product Component","val":0.31},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Midstream | Processed Material","val":97.88},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Upstream | Raw Material","val":16.05},{"iso3":"TZA","cname":"Tanzania","stage_role":"Downstream | Product Component","val":0.9},{"iso3":"TZA","cname":"Tanzania","stage_role":"Midstream | Processed Material","val":0.14},{"iso3":"TZA","cname":"Tanzania","stage_role":"Upstream | Raw Material","val":96.53},{"iso3":"UZB","cname":"Uzbekistan","stage_role":"Midstream | Processed Material","val":74.13},{"iso3":"VNM","cname":"Vietnam","stage_role":"Downstream | Process Equipment","val":2.28},{"iso3":"VNM","cname":"Vietnam","stage_role":"Downstream | Product Component","val":15.07},{"iso3":"VNM","cname":"Vietnam","stage_role":"Final Product | Final Product","val":101.74},{"iso3":"VNM","cname":"Vietnam","stage_role":"Midstream | Process Equipment","val":0.16},{"iso3":"VNM","cname":"Vietnam","stage_role":"Midstream | Processed Material","val":35.97},{"iso3":"VNM","cname":"Vietnam","stage_role":"Midstream | Product Component","val":1.59}];
+const TP_EXP_SR   = [{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Downstream | Process Equipment","val":7.35},{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Downstream | Product Component","val":2.31},{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Final Product | Final Product","val":0.47},{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Midstream | Process Equipment","val":0.51},{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Midstream | Processed Material","val":19.94},{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Midstream | Product Component","val":0.27},{"iso3":"ARE","cname":"United Arab Emirates","stage_role":"Upstream | Raw Material","val":0.33},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Downstream | Process Equipment","val":5.28},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Downstream | Product Component","val":2.69},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Final Product | Final Product","val":2.19},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Midstream | Process Equipment","val":0.46},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Midstream | Processed Material","val":4.31},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Midstream | Product Component","val":0.04},{"iso3":"BGD","cname":"Bangladesh","stage_role":"Upstream | Raw Material","val":0.14},{"iso3":"BRA","cname":"Brazil","stage_role":"Downstream | Process Equipment","val":2.65},{"iso3":"BRA","cname":"Brazil","stage_role":"Downstream | Product Component","val":11.51},{"iso3":"BRA","cname":"Brazil","stage_role":"Final Product | Final Product","val":0.01},{"iso3":"BRA","cname":"Brazil","stage_role":"Midstream | Process Equipment","val":0.65},{"iso3":"BRA","cname":"Brazil","stage_role":"Midstream | Processed Material","val":0.46},{"iso3":"BRA","cname":"Brazil","stage_role":"Midstream | Product Component","val":0.02},{"iso3":"CHN","cname":"China","stage_role":"Downstream | Process Equipment","val":5.03},{"iso3":"CHN","cname":"China","stage_role":"Downstream | Product Component","val":11.18},{"iso3":"CHN","cname":"China","stage_role":"Final Product | Final Product","val":0.13},{"iso3":"CHN","cname":"China","stage_role":"Midstream | Process Equipment","val":0.97},{"iso3":"CHN","cname":"China","stage_role":"Midstream | Processed Material","val":3.34},{"iso3":"CHN","cname":"China","stage_role":"Midstream | Product Component","val":0.18},{"iso3":"CHN","cname":"China","stage_role":"Upstream | Raw Material","val":19.49},{"iso3":"DEU","cname":"Germany","stage_role":"Downstream | Process Equipment","val":7.97},{"iso3":"DEU","cname":"Germany","stage_role":"Downstream | Product Component","val":4.24},{"iso3":"DEU","cname":"Germany","stage_role":"Final Product | Final Product","val":0.06},{"iso3":"DEU","cname":"Germany","stage_role":"Midstream | Process Equipment","val":0.18},{"iso3":"DEU","cname":"Germany","stage_role":"Midstream | Processed Material","val":5.29},{"iso3":"DEU","cname":"Germany","stage_role":"Midstream | Product Component","val":0.05},{"iso3":"DEU","cname":"Germany","stage_role":"Upstream | Raw Material","val":0.19},{"iso3":"ESP","cname":"Spain","stage_role":"Downstream | Process Equipment","val":0.78},{"iso3":"ESP","cname":"Spain","stage_role":"Downstream | Product Component","val":11.3},{"iso3":"ESP","cname":"Spain","stage_role":"Final Product | Final Product","val":0.05},{"iso3":"ESP","cname":"Spain","stage_role":"Midstream | Process Equipment","val":0.03},{"iso3":"ESP","cname":"Spain","stage_role":"Midstream | Processed Material","val":3.49},{"iso3":"ESP","cname":"Spain","stage_role":"Midstream | Product Component","val":0.03},{"iso3":"ESP","cname":"Spain","stage_role":"Upstream | Raw Material","val":0.21},{"iso3":"HTI","cname":"Haiti","stage_role":"Downstream | Product Component","val":0.15},{"iso3":"HTI","cname":"Haiti","stage_role":"Final Product | Final Product","val":0.05},{"iso3":"HTI","cname":"Haiti","stage_role":"Midstream | Processed Material","val":13.28},{"iso3":"HTI","cname":"Haiti","stage_role":"Midstream | Product Component","val":0.07},{"iso3":"IRN","cname":"Iran","stage_role":"Downstream | Process Equipment","val":0.41},{"iso3":"IRN","cname":"Iran","stage_role":"Downstream | Product Component","val":0.52},{"iso3":"IRN","cname":"Iran","stage_role":"Final Product | Final Product","val":0.05},{"iso3":"IRN","cname":"Iran","stage_role":"Midstream | Process Equipment","val":0.76},{"iso3":"IRN","cname":"Iran","stage_role":"Midstream | Processed Material","val":19.5},{"iso3":"ITA","cname":"Italy","stage_role":"Downstream | Process Equipment","val":2.37},{"iso3":"ITA","cname":"Italy","stage_role":"Downstream | Product Component","val":6.3},{"iso3":"ITA","cname":"Italy","stage_role":"Final Product | Final Product","val":0.01},{"iso3":"ITA","cname":"Italy","stage_role":"Midstream | Processed Material","val":10.26},{"iso3":"ITA","cname":"Italy","stage_role":"Midstream | Product Component","val":0.05},{"iso3":"ITA","cname":"Italy","stage_role":"Upstream | Raw Material","val":0.49},{"iso3":"JPN","cname":"Japan","stage_role":"Downstream | Process Equipment","val":0.71},{"iso3":"JPN","cname":"Japan","stage_role":"Downstream | Product Component","val":27.03},{"iso3":"JPN","cname":"Japan","stage_role":"Final Product | Final Product","val":0.07},{"iso3":"JPN","cname":"Japan","stage_role":"Midstream | Process Equipment","val":0.13},{"iso3":"JPN","cname":"Japan","stage_role":"Midstream | Processed Material","val":5.51},{"iso3":"JPN","cname":"Japan","stage_role":"Midstream | Product Component","val":0.08},{"iso3":"JPN","cname":"Japan","stage_role":"Upstream | Raw Material","val":0.07},{"iso3":"MEX","cname":"Mexico","stage_role":"Downstream | Process Equipment","val":6.04},{"iso3":"MEX","cname":"Mexico","stage_role":"Downstream | Product Component","val":24.53},{"iso3":"MEX","cname":"Mexico","stage_role":"Final Product | Final Product","val":0.07},{"iso3":"MEX","cname":"Mexico","stage_role":"Midstream | Process Equipment","val":0.12},{"iso3":"MEX","cname":"Mexico","stage_role":"Midstream | Processed Material","val":1.09},{"iso3":"MEX","cname":"Mexico","stage_role":"Upstream | Raw Material","val":0.1},{"iso3":"MNE","cname":"MNE","stage_role":"Downstream | Product Component","val":3.3},{"iso3":"MNE","cname":"MNE","stage_role":"Midstream | Processed Material","val":4.51},{"iso3":"MYS","cname":"Malaysia","stage_role":"Downstream | Process Equipment","val":3.1},{"iso3":"MYS","cname":"Malaysia","stage_role":"Downstream | Product Component","val":5.56},{"iso3":"MYS","cname":"Malaysia","stage_role":"Final Product | Final Product","val":1.43},{"iso3":"MYS","cname":"Malaysia","stage_role":"Midstream | Process Equipment","val":0.18},{"iso3":"MYS","cname":"Malaysia","stage_role":"Midstream | Processed Material","val":3.28},{"iso3":"MYS","cname":"Malaysia","stage_role":"Midstream | Product Component","val":0.08},{"iso3":"MYS","cname":"Malaysia","stage_role":"Upstream | Raw Material","val":3.65},{"iso3":"OMN","cname":"Oman","stage_role":"Downstream | Process Equipment","val":2.72},{"iso3":"OMN","cname":"Oman","stage_role":"Downstream | Product Component","val":0.76},{"iso3":"OMN","cname":"Oman","stage_role":"Final Product | Final Product","val":0.12},{"iso3":"OMN","cname":"Oman","stage_role":"Midstream | Process Equipment","val":0.19},{"iso3":"OMN","cname":"Oman","stage_role":"Midstream | Processed Material","val":20.49},{"iso3":"OMN","cname":"Oman","stage_role":"Midstream | Product Component","val":0.05},{"iso3":"OMN","cname":"Oman","stage_role":"Upstream | Raw Material","val":0.5},{"iso3":"RUS","cname":"Russia","stage_role":"Downstream | Process Equipment","val":2.69},{"iso3":"RUS","cname":"Russia","stage_role":"Downstream | Product Component","val":2.94},{"iso3":"RUS","cname":"Russia","stage_role":"Midstream | Process Equipment","val":0.21},{"iso3":"RUS","cname":"Russia","stage_role":"Midstream | Processed Material","val":15.04},{"iso3":"RUS","cname":"Russia","stage_role":"Midstream | Product Component","val":0.71},{"iso3":"S19","cname":"S19","stage_role":"Downstream | Process Equipment","val":1.17},{"iso3":"S19","cname":"S19","stage_role":"Downstream | Product Component","val":10.7},{"iso3":"S19","cname":"S19","stage_role":"Midstream | Process Equipment","val":0.36},{"iso3":"S19","cname":"S19","stage_role":"Midstream | Processed Material","val":2.41},{"iso3":"S19","cname":"S19","stage_role":"Upstream | Raw Material","val":2.78},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Downstream | Process Equipment","val":8.68},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Downstream | Product Component","val":1.32},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Final Product | Final Product","val":0.02},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Midstream | Process Equipment","val":0.44},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Midstream | Processed Material","val":3.18},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Midstream | Product Component","val":0.05},{"iso3":"SAU","cname":"Saudi Arabia","stage_role":"Upstream | Raw Material","val":0.2},{"iso3":"TUR","cname":"Turkey","stage_role":"Downstream | Process Equipment","val":5.93},{"iso3":"TUR","cname":"Turkey","stage_role":"Downstream | Product Component","val":4.49},{"iso3":"TUR","cname":"Turkey","stage_role":"Final Product | Final Product","val":0.62},{"iso3":"TUR","cname":"Turkey","stage_role":"Midstream | Process Equipment","val":0.6},{"iso3":"TUR","cname":"Turkey","stage_role":"Midstream | Processed Material","val":2},{"iso3":"TUR","cname":"Turkey","stage_role":"Midstream | Product Component","val":0.49},{"iso3":"TUR","cname":"Turkey","stage_role":"Upstream | Raw Material","val":0.07},{"iso3":"USA","cname":"United States","stage_role":"Downstream | Process Equipment","val":20.11},{"iso3":"USA","cname":"United States","stage_role":"Downstream | Product Component","val":23.02},{"iso3":"USA","cname":"United States","stage_role":"Final Product | Final Product","val":266.27},{"iso3":"USA","cname":"United States","stage_role":"Midstream | Process Equipment","val":0.5},{"iso3":"USA","cname":"United States","stage_role":"Midstream | Processed Material","val":5.8},{"iso3":"USA","cname":"United States","stage_role":"Midstream | Product Component","val":4.59},{"iso3":"USA","cname":"United States","stage_role":"Upstream | Raw Material","val":0.2},{"iso3":"VEN","cname":"Venezuela","stage_role":"Midstream | Processed Material","val":6.79}];
 const MAP_IMP     = [{"iso3":"CHL","val":212.7141,"cname":"Chile"},{"iso3":"PAN","val":188.1646,"cname":"Panama"},{"iso3":"CHN","val":136.0696,"cname":"China"},{"iso3":"PER","val":130.0366,"cname":"Peru"},{"iso3":"GIN","val":102.898,"cname":"Guinea"},{"iso3":"COD","val":86.3127,"cname":"Congo - Kinshasa"},{"iso3":"PNG","val":77.7516,"cname":"Papua New Guinea"},{"iso3":"UZB","val":74.1327,"cname":"Uzbekistan"},{"iso3":"KAZ","val":50.7822,"cname":"Kazakhstan"},{"iso3":"IDN","val":38.859,"cname":"Indonesia"},{"iso3":"KGZ","val":38.0402,"cname":"Kyrgyzstan"},{"iso3":"BHR","val":30.196,"cname":"Bahrain"},{"iso3":"QAT","val":28.5294,"cname":"Qatar"},{"iso3":"AUS","val":26.618,"cname":"Australia"},{"iso3":"VNM","val":26.5613,"cname":"Vietnam"},{"iso3":"TZA","val":24.7109,"cname":"Tanzania"},{"iso3":"BWA","val":24.6301,"cname":"Botswana"},{"iso3":"SAU","val":23.268,"cname":"Saudi Arabia"},{"iso3":"IRN","val":22.0793,"cname":"Iran"},{"iso3":"MYS","val":17.9719,"cname":"Malaysia"},{"iso3":"JPN","val":17.9029,"cname":"Japan"},{"iso3":"DEU","val":16.9215,"cname":"Germany"},{"iso3":"KOR","val":16.8374,"cname":"South Korea"},{"iso3":"COL","val":15.2338,"cname":"Colombia"},{"iso3":"LBY","val":14.3153,"cname":"Libya"},{"iso3":"OMN","val":11.8521,"cname":"Oman"},{"iso3":"LAO","val":9.8053,"cname":"Laos"},{"iso3":"THA","val":9.4499,"cname":"Thailand"},{"iso3":"HKG","val":8.2701,"cname":"Hong Kong SAR China"},{"iso3":"USA","val":7.746,"cname":"United States"},{"iso3":"KHM","val":7.5141,"cname":"Cambodia"},{"iso3":"ITA","val":7.3214,"cname":"Italy"},{"iso3":"RUS","val":6.977,"cname":"Russia"},{"iso3":"SGP","val":6.8921,"cname":"Singapore"},{"iso3":"VGB","val":6.6805,"cname":"VGB"},{"iso3":"EGY","val":5.8722,"cname":"Egypt"},{"iso3":"TGO","val":5.1674,"cname":"Togo"},{"iso3":"S19","val":4.9126,"cname":"S19"},{"iso3":"CAN","val":4.2891,"cname":"Canada"},{"iso3":"TTO","val":4.0133,"cname":"Trinidad & Tobago"},{"iso3":"CHE","val":3.5963,"cname":"Switzerland"},{"iso3":"ARE","val":3.5757,"cname":"United Arab Emirates"},{"iso3":"SLE","val":3.3519,"cname":"Sierra Leone"},{"iso3":"GBR","val":3.3095,"cname":"United Kingdom"},{"iso3":"BGD","val":2.5134,"cname":"Bangladesh"},{"iso3":"BEL","val":2.458,"cname":"Belgium"},{"iso3":"LTU","val":2.4423,"cname":"Lithuania"},{"iso3":"PHL","val":2.4342,"cname":"Philippines"},{"iso3":"NLD","val":2.3049,"cname":"Netherlands"},{"iso3":"BRA","val":2.2838,"cname":"Brazil"},{"iso3":"GUY","val":2.074,"cname":"GUY"},{"iso3":"FRA","val":1.9998,"cname":"France"},{"iso3":"SEN","val":1.9862,"cname":"Senegal"},{"iso3":"GHA","val":1.9108,"cname":"Ghana"},{"iso3":"AUT","val":1.6008,"cname":"Austria"},{"iso3":"UKR","val":1.5817,"cname":"Ukraine"},{"iso3":"TUR","val":1.4882,"cname":"Turkey"},{"iso3":"ZMB","val":1.4071,"cname":"Zambia"},{"iso3":"SDN","val":1.3389,"cname":"Sudan"},{"iso3":"SWE","val":1.2516,"cname":"Sweden"},{"iso3":"DNK","val":1.1617,"cname":"Denmark"},{"iso3":"ESP","val":1.0229,"cname":"Spain"},{"iso3":"BOL","val":0.9816,"cname":"Bolivia"},{"iso3":"CZE","val":0.9614,"cname":"Czechia"},{"iso3":"BFA","val":0.9377,"cname":"Burkina Faso"},{"iso3":"MOZ","val":0.9006,"cname":"Mozambique"},{"iso3":"ZAF","val":0.7666,"cname":"South Africa"},{"iso3":"HUN","val":0.7325,"cname":"Hungary"},{"iso3":"FIN","val":0.6979,"cname":"Finland"},{"iso3":"MMR","val":0.6789,"cname":"Myanmar (Burma)"},{"iso3":"GRC","val":0.6524,"cname":"Greece"},{"iso3":"POL","val":0.639,"cname":"Poland"},{"iso3":"RWA","val":0.5979,"cname":"Rwanda"},{"iso3":"SVK","val":0.5453,"cname":"Slovakia"},{"iso3":"MLT","val":0.5396,"cname":"MLT"},{"iso3":"MKD","val":0.5141,"cname":"North Macedonia"},{"iso3":"DOM","val":0.4974,"cname":"Dominican Republic"},{"iso3":"TUN","val":0.4874,"cname":"Tunisia"},{"iso3":"CMR","val":0.4437,"cname":"Cameroon"},{"iso3":"ISR","val":0.4368,"cname":"Israel"}];
 const MAP_EXP     = [{"iso3":"USA","val":45.2437,"cname":"United States"},{"iso3":"ARE","val":8.4117,"cname":"United Arab Emirates"},{"iso3":"MEX","val":8.2657,"cname":"Mexico"},{"iso3":"VEN","val":6.7908,"cname":"Venezuela"},{"iso3":"CHN","val":6.0938,"cname":"China"},{"iso3":"OMN","val":5.9826,"cname":"Oman"},{"iso3":"DEU","val":5.231,"cname":"Germany"},{"iso3":"RUS","val":5.2287,"cname":"Russia"},{"iso3":"JPN","val":4.902,"cname":"Japan"},{"iso3":"ITA","val":4.5237,"cname":"Italy"},{"iso3":"SAU","val":4.1911,"cname":"Saudi Arabia"},{"iso3":"MNE","val":4.1063,"cname":"MNE"},{"iso3":"TUR","val":3.8755,"cname":"Turkey"},{"iso3":"BGD","val":3.8029,"cname":"Bangladesh"},{"iso3":"BRA","val":3.6368,"cname":"Brazil"},{"iso3":"HTI","val":3.5469,"cname":"Haiti"},{"iso3":"MYS","val":3.3981,"cname":"Malaysia"},{"iso3":"ESP","val":3.2445,"cname":"Spain"},{"iso3":"S19","val":3.0832,"cname":"S19"},{"iso3":"IRN","val":2.9081,"cname":"Iran"},{"iso3":"IDN","val":2.8468,"cname":"Indonesia"},{"iso3":"GBR","val":2.843,"cname":"United Kingdom"},{"iso3":"KOR","val":2.83,"cname":"South Korea"},{"iso3":"VNM","val":2.742,"cname":"Vietnam"},{"iso3":"THA","val":2.6734,"cname":"Thailand"},{"iso3":"EGY","val":2.3936,"cname":"Egypt"},{"iso3":"NPL","val":2.0572,"cname":"Nepal"},{"iso3":"ISR","val":1.945,"cname":"Israel"},{"iso3":"DZA","val":1.8543,"cname":"Algeria"},{"iso3":"AUS","val":1.8028,"cname":"Australia"},{"iso3":"NLD","val":1.6851,"cname":"Netherlands"},{"iso3":"NGA","val":1.4981,"cname":"Nigeria"},{"iso3":"QAT","val":1.4679,"cname":"Qatar"},{"iso3":"CAN","val":1.3691,"cname":"Canada"},{"iso3":"IRQ","val":1.2972,"cname":"Iraq"},{"iso3":"MAR","val":1.2886,"cname":"Morocco"},{"iso3":"FRA","val":1.2793,"cname":"France"},{"iso3":"ZAF","val":1.2572,"cname":"South Africa"},{"iso3":"ECU","val":1.2279,"cname":"Ecuador"},{"iso3":"LKA","val":1.1917,"cname":"Sri Lanka"},{"iso3":"HUN","val":1.0975,"cname":"Hungary"},{"iso3":"KEN","val":1.041,"cname":"Kenya"},{"iso3":"GRC","val":1.0207,"cname":"Greece"},{"iso3":"PRK","val":0.999,"cname":"PRK"},{"iso3":"PRY","val":0.9908,"cname":"Paraguay"},{"iso3":"MWI","val":0.9615,"cname":"Malawi"},{"iso3":"ARG","val":0.9487,"cname":"Argentina"},{"iso3":"BLR","val":0.8713,"cname":"Belarus"},{"iso3":"CZE","val":0.8687,"cname":"Czechia"},{"iso3":"ROU","val":0.863,"cname":"Romania"},{"iso3":"COL","val":0.8456,"cname":"Colombia"},{"iso3":"TZA","val":0.8293,"cname":"Tanzania"},{"iso3":"ALB","val":0.827,"cname":"Albania"},{"iso3":"SGP","val":0.8266,"cname":"Singapore"},{"iso3":"KWT","val":0.8035,"cname":"Kuwait"},{"iso3":"CHE","val":0.7983,"cname":"Switzerland"},{"iso3":"PYF","val":0.7851,"cname":"PYF"},{"iso3":"ARM","val":0.7623,"cname":"Armenia"},{"iso3":"GHA","val":0.754,"cname":"Ghana"},{"iso3":"POL","val":0.7502,"cname":"Poland"},{"iso3":"PAK","val":0.7384,"cname":"Pakistan"},{"iso3":"YEM","val":0.7321,"cname":"Yemen"},{"iso3":"GEO","val":0.7277,"cname":"Georgia"},{"iso3":"BGR","val":0.6962,"cname":"Bulgaria"},{"iso3":"PRT","val":0.6871,"cname":"Portugal"},{"iso3":"UGA","val":0.6857,"cname":"Uganda"},{"iso3":"DJI","val":0.6796,"cname":"Djibouti"},{"iso3":"SOM","val":0.6694,"cname":"Somalia"},{"iso3":"DOM","val":0.6595,"cname":"Dominican Republic"},{"iso3":"BEL","val":0.6382,"cname":"Belgium"},{"iso3":"TUN","val":0.6063,"cname":"Tunisia"},{"iso3":"SLE","val":0.5781,"cname":"Sierra Leone"},{"iso3":"HND","val":0.5757,"cname":"Honduras"},{"iso3":"BIH","val":0.5496,"cname":"Bosnia & Herzegovina"},{"iso3":"SVN","val":0.5453,"cname":"Slovenia"},{"iso3":"BHR","val":0.545,"cname":"Bahrain"},{"iso3":"MOZ","val":0.5419,"cname":"Mozambique"},{"iso3":"HRV","val":0.5046,"cname":"Croatia"},{"iso3":"PHL","val":0.4883,"cname":"Philippines"},{"iso3":"HKG","val":0.4853,"cname":"Hong Kong SAR China"}];
-const BENCH_DATA  = [{"stage_role":"Downstream | Process Equipment","group":"focal","pct":9.7},{"stage_role":"Downstream | Product Component","group":"focal","pct":21.7},{"stage_role":"Final Product | Final Product","group":"focal","pct":6.5},{"stage_role":"Midstream | Process Equipment","group":"focal","pct":5.6},{"stage_role":"Midstream | Processed Material","group":"focal","pct":23.2},{"stage_role":"Midstream | Product Component","group":"focal","pct":2.2},{"stage_role":"Upstream | Raw Material","group":"focal","pct":31},{"stage_role":"Downstream | Process Equipment","group":"world","pct":16.4},{"stage_role":"Downstream | Product Component","group":"world","pct":29.6},{"stage_role":"Final Product | Final Product","group":"world","pct":4.8},{"stage_role":"Midstream | Process Equipment","group":"world","pct":10.7},{"stage_role":"Midstream | Processed Material","group":"world","pct":30.1},{"stage_role":"Midstream | Product Component","group":"world","pct":1.7},{"stage_role":"Upstream | Raw Material","group":"world","pct":6.7}];
+const BENCH_DATA  = [{"stage_role":"Downstream | Process Equipment","group":"focal","pct":9.7},{"stage_role":"Downstream | Product Component","group":"focal","pct":21.7},{"stage_role":"Final Product | Final Product","group":"focal","pct":6.5},{"stage_role":"Midstream | Process Equipment","group":"focal","pct":5.6},{"stage_role":"Midstream | Processed Material","group":"focal","pct":23.2},{"stage_role":"Midstream | Product Component","group":"focal","pct":2.2},{"stage_role":"Upstream | Raw Material","group":"focal","pct":31},{"stage_role":"Downstream | Process Equipment","group":"WB Region","pct":14.1},{"stage_role":"Downstream | Product Component","group":"WB Region","pct":26.1},{"stage_role":"Final Product | Final Product","group":"WB Region","pct":10.4},{"stage_role":"Midstream | Process Equipment","group":"WB Region","pct":7.5},{"stage_role":"Midstream | Processed Material","group":"WB Region","pct":34.4},{"stage_role":"Midstream | Product Component","group":"WB Region","pct":1.6},{"stage_role":"Upstream | Raw Material","group":"WB Region","pct":5.9},{"stage_role":"Downstream | Process Equipment","group":"UN Subregion","pct":16.6},{"stage_role":"Downstream | Product Component","group":"UN Subregion","pct":24.1},{"stage_role":"Final Product | Final Product","group":"UN Subregion","pct":9.1},{"stage_role":"Midstream | Process Equipment","group":"UN Subregion","pct":9.6},{"stage_role":"Midstream | Processed Material","group":"UN Subregion","pct":33.5},{"stage_role":"Midstream | Product Component","group":"UN Subregion","pct":1.4},{"stage_role":"Upstream | Raw Material","group":"UN Subregion","pct":5.8},{"stage_role":"Downstream | Process Equipment","group":"World","pct":16.4},{"stage_role":"Downstream | Product Component","group":"World","pct":29.6},{"stage_role":"Final Product | Final Product","group":"World","pct":4.8},{"stage_role":"Midstream | Process Equipment","group":"World","pct":10.7},{"stage_role":"Midstream | Processed Material","group":"World","pct":30.1},{"stage_role":"Midstream | Product Component","group":"World","pct":1.7},{"stage_role":"Upstream | Raw Material","group":"World","pct":6.7}];
 const RADAR_STAGE = [{"label":"Raw Materials","focal":0.0111,"world":0.2657},{"label":"Processed Mat.","focal":0.1712,"world":0.1973},{"label":"Components","focal":0.1608,"world":0.2971},{"label":"Equipment","focal":0.2588,"world":0.115},{"label":"Final Products","focal":0.427,"world":0.1583}];
 const RADAR_SHAP  = [{"label":"Chemicals","focal":0.014,"world":0.0553},{"label":"Electronics","focal":0.0006,"world":0.0008},{"label":"Industrial Materials","focal":0.0003,"world":0.002},{"label":"Machinery","focal":0,"world":0},{"label":"Metals","focal":0.0706,"world":0.0718}];
 const PC_TS       = [{"year":2003,"pc_score":0.0056},{"year":2004,"pc_score":0.0127},{"year":2005,"pc_score":0.0278},{"year":2006,"pc_score":0.0136},{"year":2007,"pc_score":0.0289},{"year":2008,"pc_score":0.0334},{"year":2009,"pc_score":0.0085},{"year":2010,"pc_score":0.0157},{"year":2011,"pc_score":0.0203},{"year":2012,"pc_score":0.0156},{"year":2013,"pc_score":0.0105},{"year":2014,"pc_score":0.0048},{"year":2015,"pc_score":0.0208},{"year":2016,"pc_score":0.004},{"year":2017,"pc_score":0.0214},{"year":2018,"pc_score":0.0129},{"year":2019,"pc_score":0.0174},{"year":2020,"pc_score":0.0258},{"year":2021,"pc_score":0.0638},{"year":2022,"pc_score":0.3245},{"year":2023,"pc_score":0.6151},{"year":2024,"pc_score":0.6653}];
@@ -426,15 +448,18 @@ function irShowPane(id) {
     PANE_INIT[id] = true;
     setTimeout(function() {
       try {
-        if (id==="series-levels")  drawSeriesLevels();
-        if (id==="series-growth")  drawSeriesGrowth();
-        if (id==="partners-imp")   chartPartners("chart-partners-imp", PARTNERS_IMP, "#8A4200", COUNTRY + " | " + TECH + " — Top Import Sources");
-        if (id==="partners-exp")   chartPartners("chart-partners-exp", PARTNERS_EXP, "#1A8C28", COUNTRY + " | " + TECH + " — Top Export Destinations");
-        if (id==="bench")          drawBench();
+        if (id==="partners")         drawTradePartners();
+        if (id==="series-levels")    drawSeriesLevels();
+        if (id==="series-growth")    drawSeriesGrowth();
+        if (id==="avg-levels")       drawAvgLevels();
+        if (id==="avg-growth")       drawAvgGrowth();
+        if (id==="bench-wb")         drawBenchGroup("wb");
+        if (id==="bench-un")         drawBenchGroup("un");
+        if (id==="bench-world")      drawBenchGroup("world");
         if (id==="treemap-exp")    drawTreemap("chart-tm-exp", "exp", COUNTRY + " | " + TECH + " — Export Composition");
         if (id==="treemap-imp")    drawTreemap("chart-tm-imp", "imp", COUNTRY + " | " + TECH + " — Import Composition");
         if (id==="pc-scores")      drawPC();
-        if (id==="map-trade")      initMap();
+        if (id==="map-trade")      setTimeout(initMap, 150);
         if (id==="radar-stage")    drawRadar("stage");
         if (id==="radar-shap")     drawRadar("shap");
       } catch(e) { console.error("Pane init error [" + id + "]:", e); }
@@ -504,19 +529,43 @@ function buildPartnersCard(containerId, partners, flowLabel, dotColor, limit=10)
     </div>`;
 }
 
-function chartPartners(divId, partners, color, title) {
-  const d = partners.slice(0,15);
-  Plotly.newPlot(divId, [{
-    x: d.map(p=>p.val), y: d.map(p=>p.cname),
-    type:"bar", orientation:"h",
-    marker:{color:color, opacity:0.8},
-    hovertemplate:"%{y}: $%{x:.1f}M<extra></extra>"
-  }], mergeLayout({
-    title:{text:title,font:{size:13,color:"#f1f8f1"},x:0},
-    margin:{t:36,b:26,l:120,r:12},
-    xaxis:{title:"avg mn USD",gridcolor:"rgba(255,255,255,.06)"},
-    yaxis:{automargin:true,tickfont:{size:10},gridcolor:"rgba(255,255,255,.06)"}
-  }), CFG);
+// ── Trade Partners: stacked bar by stage_role ─────────────────────────────────
+var tpMode = "imp";
+function tpToggle(mode) {
+  tpMode = mode;
+  document.getElementById("chart-tp-imp").style.display = mode==="imp"?"block":"none";
+  document.getElementById("chart-tp-exp").style.display = mode==="exp"?"block":"none";
+  document.getElementById("tp-imp-btn").classList.toggle("active", mode==="imp");
+  document.getElementById("tp-exp-btn").classList.toggle("active", mode==="exp");
+}
+
+function drawTradePartners() {
+  ["imp","exp"].forEach(function(dir) {
+    const data = dir==="imp" ? TP_IMP_SR : TP_EXP_SR;
+    const topPartners = dir==="imp" ? PARTNERS_IMP.slice(0,15).map(p=>p.cname) : PARTNERS_EXP.slice(0,15).map(p=>p.cname);
+    const srs = SR_ORDER.filter(function(s){return s!=="Unknown | Unknown";});
+    const traces = srs.map(function(sr) {
+      return {
+        x: topPartners.map(function(cn){
+          var row = data.find(function(r){return r.cname===cn && r.stage_role===sr;});
+          return row ? row.val : 0;
+        }),
+        y: topPartners,
+        type:"bar", orientation:"h",
+        name: sr.replace(/ \| /g," · "),
+        marker:{color:srColor(sr), opacity:0.85},
+        hovertemplate:sr.replace(/ \| /g," · ") + "<br>%{y}: $%{x:.1f}M<extra></extra>"
+      };
+    });
+    Plotly.newPlot("chart-tp-" + dir, traces, mergeLayout({
+      title:{text:COUNTRY + " | " + TECH + (dir==="imp" ? " — Import Sources" : " — Export Destinations"),font:{size:13,color:"#f1f8f1"},x:0},
+      barmode:"stack",
+      xaxis:{title:"avg annual (mn USD)"},
+      yaxis:{automargin:true,tickfont:{size:10}},
+      margin:{t:36,b:36,l:140,r:12},
+      legend:{orientation:"h",y:-0.18,font:{size:9},bgcolor:"rgba(0,0,0,0)"}
+    }), CFG);
+  });
 }
 
 // ── Time series toggle ────────────────────────────────────────────────────────
@@ -574,7 +623,7 @@ function drawSeriesLevels() {
 
 function drawSeriesGrowth() {
   const srs = GR_AVG_DATA.map(r=>r.stage_role);
-  Plotly.newPlot("chart-growth", [
+  Plotly.newPlot("chart-ts-growth", [
     {x:GR_AVG_DATA.map(r=>r.imp), y:srs, type:"bar", orientation:"h",
       name:"Imports", marker:{color:"#8A4200",opacity:.8},
       hovertemplate:"%{y}<br>%{x:.3f}<extra></extra>"},
@@ -635,21 +684,75 @@ function showProduct(idx) {
 }
 
 // ── Benchmarking (World only) ─────────────────────────────────────────────────
-function drawBench() {
+// ── Averages ─────────────────────────────────────────────────────────────────
+var avMode = "imp";
+function avToggle(mode) {
+  avMode = mode;
+  ["imp","exp","bal"].forEach(function(m) {
+    document.getElementById("chart-av-"+m).style.display = m===mode?"block":"none";
+    document.getElementById("av-"+m+"-btn").classList.toggle("active", m===mode);
+  });
+}
+
+function drawAvgLevels() {
+  const srs = SR_AVG_DATA.map(r => r.stage_role.replace(/ \| /g," · "));
+  ["imp","exp","bal"].forEach(function(dir) {
+    const key = dir==="imp"?"avg_imp_mn":dir==="exp"?"avg_exp_mn":"avg_bal_mn";
+    const colors = SR_AVG_DATA.map(r => srColor(r.stage_role));
+    Plotly.newPlot("chart-av-"+dir, [{
+      x: SR_AVG_DATA.map(r => r[key]),
+      y: srs,
+      type:"bar", orientation:"h",
+      marker:{color:colors, opacity:0.85},
+      hovertemplate:"%{y}<br>$%{x:.1f}M/yr<extra></extra>"
+    }], mergeLayout({
+      title:{text:COUNTRY+" | "+TECH+" — Avg Annual "+(dir==="imp"?"Imports":dir==="exp"?"Exports":"Net Balance")+" by Stage",font:{size:13,color:"#f1f8f1"},x:0},
+      xaxis:{title:"avg mn USD/yr"},
+      yaxis:{automargin:true,tickfont:{size:10}},
+      margin:{t:36,b:36,l:210,r:12}
+    }), CFG);
+  });
+}
+
+function drawAvgGrowth() {
+  const srs = GR_AVG_DATA.map(r=>r.stage_role.replace(/ \| /g," · "));
+  Plotly.newPlot("chart-av-growth", [
+    {x:GR_AVG_DATA.map(r=>r.imp), y:srs, type:"bar", orientation:"h",
+      name:"Imports", marker:{color:"#8A4200",opacity:.8}},
+    {x:GR_AVG_DATA.map(r=>r.exp), y:srs, type:"bar", orientation:"h",
+      name:"Exports", marker:{color:"#1A8C28",opacity:.8}}
+  ], mergeLayout({
+    title:{text:COUNTRY+" | "+TECH+" — Avg Relative Growth Rate by Stage",font:{size:13,color:"#f1f8f1"},x:0},
+    barmode:"group",
+    xaxis:{title:"Δlog relative to sector avg"},
+    yaxis:{automargin:true,tickfont:{size:10}},
+    margin:{t:36,b:36,l:210,r:12}
+  }), CFG);
+}
+
+// ── Benchmarking (focal vs comparison group, imports) ─────────────────────────
+function drawBenchGroup(grp) {
+  const divId = "chart-bench-" + grp;
+  const grpKey = grp==="wb" ? "WB Region" : grp==="un" ? "UN Subregion" : "World";
+  const grpColor = grp==="wb" ? "rgba(59,130,246,.7)" : grp==="un" ? "rgba(234,179,8,.7)" : "rgba(255,255,255,.2)";
   const focal = BENCH_DATA.filter(r => r.group==="focal");
-  const world = BENCH_DATA.filter(r => r.group==="world");
+  const comp  = BENCH_DATA.filter(r => r.group===grpKey);
   const srs   = focal.map(r => r.stage_role.replace(/ \| /g," · "));
-  Plotly.newPlot("chart-bench", [
+  if (!comp.length) {
+    document.getElementById(divId).innerHTML = `<p style="color:#7a9b7d;padding:20px;">` + grpKey + ` data not available for this country.</p>`;
+    return;
+  }
+  Plotly.newPlot(divId, [
     {x:focal.map(r=>r.pct), y:srs, type:"bar", orientation:"h",
       name:COUNTRY, marker:{color:"rgba(60,181,74,.7)",line:{color:"#3cb54a",width:.5}},
       hovertemplate:"%{y}<br>" + COUNTRY + ": %{x:.1f}%<extra></extra>"},
-    {x:world.map(r=>r.pct), y:srs, type:"bar", orientation:"h",
-      name:"World avg", marker:{color:"rgba(255,255,255,.18)"},
-      hovertemplate:"%{y}<br>World: %{x:.1f}%<extra></extra>"}
+    {x:comp.map(r=>r.pct), y:srs, type:"bar", orientation:"h",
+      name:grpKey, marker:{color:grpColor},
+      hovertemplate:"%{y}<br>" + grpKey + ": %{x:.1f}%<extra></extra>"}
   ], mergeLayout({
-    title:{text:`${COUNTRY} | ${TECH} — Import structure vs World`,font:{size:13,color:"#f1f8f1"},x:0},
+    title:{text:COUNTRY+" | "+TECH+" — Import structure vs "+grpKey,font:{size:13,color:"#f1f8f1"},x:0},
     barmode:"group",
-    xaxis:{title:"Share of imports (%)", ticksuffix:"%"},
+    xaxis:{title:"Share of imports (%)",ticksuffix:"%"},
     yaxis:{automargin:true,tickfont:{size:10}},
     margin:{t:36,b:36,l:200,r:12}
   }), CFG);
@@ -868,8 +971,6 @@ document.addEventListener("DOMContentLoaded", function() {
   try { renderKPI(); } catch(e) { console.error("renderKPI:", e); }
   try { renderSRTable(); } catch(e) { console.error("renderSRTable:", e); }
   // Partners cards: also pure HTML
-  try { buildPartnersCard("partners-imp-card", PARTNERS_IMP, "Import Sources", "#8A4200"); } catch(e) {}
-  try { buildPartnersCard("partners-exp-card", PARTNERS_EXP, "Export Destinations", "#1A8C28"); } catch(e) {}
   try { renderPolicy(); } catch(e) { console.error("renderPolicy:", e); }
   // Products list (pure HTML, no Plotly)
   try { buildProducts(); } catch(e) { console.error("buildProducts:", e); }
