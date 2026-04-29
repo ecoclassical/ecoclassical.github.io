@@ -290,7 +290,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="ov-net" id="ov-net"></div>
       <div id="ov-list"></div>
     </div>
-    <div id="ir-map-plotly" style="width:100%;height:480px;border-radius:8px;overflow:hidden;"></div>
+    <div id="map-debug" style="color:#3cb54a;font-size:11px;padding:4px 8px;background:rgba(0,0,0,.3);border-radius:4px;margin-bottom:4px;min-height:18px;"></div>
+  <div id="ir-map-plotly" style="width:100%;height:480px;border-radius:8px;overflow:hidden;"></div>
     <svg id="ir-map-svg" style="position:absolute;top:0;left:0;width:100%;height:480px;pointer-events:none;display:block;"></svg>
   </div>
   <div style="display:flex;gap:16px;margin-top:6px;font-size:10px;color:rgba(255,255,255,.35);">
@@ -1056,6 +1057,12 @@ function buildSRLegend(containerId) {
 
 // ── Trade Map — Plotly choropleth + scattergeo (reliable, exact atlas look) ─────
 var mapInit=false, mapProj, mapPath, irCentroidsLL={};
+
+function debugMap(msg) {
+  var el = document.getElementById("map-debug");
+  if(el) el.textContent = msg;
+  console.log("[MAP DEBUG]", msg);
+}
 var fmtV = function(v){return v>=1e6?"$"+(v/1e6).toFixed(1)+"B":v>=1e3?"$"+(v/1e3).toFixed(1)+"M":"$"+v.toFixed(0)+"K";};
 var mapProduct_sel = "all";
 
@@ -1079,10 +1086,19 @@ function initMapCentroids() {
 }
 
 function initMap() {
+  debugMap("initMap() called, mapInit=" + mapInit);
   if(mapInit){irUpdateMap();return;}
   mapInit=true;
-  initMapCentroids();
-  irUpdateMap();
+  try {
+    debugMap("Computing centroids...");
+    initMapCentroids();
+    debugMap("Centroids done, IND=" + JSON.stringify(irCentroidsLL["IND"]));
+    irUpdateMap();
+    debugMap("Map rendered OK");
+  } catch(e) {
+    debugMap("ERROR: " + e.message);
+    console.error("initMap error:", e);
+  }
 }
 
 // mapToggle removed — both suppliers+buyers shown simultaneously

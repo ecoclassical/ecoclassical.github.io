@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Map Test</title>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.27.0/plotly.min.js"></script>
+<style>
+body { background: #0a0f14; margin: 0; }
+#map { width: 900px; height: 500px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+var suppliers = ["CHN","MYS","VNM","KOR","TWN","DEU","JPN","SGP","USA","THA"];
+var buyers    = ["USA","ARE","OMN","RUS","DEU","NLD","GBR","BEL","AUS","CAN"];
+
+// India centroid
+var focalLon = 78.9, focalLat = 20.6;
+var countryLL = {
+  CHN:[104.2,35.9], MYS:[109.7,4.2], VNM:[108.3,14.1], KOR:[127.8,35.9],
+  TWN:[120.9,23.7], DEU:[10.5,51.2], JPN:[138.3,36.2], SGP:[103.8,1.4],
+  USA:[-95.7,37.1], THA:[100.9,15.9], ARE:[53.8,23.4], OMN:[56.9,21.5],
+  RUS:[37.6,55.7], NLD:[5.3,52.1], GBR:[-1.2,52.4], BEL:[4.5,50.5],
+  AUS:[133.8,-25.3], CAN:[-96.8,56.1]
+};
+var supColor="rgba(217,119,6,.75)", buyColor="rgba(3,105,161,.7)";
+
+var arcLonS=[], arcLatS=[];
+suppliers.forEach(function(iso){
+  var ll=countryLL[iso]; if(!ll) return;
+  arcLonS.push(focalLon,ll[0],null); arcLatS.push(focalLat,ll[1],null);
+});
+var arcLonB=[], arcLatB=[];
+buyers.forEach(function(iso){
+  var ll=countryLL[iso]; if(!ll) return;
+  arcLonB.push(focalLon,ll[0],null); arcLatB.push(focalLat,ll[1],null);
+});
+
+var sLon=suppliers.map(function(iso){return countryLL[iso]?countryLL[iso][0]:null;}).filter(Boolean);
+var sLat=suppliers.map(function(iso){return countryLL[iso]?countryLL[iso][1]:null;}).filter(Boolean);
+var bLon=buyers.map(function(iso){return countryLL[iso]?countryLL[iso][0]:null;}).filter(Boolean);
+var bLat=buyers.map(function(iso){return countryLL[iso]?countryLL[iso][1]:null;}).filter(Boolean);
+
+Plotly.newPlot("map", [
+  {type:"choropleth",locationmode:"ISO-3",locations:suppliers,z:suppliers.map(function(){return 1;}),
+    colorscale:[[0,"rgba(180,90,5,.5)"],[1,"rgba(180,90,5,.5)"]],showscale:false,hoverinfo:"skip",
+    marker:{line:{width:0.4,color:"rgba(255,255,255,.1)"}}},
+  {type:"choropleth",locationmode:"ISO-3",locations:buyers,z:buyers.map(function(){return 1;}),
+    colorscale:[[0,"rgba(2,80,130,.45)"],[1,"rgba(2,80,130,.45)"]],showscale:false,hoverinfo:"skip",
+    marker:{line:{width:0.4,color:"rgba(255,255,255,.1)"}}},
+  {type:"choropleth",locationmode:"ISO-3",locations:["IND"],z:[2],
+    colorscale:[[0,"rgba(7,51,9,.9)"],[1,"rgba(7,51,9,.9)"]],showscale:false,hoverinfo:"skip",
+    marker:{line:{width:2,color:"#3cb54a"}}},
+  {type:"scattergeo",mode:"lines",lon:arcLonS,lat:arcLatS,
+    line:{color:supColor,width:1.4},opacity:0.5,hoverinfo:"skip",showlegend:false},
+  {type:"scattergeo",mode:"lines",lon:arcLonB,lat:arcLatB,
+    line:{color:buyColor,width:1.0},opacity:0.4,hoverinfo:"skip",showlegend:false},
+  {type:"scattergeo",mode:"markers+text",lon:sLon,lat:sLat,text:suppliers.slice(0,sLon.length),
+    textposition:"middle center",textfont:{size:8,color:"rgba(255,255,255,.9)"},
+    marker:{size:20,color:supColor,opacity:0.82,line:{width:1,color:"rgba(255,255,255,.3)"}},
+    hoverinfo:"skip",showlegend:false},
+  {type:"scattergeo",mode:"markers+text",lon:bLon,lat:bLat,text:buyers.slice(0,bLon.length),
+    textposition:"middle center",textfont:{size:8,color:"rgba(255,255,255,.9)"},
+    marker:{size:15,color:buyColor,opacity:0.75,line:{width:1,color:"rgba(255,255,255,.3)"}},
+    hoverinfo:"skip",showlegend:false},
+  {type:"scattergeo",mode:"markers+text",lon:[focalLon],lat:[focalLat],text:["IND"],
+    textposition:"middle center",textfont:{size:9,color:"#fff"},
+    marker:{size:[24],color:"rgba(7,51,9,.9)",opacity:1,line:{width:2,color:"#3cb54a"}},
+    hoverinfo:"skip",showlegend:false}
+], {
+  geo:{bgcolor:"#080f1a",landcolor:"#0d1f12",showocean:true,oceancolor:"#060b12",
+    showcountries:true,countrycolor:"rgba(255,255,255,.12)",showland:true,
+    showframe:false,showcoastlines:false,projection:{type:"natural earth"},
+    lataxis:{range:[-60,85]},lonaxis:{range:[-180,180]}},
+  paper_bgcolor:"#0a0f14",margin:{t:10,b:10,l:10,r:10},showlegend:false
+}, {displayModeBar:false,responsive:true});
+
+console.log("Plotly map rendered successfully");
+</script>
+</body>
+</html>
