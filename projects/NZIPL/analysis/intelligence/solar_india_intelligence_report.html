@@ -275,9 +275,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <div id="ir-pane-map-trade" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">02 —</span> Trade Map</div>
   <div class="tl-row" style="margin-bottom:4px;">
-    <button class="tl-btn active" id="map-imp-btn" onclick="mapToggle('imp')">Imports</button>
-    <button class="tl-btn" id="map-exp-btn" onclick="mapToggle('exp')">Exports</button>
-    <span style="width:1px;height:18px;background:rgba(255,255,255,.15);display:inline-block;margin:0 4px;"></span>
     <button class="tl-btn active" id="mp-all-btn" onclick="mapProduct('all')">All Solar</button>
     <button class="tl-btn" id="mp-up-btn"  onclick="mapProduct('upstream')">Upstream</button>
     <button class="tl-btn" id="mp-mid-btn" onclick="mapProduct('midstream')">Midstream</button>
@@ -1058,7 +1055,7 @@ function buildSRLegend(containerId) {
 }
 
 // ── Trade Map — Plotly choropleth + scattergeo (reliable, exact atlas look) ─────
-var mapMode="imp", mapInit=false, mapProj, mapPath, irCentroidsLL={};
+var mapInit=false, mapProj, mapPath, irCentroidsLL={};
 var fmtV = function(v){return v>=1e6?"$"+(v/1e6).toFixed(1)+"B":v>=1e3?"$"+(v/1e3).toFixed(1)+"M":"$"+v.toFixed(0)+"K";};
 var mapProduct_sel = "all";
 
@@ -1088,12 +1085,7 @@ function initMap() {
   irUpdateMap();
 }
 
-function mapToggle(mode) {
-  mapMode=mode;
-  document.getElementById("map-imp-btn").classList.toggle("active",mode==="imp");
-  document.getElementById("map-exp-btn").classList.toggle("active",mode==="exp");
-  irUpdateMap();
-}
+// mapToggle removed — both suppliers+buyers shown simultaneously
 
 function mapProduct(sel) {
   mapProduct_sel=sel;
@@ -1110,85 +1102,98 @@ function irUpdateMap() {
     allImp=MAP_STAGE_IMP[mapProduct_sel];
     allExp=MAP_STAGE_EXP[mapProduct_sel];
   }
-  var partners = mapMode==="imp" ? allImp : allExp;
-  var ptColor  = mapMode==="imp" ? "rgba(217,119,6,.7)" : "rgba(3,105,161,.65)";
-  var chorCol  = mapMode==="imp" ? "rgba(180,90,5,.6)"  : "rgba(2,80,130,.55)";
   var focalKey = "IND";
   var focalLL  = irCentroidsLL[focalKey] || [78.9, 20.6];
+  var supColor = "rgba(217,119,6,.75)";
+  var buyColor = "rgba(3,105,161,.7)";
 
-  // Choropleth: partner countries
-  var pIso3 = partners.slice(0,30).map(function(p){return p.iso3;}).filter(function(c){return c!==focalKey;});
-  var pVals = pIso3.map(function(_){return 1;});
+  // Choropleth: supplier countries (orange)
+  var supIso = allImp.slice(0,20).map(function(p){return p.iso3;}).filter(function(c){return c!==focalKey;});
+  // Choropleth: buyer countries (blue)
+  var buyIso = allExp.slice(0,20).map(function(p){return p.iso3;}).filter(function(c){return c!==focalKey;});
 
-  // Arc lines: lon/lat pairs with null separators
+  // Arc lines for suppliers
   var arcLon=[], arcLat=[];
-  partners.slice(0,15).forEach(function(pt){
+  allImp.slice(0,12).forEach(function(pt){
     var ll=irCentroidsLL[pt.iso3]; if(!ll) return;
-    arcLon.push(focalLL[0],ll[0],null);
-    arcLat.push(focalLL[1],ll[1],null);
+    arcLon.push(focalLL[0],ll[0],null); arcLat.push(focalLL[1],ll[1],null);
+  });
+  // Arc lines for buyers
+  var arcLon2=[], arcLat2=[];
+  allExp.slice(0,8).forEach(function(pt){
+    var ll=irCentroidsLL[pt.iso3]; if(!ll) return;
+    arcLon2.push(focalLL[0],ll[0],null); arcLat2.push(focalLL[1],ll[1],null);
   });
 
-  // Bubbles
-  var bISO=[],bLon=[],bLat=[],bText=[],bSize=[],bColor=[];
-  var maxV = Math.max.apply(null,partners.slice(0,12).map(function(p){return p.val;}))||1;
-  partners.slice(0,12).forEach(function(pt){
+  // Supplier bubbles
+  var sLon=[],sLat=[],sText=[],sSize=[];
+  var maxS=Math.max.apply(null,allImp.slice(0,12).map(function(p){return p.val;}))||1;
+  allImp.slice(0,12).forEach(function(pt){
     var ll=irCentroidsLL[pt.iso3]; if(!ll) return;
-    bISO.push(pt.iso3); bLon.push(ll[0]); bLat.push(ll[1]);
-    bText.push(pt.iso3);
-    bSize.push(Math.sqrt(pt.val/maxV)*36+8);
-    bColor.push(ptColor);
+    sLon.push(ll[0]);sLat.push(ll[1]);sText.push(pt.iso3);
+    sSize.push(Math.sqrt(pt.val/maxS)*34+7);
+  });
+  // Buyer bubbles
+  var bLon=[],bLat=[],bText=[],bSize=[];
+  var maxB=Math.max.apply(null,allExp.slice(0,8).map(function(p){return p.val;}))||1;
+  allExp.slice(0,8).forEach(function(pt){
+    var ll=irCentroidsLL[pt.iso3]; if(!ll) return;
+    bLon.push(ll[0]);bLat.push(ll[1]);bText.push(pt.iso3);
+    bSize.push(Math.sqrt(pt.val/maxB)*24+6);
   });
 
   var traces = [
-    // Base: partner country coloring
-    {type:"choropleth",locationmode:"ISO-3",locations:pIso3,z:pVals,
-      colorscale:[[0,chorCol],[1,chorCol]],showscale:false,
-      hoverinfo:"skip",
-      marker:{line:{width:0.4,color:"rgba(255,255,255,.12)"}}},
-    // India highlight
+    // Supplier countries
+    {type:"choropleth",locationmode:"ISO-3",locations:supIso,z:supIso.map(function(){return 1;}),
+      colorscale:[[0,"rgba(180,90,5,.5)"],[1,"rgba(180,90,5,.5)"]],showscale:false,hoverinfo:"skip",
+      marker:{line:{width:0.4,color:"rgba(255,255,255,.1)"}}},
+    // Buyer countries
+    {type:"choropleth",locationmode:"ISO-3",locations:buyIso,z:buyIso.map(function(){return 1;}),
+      colorscale:[[0,"rgba(2,80,130,.45)"],[1,"rgba(2,80,130,.45)"]],showscale:false,hoverinfo:"skip",
+      marker:{line:{width:0.4,color:"rgba(255,255,255,.1)"}}},
+    // India
     {type:"choropleth",locationmode:"ISO-3",locations:["IND"],z:[2],
-      colorscale:[[0,"rgba(7,51,9,.9)"],[1,"rgba(7,51,9,.9)"]],showscale:false,
-      hoverinfo:"skip",
+      colorscale:[[0,"rgba(7,51,9,.9)"],[1,"rgba(7,51,9,.9)"]],showscale:false,hoverinfo:"skip",
       marker:{line:{width:1.8,color:"#3cb54a"}}},
-    // Arcs
+    // Supplier arcs
     {type:"scattergeo",mode:"lines",lon:arcLon,lat:arcLat,
-      line:{color:ptColor,width:1.4},opacity:0.5,hoverinfo:"skip",showlegend:false},
-    // Partner bubbles
-    {type:"scattergeo",mode:"markers+text",lon:bLon,lat:bLat,
-      text:bText,textposition:"middle center",
-      textfont:{size:8.5,color:"rgba(255,255,255,.9)",family:"Archivo,sans-serif"},
-      marker:{size:bSize,color:ptColor,opacity:0.75,
-        line:{width:0.8,color:"rgba(255,255,255,.3)"}},
+      line:{color:supColor,width:1.2},opacity:0.45,hoverinfo:"skip",showlegend:false},
+    // Buyer arcs
+    {type:"scattergeo",mode:"lines",lon:arcLon2,lat:arcLat2,
+      line:{color:buyColor,width:1.0},opacity:0.4,hoverinfo:"skip",showlegend:false},
+    // Supplier bubbles
+    {type:"scattergeo",mode:"markers+text",lon:sLon,lat:sLat,text:sText,
+      textposition:"middle center",
+      textfont:{size:8,color:"rgba(255,255,255,.9)",family:"Archivo,sans-serif"},
+      marker:{size:sSize,color:supColor,opacity:0.82,line:{width:0.8,color:"rgba(255,255,255,.25)"}},
+      hoverinfo:"skip",showlegend:false},
+    // Buyer bubbles
+    {type:"scattergeo",mode:"markers+text",lon:bLon,lat:bLat,text:bText,
+      textposition:"middle center",
+      textfont:{size:7.5,color:"rgba(255,255,255,.9)",family:"Archivo,sans-serif"},
+      marker:{size:bSize,color:buyColor,opacity:0.75,line:{width:0.8,color:"rgba(255,255,255,.25)"}},
       hoverinfo:"skip",showlegend:false},
     // India focal bubble
-    {type:"scattergeo",mode:"markers+text",lon:[focalLL[0]],lat:[focalLL[1]],
-      text:[focalKey],textposition:"middle center",
+    {type:"scattergeo",mode:"markers+text",lon:[focalLL[0]],lat:[focalLL[1]],text:["IND"],
+      textposition:"middle center",
       textfont:{size:9,color:"#fff",family:"Archivo,sans-serif"},
-      marker:{size:[22],color:"rgba(7,51,9,.9)",opacity:1,
-        line:{width:2,color:"#3cb54a"}},
+      marker:{size:[22],color:"rgba(7,51,9,.9)",opacity:1,line:{width:2,color:"#3cb54a"}},
       hoverinfo:"skip",showlegend:false}
   ];
 
   var layout = {
-    geo:{
-      bgcolor:"#080f1a",
-      landcolor:"#0d1f12",
-      showocean:true, oceancolor:"#060b12",
-      showcountries:true, countrycolor:"rgba(255,255,255,.12)",
-      showland:true, showframe:false, showcoastlines:false,
-      projection:{type:"natural earth"},
-      lataxis:{range:[-60,85]}, lonaxis:{range:[-180,180]}
-    },
-    paper_bgcolor:"#0a0f14",
-    margin:{t:0,b:0,l:0,r:0},
-    showlegend:false
+    geo:{bgcolor:"#080f1a",landcolor:"#0d1f12",showocean:true,oceancolor:"#060b12",
+      showcountries:true,countrycolor:"rgba(255,255,255,.12)",showland:true,
+      showframe:false,showcoastlines:false,projection:{type:"natural earth"},
+      lataxis:{range:[-60,85]},lonaxis:{range:[-180,180]}},
+    paper_bgcolor:"#0a0f14",margin:{t:0,b:0,l:0,r:0},showlegend:false
   };
 
   Plotly.newPlot("ir-map-plotly", traces, layout, {displayModeBar:false,responsive:true});
 
-  // Update overlay panel
-  var totImp=MAP_IMP.reduce(function(s,p){return s+p.val;},0);
-  var totExp=MAP_EXP.reduce(function(s,p){return s+p.val;},0);
+  // Update overlay panel — show both imports and exports
+  var totImp=allImp.reduce(function(s,p){return s+p.val;},0);
+  var totExp=allExp.reduce(function(s,p){return s+p.val;},0);
   var net=totExp-totImp;
   document.getElementById("ov-imp").textContent=fmtV(totImp*1e6);
   document.getElementById("ov-exp").textContent=fmtV(totExp*1e6);
@@ -1196,15 +1201,20 @@ function irUpdateMap() {
   netEl.style.color=net>=0?"#3cb54a":"#f97316";
   netEl.textContent=(net>=0?"Net Exporter":"Net Importer")+" "+fmtV(Math.abs(net)*1e6);
   var listEl=document.getElementById("ov-list"); listEl.innerHTML="";
-  var lbl2=document.createElement("div"); lbl2.className="ov-label"; lbl2.style.marginTop="8px";
-  lbl2.textContent=mapMode==="imp"?"TOP SUPPLIERS":"TOP BUYERS"; listEl.appendChild(lbl2);
-  partners.slice(0,5).forEach(function(pt){
-    var row=document.createElement("div"); row.className="ov-row";
-    var dot=document.createElement("div"); dot.className="ov-dot"; dot.style.background=ptColor;
-    var nm=document.createElement("span"); nm.className="ov-cname"; nm.textContent=pt.cname;
-    var vl=document.createElement("span"); vl.className="ov-cval"; vl.textContent="$"+pt.val.toFixed(1)+"M";
-    row.appendChild(dot); row.appendChild(nm); row.appendChild(vl); listEl.appendChild(row);
-  });
+
+  function addSection(label, partners, dotCol) {
+    var lbl=document.createElement("div"); lbl.className="ov-label"; lbl.style.marginTop="8px";
+    lbl.textContent=label; listEl.appendChild(lbl);
+    partners.slice(0,4).forEach(function(pt){
+      var row=document.createElement("div"); row.className="ov-row";
+      var dot=document.createElement("div"); dot.className="ov-dot"; dot.style.background=dotCol;
+      var nm=document.createElement("span"); nm.className="ov-cname"; nm.textContent=pt.cname;
+      var vl=document.createElement("span"); vl.className="ov-cval"; vl.textContent="$"+pt.val.toFixed(1)+"M";
+      row.appendChild(dot); row.appendChild(nm); row.appendChild(vl); listEl.appendChild(row);
+    });
+  }
+  addSection("TOP SUPPLIERS", allImp, supColor);
+  addSection("TOP BUYERS",    allExp, buyColor);
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
