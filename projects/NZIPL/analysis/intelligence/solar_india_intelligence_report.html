@@ -132,13 +132,41 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .tpa-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .tpa-item-val{font-size:12px;color:#a5d6a7;font-weight:600;}
 
+/* ── Stage×Role Legend (atlas style) ── */
+.sr-legend{display:flex;gap:0;margin-bottom:12px;border:1px solid rgba(255,255,255,.08);
+  border-radius:6px;overflow:hidden;background:rgba(0,0,0,.2);}
+.sr-legend-stage{flex:1;padding:7px 11px;border-right:1px solid rgba(255,255,255,.07);}
+.sr-legend-stage:last-child{border-right:none;}
+.sr-legend-label{font-size:8.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(255,255,255,.28);margin-bottom:5px;}
+.sr-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;
+  color:rgba(255,255,255,.65);margin-bottom:3px;line-height:1.2;}
+.sr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block;}
+
 /* ── Map ── */
-#ir-map-svg{width:100%;height:calc(100vh - 140px);max-height:520px;}
-.ir-country{fill:#1a2a35;stroke:rgba(255,255,255,.06);stroke-width:.4px;cursor:pointer;}
-.ir-country:hover{opacity:.8;}
+#ir-map-wrap{position:relative;}
+#ir-map-svg{width:100%;height:480px;display:block;background:#0a1525;border-radius:8px;}
+.ir-country{fill:#1e2d3d;stroke:rgba(255,255,255,.08);stroke-width:.3px;}
+.ir-country.focal{fill:#073309;stroke:#3cb54a;stroke-width:1px;}
 #ir-map-tip{position:fixed;background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);
   border-radius:6px;padding:7px 11px;font-size:.8rem;color:var(--text);
   pointer-events:none;opacity:0;transition:opacity .15s;z-index:9999;}
+/* Map overlay panel */
+#ir-map-overlay{position:absolute;top:10px;left:10px;width:210px;
+  background:rgba(6,13,8,.88);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:12px 14px;font-family:var(--font);pointer-events:none;}
+.ov-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);margin-bottom:2px;}
+.ov-main{font-size:1.2rem;font-weight:800;color:#fff;line-height:1;margin-bottom:8px;}
+.ov-net{font-size:.75rem;font-weight:700;margin-bottom:8px;padding:4px 8px;
+  border-radius:4px;background:rgba(255,255,255,.06);}
+.ov-row{display:flex;align-items:center;gap:6px;padding:3px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);font-size:11px;}
+.ov-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ov-cname{flex:1;color:rgba(255,255,255,.75);}
+.ov-cval{color:#a5d6a7;font-weight:600;}
+/* Timeline SVG */
+#ir-tl-svg{width:100%;height:300px;display:block;}
 
 /* ── Radar SVG ── */
 .ir-radar-svg{width:100%;height:380px;}
@@ -260,11 +288,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <!-- ═══ TRADE MAP ════════════════════════════════════════════════════════════ -->
 <div id="ir-pane-map-trade" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">02 —</span> Trade Map</div>
-  <div class="tl-row">
+  <div class="tl-row" style="margin-bottom:6px;">
     <button class="tl-btn active" id="map-imp-btn" onclick="mapToggle('imp')">Imports</button>
     <button class="tl-btn" id="map-exp-btn" onclick="mapToggle('exp')">Exports</button>
   </div>
-  <svg id="ir-map-svg" style="width:100%;height:500px;display:block;"></svg>
+  <div id="ir-map-wrap">
+    <div id="ir-map-overlay">
+      <div class="ov-label">IMPORTS</div>
+      <div class="ov-main" id="ov-imp">—</div>
+      <div class="ov-label">EXPORTS</div>
+      <div class="ov-main" id="ov-exp">—</div>
+      <div class="ov-net" id="ov-net"></div>
+      <div id="ov-list"></div>
+    </div>
+    <svg id="ir-map-svg"></svg>
+  </div>
+  <div style="display:flex;gap:16px;margin-top:6px;font-size:10px;color:rgba(255,255,255,.35);">
+    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d97706;margin-right:4px;"></span>Supplier</span>
+    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0369a1;margin-right:4px;"></span>Buyer</span>
+    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3cb54a;margin-right:4px;"></span>Focal country</span>
+  </div>
 </div>
 
 <!-- ═══ INVESTMENT ════════════════════════════════════════════════════════════ -->
@@ -276,6 +319,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <!-- ═══ TRADE PARTNERS ═══════════════════ -->
 <div id="ir-pane-partners" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">04 —</span> Trade Partners</div>
+  <div id="sr-legend-tp" class="sr-legend"></div>
   <div class="tl-row">
     <button class="tl-btn active" id="tp-imp-btn" onclick="tpToggle('imp')">Import Sources</button>
     <button class="tl-btn" id="tp-exp-btn" onclick="tpToggle('exp')">Export Destinations</button>
@@ -286,14 +330,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 
 <div id="ir-pane-series-levels" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">05a —</span> Time Series · Levels</div>
+  <div id="sr-legend-tl" class="sr-legend"></div>
   <div class="tl-row">
-    <button class="tl-btn active" id="ts-imp-btn" onclick="tsToggle('imp')">Imports</button>
-    <button class="tl-btn" id="ts-exp-btn" onclick="tsToggle('exp')">Exports</button>
-    <button class="tl-btn" id="ts-bal-btn" onclick="tsToggle('bal')">Net Balance</button>
+    <button class="tl-btn active" id="tl-imp-btn" onclick="tlToggle('imp','levels')">Imports</button>
+    <button class="tl-btn" id="tl-exp-btn" onclick="tlToggle('exp','levels')">Exports</button>
+    <button class="tl-btn" id="tl-bal-btn" onclick="tlToggle('bal','levels')">Balance</button>
+    <span style="width:1px;height:18px;background:rgba(255,255,255,.15);display:inline-block;margin:0 3px;"></span>
+    <button class="tl-btn active" id="tl-lev-btn" onclick="tlToggle(tlFlow,'levels')">Levels</button>
+    <button class="tl-btn" id="tl-grw-btn" onclick="tlToggle(tlFlow,'growth')">Growth %</button>
   </div>
-  <div id="chart-ts-imp" style="height:340px;"></div>
-  <div id="chart-ts-exp" style="height:340px;display:none;"></div>
-  <div id="chart-ts-bal" style="height:280px;display:none;"></div>
+  <svg id="ir-tl-svg" style="width:100%;height:320px;"></svg>
 </div>
 
 <div id="ir-pane-series-growth" class="ir-pane">
@@ -575,56 +621,118 @@ function drawTradePartners() {
 
 // ── Time series toggle ────────────────────────────────────────────────────────
 let tsMode = "imp";
-function tsToggle(mode) {
-  tsMode = mode;
-  ["imp","exp","bal"].forEach(m => {
-    document.getElementById(`chart-ts-${m}`).style.display = m===mode ? "block":"none";
-    document.getElementById(`ts-${m}-btn`).classList.toggle("active", m===mode);
-  });
+// ── Atlas-style D3 Timeline ────────────────────────────────────────────────────
+var tlFlow="imp", tlScale="levels";
+var SR_COLORS_MAP={};
+SR_STAGES.forEach(function(st){st.items.forEach(function(it){SR_COLORS_MAP[it[0]]=it[1];});});
+
+function tlToggle(flow, scale) {
+  tlFlow=flow; tlScale=scale;
+  ["imp","exp","bal"].forEach(function(m){document.getElementById("tl-"+m+"-btn").classList.toggle("active",m===flow);});
+  ["lev","grw"].forEach(function(m){document.getElementById("tl-"+m+"-btn").classList.toggle("active",(m==="lev"&&scale==="levels")||(m==="grw"&&scale==="growth"));});
+  drawTimeline();
 }
 
-function drawSeriesLevels() {
-  const srs = SR_ORDER.filter(sr => sr!=="Unknown | Unknown");
+function drawTimeline() {
+  var svg = d3.select("#ir-tl-svg"); svg.selectAll("*").remove();
+  var el = document.getElementById("ir-tl-svg"); if(!el) return;
+  var W = el.clientWidth||700, H = el.clientHeight||320;
+  var m = {top:14,right:14,bottom:28,left:52};
+  var w = W-m.left-m.right, h = H-m.top-m.bottom;
+  svg.attr("viewBox","0 0 "+W+" "+H);
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","transparent");
+  var g = svg.append("g").attr("transform","translate("+m.left+","+m.top+")");
 
-  // Imports
-  const impTraces = srs.map(sr => {
-    const d = SERIES_DATA.filter(r => r.stage_role===sr);
-    return {x:d.map(r=>r.year), y:d.map(r=>r.imp_mn), type:"scatter", mode:"none",
-      stackgroup:"one", name:sr.replace(/ \| /g," · "),
-      fillcolor:srColor(sr)+"cc", line:{color:srColor(sr),width:.5},
-      hovertemplate:`${sr}<br>%{x}: $%{y:.1f}M<extra></extra>`};
+  var isBalance = tlFlow==="balance";
+  var isGrowth  = tlScale==="growth";
+  var srKeys = SR_ORDER.filter(function(s){return s!=="Unknown | Unknown";});
+  var years  = Array.from(new Set(SERIES_DATA.map(function(d){return d.year;}))).sort();
+  if(!years.length) return;
+
+  // Build lookup year→sr→value
+  var lookup = {};
+  SERIES_DATA.forEach(function(d){
+    if(!lookup[d.year]) lookup[d.year]={};
+    var v = isBalance ? d.exp_mn-d.imp_mn : (tlFlow==="imp"?d.imp_mn:d.exp_mn);
+    lookup[d.year][d.stage_role] = (lookup[d.year][d.stage_role]||0)+v;
   });
-  Plotly.newPlot("chart-ts-imp", impTraces, mergeLayout({
-    title:{text:`${COUNTRY} | ${TECH} — Import Composition`,font:{size:13,color:"#f1f8f1"},x:0},
-    yaxis:{title:"mn USD", gridcolor:"rgba(255,255,255,.06)"}
-  }), CFG);
 
-  // Exports
-  const expTraces = srs.map(sr => {
-    const d = SERIES_DATA.filter(r => r.stage_role===sr);
-    return {x:d.map(r=>r.year), y:d.map(r=>r.exp_mn), type:"scatter", mode:"none",
-      stackgroup:"one", name:sr.replace(/ \| /g," · "),
-      fillcolor:srColor(sr)+"cc", line:{color:srColor(sr),width:.5},
-      hovertemplate:`${sr}<br>%{x}: $%{y:.1f}M<extra></extra>`};
-  });
-  Plotly.newPlot("chart-ts-exp", expTraces, mergeLayout({
-    title:{text:`${COUNTRY} | ${TECH} — Export Composition`,font:{size:13,color:"#f1f8f1"},x:0},
-    yaxis:{title:"mn USD", gridcolor:"rgba(255,255,255,.06)"}
-  }), CFG);
+  var xSc = d3.scaleBand().domain(years).range([0,w]).paddingInner(.06);
+  var xC  = function(yr){return xSc(yr)+xSc.bandwidth()/2;};
 
-  // Net balance
-  Plotly.newPlot("chart-ts-bal", [
-    {x:TOTALS_DATA.map(r=>r.year), y:TOTALS_DATA.map(r=>r.exp_mn), type:"bar",
-      name:"Exports", marker:{color:"#1A8C28"}},
-    {x:TOTALS_DATA.map(r=>r.year), y:TOTALS_DATA.map(r=>-r.imp_mn), type:"bar",
-      name:"Imports (−)", marker:{color:"#8A4200"}},
-    {x:TOTALS_DATA.map(r=>r.year), y:TOTALS_DATA.map(r=>r.bal_mn), type:"scatter",
-      mode:"lines", name:"Net Balance", line:{color:"#73D440",width:2}}
-  ], mergeLayout({
-    title:{text:`${COUNTRY} | ${TECH} — Net Trade Balance`,font:{size:13,color:"#f1f8f1"},x:0},
-    barmode:"overlay", yaxis:{title:"mn USD"}
-  }), CFG);
+  function axisHelpers(ySc, fmtFn) {
+    g.append("g").attr("transform","translate(0,"+h+")").call(
+      d3.axisBottom(xSc).tickValues(years.filter(function(_,i){return i%5===0;}))
+        .tickFormat(d3.format("d")).tickSize(0)
+    ).selectAll("text").attr("font-size","10").attr("fill","rgba(255,255,255,.38)").attr("dy","1em");
+    g.select(".domain").remove();
+    g.append("g").call(d3.axisLeft(ySc).ticks(4).tickFormat(fmtFn||d3.format(",.0f")))
+      .selectAll("text").attr("font-size","10").attr("fill","rgba(255,255,255,.38)");
+    g.select(".domain").remove();
+    g.selectAll(".tick line").remove();
+    ySc.ticks(4).forEach(function(v){
+      g.append("line").attr("x1",0).attr("x2",w).attr("y1",ySc(v)).attr("y2",ySc(v))
+        .attr("stroke","rgba(255,255,255,.05)");
+    });
+  }
+
+  if(isGrowth) {
+    // Index lines: first non-zero year = 100
+    var lines = srKeys.map(function(sr){
+      return {sr:sr, color:SR_COLORS_MAP[sr]||"#9ca3af",
+        values:years.map(function(yr){return {year:yr,raw:(lookup[yr]||{})[sr]||0};})};
+    });
+    lines.forEach(function(ln){
+      var firstNZ=ln.values.find(function(d){return d.raw>0;});
+      var base=firstNZ?firstNZ.raw:1;
+      ln.values.forEach(function(d){d.idx=d.raw>0?d.raw/base*100:null;});
+    });
+    var allIdx=lines.flatMap(function(ln){return ln.values.map(function(d){return d.idx;}).filter(function(v){return v!=null;});});
+    var maxIdx=(d3.max(allIdx)||200)*1.1;
+    var ySc=d3.scaleLinear().domain([0,maxIdx]).range([h,0]).nice();
+    axisHelpers(ySc,function(d){return d.toFixed(0);});
+    g.append("line").attr("x1",0).attr("x2",w).attr("y1",ySc(100)).attr("y2",ySc(100))
+      .attr("stroke","rgba(255,255,255,.18)").attr("stroke-dasharray","4,3");
+    var lineGen=d3.line().x(function(d){return xC(d.year);}).y(function(d){return d.idx!=null?ySc(d.idx):null;})
+      .defined(function(d){return d.idx!=null;}).curve(d3.curveCatmullRom);
+    lines.forEach(function(ln){
+      if(!ln.values.some(function(d){return d.idx!=null;})) return;
+      g.append("path").datum(ln.values).attr("fill","none")
+        .attr("stroke",ln.color).attr("stroke-width",1.8).attr("opacity",.85).attr("d",lineGen);
+    });
+  } else if(isBalance) {
+    var data2=years.map(function(yr){var row={year:yr};srKeys.forEach(function(sr){row[sr]=(lookup[yr]||{})[sr]||0;});return row;});
+    var allV2=data2.flatMap(function(d){return srKeys.map(function(sr){return d[sr];});});
+    var absMax=(d3.max(allV2.map(function(v){return Math.abs(v);}))||1)*1.15;
+    var ySc2=d3.scaleLinear().domain([-absMax,absMax]).range([h,0]).nice();
+    axisHelpers(ySc2);
+    g.append("line").attr("x1",0).attr("x2",w).attr("y1",ySc2(0)).attr("y2",ySc2(0))
+      .attr("stroke","rgba(255,255,255,.18)").attr("stroke-dasharray","4,3");
+    var perW=xSc.bandwidth()/srKeys.length;
+    srKeys.forEach(function(sr,si){
+      g.selectAll(".br-"+si).data(data2).enter().append("rect").attr("class","br-"+si)
+        .attr("x",function(d){return xSc(d.year)+si*perW;}).attr("width",Math.max(1,perW*.88))
+        .attr("y",function(d){return d[sr]>=0?ySc2(d[sr]):ySc2(0);})
+        .attr("height",function(d){return Math.abs(ySc2(d[sr])-ySc2(0));})
+        .attr("fill",SR_COLORS_MAP[sr]||"#9ca3af").attr("opacity",.8);
+    });
+  } else {
+    // Stacked area — the main view
+    var data3=years.map(function(yr){var row={year:yr};srKeys.forEach(function(sr){row[sr]=Math.max(0,(lookup[yr]||{})[sr]||0);});return row;});
+    var allV3=data3.flatMap(function(d){return srKeys.map(function(sr){return d[sr];});});
+    var maxV3=(d3.max(allV3)||1)*1.12;
+    var ySc3=d3.scaleLinear().domain([0,maxV3]).range([h,0]).nice();
+    axisHelpers(ySc3,function(d){return "$"+d3.format(",.0f")(d)+"M";});
+    var stack=d3.stack().keys(srKeys)(data3);
+    var area=d3.area().x(function(d){return xC(d.data.year);}).y0(function(d){return ySc3(d[0]);}).y1(function(d){return ySc3(d[1]);}).curve(d3.curveCatmullRom);
+    g.selectAll(".al").data(stack).enter().append("path").attr("class","al")
+      .attr("d",area).attr("fill",function(d,i){return SR_COLORS_MAP[srKeys[i]]||"#9ca3af";}).attr("opacity",.85);
+  }
 }
+
+// keep legacy tsToggle as alias
+function tsToggle(mode) { tlToggle(mode, tlScale); }
+function drawSeriesLevels() { drawTimeline(); }
 
 function drawSeriesGrowth() {
   const srs = SR_ORDER.filter(function(s){return s!=="Unknown | Unknown";});
@@ -919,37 +1027,74 @@ function renderPolicy() {
 }
 
 // ── Trade Map ─────────────────────────────────────────────────────────────────
+// ── Stage×Role Legend builder ──────────────────────────────────────────────────
+var SR_STAGES = [
+  {label:"UPSTREAM",    items:[["Upstream | Raw Material","#8A4200","Raw Material"]]},
+  {label:"MIDSTREAM",   items:[["Midstream | Processed Material","#073309","Processed Material"],["Midstream | Process Equipment","#5B7266","Process Equipment"],["Midstream | Product Component","#1A8C28","Product Component"]]},
+  {label:"DOWNSTREAM",  items:[["Downstream | Product Component","#34D045","Product Component"],["Downstream | Process Equipment","#9AAE9E","Process Equipment"]]},
+  {label:"FINAL",       items:[["Final Product | Final Product","#CB5B1D","Final Product"]]}
+];
+function buildSRLegend(containerId) {
+  var el = document.getElementById(containerId); if(!el) return;
+  el.innerHTML = "";
+  SR_STAGES.forEach(function(stage) {
+    var sd = document.createElement("div");
+    sd.className = "sr-legend-stage";
+    var lb = document.createElement("div");
+    lb.className = "sr-legend-label";
+    lb.textContent = stage.label;
+    sd.appendChild(lb);
+    stage.items.forEach(function(it) {
+      var row = document.createElement("div");
+      row.className = "sr-legend-item";
+      var dot = document.createElement("span");
+      dot.className = "sr-dot";
+      dot.style.background = it[1];
+      row.appendChild(dot);
+      row.appendChild(document.createTextNode(it[2]));
+      sd.appendChild(row);
+    });
+    el.appendChild(sd);
+  });
+}
+
 // ── Trade Map — D3 with inline topojson (exact atlas approach) ─────────────────
-var mapMode="imp", mapInit=false, mapProj, mapPath;
+var mapMode="imp", mapInit=false, mapProj, mapPath, irCentroids={};
+var fmtV = function(v){return v>=1e6?"$"+(v/1e6).toFixed(1)+"B":v>=1e3?"$"+(v/1e3).toFixed(1)+"M":"$"+v.toFixed(0)+"K";};
 
 function initMap() {
   if (mapInit) { irUpdateMap(); return; }
   mapInit = true;
   var el = document.getElementById("ir-map-svg"); if (!el) return;
-  var W = el.clientWidth || el.getBoundingClientRect().width || 900;
-  var H = 500;
-  var svg = d3.select("#ir-map-svg"); svg.selectAll("*").remove();
-  var sc = Math.max(W/5.2, H/3.4) * 0.8;
+  var rect = el.getBoundingClientRect();
+  var W = rect.width || 900, H = 480;
+  var svg = d3.select("#ir-map-svg").attr("viewBox","0 0 "+W+" "+H);
+  svg.selectAll("*").remove();
+  var sc = Math.max(W/5.2, H/3.4) * 0.78;
   mapProj = d3.geoNaturalEarth1().scale(sc).translate([W*0.52, H*0.5]);
   mapPath = d3.geoPath().projection(mapProj);
   svg.append("path").datum({type:"Sphere"}).attr("d",mapPath)
     .attr("fill","#0a1525").attr("stroke","#1a2a3a").attr("stroke-width",0.5);
-  // Use inline WORLD_TOPO — no CDN fetch needed
   var countries = topojson.feature(WORLD_TOPO, WORLD_TOPO.objects.countries);
-  // Build id→path mapping using N2ISO reverse lookup
   svg.append("g").attr("class","ir-cl").selectAll("path")
     .data(countries.features).enter().append("path")
     .attr("class","ir-country")
-    .attr("id", function(d){var k=N2ISO[parseInt(d.id||"0",10)];return k?"irc-"+k:null;})
-    .attr("d", mapPath);
+    .attr("id",function(d){var k=N2ISO[parseInt(d.id||"0",10)];return k?"irc-"+k:null;})
+    .attr("d",mapPath);
+  // Compute centroids
+  countries.features.forEach(function(f){
+    var k=N2ISO[parseInt(f.id||"0",10)];
+    if(k) irCentroids[k]=mapPath.centroid(f);
+  });
   svg.append("path").datum(d3.geoGraticule()())
-    .attr("fill","none").attr("stroke","rgba(255,255,255,.04)")
-    .attr("stroke-width",0.3).attr("d",mapPath);
+    .attr("fill","none").attr("stroke","rgba(255,255,255,.035)").attr("stroke-width",.3).attr("d",mapPath);
+  svg.append("g").attr("class","arc-layer");
+  svg.append("g").attr("class","bubble-layer");
   irUpdateMap();
 }
 
 function mapToggle(mode) {
-  mapMode = mode;
+  mapMode=mode;
   document.getElementById("map-imp-btn").classList.toggle("active",mode==="imp");
   document.getElementById("map-exp-btn").classList.toggle("active",mode==="exp");
   irUpdateMap();
@@ -957,25 +1102,83 @@ function mapToggle(mode) {
 
 function irUpdateMap() {
   var partners = mapMode==="imp" ? MAP_IMP : MAP_EXP;
-  var vals = partners.map(function(p){return p.val;}).sort(function(a,b){return a-b;});
-  var maxV = vals[Math.floor(vals.length*0.9)] || 1;
-  var cs = mapMode==="imp"
-    ? d3.scaleSequential([0,maxV], d3.interpolate("#243a2a","#8A4200"))
-    : d3.scaleSequential([0,maxV], d3.interpolate("#243a2a","#1A8C28"));
+  var supColor = "#d97706", buyColor = "#0369a1";
+  var ptColor  = mapMode==="imp" ? supColor : buyColor;
+  var focalKey = "IND";
+  var focalPt  = irCentroids[focalKey];
   var tip = document.getElementById("ir-map-tip");
-  d3.selectAll(".ir-country").attr("fill","#1e2d3d");
-  d3.select("#irc-IND").attr("fill","#3cb54a");
-  partners.forEach(function(pt) {
-    var el = d3.select("#irc-"+pt.iso3);
-    if (!el.empty() && pt.iso3 !== "IND") {
-      el.attr("fill", cs(pt.val))
-        .on("mouseover", function(ev) {
-          tip.style.opacity="1";
-          tip.innerHTML="<strong>"+pt.cname+"</strong><br>"+(mapMode==="imp"?"Imports":"Exports")+": $"+pt.val.toFixed(1)+"M";
-          tip.style.left=(ev.clientX+12)+"px"; tip.style.top=(ev.clientY-8)+"px";
-        })
-        .on("mouseout", function(){tip.style.opacity="0";});
+
+  // Reset country fills
+  d3.selectAll(".ir-country").attr("fill","#1e2d3d").attr("stroke","rgba(255,255,255,.08)");
+  d3.select("#irc-"+focalKey).attr("fill","#0a2212").attr("stroke","rgba(60,181,74,.4)");
+
+  // Arcs
+  var arcLayer = d3.select(".arc-layer"); arcLayer.selectAll("*").remove();
+  if (focalPt) {
+    var maxV2 = d3.max(partners,function(p){return p.val;})||1;
+    var wSc = d3.scaleLinear().domain([0,maxV2]).range([.4,2.8]);
+    partners.slice(0,15).forEach(function(pt){
+      var pp = irCentroids[pt.iso3]; if(!pp||!focalPt) return;
+      try {
+        var geoArc={type:"LineString",coordinates:[mapProj.invert(focalPt),mapProj.invert(pp)]};
+        arcLayer.append("path").attr("d",mapPath(geoArc))
+          .attr("fill","none").attr("stroke",ptColor)
+          .attr("stroke-width",wSc(pt.val)).attr("stroke-opacity",.4);
+      } catch(e){}
+    });
+  }
+
+  // Bubbles
+  var bubLayer = d3.select(".bubble-layer"); bubLayer.selectAll("*").remove();
+  var maxV3 = d3.max(partners,function(p){return p.val;})||1;
+  var rSc = d3.scaleSqrt().domain([0,maxV3]).range([4,30]);
+  partners.slice(0,15).forEach(function(pt){
+    var pp = irCentroids[pt.iso3]; if(!pp) return;
+    var fill = mapMode==="imp"?"rgba(217,119,6,.32)":"rgba(3,105,161,.32)";
+    var g = bubLayer.append("g").attr("transform","translate("+pp[0]+","+pp[1]+")");
+    g.append("circle").attr("r",rSc(pt.val)).attr("fill",fill)
+      .attr("stroke",ptColor).attr("stroke-width",1);
+    if(rSc(pt.val)>10) {
+      g.append("text").attr("text-anchor","middle").attr("dy",".35em")
+        .attr("font-size",Math.min(9,rSc(pt.val)*.55)+"px").attr("font-weight","700")
+        .attr("fill","rgba(255,255,255,.85)").text(pt.iso3);
     }
+    g.on("mousemove",function(ev){
+      tip.style.opacity="1";
+      tip.innerHTML="<strong>"+pt.cname+"</strong><br>"+(mapMode==="imp"?"Imports":"Exports")+": $"+pt.val.toFixed(1)+"M";
+      tip.style.left=(ev.clientX+12)+"px";tip.style.top=(ev.clientY-8)+"px";
+    }).on("mouseout",function(){tip.style.opacity="0";});
+  });
+
+  // Focal bubble
+  if(focalPt) {
+    var g2 = bubLayer.append("g").attr("transform","translate("+focalPt[0]+","+focalPt[1]+")");
+    g2.append("circle").attr("r",16).attr("fill","#073309").attr("stroke","#3cb54a").attr("stroke-width",1.8);
+    g2.append("text").attr("text-anchor","middle").attr("dy",".35em")
+      .attr("font-size","8.5px").attr("font-weight","800").attr("fill","#fff").text(focalKey);
+  }
+
+  // Overlay panel
+  var totImp = MAP_IMP.reduce(function(s,p){return s+p.val;},0);
+  var totExp = MAP_EXP.reduce(function(s,p){return s+p.val;},0);
+  var net = totExp - totImp;
+  document.getElementById("ov-imp").textContent = fmtV(totImp*1e6);
+  document.getElementById("ov-exp").textContent = fmtV(totExp*1e6);
+  var netEl = document.getElementById("ov-net");
+  netEl.style.color = net>=0?"#3cb54a":"#f97316";
+  netEl.textContent = (net>=0?"Net Exporter":"Net Importer")+" "+fmtV(Math.abs(net)*1e6);
+  var listEl = document.getElementById("ov-list");
+  listEl.innerHTML = "";
+  var lbl2 = document.createElement("div");
+  lbl2.className = "ov-label"; lbl2.style.marginTop = "8px";
+  lbl2.textContent = mapMode==="imp" ? "TOP SUPPLIERS" : "TOP BUYERS";
+  listEl.appendChild(lbl2);
+  partners.slice(0,5).forEach(function(pt){
+    var row=document.createElement("div"); row.className="ov-row";
+    var dot=document.createElement("div"); dot.className="ov-dot"; dot.style.background=ptColor;
+    var nm=document.createElement("span"); nm.className="ov-cname"; nm.textContent=pt.cname;
+    var vl=document.createElement("span"); vl.className="ov-cval"; vl.textContent="$"+pt.val.toFixed(1)+"M";
+    row.appendChild(dot); row.appendChild(nm); row.appendChild(vl); listEl.appendChild(row);
   });
 }
 
@@ -984,7 +1187,9 @@ document.addEventListener("DOMContentLoaded", function() {
   // Overview: pure HTML, always works regardless of Plotly status
   try { renderKPI(); } catch(e) { console.error("renderKPI:", e); }
   try { renderSRTable(); } catch(e) { console.error("renderSRTable:", e); }
-  // Partners cards: also pure HTML
+  // Build SR legends everywhere they appear
+  try { buildSRLegend("sr-legend-tl"); } catch(e) {}
+  try { buildSRLegend("sr-legend-tp"); } catch(e) {}
   try { renderPolicy(); } catch(e) { console.error("renderPolicy:", e); }
   // Products list (pure HTML, no Plotly)
   try { buildProducts(); } catch(e) { console.error("buildProducts:", e); }
