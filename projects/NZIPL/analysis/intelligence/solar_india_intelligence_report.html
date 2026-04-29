@@ -275,28 +275,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <div id="ir-pane-map-trade" class="ir-pane">
   <div class="ir-pane-title"><span class="accent">02 —</span> Trade Map</div>
   <div class="tl-row" style="margin-bottom:4px;">
-    <button class="tl-btn active" id="mp-all-btn" onclick="mapProduct('all')">All Solar</button>
-    <button class="tl-btn" id="mp-up-btn"  onclick="mapProduct('upstream')">Upstream</button>
-    <button class="tl-btn" id="mp-mid-btn" onclick="mapProduct('midstream')">Midstream</button>
-    <button class="tl-btn" id="mp-dn-btn"  onclick="mapProduct('downstream')">Downstream</button>
-    <button class="tl-btn" id="mp-fin-btn" onclick="mapProduct('final')">Final</button>
+    <button class="tl-btn active" id="mp-all-btn" onclick="atlasProduct(0)">All Solar</button>
+    <button class="tl-btn" id="mp-up-btn"  onclick="atlasProduct(1)">Solar Cells</button>
+    <button class="tl-btn" id="mp-mid-btn" onclick="atlasProduct(2)">PV Modules</button>
+    <button class="tl-btn" id="mp-dn-btn"  onclick="atlasProduct(3)">PV DC Gen.</button>
+    <button class="tl-btn" id="mp-fin-btn" onclick="atlasProduct(4)">Inverters</button>
   </div>
-  <div id="ir-map-wrap">
-    <div id="ir-map-overlay">
-      <div class="ov-label">IMPORTS</div>
-      <div class="ov-main" id="ov-imp">—</div>
-      <div class="ov-label">EXPORTS</div>
-      <div class="ov-main" id="ov-exp">—</div>
-      <div class="ov-net" id="ov-net"></div>
-      <div id="ov-list"></div>
-    </div>
-  <div id="ir-map-plotly" style="width:100%;height:480px;border-radius:8px;overflow:hidden;"></div>
-  </div>
-  <div style="display:flex;gap:16px;margin-top:6px;font-size:10px;color:rgba(255,255,255,.35);">
-    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d97706;margin-right:4px;"></span>Supplier</span>
-    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0369a1;margin-right:4px;"></span>Buyer</span>
-    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3cb54a;margin-right:4px;"></span>Focal country</span>
-  </div>
+  <iframe id="atlas-frame" src="../atlas/global_atlas.html"
+    style="width:100%;height:640px;border:none;border-radius:8px;background:#060d08;"
+    allowfullscreen></iframe>
 </div>
 
 <!-- ═══ INVESTMENT ════════════════════════════════════════════════════════════ -->
@@ -497,7 +484,7 @@ function irShowPane(id) {
         if (id==="treemap-exp")    drawTreemap("chart-tm-exp", "exp", COUNTRY + " | " + TECH + " — Export Composition");
         if (id==="treemap-imp")    drawTreemap("chart-tm-imp", "imp", COUNTRY + " | " + TECH + " — Import Composition");
         if (id==="pc-scores")      drawPC();
-        if (id==="map-trade")      initMap();
+        if (id==="map-trade")      { /* atlas iframe auto-loads */ }
         if (id==="radar-stage")    drawRadar("stage");
         if (id==="radar-shap")     drawRadar("shap");
       } catch(e) { console.error("Pane init error [" + id + "]:", e); }
@@ -1223,6 +1210,20 @@ function irUpdateMap() {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
+function atlasProduct(idx) {
+  ["all","up","mid","dn","fin"].forEach(function(k,i){
+    var btn = document.getElementById("mp-"+k+"-btn");
+    if(btn) btn.classList.toggle("active", i===idx);
+  });
+  try {
+    var frame = document.getElementById("atlas-frame");
+    if(frame && frame.contentWindow && frame.contentWindow.renderProductButtons) {
+      frame.contentWindow.currentProduct = idx;
+      frame.contentWindow.updateAll();
+    }
+  } catch(e) {}
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   // Overview: pure HTML, always works regardless of Plotly status
   try { renderKPI(); } catch(e) { console.error("renderKPI:", e); }
