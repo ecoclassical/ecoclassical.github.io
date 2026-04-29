@@ -293,7 +293,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="ov-net" id="ov-net"></div>
       <div id="ov-list"></div>
     </div>
-    <svg id="ir-map-svg"></svg>
+    <div id="ir-map-plotly" style="width:100%;height:480px;border-radius:8px;overflow:hidden;"></div>
+    <svg id="ir-map-svg" style="position:absolute;top:0;left:0;width:100%;height:480px;pointer-events:none;display:block;"></svg>
   </div>
   <div style="display:flex;gap:16px;margin-top:6px;font-size:10px;color:rgba(255,255,255,.35);">
     <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d97706;margin-right:4px;"></span>Supplier</span>
@@ -1056,42 +1057,36 @@ function buildSRLegend(containerId) {
   });
 }
 
-// ── Trade Map — D3 with inline topojson (exact atlas approach) ─────────────────
-var mapMode="imp", mapInit=false, mapProj, mapPath, irCentroids={};
+// ── Trade Map — Plotly choropleth + scattergeo (reliable, exact atlas look) ─────
+var mapMode="imp", mapInit=false, mapProj, mapPath, irCentroidsLL={};
 var fmtV = function(v){return v>=1e6?"$"+(v/1e6).toFixed(1)+"B":v>=1e3?"$"+(v/1e3).toFixed(1)+"M":"$"+v.toFixed(0)+"K";};
+var mapProduct_sel = "all";
 
-function initMap() {
-  if (mapInit) { irUpdateMap(); return; }
-  mapInit = true;
-  var el = document.getElementById("ir-map-svg"); if (!el) return;
-  var rect = el.getBoundingClientRect();
-  var W = rect.width || 900, H = 480;
-  var svg = d3.select("#ir-map-svg").attr("viewBox","0 0 "+W+" "+H);
-  svg.selectAll("*").remove();
-  var sc = Math.max(W/5.2, H/3.4) * 0.78;
-  mapProj = d3.geoNaturalEarth1().scale(sc).translate([W*0.52, H*0.5]);
+// Build centroids (lat/lon) from inline topojson using D3 projection
+function initMapCentroids() {
+  var el = document.getElementById("ir-map-plotly"); if(!el) return;
+  var W = el.clientWidth || 900, H = 480;
+  mapProj = d3.geoNaturalEarth1().scale(Math.max(W/5.2,H/3.4)*0.78).translate([W*0.52,H*0.5]);
   mapPath = d3.geoPath().projection(mapProj);
-  svg.append("path").datum({type:"Sphere"}).attr("d",mapPath)
-    .attr("fill","#0a1525").attr("stroke","#1a2a3a").attr("stroke-width",0.5);
   var countries = topojson.feature(WORLD_TOPO, WORLD_TOPO.objects.countries);
-  svg.append("g").attr("class","ir-cl").selectAll("path")
-    .data(countries.features).enter().append("path")
-    .attr("class","ir-country")
-    .attr("id",function(d){var k=N2ISO[parseInt(d.id||"0",10)];return k?"irc-"+k:null;})
-    .attr("d",mapPath);
-  // Compute centroids
   countries.features.forEach(function(f){
-    var k=N2ISO[parseInt(f.id||"0",10)];
-    if(k) irCentroids[k]=mapPath.centroid(f);
+    var k = N2ISO[parseInt(f.id||"0",10)];
+    if(k){
+      var px = mapPath.centroid(f);
+      if(!isNaN(px[0]) && !isNaN(px[1])){
+        var ll = mapProj.invert(px);
+        if(ll && !isNaN(ll[0]) && !isNaN(ll[1])) irCentroidsLL[k] = ll;
+      }
+    }
   });
-  svg.append("path").datum(d3.geoGraticule()())
-    .attr("fill","none").attr("stroke","rgba(255,255,255,.035)").attr("stroke-width",.3).attr("d",mapPath);
-  svg.append("g").attr("class","arc-layer");
-  svg.append("g").attr("class","bubble-layer");
-  irUpdateMap();
 }
 
-var mapProduct_sel = "all";
+function initMap() {
+  if(mapInit){irUpdateMap();return;}
+  mapInit=true;
+  initMapCentroids();
+  irUpdateMap();
+}
 
 function mapToggle(mode) {
   mapMode=mode;
@@ -1101,96 +1096,108 @@ function mapToggle(mode) {
 }
 
 function mapProduct(sel) {
-  mapProduct_sel = sel;
+  mapProduct_sel=sel;
   ["all","upstream","midstream","downstream","final"].forEach(function(s){
-    var btn = document.getElementById("mp-"+s+"-btn");
-    if(btn) btn.classList.toggle("active", s===sel);
+    var btn=document.getElementById("mp-"+s+"-btn");
+    if(btn) btn.classList.toggle("active",s===sel);
   });
   irUpdateMap();
 }
 
 function irUpdateMap() {
-  // Resolve active partner dataset
-  var allImp = MAP_IMP, allExp = MAP_EXP;
-  if (mapProduct_sel !== "all" && MAP_STAGE_IMP[mapProduct_sel]) {
-    allImp = MAP_STAGE_IMP[mapProduct_sel];
-    allExp = MAP_STAGE_EXP[mapProduct_sel];
+  var allImp=MAP_IMP, allExp=MAP_EXP;
+  if(mapProduct_sel!=="all" && MAP_STAGE_IMP[mapProduct_sel]){
+    allImp=MAP_STAGE_IMP[mapProduct_sel];
+    allExp=MAP_STAGE_EXP[mapProduct_sel];
   }
   var partners = mapMode==="imp" ? allImp : allExp;
-  var ptColor = mapMode==="imp" ? "#d97706" : "#0369a1";
+  var ptColor  = mapMode==="imp" ? "rgba(217,119,6,.7)" : "rgba(3,105,161,.65)";
+  var chorCol  = mapMode==="imp" ? "rgba(180,90,5,.6)"  : "rgba(2,80,130,.55)";
   var focalKey = "IND";
-  var focalPt  = irCentroids[focalKey];
-  var tip = document.getElementById("ir-map-tip");
+  var focalLL  = irCentroidsLL[focalKey] || [78.9, 20.6];
 
-  // ── Atlas-style: CSS classes, not inline fill attributes ──
-  d3.selectAll(".ir-country").attr("class","ir-country");
-  d3.select("#irc-"+focalKey).attr("class","ir-country focal");
-  // Color partner countries via CSS class
-  partners.slice(0,20).forEach(function(pt){
-    if(pt.iso3!==focalKey) d3.select("#irc-"+pt.iso3).attr("class","ir-country "+(mapMode==="imp"?"supplier":"buyer"));
+  // Choropleth: partner countries
+  var pIso3 = partners.slice(0,30).map(function(p){return p.iso3;}).filter(function(c){return c!==focalKey;});
+  var pVals = pIso3.map(function(_){return 1;});
+
+  // Arc lines: lon/lat pairs with null separators
+  var arcLon=[], arcLat=[];
+  partners.slice(0,15).forEach(function(pt){
+    var ll=irCentroidsLL[pt.iso3]; if(!ll) return;
+    arcLon.push(focalLL[0],ll[0],null);
+    arcLat.push(focalLL[1],ll[1],null);
   });
-
-  // Arcs
-  var arcLayer = d3.select(".arc-layer"); arcLayer.selectAll("*").remove();
-  if (focalPt) {
-    var maxV2 = d3.max(partners,function(p){return p.val;})||1;
-    var wSc = d3.scaleLinear().domain([0,maxV2]).range([.4,2.8]);
-    partners.slice(0,15).forEach(function(pt){
-      var pp = irCentroids[pt.iso3]; if(!pp||!focalPt) return;
-      try {
-        var geoArc={type:"LineString",coordinates:[mapProj.invert(focalPt),mapProj.invert(pp)]};
-        arcLayer.append("path").attr("d",mapPath(geoArc))
-          .attr("fill","none").attr("stroke",ptColor)
-          .attr("stroke-width",wSc(pt.val)).attr("stroke-opacity",.4);
-      } catch(e){}
-    });
-  }
 
   // Bubbles
-  var bubLayer = d3.select(".bubble-layer"); bubLayer.selectAll("*").remove();
-  var maxV3 = d3.max(partners,function(p){return p.val;})||1;
-  var rSc = d3.scaleSqrt().domain([0,maxV3]).range([4,30]);
-  partners.slice(0,15).forEach(function(pt){
-    var pp = irCentroids[pt.iso3]; if(!pp) return;
-    var fill = mapMode==="imp"?"rgba(217,119,6,.32)":"rgba(3,105,161,.32)";
-    var g = bubLayer.append("g").attr("transform","translate("+pp[0]+","+pp[1]+")");
-    g.append("circle").attr("r",rSc(pt.val)).attr("fill",fill)
-      .attr("stroke",ptColor).attr("stroke-width",1);
-    if(rSc(pt.val)>10) {
-      g.append("text").attr("text-anchor","middle").attr("dy",".35em")
-        .attr("font-size",Math.min(9,rSc(pt.val)*.55)+"px").attr("font-weight","700")
-        .attr("fill","rgba(255,255,255,.85)").text(pt.iso3);
-    }
-    g.on("mousemove",function(ev){
-      tip.style.opacity="1";
-      tip.innerHTML="<strong>"+pt.cname+"</strong><br>"+(mapMode==="imp"?"Imports":"Exports")+": $"+pt.val.toFixed(1)+"M";
-      tip.style.left=(ev.clientX+12)+"px";tip.style.top=(ev.clientY-8)+"px";
-    }).on("mouseout",function(){tip.style.opacity="0";});
+  var bISO=[],bLon=[],bLat=[],bText=[],bSize=[],bColor=[];
+  var maxV = Math.max.apply(null,partners.slice(0,12).map(function(p){return p.val;}))||1;
+  partners.slice(0,12).forEach(function(pt){
+    var ll=irCentroidsLL[pt.iso3]; if(!ll) return;
+    bISO.push(pt.iso3); bLon.push(ll[0]); bLat.push(ll[1]);
+    bText.push(pt.iso3);
+    bSize.push(Math.sqrt(pt.val/maxV)*36+8);
+    bColor.push(ptColor);
   });
 
-  // Focal bubble
-  if(focalPt) {
-    var g2 = bubLayer.append("g").attr("transform","translate("+focalPt[0]+","+focalPt[1]+")");
-    g2.append("circle").attr("r",16).attr("fill","#073309").attr("stroke","#3cb54a").attr("stroke-width",1.8);
-    g2.append("text").attr("text-anchor","middle").attr("dy",".35em")
-      .attr("font-size","8.5px").attr("font-weight","800").attr("fill","#fff").text(focalKey);
-  }
+  var traces = [
+    // Base: partner country coloring
+    {type:"choropleth",locationmode:"ISO-3",locations:pIso3,z:pVals,
+      colorscale:[[0,chorCol],[1,chorCol]],showscale:false,
+      hoverinfo:"skip",
+      marker:{line:{width:0.4,color:"rgba(255,255,255,.12)"}}},
+    // India highlight
+    {type:"choropleth",locationmode:"ISO-3",locations:["IND"],z:[2],
+      colorscale:[[0,"rgba(7,51,9,.9)"],[1,"rgba(7,51,9,.9)"]],showscale:false,
+      hoverinfo:"skip",
+      marker:{line:{width:1.8,color:"#3cb54a"}}},
+    // Arcs
+    {type:"scattergeo",mode:"lines",lon:arcLon,lat:arcLat,
+      line:{color:ptColor,width:1.4},opacity:0.5,hoverinfo:"skip",showlegend:false},
+    // Partner bubbles
+    {type:"scattergeo",mode:"markers+text",lon:bLon,lat:bLat,
+      text:bText,textposition:"middle center",
+      textfont:{size:8.5,color:"rgba(255,255,255,.9)",family:"Archivo,sans-serif"},
+      marker:{size:bSize,color:ptColor,opacity:0.75,
+        line:{width:0.8,color:"rgba(255,255,255,.3)"}},
+      hoverinfo:"skip",showlegend:false},
+    // India focal bubble
+    {type:"scattergeo",mode:"markers+text",lon:[focalLL[0]],lat:[focalLL[1]],
+      text:[focalKey],textposition:"middle center",
+      textfont:{size:9,color:"#fff",family:"Archivo,sans-serif"},
+      marker:{size:[22],color:"rgba(7,51,9,.9)",opacity:1,
+        line:{width:2,color:"#3cb54a"}},
+      hoverinfo:"skip",showlegend:false}
+  ];
 
-  // Overlay panel
-  var totImp = MAP_IMP.reduce(function(s,p){return s+p.val;},0);
-  var totExp = MAP_EXP.reduce(function(s,p){return s+p.val;},0);
-  var net = totExp - totImp;
-  document.getElementById("ov-imp").textContent = fmtV(totImp*1e6);
-  document.getElementById("ov-exp").textContent = fmtV(totExp*1e6);
-  var netEl = document.getElementById("ov-net");
-  netEl.style.color = net>=0?"#3cb54a":"#f97316";
-  netEl.textContent = (net>=0?"Net Exporter":"Net Importer")+" "+fmtV(Math.abs(net)*1e6);
-  var listEl = document.getElementById("ov-list");
-  listEl.innerHTML = "";
-  var lbl2 = document.createElement("div");
-  lbl2.className = "ov-label"; lbl2.style.marginTop = "8px";
-  lbl2.textContent = mapMode==="imp" ? "TOP SUPPLIERS" : "TOP BUYERS";
-  listEl.appendChild(lbl2);
+  var layout = {
+    geo:{
+      bgcolor:"#080f1a",
+      landcolor:"#0d1f12",
+      showocean:true, oceancolor:"#060b12",
+      showcountries:true, countrycolor:"rgba(255,255,255,.12)",
+      showland:true, showframe:false, showcoastlines:false,
+      projection:{type:"natural earth"},
+      lataxis:{range:[-60,85]}, lonaxis:{range:[-180,180]}
+    },
+    paper_bgcolor:"#0a0f14",
+    margin:{t:0,b:0,l:0,r:0},
+    showlegend:false
+  };
+
+  Plotly.newPlot("ir-map-plotly", traces, layout, {displayModeBar:false,responsive:true});
+
+  // Update overlay panel
+  var totImp=MAP_IMP.reduce(function(s,p){return s+p.val;},0);
+  var totExp=MAP_EXP.reduce(function(s,p){return s+p.val;},0);
+  var net=totExp-totImp;
+  document.getElementById("ov-imp").textContent=fmtV(totImp*1e6);
+  document.getElementById("ov-exp").textContent=fmtV(totExp*1e6);
+  var netEl=document.getElementById("ov-net");
+  netEl.style.color=net>=0?"#3cb54a":"#f97316";
+  netEl.textContent=(net>=0?"Net Exporter":"Net Importer")+" "+fmtV(Math.abs(net)*1e6);
+  var listEl=document.getElementById("ov-list"); listEl.innerHTML="";
+  var lbl2=document.createElement("div"); lbl2.className="ov-label"; lbl2.style.marginTop="8px";
+  lbl2.textContent=mapMode==="imp"?"TOP SUPPLIERS":"TOP BUYERS"; listEl.appendChild(lbl2);
   partners.slice(0,5).forEach(function(pt){
     var row=document.createElement("div"); row.className="ov-row";
     var dot=document.createElement("div"); dot.className="ov-dot"; dot.style.background=ptColor;
