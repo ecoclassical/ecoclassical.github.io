@@ -97,9 +97,46 @@ If Johns Hopkins NZIPL provides a Claude Team seat:
 
 ---
 
+## Productivity Impact of Switching to Claude Code
+
+Claude Code (Anthropic's agentic CLI) was adopted on **March 6, 2026**, replacing a multi-tool stack (ChatGPT + Windsurf + Posit). The productivity impact, measured by git commits per week across all active repositories, was immediate and substantial.
+
+### Commits per week: before vs. after Claude Code
+
+| Repository | Before (Aug 15 – Mar 5) | After (Mar 6 – Apr 30) | Increase |
+|---|---:|---:|:---:|
+| CVCE / NZIPL | 6.4 / week | 21.5 / week | **+3.4×** |
+| LEEDS_MODEL | 0.6 / week | 3.6 / week | **+6.0×** |
+| ecoclassical.github.io | 0.6 / week | 18.9 / week | **+33.0×** |
+| **All repos combined** | **7.5 / week** | **44.0 / week** | **+5.8×** |
+
+*Before: 28-week lab period (211 total commits). After: 8-week Claude Code period (352 commits).*
+
+### Monthly CVCE commit trajectory
+
+| Month | Commits | Note |
+|---|:---:|---|
+| Aug 2025 | 5 | Project start |
+| Sep 2025 | 75 | Initial codebase setup sprint |
+| Oct 2025 | 42 | |
+| Nov 2025 | 14 | |
+| Dec 2025 | 12 | |
+| Jan 2026 | 12 | |
+| Feb 2026 | 18 | |
+| **Mar 2026** | **82** | **← Claude Code starts Mar 6** |
+| **Apr 2026** | **90** | CVCE Phase II + Intelligence Report |
+
+### What the numbers understate
+
+- **CONSERVATION papers** (active Apr 22–30, multiple files modified daily) have no git repository — this parallel workstream is not captured in commit counts.
+- **Tool consolidation**: ChatGPT Plus cancelled Apr 29, 2026. Windsurf ended Mar 2026. Posit ended Feb 2026. One subscription replaced four, at lower combined cost during intensive periods.
+- **Quality dimension**: commit frequency measures output volume, not quality. The LEEDS_MODEL paper was submitted to a peer-reviewed journal (Ecological Economics SI) during this period; the CVCE Intelligence Report went from concept to deployed interactive HTML in under two weeks.
+
+---
+
 ## Files
 - `docs/receipts/subscription_costs.csv` — full ledger (41 rows + total)
-- `docs/receipts/pdf/` — 29 PDFs: 7 Anthropic (recent), 9 ChatGPT, 7 Windsurf, 6 Posit
-- Missing PDFs: 2 older Anthropic (Mar 6 + Mar 23) + 7 ChatGPT (Jan–Jul 2025, on page 1 of Stripe)
+- `docs/receipts/pdf/` — 29 PDFs named `{Service}_{YYYY-MM-DD}.pdf`
+- `docs/receipts/Project_Usage.pdf` — lab co-directors version (rendered PDF)
 
-*Generated April 30, 2026. EUR/USD conversion: 1.17 (Wise)*
+*Generated May 1, 2026. EUR/USD conversion: 1.17 (Wise)*
