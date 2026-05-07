@@ -1,0 +1,403 @@
+tech,hs_code,description,category,shap_mean_z
+Batteries,391190,"Polysulphides, polysulphones and similar products of chemical synthesis n.e.s. in chapter 39; in primary forms",Chemicals,0.6564955896932839
+Batteries,847990,"Machines and mechanical appliances; parts, of those having individual functions",Machinery,0.6478346563882807
+Batteries,370130,"Photographic plates and film; in the flat, sensitised, unexposed, with any side exceeding 225mm, of any materials other than paper, paperboard or textiles",Chemicals,0.642395859201059
+Batteries,903190,"Instruments, appliances and machines; parts and accessories for those measuring or checking devices of heading no. 9031",Machinery,0.6391521780561201
+Batteries,282540,Nickel oxides and hydroxides,Chemicals,0.6191675058822866
+Batteries,902790,Microtomes and parts and accessories thereof,Machinery,0.6098952396099173
+Batteries,291030,"Epoxides, epoxyalcohols, epoxyphenols and epoxyethers; with a three-membered ring and their halogenated, sulphonated, nitrated or nitrosated derivatives, 1-chloro-2,3-epoxypropane (epichlorohydrin)",Chemicals,0.6019620965419007
+Batteries,282200,Cobalt oxides and hydroxides; commercial cobalt oxides,Chemicals,0.597745759502243
+Batteries,382490,"Chemical products, preparations and residual products of the chemical or allied industries, n.e.s. or included in heading no. 3824",Chemicals,0.5843183887118321
+Batteries,903180,"Instruments, appliances and machines; for measuring or checking n.e.s. in chapter 90",Machinery,0.5816772483366035
+Batteries,903039,"Instruments and apparatus; for measuring or checking voltage, current, resistance or power, without a recording device (excluding multimeters)",Machinery,0.5815448429320013
+Batteries,NA,Tariff_measures_affected_z,Non-HS,0.5790651839696086
+Batteries,NA,fdi_z,Non-HS,0.5783052069894286
+Batteries,291613,Acids; unsaturated acyclic monocarboxylic acids; methacrylic acid and its salts,Chemicals,0.5778712451181297
+Batteries,761699,Aluminium; n.e.s. in heading no. 7616,Metals,0.568338650259327
+Batteries,903149,"Optical instruments and appliances; for measuring or checking, n.e.s. in chapter 90",Machinery,0.5612246567886882
+Batteries,260600,Aluminium ores and concentrates,Metals,0.5569551746474154
+Batteries,842489,"Mechanical appliances; for projecting, dispersing or spraying liquids or powders, for other than agricultural or horticultural use, whether or not hand-operated",Machinery,0.5502848615410579
+Batteries,283324,Sulphates; of nickel,Chemicals,0.5498473344705066
+Batteries,847989,"Machines and mechanical appliances; n.e.s. in item no. 8479.8, having individual functions",Machinery,0.5482026929437498
+Batteries,NA,gdp_z,Non-HS,0.5432381145623901
+Batteries,750120,Nickel; oxide sinters and other intermediate products of nickel metallurgy,Metals,0.542974356487448
+Batteries,390591,"Vinyl acetate, vinyl ester polymers, vinyl polymers; n.e.s. in heading no. 3905, in primary forms, copolymers",Chemicals,0.5414066371896398
+Batteries,850790,Electric accumulators; parts n.e.s. in heading no. 8507,Electronics,0.5413992044223732
+Batteries,390710,Polyacetals; in primary forms,Chemicals,0.5391930448248899
+Batteries,903089,"Instruments and apparatus; for measuring or detecting alpha, beta, gamma, x-ray, cosmic or other ionising radiations, without a recording device",Machinery,0.538635080090833
+Batteries,NA,industry_gdp_z,Non-HS,0.5379834085202346
+Batteries,391000,Silicones; in primary forms,Chemicals,0.5327166251260258
+Batteries,282090,Manganese oxides; excluding manganese dioxide,Chemicals,0.5266586282920406
+Batteries,NA,mfg_z,Non-HS,0.5263602732202152
+Batteries,392350,"Plastics; stoppers, lids, caps and other closures, for the conveyance or packing of goods",Chemicals,0.526195839384745
+Batteries,392020,"Plastics; of polymers of propylene, plates, sheets, film, foil and strip, non-cellular and not reinforced, laminated, supported or similarly combined with other materials",Chemicals,0.5202542851691357
+Batteries,851580,"Welding machines and apparatus; n.e.s. in heading no. 8515, whether or not capable of cutting",Electronics,0.5157867996633317
+Batteries,847981,"Machines and mechanical appliances; for treating metal, including electric wire coil-winders",Machinery,0.5112905704768198
+Batteries,392010,"Plastics; plates, sheets, film, foil and strip, of polymers of ethylene, non-cellular and not reinforced, laminated, supported or similarly combined with other materials",Chemicals,0.5062642910582833
+Batteries,251020,"Natural calcium phosphates, natural aluminium calcium phosphates and phosphatic chalk; ground",Industrial Materials,0.5044488364372522
+Biofuel,940390,Furniture; parts,Machinery,0.811272258908562
+Biofuel,381590,"Reaction initiators, reaction accelerators and catalytic preparations, unsupported, n.e.s. or included",Chemicals,0.8097871878991412
+Biofuel,844190,"Machinery; parts of machinery for making up paper pulp, paper or paperboard, including cutting machines of all kinds",Machinery,0.7909920878960239
+Biofuel,NA,industry_gdp_z,Non-HS,0.7896363803571419
+Biofuel,841939,"Dryers; for products n.e.s. in heading no. 8419, not used for domestic purposes",Machinery,0.7763615904244136
+Biofuel,121299,"Vegetable products (including unroasted chicory roots, chicorium intybus sativum variety); n.e.s. in chapter 12, fresh, chilled, frozen or dried, ground or unground, primarily for human consumption",Other,0.7745705285092598
+Biofuel,841381,Pumps and liquid elevators; n.e.s. in heading no. 8413,Machinery,0.7726200994670973
+Biofuel,441520,"Wood; pallets, box pallets and other load boards; pallet collars",Industrial Materials,0.7717881924914631
+Biofuel,842121,Machinery; for filtering or purifying water,Machinery,0.7501521952251816
+Biofuel,281122,Silicon dioxide,Chemicals,0.7448073290035975
+Biofuel,841410,Pumps; vacuum,Machinery,0.7412812949324563
+Biofuel,NA,mfg_z,Non-HS,0.7411629625101515
+Biofuel,281121,Carbon dioxide,Chemicals,0.7359866216132674
+Biofuel,283650,Carbonates; calcium carbonate,Chemicals,0.7357542267590632
+Biofuel,NA,gdp_z,Non-HS,0.7315748006219012
+Biofuel,151329,"Vegetable oils; palm kernel or babassu oil and their fractions, other than crude, whether or not refined, but not chemically modified",Other,0.7295817637220646
+Biofuel,284210,"Salts; double or complex silicates, including aluminosilicates, whether or not chemically defined",Chemicals,0.7287597943218581
+Biofuel,NA,fdi_z,Non-HS,0.7256303144297428
+Biofuel,870892,"Vehicles; parts, silencers and exhaust pipes",Machinery,0.7248797167766081
+Biofuel,380210,Carbon; activated,Chemicals,0.7135029926642368
+Biofuel,440130,"Wood; sawdust, waste and scrap, whether or not agglomerated in logs, briquettes, pellets or similar forms",Industrial Materials,0.7066276170270495
+Biofuel,681510,"Stone articles and other mineral substances, non-electrical articles of graphite or other carbon",Industrial Materials,0.7034708956186706
+Biofuel,841989,"Machinery, plant and laboratory equipment; for treating materials by change of temperature, other than for making hot drinks or cooking or heating food",Machinery,0.6972627446137235
+Biofuel,440122,"Wood; in chips or particles, non-coniferous",Industrial Materials,0.6869665931408753
+Biofuel,150990,"Vegetable oils; olive oil and its fractions, other than virgin, whether or not refined, but not chemically modified",Other,0.6767253663818972
+Biofuel,690220,"Refractory bricks, blocks, tiles and similar refractory ceramic constructional goods; containing by weight more than 50% of alumina (Al2o3), of silica (SiO2) or of a mixture or compound of these",Industrial Materials,0.6764443794866484
+Biofuel,842139,"Machinery; for filtering or purifying gases, other than intake air filters for internal combustion engines",Machinery,0.673140103028821
+Biofuel,441890,Wood; builders' joinery and carpentry of wood n.e.s. in heading no. 4418,Industrial Materials,0.670335686713666
+Biofuel,220720,"Ethyl alcohol and other spirits; denatured, of any strength",Other,0.6682031126709462
+Biofuel,841950,Heat exchange units; not used for domestic purposes,Machinery,0.660157472253194
+Biofuel,151529,"Vegetable oils; maize (corn) oil and its fractions, other than crude, whether or not refined, but not chemically modified",Other,0.6582735393411452
+Biofuel,151000,"Vegetable oils; oils and their fractions n.e.s. in chapter 15, obtained solely from olives, whether or not refined, but not chemically modified, including blends of these oils or fractions with oils or fractions of heading no. 1509",Other,0.6538316122462656
+Biofuel,440320,"Wood; coniferous, in the rough, whether or not stripped of bark or sapwood, or roughly squared, untreated",Industrial Materials,0.6505428686389184
+Biofuel,282300,Titanium oxides,Chemicals,0.6504013335523147
+Biofuel,441810,"Wood; windows, French-windows and their frames",Industrial Materials,0.6414475550284074
+Biofuel,150910,"Vegetable oils; olive oil and its fractions, virgin, whether or not refined, but not chemically modified",Other,0.6390674784470807
+Biofuel,681091,"Cement, concrete or artificial stone; prefabricated structural components for building or civil engineering, whether or not reinforced",Industrial Materials,0.6379543292082174
+Biofuel,711029,"Metals; palladium, semi-manufactured",Metals,0.6365510956448269
+Biofuel,290511,"Alcohols; saturated monohydric, methanol (methyl alcohol)",Chemicals,0.6359403184955232
+Biofuel,842119,"Centrifuges; n.e.s. in heading no. 8421, including centrifugal dryers (but not clothes-dryers)",Machinery,0.6353653638221882
+Biofuel,381519,"Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with an active substance other than nickel or precious metals or their compounds, n.e.s. or included",Chemicals,0.6334837914069706
+Biofuel,440110,"Wood; for fuel, in logs, billets, twigs, faggots or similar forms",Industrial Materials,0.6283139552874407
+Biofuel,NA,pop_z,Non-HS,0.6247126546444268
+Biofuel,381512,"Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with precious metal or precious metal compounds as the active substance, n.e.s. or included",Chemicals,0.6169150065933168
+Biofuel,841430,Compressors; of a kind used in refrigerating equipment,Machinery,0.613498731838301
+Biofuel,281511,Sodium hydroxide (caustic soda); solid,Chemicals,0.611941916132838
+Biofuel,440710,"Wood, coniferous; sawn or chipped lengthwise, sliced or peeled, whether or not planed, sanded or end-jointed, of a thickness exceeding 6mm",Industrial Materials,0.6107810468134446
+Biofuel,840490,"Boilers; parts of auxiliary plant, for use with boilers of heading no. 8402 and 8403 and parts of condensers for steam or other vapour power units",Machinery,0.6075806237432652
+Biofuel,290514,"Alcohols; saturated monohydric, butanols excluding item no. 2905.13",Chemicals,0.6047796164490136
+Biofuel,260600,Aluminium ores and concentrates,Metals,0.6018062750082814
+Biofuel,291814,"Acids; carboxylic acids, (with alcohol function but without other oxygen function), citric acid",Chemicals,0.5941245440603106
+Biofuel,261510,Zirconium ores and concentrates,Metals,0.5926412300080302
+Biofuel,860799,Railway or tramway rolling stock; parts n.e.s. in heading no. 8607,Machinery,0.591104207050556
+Biofuel,690290,"Refractory bricks, blocks, tiles and similar refractory ceramic constructional goods; n.e.s. in item no. 6902.1 or 6902.2",Industrial Materials,0.5860574718075945
+Biofuel,252220,Slaked lime; excluding calcium oxide and hydroxide of heading no. 2825,Industrial Materials,0.5804318495111284
+Biofuel,841990,"Machinery, plant and laboratory equipment; parts of equipment for treating materials by a process involving a change of temperature",Machinery,0.579418426452691
+Biofuel,150790,"Vegetable oils; soya-bean oil and its fractions, other than crude, whether or not refined, but not chemically modified",Other,0.5761782432383356
+Biofuel,841940,Distilling or rectifying plant; not used for domestic purposes,Machinery,0.5695160309881235
+Biofuel,810110,"Tungsten (wolfram); articles thereof, including waste and scrap, powders",Metals,0.5620115812834063
+Biofuel,121300,"Cereal straw and husks; unprepared, whether or not chopped, ground, pressed or in the form of pellets",Other,0.5577212199428353
+Biofuel,840420,"Boilers; condensers, for steam or other vapour power units",Machinery,0.5564329024295382
+Biofuel,840211,Boilers; watertube boilers with a steam production exceeding 45t per hour,Machinery,0.5463342230239585
+Biofuel,290121,"Acyclic hydrocarbons; unsaturated, ethylene",Chemicals,0.5449381928246482
+Biofuel,721691,"Iron or non-alloy steel; angles, shapes and sections, n.e.s. in heading no. 7216, cold-formed or cold-finished, from flat-rolled products",Metals,0.5423955404283255
+Biofuel,711021,"Metals; palladium, unwrought or in powder form",Metals,0.5410133296839867
+Biofuel,282570,Molybdenum oxides and hydroxides,Chemicals,0.5373617875903759
+Biofuel,381511,"Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with nickel or nickel compounds as the active substance, n.e.s. or included",Chemicals,0.5323700692545251
+Biofuel,261400,Titanium ores and concentrates,Metals,0.5283175134490518
+Biofuel,280410,Hydrogen,Chemicals,0.5212379425542945
+Biofuel,151521,"Vegetable oils; maize (corn) oil and its fractions, crude, not chemically modified",Other,0.5121363352327898
+Biofuel,440121,"Wood; in chips or particles, coniferous",Industrial Materials,0.5120003334025113
+Electrolyzers,845610,Machine-tools; operated by laser or other light or photon beam process,Machinery,0.7166553136861378
+Electrolyzers,841480,"Pumps and compressors; for air, vacuum or gas, n.e.s. in heading no. 8414",Machinery,0.7119859092810059
+Electrolyzers,NA,gdp_z,Non-HS,0.7036164911649521
+Electrolyzers,390710,Polyacetals; in primary forms,Chemicals,0.6961345806981002
+Electrolyzers,NA,pop_z,Non-HS,0.6637772416894654
+Electrolyzers,381512,"Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with precious metal or precious metal compounds as the active substance, n.e.s. or included",Chemicals,0.661229789659766
+Electrolyzers,842121,Machinery; for filtering or purifying water,Machinery,0.6518779807425141
+Electrolyzers,841370,"Pumps; centrifugal, n.e.s. in heading no. 8413, for liquids",Machinery,0.645843797940156
+Electrolyzers,841490,"Pumps and compressors; parts, of air or vacuum pumps, air or other gas compressors and fans, ventilating or recycling hoods incorporating a fan",Machinery,0.6452690669620335
+Electrolyzers,381519,"Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with an active substance other than nickel or precious metals or their compounds, n.e.s. or included",Chemicals,0.6420943707157897
+Electrolyzers,711021,"Metals; palladium, unwrought or in powder form",Metals,0.642075288851713
+Electrolyzers,842139,"Machinery; for filtering or purifying gases, other than intake air filters for internal combustion engines",Machinery,0.6374292667367779
+Electrolyzers,NA,fdi_z,Non-HS,0.6236917097407069
+Electrolyzers,283324,Sulphates; of nickel,Chemicals,0.6185431725904137
+Electrolyzers,711031,"Metals; rhodium, unwrought or in powder form",Metals,0.6184809011320425
+Electrolyzers,711011,"Metals; platinum, unwrought or in powder form",Metals,0.5888463820552933
+Electrolyzers,870892,"Vehicles; parts, silencers and exhaust pipes",Machinery,0.5810749918640742
+Electrolyzers,391400,"Ion-exchangers; based on polymers of heading no. 3901 to 3913, in primary forms",Chemicals,0.577075990237319
+Electrolyzers,841869,"Refrigerating or freezing equipment; heat pumps, other than compression type units whose condensers are heat exchangers",Machinery,0.5770474699489614
+Electrolyzers,390290,"Propylene, other olefin polymers; n.e.s. in heading no. 3902, in primary forms",Chemicals,0.5677459922913778
+Electrolyzers,291614,Acids; unsaturated acyclic monocarboxylic acids; esters of methacrylic acid,Chemicals,0.5603551033622568
+Electrolyzers,391190,"Polysulphides, polysulphones and similar products of chemical synthesis n.e.s. in chapter 39; in primary forms",Chemicals,0.5599726525111838
+Electrolyzers,NA,mfg_z,Non-HS,0.5590451255189334
+Electrolyzers,711041,"Metals; iridium, osmium, ruthenium, unwrought or in powder form",Metals,0.5576942178295807
+Electrolyzers,284330,Gold compounds,Chemicals,0.5572423104508719
+Electrolyzers,390190,"Ethylene polymers; in primary forms, n.e.s. in heading no. 3901",Chemicals,0.5571903356424897
+Electrolyzers,841939,"Dryers; for products n.e.s. in heading no. 8419, not used for domestic purposes",Machinery,0.5569157418089196
+Electrolyzers,282200,Cobalt oxides and hydroxides; commercial cobalt oxides,Chemicals,0.55237494154684
+Electrolyzers,391000,Silicones; in primary forms,Chemicals,0.5514153597233974
+Electrolyzers,391110,"Petroleum resins, coumarone, indene or coumarone-indene resins and polyterpenes; in primary forms",Chemicals,0.5470064106246464
+Electrolyzers,841899,"Refrigerating or freezing equipment; parts thereof, other than furniture",Machinery,0.5405608821837015
+Electrolyzers,841861,Refrigerating or freezing equipment; compression type units whose condensers are heat exchangers,Machinery,0.5398452733579011
+Electrolyzers,261100,Tungsten ores and concentrates,Metals,0.539682399140345
+Electrolyzers,851430,"Furnaces and ovens; industrial or laboratory, other than those functioning by induction, dielectric loss or resistance heated",Electronics,0.5379835891289703
+Electrolyzers,846241,"Machine-tools; punching or notching machines (including presses), including combined punching and shearing machines, numerically controlled, for working metal",Machinery,0.536269164021873
+Electrolyzers,847982,"Machines; for mixing, kneading, crushing, grinding, screening, sifting, homogenising, emulsifying or stirring",Machinery,0.5353476515268281
+Electrolyzers,847790,Machinery; parts of those for working rubber or plastics,Machinery,0.5339010595015515
+Electrolyzers,390469,"Halogenated olefin polymers; fluoro-polymers (other than polytetrafluoroethylene), in primary forms",Chemicals,0.5325706775184241
+Electrolyzers,845811,"Lathes; for removing metal, horizontal, numerically controlled",Machinery,0.5321208329054531
+Electrolyzers,261400,Titanium ores and concentrates,Metals,0.5224846137755439
+Electrolyzers,810110,"Tungsten (wolfram); articles thereof, including waste and scrap, powders",Metals,0.5224745097297917
+Electrolyzers,848071,"Moulds; for rubber or plastics, injection or compression types",Machinery,0.5141664696310734
+Electrolyzers,NA,industry_gdp_z,Non-HS,0.5116636142224229
+Electrolyzers,847981,"Machines and mechanical appliances; for treating metal, including electric wire coil-winders",Machinery,0.5106830916461675
+Electrolyzers,370130,"Photographic plates and film; in the flat, sensitised, unexposed, with any side exceeding 225mm, of any materials other than paper, paperboard or textiles",Chemicals,0.5059054304706312
+Electrolyzers,860799,Railway or tramway rolling stock; parts n.e.s. in heading no. 8607,Machinery,0.5046597144499553
+Electrolyzers,848041,"Moulds; for metal or metal carbides, injection or compression types",Machinery,0.5040461437171202
+Geothermal,722490,"Steel, alloy; semi-finished products",Metals,0.7247492083657887
+Geothermal,842199,Machinery; parts for filtering or purifying liquids or gases,Machinery,0.7137769074848291
+Geothermal,845931,"Machine-tools; for boring-milling by removing metal, numerically controlled",Machinery,0.7132070285430876
+Geothermal,845891,"Lathes; for removing metal, numerically controlled, other than horizontal lathes",Machinery,0.6969969821461244
+Geothermal,851580,"Welding machines and apparatus; n.e.s. in heading no. 8515, whether or not capable of cutting",Electronics,0.694090233090367
+Geothermal,845811,"Lathes; for removing metal, horizontal, numerically controlled",Machinery,0.6937792284716878
+Geothermal,720270,Ferro-alloys; ferro-molybdenum,Metals,0.6911409654397805
+Geothermal,842139,"Machinery; for filtering or purifying gases, other than intake air filters for internal combustion engines",Machinery,0.6875620510382415
+Geothermal,730721,"Steel, stainless; tube or pipe fittings, flanges, of stainless steel",Metals,0.6803850302741015
+Geothermal,401693,"Rubber; vulcanised (other than hard rubber), gaskets, washers and other seals, of non-cellular rubber",Chemicals,0.6799501035198482
+Geothermal,390710,Polyacetals; in primary forms,Chemicals,0.6779208324544218
+Geothermal,840999,Engines; parts for internal combustion piston engines (excluding spark-ignition),Machinery,0.6669110191160945
+Geothermal,NA,gdp_z,Non-HS,0.6616094191421472
+Geothermal,848190,"Taps, cocks, valves and similar appliances; parts thereof",Machinery,0.6607589458496088
+Geothermal,851490,"Furnaces, ovens and heating equipment; parts of the industrial or laboratory equipment of heading no. 8514",Electronics,0.6560451780614792
+Geothermal,845961,"Machine-tools; for milling by removing metal, (not knee-type), numerically controlled",Machinery,0.6477559587325197
+Geothermal,840690,Turbines; parts of steam and other vapour turbines,Machinery,0.6381056902309964
+Geothermal,845699,"Machine tools; operated by electro-chemical, electron-beam, ionic beam or plasma-arc processes, other than for dry-etching patterns on semiconductor materials",Machinery,0.6345130487492129
+Geothermal,846630,"Machine-tools; parts and accessories, dividing heads and other special attachments for machine-tools",Machinery,0.6310083905553983
+Geothermal,340319,"Lubricating preparations; (other than for the treatment of textile and similar materials), containing less than 70% (by weight) of petroleum oils or oils obtained from bituminous minerals",Chemicals,0.6274410604798334
+Geothermal,845430,Casting machines; of a kind used in metallurgy or in metal foundries,Machinery,0.6250778606304694
+Geothermal,730791,"Iron or steel; tube or pipe fittings, flanges, other than stainless steel",Metals,0.6206479078901888
+Geothermal,722850,"Steel, alloy; bars and rods, cold-formed or cold-finished",Metals,0.6053042325651179
+Geothermal,846021,"Machine-tools; grinding machines (other than flat-surface), in which positioning in any one axis can be set up to at least an accuracy of 0.01mm, numerically controlled",Machinery,0.6047876667815253
+Geothermal,252330,"Cement; aluminous (ciment fondu), whether or not coloured or in the form of clinkers",Industrial Materials,0.6046006728290475
+Geothermal,401699,"Rubber; vulcanised (other than hard rubber), articles n.e.s. in heading no. 4016, of non-cellular rubber",Chemicals,0.6020871839381791
+Geothermal,841989,"Machinery, plant and laboratory equipment; for treating materials by change of temperature, other than for making hot drinks or cooking or heating food",Machinery,0.6013264986518794
+Geothermal,851531,"Welding machines and apparatus; for arc (including plasma arc) welding of metals, fully or partly automatic, whether or not capable of cutting",Electronics,0.6012676829755675
+Geothermal,843049,Boring and sinking machinery; not self-propelled,Machinery,0.600644300842522
+Geothermal,841391,Pumps; parts thereof,Machinery,0.5891374938393674
+Geothermal,848210,Ball bearings,Machinery,0.5881623086348012
+Geothermal,731815,"Iron or steel; threaded screws and bolts n.e.s. in item no. 7318.1, whether or not with their nuts or washers",Metals,0.5790255776937822
+Geothermal,722410,"Steel, alloy; ingots and other primary forms",Metals,0.5786439686271231
+Geothermal,870899,"Vehicles; parts and accessories, n.e.s. in heading no. 8708",Machinery,0.5764396538913578
+Geothermal,843143,Boring or sinking machinery; parts of the machinery of item no. 8430.41 or 8430.41,Machinery,0.5756290259434707
+Geothermal,270900,"Oils; petroleum oils and oils obtained from bituminous minerals, crude",Industrial Materials,0.5727176656743926
+Geothermal,845951,"Machine-tools; for milling by removing metal, knee-type, numerically controlled",Machinery,0.5649776207980347
+Geothermal,870829,"Vehicles; parts and accessories, of bodies, other than safety seat belts",Machinery,0.5611080890957747
+Geothermal,846210,"Machine-tools; forging or die-stamping machines (including presses) and hammers, for working metal",Machinery,0.5588966022977649
+Geothermal,720211,"Ferro-alloys; ferro-manganese, containing by weight more than 2% of carbon",Metals,0.5507073173958493
+Geothermal,271114,"Petroleum gases and other gaseous hydrocarbons; liquefied, ethylene, propylene, butylene and butadiene",Industrial Materials,0.5478407728708967
+Geothermal,846090,"Machine-tools; for deburring, polishing or otherwise finishing metal, sintered metal carbides or cermets by means of grinding stones, abrasives or polishing products, n.e.s. in heading no. 8460",Machinery,0.5470990229840267
+Geothermal,720610,Iron or non-alloy steel; ingots (excluding iron of heading no. 7203),Metals,0.5425066839326241
+Geothermal,NA,fdi_z,Non-HS,0.5368177626495202
+Geothermal,400249,"Rubber; synthetic, chloroprene (chlorobutadiene) rubber (CR), (other than latex), in primary forms or in plates, sheets or strip",Chemicals,0.5315971544802147
+Geothermal,732620,Iron or steel; wire articles,Metals,0.5302847191152108
+Geothermal,820719,"Tools, interchangeable; rock drilling or earth boring tools, with working part (other than of cermets), whether or not power operated, including parts",Metals,0.526214483341701
+Geothermal,842641,"Cranes; self-propelled derricks and cranes, on tyres, n.e.s. in heading no. 8426",Machinery,0.5258793387559528
+Geothermal,271000,N/A,Industrial Materials,0.5255347378830434
+Geothermal,842010,"Machines; calendering or other rolling machines, for other than metal or glass",Machinery,0.523031077521363
+Geothermal,260111,Iron ores and concentrates; non-agglomerated,Metals,0.5195355956190179
+Geothermal,260300,Copper ores and concentrates,Metals,0.5170853599511168
+Geothermal,845710,Machining centres; for working metal,Machinery,0.513988244777673
+Geothermal,720249,"Ferro-alloys; ferro-chromium, containing by weight 4% or less of carbon",Metals,0.5129152536214577
+Geothermal,843041,"Boring or sinking machinery; self-propelled, n.e.s. in heading no. 8430",Machinery,0.5081204054316536
+Geothermal,391190,"Polysulphides, polysulphones and similar products of chemical synthesis n.e.s. in chapter 39; in primary forms",Chemicals,0.5021280013027026
+Heat Pumps,841410,Pumps; vacuum,Machinery,0.8216861646867383
+Heat Pumps,841430,Compressors; of a kind used in refrigerating equipment,Machinery,0.7802597689029391
+Heat Pumps,841590,"Air conditioning machines; with motor driven fan and elements for temperature control, parts thereof",Machinery,0.7517227939571548
+Heat Pumps,846241,"Machine-tools; punching or notching machines (including presses), including combined punching and shearing machines, numerically controlled, for working metal",Machinery,0.7439067765521786
+Heat Pumps,841490,"Pumps and compressors; parts, of air or vacuum pumps, air or other gas compressors and fans, ventilating or recycling hoods incorporating a fan",Machinery,0.7278109008926993
+Heat Pumps,NA,gdp_z,Non-HS,0.7269634393274602
+Heat Pumps,841899,"Refrigerating or freezing equipment; parts thereof, other than furniture",Machinery,0.7151996310954931
+Heat Pumps,853400,Circuits; printed,Electronics,0.7094871096537716
+Heat Pumps,820720,"Tools, interchangeable; (for machine or hand tools, whether or not power-operated), dies for drawing or extruding metal",Metals,0.6900240650288278
+Heat Pumps,841582,"Air conditioning machines; containing a motor driven fan, other than window or wall types, incorporating a refrigerating unit",Machinery,0.6841760617250299
+Heat Pumps,854121,"Electrical apparatus; transistors, (other than photosensitive), with a dissipation rate of less than 1W",Electronics,0.6746928497976157
+Heat Pumps,741110,"Copper; tubes and pipes, of refined copper",Metals,0.6667530924329239
+Heat Pumps,846150,"Machine-tools; sawing or cutting-off machines, working by removing metal, sintered metal carbides or cermets",Machinery,0.6562269364934924
+Heat Pumps,NA,trade_z,Non-HS,0.6545984356036757
+Heat Pumps,NA,pop_z,Non-HS,0.6487442769933253
+Heat Pumps,260300,Copper ores and concentrates,Metals,0.6427710968405197
+Heat Pumps,260600,Aluminium ores and concentrates,Metals,0.638284614990926
+Heat Pumps,NA,industry_gdp_z,Non-HS,0.6376841195194862
+Heat Pumps,281820,Aluminium oxide; other than artificial corundum,Chemicals,0.6373136343794917
+Heat Pumps,851521,"Welding machines and apparatus; for resistance welding of metal, fully or partly automatic, whether or not capable of cutting",Electronics,0.626652284625674
+Heat Pumps,760820,"Aluminium; tubes and pipes, alloys",Metals,0.6242231636716319
+Heat Pumps,NA,fdi_z,Non-HS,0.6181993113756612
+Heat Pumps,840290,Boilers; parts of steam or other vapour generating boilers,Machinery,0.6071115103330103
+Heat Pumps,740110,Copper; copper mattes,Metals,0.590499323530768
+Heat Pumps,NA,mfg_z,Non-HS,0.580027605319928
+Heat Pumps,841381,Pumps and liquid elevators; n.e.s. in heading no. 8413,Machinery,0.5606857831583958
+Heat Pumps,251910,Magnesium carbonate (magnesite); natural,Industrial Materials,0.5577656374772295
+Heat Pumps,740313,"Copper; refined, unwrought, billets",Metals,0.5439759151439948
+Heat Pumps,841480,"Pumps and compressors; for air, vacuum or gas, n.e.s. in heading no. 8414",Machinery,0.5432684800057243
+Heat Pumps,252921,Fluorspar; containing by weight 97% or less of calcium fluoride,Industrial Materials,0.5219274364021538
+Heat Pumps,260400,Nickel ores and concentrates,Metals,0.521235822163388
+Heat Pumps,846229,"Machine-tools; bending, folding, straightening or flattening machines (including presses), (other than numerically controlled), for working metal",Machinery,0.5151203336114801
+Magnets,820720,"Tools, interchangeable; (for machine or hand tools, whether or not power-operated), dies for drawing or extruding metal",Metals,0.6669215544112669
+Magnets,847982,"Machines; for mixing, kneading, crushing, grinding, screening, sifting, homogenising, emulsifying or stirring",Machinery,0.6036395735308221
+Magnets,283324,Sulphates; of nickel,Chemicals,0.5929792951510733
+Magnets,680421,"Millstones, grindstones, grinding wheels and the like; of agglomerated synthetic or natural diamond",Industrial Materials,0.5851784163200862
+Magnets,NA,industry_gdp_z,Non-HS,0.5792019817635856
+Magnets,847990,"Machines and mechanical appliances; parts, of those having individual functions",Machinery,0.5751363429710243
+Magnets,851440,"Heating equipment; for the heat treatment of materials by induction or dielectric loss, industrial or laboratory, other than furnaces and ovens",Electronics,0.5583085989343654
+Magnets,NA,mfg_z,Non-HS,0.5543322476506579
+Magnets,260300,Copper ores and concentrates,Metals,0.5537375310062607
+Magnets,260600,Aluminium ores and concentrates,Metals,0.5289278776021218
+Magnets,NA,gdp_z,Non-HS,0.525244899439629
+Nuclear,841940,Distilling or rectifying plant; not used for domestic purposes,Machinery,0.6994977163884689
+Nuclear,NA,fdi_z,Non-HS,0.6574641078551449
+Nuclear,721922,"Steel, stainless; flat-rolled, width 600mm or more, hot-rolled, (not in coils), of a thickness of 4.75mm or more but not exceeding 10mm",Metals,0.6501199384495284
+Nuclear,720270,Ferro-alloys; ferro-molybdenum,Metals,0.6332900292805919
+Nuclear,841989,"Machinery, plant and laboratory equipment; for treating materials by change of temperature, other than for making hot drinks or cooking or heating food",Machinery,0.6169614282777387
+Nuclear,NA,gdp_z,Non-HS,0.5965323907334724
+Nuclear,840420,"Boilers; condensers, for steam or other vapour power units",Machinery,0.5962813061935901
+Nuclear,282520,Lithium oxide and hydroxide,Chemicals,0.5817131301340248
+Nuclear,840690,Turbines; parts of steam and other vapour turbines,Machinery,0.5785310983749554
+Nuclear,261390,Molybdenum ores and concentrates; other than roasted,Metals,0.5707078709667628
+Nuclear,722790,"Steel, alloy; bars and rods, hot-rolled, in irregularly wound coils, n.e.s. in heading no. 7227",Metals,0.561085718031505
+Nuclear,722011,"Steel, stainless; flat-rolled, width less than 600mm, hot-rolled, of a thickness of 4.75mm or more",Metals,0.5430249111322683
+Nuclear,NA,industry_gdp_z,Non-HS,0.534755421364431
+Nuclear,380110,Graphite; artificial,Chemicals,0.5338614385289214
+Nuclear,260111,Iron ores and concentrates; non-agglomerated,Metals,0.5278531919134911
+Nuclear,260300,Copper ores and concentrates,Metals,0.5245012983993228
+Nuclear,721933,"Steel, stainless; flat-rolled, width 600mm or more, cold-rolled, of a thickness exceeding 1mm but less than 3mm",Metals,0.5225943172440765
+Nuclear,284510,Heavy water (deuterium oxide),Chemicals,0.521778397251046
+Nuclear,250410,"Graphite; natural, in powder or in flakes",Industrial Materials,0.5194133589837691
+Nuclear,721932,"Steel, stainless; flat-rolled, width 600mm or more, cold-rolled, of a thickness of 3mm or more but less than 4.75mm",Metals,0.5133993482866397
+Nuclear,721921,"Steel, stainless; flat-rolled, width 600mm or more, hot-rolled, (not in coils), of a thickness exceeding 10mm",Metals,0.5133841616599691
+Nuclear,284410,"Uranium; natural uranium and its compounds, alloys, dispersions (including cermets), ceramic products and mixtures containing natural uranium or natural uranium compounds",Chemicals,0.5091121786738385
+Nuclear,841780,"Furnaces and ovens; including incinerators, non-electric, for industrial or laboratory use, n.e.s. in heading no. 8417",Machinery,0.5083905877941135
+Nuclear,284420,"Uranium; enriched in U235, plutonium, their compounds, alloys dispersions (including cermets), ceramic products and mixtures containing uranium enriched in U235, plutonium or compounds of these products",Chemicals,0.5068150104392469
+Nuclear,721931,"Steel, stainless; flat-rolled, width 600mm or more, cold-rolled or cold-reduced, of a thickness of 4.75mm or more",Metals,0.5060448980195925
+Solar,NA,fdi_z,Non-HS,0.7037154089145581
+Solar,830249,"Mountings, fittings and similar articles; suitable for other than buildings or furniture, of base metal",Metals,0.6721799514391655
+Solar,321490,Mastics; n.e.s. in heading no. 3214,Chemicals,0.6681321665694286
+Solar,940390,Furniture; parts,Machinery,0.6591278618132698
+Solar,NA,trade_z,Non-HS,0.6380741091799254
+Solar,392350,"Plastics; stoppers, lids, caps and other closures, for the conveyance or packing of goods",Chemicals,0.6246442383825136
+Solar,851430,"Furnaces and ovens; industrial or laboratory, other than those functioning by induction, dielectric loss or resistance heated",Electronics,0.6240268548068898
+Solar,NA,Tariff_measures_implement_z,Non-HS,0.6102408166471055
+Solar,760429,"Aluminium; alloys, bars, rods and profiles, other than hollow",Metals,0.6018856034046236
+Solar,392010,"Plastics; plates, sheets, film, foil and strip, of polymers of ethylene, non-cellular and not reinforced, laminated, supported or similarly combined with other materials",Chemicals,0.5885038881635115
+Solar,NA,industry_gdp_z,Non-HS,0.5791920466934498
+Solar,730890,"Iron or steel; structures and parts thereof, n.e.s. in heading no. 7308",Metals,0.5780329589014865
+Solar,320890,"Paints and varnishes; based on polymers n.e.s. in heading no. 3208, dispersed or dissolved in a non-aqueous medium",Chemicals,0.5716719226594977
+Solar,841989,"Machinery, plant and laboratory equipment; for treating materials by change of temperature, other than for making hot drinks or cooking or heating food",Machinery,0.559144978450935
+Solar,390740,Polycarbonates; in primary forms,Chemicals,0.5564194366788596
+Solar,392030,"Plastics; of polymers of styrene, plates, sheets, film, foil and strip, non-cellular and not reinforced, laminated, supported or similarly combined with other materials",Chemicals,0.5561232062465297
+Solar,390130,"Ethylene polymers; in primary forms, ethylene-vinyl acetate copolymers",Chemicals,0.5545069325790315
+Solar,850131,"Electric motors and generators; DC, of an output not exceeding 750W",Electronics,0.5519010185454911
+Solar,851519,"Brazing or soldering machines and apparatus; other than soldering irons and guns, whether or not capable of cutting",Electronics,0.551314113037153
+Solar,320990,"Paints and varnishes; (based on polymers other than acrylic or vinyl), dispersed or dissolved in an aqueous medium",Chemicals,0.5513138928040371
+Solar,320820,"Paints and varnishes; based on acrylic or vinyl polymers, dispersed or dissolved in a non-aqueous medium",Chemicals,0.5377133035446066
+Solar,847790,Machinery; parts of those for working rubber or plastics,Machinery,0.5370992053468889
+Solar,390469,"Halogenated olefin polymers; fluoro-polymers (other than polytetrafluoroethylene), in primary forms",Chemicals,0.5364954519626607
+Solar,390730,Epoxide resins; in primary forms,Chemicals,0.5353119194634512
+Solar,390760,Poly(ethylene terephthalate); in primary forms,Chemicals,0.5291161107788451
+Solar,761090,"Aluminium; structures (excluding prefabricated buildings of heading no. 9406) and parts of structures, n.e.s. in heading no. 7610, plates, rods, profiles, tubes and the like",Metals,0.5268608530641576
+Solar,761010,"Aluminium; structures (excluding prefabricated buildings of heading no. 9406) and parts of structures, doors, windows and their frames and thresholds for doors",Metals,0.525503760810229
+Solar,710692,"Metals; silver, semi-manufactured",Metals,0.5229664022065851
+Solar,854389,"Electrical machines and apparatus; n.e.s. in heading no. 8543, (other than proximity cards or tags), having individual functions n.e.s. in chapter 85",Electronics,0.5213155452454878
+Solar,NA,gdp_z,Non-HS,0.5203761359150645
+Solar,760421,"Aluminium; alloys, hollow profiles",Metals,0.516364091643992
+Solar,853222,"Electrical capacitors; fixed, aluminium electrolytic",Electronics,0.5146441108906994
+Solar,381800,"Chemical elements; doped for use in electronics, in the form of discs, wafers or similar forms; chemical compounds doped for use in electronics",Chemicals,0.5115883049566675
+Solar,760120,"Aluminium; unwrought, alloys",Metals,0.5089311780282837
+Solar,250510,"Sands; natural, silica and quartz sands, whether or not coloured",Industrial Materials,0.5085324944683406
+Solar,851440,"Heating equipment; for the heat treatment of materials by induction or dielectric loss, industrial or laboratory, other than furnaces and ovens",Electronics,0.5068595791838033
+Solar,854160,Crystals; mounted piezo-electric,Electronics,0.5061594907482992
+Solar,847710,"Machinery; injection moulding, for rubber or plastics",Machinery,0.5049018404640684
+Solar,854190,"Electrical apparatus; parts for diodes, transistors and similar semiconductor devices and photosensitive semiconductor devices",Electronics,0.5040373750480144
+Solar,NA,mfg_z,Non-HS,0.5015981171646665
+Transmission,270900,"Oils; petroleum oils and oils obtained from bituminous minerals, crude",Industrial Materials,0.817363092060934
+Transmission,847990,"Machines and mechanical appliances; parts, of those having individual functions",Machinery,0.8146530422802779
+Transmission,850490,"Electrical transformers, static converters and inductors; parts thereof",Electronics,0.8145173304313122
+Transmission,847981,"Machines and mechanical appliances; for treating metal, including electric wire coil-winders",Machinery,0.8051895253148231
+Transmission,722611,"Steel, alloy; flat-rolled, width less than 600mm, of silicon-electrical steel, grain-oriented",Metals,0.7743249616708828
+Transmission,847989,"Machines and mechanical appliances; n.e.s. in item no. 8479.8, having individual functions",Machinery,0.7709353178479381
+Transmission,846241,"Machine-tools; punching or notching machines (including presses), including combined punching and shearing machines, numerically controlled, for working metal",Machinery,0.7643139671952016
+Transmission,842890,"Lifting machinery; handling, loading or unloading machinery n.e.s. in heading no. 8428",Machinery,0.7355041229157484
+Transmission,850300,Electric motors and generators; parts suitable for use solely or principally with the machines of heading no. 8501 or 8502,Electronics,0.7307009246489127
+Transmission,845811,"Lathes; for removing metal, horizontal, numerically controlled",Machinery,0.7247492591352267
+Transmission,740811,"Copper; wire, of refined copper, of which the maximum cross-sectional dimension exceeds 6mm",Metals,0.7236545003891156
+Transmission,854690,Electrical insulators; other than of glass and ceramics,Electronics,0.7149861472239044
+Transmission,NA,mfg_z,Non-HS,0.7084119274998156
+Transmission,845530,Metal-rolling mills; rolls thereof,Machinery,0.6999387582351341
+Transmission,841939,"Dryers; for products n.e.s. in heading no. 8419, not used for domestic purposes",Machinery,0.6993543581513065
+Transmission,NA,pop_z,Non-HS,0.6958024265868471
+Transmission,260300,Copper ores and concentrates,Metals,0.6778519199268548
+Transmission,NA,fdi_z,Non-HS,0.6775587991382033
+Transmission,281820,Aluminium oxide; other than artificial corundum,Chemicals,0.6687462536625591
+Transmission,NA,gdp_z,Non-HS,0.6643179311803044
+Transmission,842230,"Machinery; for filling, closing, sealing, capsuling or labelling bottles, cans, bags or other containers, machinery for aerating beverages",Machinery,0.6561499366126552
+Transmission,NA,trade_z,Non-HS,0.6365029735737502
+Transmission,846249,"Machine-tools; punching or notching machines (including presses), including combined punching and shearing machines, (not numerically controlled), for working metal",Machinery,0.616451571435211
+Transmission,260111,Iron ores and concentrates; non-agglomerated,Metals,0.6066767922609827
+Transmission,NA,industry_gdp_z,Non-HS,0.5963552953003327
+Transmission,740110,Copper; copper mattes,Metals,0.5922253860872996
+Transmission,260600,Aluminium ores and concentrates,Metals,0.5902129186800265
+Transmission,846150,"Machine-tools; sawing or cutting-off machines, working by removing metal, sintered metal carbides or cermets",Machinery,0.5841142921167028
+Transmission,841710,"Furnaces and ovens; non-electric, for the roasting, melting or other heat-treatment of ores, pyrites or of metals, for industrial or laboratory use",Machinery,0.5802099350006055
+Transmission,760521,"Aluminium; alloys, wire, maximum cross-sectional dimension exceeding 7mm",Metals,0.5502175197053202
+Wind,730799,"Iron or steel; tube or pipe fittings, n.e.s. in item no. 7307.9, other than stainless steel",Metals,0.6964585970043283
+Wind,903180,"Instruments, appliances and machines; for measuring or checking n.e.s. in chapter 90",Machinery,0.6823458599230677
+Wind,732690,Iron or steel; articles n.e.s. in heading no. 7326,Metals,0.6669087824016124
+Wind,850431,"Electrical transformers; n.e.s. in item no. 8504.2, having a power handling capacity not exceeding 1kVA",Electronics,0.621288929953927
+Wind,401693,"Rubber; vulcanised (other than hard rubber), gaskets, washers and other seals, of non-cellular rubber",Chemicals,0.6192691451435588
+Wind,401699,"Rubber; vulcanised (other than hard rubber), articles n.e.s. in heading no. 4016, of non-cellular rubber",Chemicals,0.6173012322543872
+Wind,NA,gdp_z,Non-HS,0.616382493596221
+Wind,732399,"Iron or steel; table, kitchen and other household articles and parts thereof, of iron or steel n.e.s. in heading no. 7323",Metals,0.6137927307452054
+Wind,871690,"Trailers, semi-trailers and other vehicles not mechanically propelled; parts thereof for heading no. 8716",Machinery,0.6111484333490703
+Wind,321490,Mastics; n.e.s. in heading no. 3214,Chemicals,0.6017464703010766
+Wind,854460,Insulated electric conductors; for a voltage exceeding 1000 volts,Electronics,0.5961563590664393
+Wind,350691,"Adhesives;prepared, based on polymers of heading 3901 to 3913 or on rubber",Chemicals,0.5937009275364259
+Wind,400911,"Rubber; vulcanised (other than hard rubber), tubing, piping and hoses, not reinforced or otherwise combined with other materials, without fittings",Chemicals,0.5936350295380854
+Wind,846221,"Machine-tools; bending, folding, straightening or flattening machines (including presses), numerically controlled, for working metal",Machinery,0.5903101718120661
+Wind,850164,"Electric generators; AC generators, (alternators), of an output exceeding 750kVA",Electronics,0.5856572890253436
+Wind,845430,Casting machines; of a kind used in metallurgy or in metal foundries,Machinery,0.5826028215825916
+Wind,870810,"Vehicles; bumpers and parts thereof, for the vehicles of heading no. 8701 to 8705",Machinery,0.5796156446730257
+Wind,260300,Copper ores and concentrates,Metals,0.5787265177440272
+Wind,846231,"Machine-tools; shearing machines (including presses), (other than combined punching and shearing machines), numerically controlled, for working metal",Machinery,0.5748147300018597
+Wind,261000,Chromium ores and concentrates,Metals,0.5627107897064377
+Wind,841989,"Machinery, plant and laboratory equipment; for treating materials by change of temperature, other than for making hot drinks or cooking or heating food",Machinery,0.5616657477787081
+Wind,NA,trade_z,Non-HS,0.5610411464507911
+Wind,848330,"Bearing housings, not incorporating ball or roller bearings and plain shaft bearings",Machinery,0.5581918359596069
+Wind,870839,"Vehicles; brakes, servo brakes and parts, not mounted brake linings",Machinery,0.5560553315316122
+Wind,840734,"Engines; reciprocating piston engines, of a kind used for the propulsion of vehicles of chapter 87, of a cylinder capacity exceeding 1000cc",Machinery,0.5514309858752933
+Wind,903190,"Instruments, appliances and machines; parts and accessories for those measuring or checking devices of heading no. 9031",Machinery,0.5489026492291073
+Wind,730110,"Iron or steel; sheet piling, whether or not drilled, punched or made from assembled elements",Metals,0.5482630240821863
+Wind,260800,Zinc ores and concentrates,Metals,0.5477402693687904
+Wind,400931,"Rubber; vulcanised (other than hard rubber), tubing, piping and hoses, reinforced or otherwise combined only with textile materials, without fittings",Chemicals,0.5447322050844503
+Wind,848220,"Bearings; tapered roller bearings, including cone and tapered roller assemblies",Machinery,0.5429692851959431
+Wind,760110,"Aluminium; unwrought, (not alloyed)",Metals,0.5392359920745309
+Wind,260700,Lead ores and concentrates,Metals,0.5381066463949108
+Wind,841221,"Engines; hydraulic power engines and motors, linear acting (cylinders)",Machinery,0.5311644434252584
+Wind,730640,"Steel, stainless; tubes and pipes, welded, of circular cross-section",Metals,0.5284041073521077
+Wind,870850,"Vehicles; parts, drive-axles with differential, whether or not provided with other transmission components",Machinery,0.5266250601483484
+Wind,850162,"Electric generators; AC generators, (alternators), of an output exceeding 75kVA but not exceeding 375kVA",Electronics,0.5258263113908149
+Wind,761699,Aluminium; n.e.s. in heading no. 7616,Metals,0.5255748211868115
+Wind,260600,Aluminium ores and concentrates,Metals,0.5224001819826292
+Wind,842890,"Lifting machinery; handling, loading or unloading machinery n.e.s. in heading no. 8428",Machinery,0.5205206056508032
+Wind,NA,industry_gdp_z,Non-HS,0.5165411856018671
+Wind,260200,"Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20% or more, calculated on the dry weight",Metals,0.5158404570101573
+Wind,320810,"Paints and varnishes; based on polyesters, dispersed or dissolved in a non-aqueous medium",Chemicals,0.5155987708005059
+Wind,730890,"Iron or steel; structures and parts thereof, n.e.s. in heading no. 7308",Metals,0.5136812904975099
+Wind,392690,Plastics; other articles n.e.s. in chapter 39,Chemicals,0.5122196794854659
+Wind,847990,"Machines and mechanical appliances; parts, of those having individual functions",Machinery,0.5088293540709281
+Wind,391729,"Plastics; tubes, pipes and hoses thereof, rigid, of plastics n.e.s. in heading no. 3917",Chemicals,0.5088185587748683
+Wind,848390,"Transmission components; toothed wheels, chain sprockets and other transmission elements presented separately; parts",Machinery,0.5087152099777719
+Wind,870840,"Vehicles; parts, gear boxes",Machinery,0.5069265963889569
+Wind,940560,"Illuminated signs, name plates and the like",Machinery,0.5055525042187166
+Wind,854411,"Insulated electric conductors; winding wire, of copper",Electronics,0.5021520511318496
+Wind,850519,"Magnets; permanent magnets and articles intended to become permanent magnets after magnetisation, other than of metal",Electronics,0.5014500114949741
+Wind,NA,mfg_z,Non-HS,0.5011731747549542
+Wind,820900,"Tools; plates, sticks, tips and the like for tools, unmounted, of sintered metal carbides or cermets",Metals,0.5011643812790075
+Wind,441520,"Wood; pallets, box pallets and other load boards; pallet collars",Industrial Materials,0.5006963364203638

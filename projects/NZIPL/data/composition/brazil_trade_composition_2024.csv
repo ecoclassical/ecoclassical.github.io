@@ -1,0 +1,373 @@
+product_code,tech,role,stage,exports_kusd,name,year
+320890,Solar,Processed Material,Midstream,49531.09799999999,Solar Miscellaneous; Antireflective Coating,2024
+847989,Solar,Process Equipment,Downstream,329780.0529999998,Module-Pack Assembly; Module Assembly,2024
+901820,Solar,Process Equipment,Midstream,6507.9349999999995,Ingot Production; Infrared Inspection,2024
+250510,Solar,Raw Material,Upstream,2372.9939999999997,Silica,2024
+260600,Solar,Raw Material,Upstream,241142.8139999999,Bauxite Ore,2024
+280469,Solar,Processed Material,Midstream,476963.37600000005,Ingot; Hydrochloric Acid,2024
+280490,Solar,Raw Material,Upstream,661.123,Selenium,2024
+281820,Solar,Processed Material,Midstream,3353569.0030000005,Current Collector; Alumina,2024
+350610,Solar,Processed Material,Midstream,13673.473000000002,Solar Miscellaneous; Silver Conductive Adhesive Paste,2024
+390130,Solar,Processed Material,Midstream,84966.655,Diaphragm; Ethylene Polymer,2024
+390469,Solar,Processed Material,Midstream,1002.8689999999999,Solar Glass; Fluoro-polymers for Back Sheets,2024
+390730,Solar,Processed Material,Midstream,17752.522,Epoxide Resins as Potting Agent,2024
+390761,Solar,Processed Material,Midstream,111067.33799999999,Solar Glass; Polyethylene Terephthalate (PET) for Back Sheets,2024
+700510,Solar,Product Component,Downstream,3318.593,Module; Glass Sheet Casing (Float),2024
+700510,Solar,Processed Material,Midstream,3318.593,Module; Glass Sheet Casing (Float),2024
+700719,Solar,Product Component,Downstream,934.4385,Module; Glass Sheet Casing (Toughened),2024
+700719,Solar,Processed Material,Midstream,934.4385,Module; Glass Sheet Casing (Toughened),2024
+710692,Solar,Processed Material,Midstream,2999.2569999999996,Cell; Silver in Semi-manufactured Forms,2024
+760120,Solar,Product Component,Downstream,49516.668999999994,Alloyed Unwrought Aluminum,2024
+761090,Solar,Product Component,Downstream,2509.539,Mounting Equipment; Structural Aluminum (Structures),2024
+830249,Solar,Product Component,Downstream,2699.507,Mounting Equipment,2024
+850172,Solar,Product Component,Downstream,359.117,Photovoltaic DC generators over 50 MW,2024
+850180,Solar,Product Component,Downstream,1271.3780000000002,Photovoltaic AC Generators,2024
+854129,Solar,Product Component,Downstream,724.114,Inverter,2024
+260300,Solar,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+700529,Solar,Processed Material,Midstream,7581.2880000000005,Solar Glass; Glass Sheet Casing (Float),2024
+260400,Solar,Raw Material,Upstream,231029.502,Nickel Ore,2024
+851440,Solar,Process Equipment,Midstream,626.344,Induction Heating; Induction Furnace,2024
+260900,Solar,Raw Material,Upstream,4025.32,Tin Ore,2024
+261610,Solar,Raw Material,Upstream,28154.51,Silver Ore,2024
+811292,Solar,Raw Material,Upstream,65087.721999999994,Indium,2024
+854143,Solar,Final Product,Final Product,361.202,Modules (Assembled into Panels),2024
+251910,Solar,Raw Material,Upstream,173.434,Magnesium Ore,2024
+760310,Solar,Processed Material,Midstream,4070.8590000000004,"Cell; Powders of Non-lamellar Structure, of Aluminum",2024
+280461,Solar,Processed Material,Midstream,5886.777,Polysilicon,2024
+281410,Solar,Processed Material,Midstream,421.816,Solar Miscellaneous; Ammonia for PECVD,2024
+721922,Nuclear,Product Component,Downstream,1822.8000000000002,Reactor Core; Structural Steel,2024
+840690,Nuclear,Product Component,Downstream,14925.504999999997,Parts of Steam Turbines,2024
+260112,Nuclear,Raw Material,Upstream,3380638.405,Iron Ore (Agglomerated),2024
+250410,Nuclear,Raw Material,Upstream,20249.642999999996,AAM; Natural Graphite,2024
+260111,Nuclear,Raw Material,Upstream,27885565.657999996,Iron Ore (Non- Agglomerated),2024
+260200,Nuclear,Raw Material,Upstream,88371.12100000001,Manganese Ore,2024
+261000,Nuclear,Raw Material,Upstream,4972.585,Chromium Ore,2024
+380110,Nuclear,Processed Material,Midstream,16636.987,AAM; Artificial Graphite,2024
+681099,Nuclear,Processed Material,Midstream,11427.650000000001,Hafnium; Control Rods,2024
+720270,Nuclear,Processed Material,Midstream,61354.685000000005,Casing; Ferro-molybdenum,2024
+721921,Nuclear,Product Component,Downstream,2410.2560000000003,Reactor Core; Structural Steel,2024
+841940,Nuclear,Process Equipment,Midstream,5067.784,Production Separation; Atmospheric Distillation Column,2024
+260300,Nuclear,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+720260,Nuclear,Processed Material,Midstream,586321.8,Casing; Ferro-nickel,2024
+722790,Nuclear,Processed Material,Midstream,31928.273,Control Rods; Boron Steel,2024
+260400,Nuclear,Raw Material,Upstream,231029.502,Nickel Ore,2024
+841780,Nuclear,Process Equipment,Midstream,2693.8010000000004,UF6 Conversion; Industrial Furnace,2024
+260700,Nuclear,Raw Material,Upstream,63948.891,Lead Ore,2024
+261510,Nuclear,Raw Material,Upstream,8872.598,Zirconium Ore,2024
+282520,Nuclear,Processed Material,Midstream,4537.89,CAM; Lithium Hydroxide,2024
+260120,Nuclear,Raw Material,Upstream,6089.722,Iron (Roasted Iron Pyrites),2024
+261390,Nuclear,Raw Material,Upstream,1028.381,Molybdenum Ore,2024
+845430,Nuclear,Process Equipment,Downstream,670.759,Metal Casting Machines,2024
+840681,Nuclear,Product Component,Downstream,11985.989000000001,Steam Turbine >40MW,2024
+382499,Batteries,Product Component,Midstream,197249.02200000006,Electrolyte,2024
+847989,Batteries,Process Equipment,Downstream,329780.0530000006,Module-Pack Assembly; Module Assembly,2024
+903180,Batteries,Process Equipment,Downstream,35130.75800000001,Cell Conditioning; Aging,2024
+260112,Batteries,Raw Material,Upstream,3380638.405,Iron Ore (Agglomerated),2024
+250410,Batteries,Raw Material,Upstream,20249.642999999996,AAM; Natural Graphite,2024
+260111,Batteries,Raw Material,Upstream,27885565.657999996,Iron Ore (Non- Agglomerated),2024
+260200,Batteries,Raw Material,Upstream,88371.12100000001,Manganese Ore,2024
+260600,Batteries,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+281820,Batteries,Processed Material,Midstream,3353569.0030000005,Current Collector; Alumina,2024
+282090,Batteries,Processed Material,Midstream,9440.766999999998,CAM; Manganese Oxides,2024
+282200,Batteries,Processed Material,Midstream,3139.185,"CAM; Electrolytic Cobalt, LCO (Lithium Cobalt Oxide)",2024
+282540,Batteries,Processed Material,Midstream,687.804,CAM; NMC (Nickel Manganese Cobalt Oxide),2024
+380110,Batteries,Processed Material,Midstream,16636.987,AAM; Artificial Graphite,2024
+390210,Batteries,Processed Material,Midstream,143663.61800000002,Separator; Polypropylene,2024
+391000,Batteries,Processed Material,Midstream,42698.70999999999,Separator; Silicone,2024
+391910,Batteries,Product Component,Midstream,22064.694,Separator,2024
+760720,Batteries,Product Component,Midstream,20331.787,Current Collectors (Al),2024
+761699,Batteries,Product Component,Midstream,37401.26,Battery Casing,2024
+841939,Batteries,Process Equipment,Downstream,41622.47199999998,Electrode Production; Drying,2024
+842010,Batteries,Process Equipment,Downstream,1262.4145,Electrode Production; Calendering,2024
+842010,Batteries,Process Equipment,Midstream,1262.4145,Electrode Production; Calendering,2024
+846150,Batteries,Process Equipment,Downstream,639.5,Cell Production; Cut to Single Electrode,2024
+847981,Batteries,Process Equipment,Downstream,7618.920999999999,Cell Production; Z Stacking,2024
+847982,Batteries,Process Equipment,Downstream,12428.884,Electrode Production; Dry & Wet Mixing,2024
+847982,Batteries,Process Equipment,Midstream,24857.768,Electrode Production; Dry & Wet Mixing,2024
+850760,Batteries,Final Product,Final Product,3184.0949999999993,Lithium Ion Electric Accumulators,2024
+850790,Batteries,Product Component,Downstream,6579.997999999999,Parts of Accumulators,2024
+850790,Batteries,Product Component,Midstream,13159.996000000003,Parts of Accumulators,2024
+903190,Batteries,Process Equipment,Downstream,4320.341,Electrode Production; Quality Control,2024
+260300,Batteries,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+282010,Batteries,Processed Material,Midstream,1143.022,CAM; Manganese Dioxide,2024
+260400,Batteries,Raw Material,Upstream,231029.502,Nickel Ore,2024
+282520,Batteries,Processed Material,Midstream,4537.89,CAM; Lithium Hydroxide,2024
+283691,Batteries,Processed Material,Midstream,4495.134999999999,CAM; Lithium Carbonate,2024
+750120,Batteries,Processed Material,Midstream,988.498,"CAM; Mn Ores and Concentrates, incl Fe Mn Ores and Concentrates with Mn Weighing≥20%",2024
+846223,Batteries,Process Equipment,Downstream,308.747,Electrode Production; Slitting to Width,2024
+260120,Batteries,Raw Material,Upstream,6089.722,Iron (Roasted Iron Pyrites),2024
+290122,Batteries,Raw Material,Upstream,4672.325,Propylene,2024
+750110,Batteries,Processed Material,Midstream,1399.239,CAM; Ni Mattes,2024
+285390,Batteries,Processed Material,Midstream,126.249,CAM; Nickel Cobalt Manganese Composite Hydroxide,2024
+847989,Transmission,Process Equipment,Downstream,329780.053,Module-Pack Assembly; Module Assembly,2024
+260112,Transmission,Raw Material,Upstream,3380638.405,Iron Ore (Agglomerated),2024
+850490,Transmission,Product Component,Downstream,15436.728,Parts of Transformers,2024
+854690,Transmission,Product Component,Downstream,9102.653999999999,Bushing: Oil Condenser Bushing,2024
+260111,Transmission,Raw Material,Upstream,27885565.657999996,Iron Ore (Non- Agglomerated),2024
+281820,Transmission,Processed Material,Midstream,3353569.0030000005,Current Collector; Alumina,2024
+740811,Transmission,Processed Material,Midstream,48456.068,Copper Wire,2024
+760521,Transmission,Processed Material,Midstream,7773.888999999999,Aluminum wire,2024
+841710,Transmission,Process Equipment,Midstream,7033.748999999998,Furnace for Steel Pipe Making,2024
+841939,Transmission,Process Equipment,Downstream,41622.47200000001,Electrode Production; Drying,2024
+842890,Transmission,Process Equipment,Downstream,12010.942,Core Production; Core Assembly/Stacking,2024
+845530,Transmission,Process Equipment,Midstream,90783.294,Cold Rolled Grain Oriented Silicon Steel Production; Casting Rolling,2024
+846150,Transmission,Process Equipment,Downstream,639.5,Cell Production; Cut to Single Electrode,2024
+847981,Transmission,Process Equipment,Downstream,7618.920999999999,Cell Production; Z Stacking,2024
+850431,Transmission,Final Product,Final Product,8479.411,Electrical transformers 1< kVA,2024
+850434,Transmission,Final Product,Final Product,12557.871000000001,Electrical transformers > 500 kVA,2024
+260300,Transmission,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+846249,Transmission,Process Equipment,Downstream,1243.5870000000002,Core Production; Transformer Core V Notching,2024
+850433,Transmission,Final Product,Final Product,12995.081000000002,Electrical transformers 16 - 500 kVA,2024
+260600,Transmission,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+260120,Transmission,Raw Material,Upstream,6089.722,Iron (Roasted Iron Pyrites),2024
+850432,Transmission,Final Product,Final Product,1802.2999999999997,Electrical transformers 1-16 kVA,2024
+722611,Transmission,Processed Material,Midstream,559.947,Silicon Electric Steel,2024
+320890,Wind,Product Component,Midstream,49531.09799999999,Solar Miscellaneous; Antireflective Coating,2024
+391729,Wind,Processed Material,Midstream,10967.839,Wind Turbine Joints (Other Rigid),2024
+401693,Wind,Product Component,Midstream,43697.95900000001,O-Rings,2024
+732690,Wind,Product Component,Midstream,143778.93000000002,Bearings; Iron or Steel article for Main Bearing,2024
+841290,Wind,Product Component,Downstream,10969.093,Rotor / Blades,2024
+842691,Wind,Process Equipment,Downstream,25963.911999999997,Lifting of Components/Turbine,2024
+847989,Wind,Product Component,Midstream,329780.053,Module-Pack Assembly; Module Assembly,2024
+848210,Wind,Product Component,Midstream,34464.901,Bearings,2024
+848310,Wind,Product Component,Midstream,207454.19199999995,Nacelle; Transmission Shafts,2024
+848330,Wind,Product Component,Midstream,71795.927,Nacelle; Bearing Housing Without Ball or Roller Bearing and Plain Shaft Bearing,2024
+848340,Wind,Product Component,Downstream,114897.68399999998,Nacelle; Gearbox,2024
+848360,Wind,Product Component,Midstream,9833.128999999999,Nacelle; Clutches and Shaft Couplings,2024
+853650,Wind,Product Component,Midstream,49748.72899999999,"Wind Substation: Electrical Switches, Voltage ≤ 1000V",2024
+390110,Wind,Processed Material,Midstream,467993.08699999977,Tower; Ethylene Polymers for Use in Tower Cable Cores,2024
+790111,Wind,Processed Material,Midstream,221703.251,Zinc (Refined) 99% Pure,2024
+844630,Wind,Process Equipment,Midstream,699.564,Wind Capital Good; Shuttle-less Looms,2024
+854370,Wind,Product Component,Midstream,79837.90100000003,Bi-Polar Plate; Physical Vapour Deposition,2024
+260200,Wind,Raw Material,Upstream,88371.12100000001,Manganese Ore,2024
+260600,Wind,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+261000,Wind,Raw Material,Upstream,4972.585,Chromium Ore,2024
+281820,Wind,Processed Material,Midstream,3353569.0030000005,Current Collector; Alumina,2024
+290949,Wind,Processed Material,Midstream,6507.873,Tower; Industrial Alcohols for Use in Tower,2024
+350691,Wind,Processed Material,Midstream,48686.27500000001,Rotor; Adhesive for Use in Rotor,2024
+390210,Wind,Processed Material,Midstream,143663.61800000002,Separator; Polypropylene,2024
+390791,Wind,Processed Material,Midstream,19394.875,Rotor; Materials for Use in Rotor (Polyester),2024
+391721,Wind,Processed Material,Midstream,3616.438,Wind Turbine Joints Ethylene,2024
+391722,Wind,Processed Material,Midstream,1179.531,Wind Turbine Joints Propylene,2024
+391723,Wind,Processed Material,Midstream,2270.382,Wind Turbine Joints Vinyl Chloride,2024
+391732,Wind,Processed Material,Midstream,33674.597,Wind Turbine Joints (Flexible Plastic),2024
+392590,Wind,Product Component,Midstream,11196.637999999999,"Bearings; Cable Trays, Tracks, Clamps, and Supports to Protect Electrical Items",2024
+392590,Wind,Processed Material,Midstream,11196.637999999999,"Bearings; Cable Trays, Tracks, Clamps, and Supports to Protect Electrical Items",2024
+401699,Wind,Processed Material,Midstream,89303.39200000004,Tower: Vulcanised Rubber Articles for Cable Accessory & Joints,2024
+681599,Wind,Processed Material,Midstream,8953.429,Rotor; Materials for Use in Rotor,2024
+730640,Wind,Product Component,Midstream,8683.892,"Tower; Stainless Steel Welded Tubes, Pipes, and Hollow Profiles of Circular Cross-section",2024
+730791,Wind,Product Component,Midstream,3387.41,Flanges,2024
+730799,Wind,Product Component,Midstream,9428.185000000001,"Tower; Iron or Non-stainless Steel Tube or Pipe Fittings, Flanges (2)",2024
+730820,Wind,Product Component,Downstream,25639.974000000002,Tower,2024
+732399,Wind,Product Component,Midstream,3038.4829999999997,Nacelle; Small Engineering Components of Iron or Steel,2024
+760429,Wind,Product Component,Midstream,18487.979,"Tower; Non-hollow Aluminium Alloys, Bars, Rods for Cable Core",2024
+820900,Wind,Processed Material,Midstream,2140.448,Rotor; Materials for Use in Rotor (Sintered Metal),2024
+841221,Wind,Product Component,Downstream,62281.43600000001,Rotor; Motor (Linear Acting),2024
+841229,Wind,Product Component,Downstream,7827.5,Rotor; Motor (Non Linear Acting),2024
+842890,Wind,Process Equipment,Downstream,12010.942,Core Production; Core Assembly/Stacking,2024
+846039,Wind,Process Equipment,Midstream,306.081,Wind Capital Good; Machine Tools Used to Finish Metal,2024
+848220,Wind,Product Component,Midstream,23848.847,Nacelle; Tapered Roller Bearings for Gearbox,2024
+848230,Wind,Product Component,Midstream,1580.521,Nacelle; Spherical Roller Bearings for Gearbox,2024
+848240,Wind,Product Component,Midstream,7237.314,Tower; Needle Roller Bearings,2024
+848250,Wind,Product Component,Midstream,15257.740000000002,Nacelle; Cylindrical Roller Bearings for Gearbox,2024
+848280,Wind,Product Component,Midstream,1764.159,Bearings; Ball or Roller Bearings,2024
+848299,Wind,Product Component,Midstream,11758.248,"Nacelle; Bearing Parts Excluding Balls, Needles and Rollers",2024
+850161,Wind,Product Component,Downstream,3942.1059999999998,Nacelle; Motor <75 kVA,2024
+850162,Wind,Product Component,Downstream,12037.098000000002,Nacelle; Motor 75kVA - 375kVA,2024
+850163,Wind,Product Component,Downstream,7370.254,Nacelle; Motor 375kVA -  750kVA,2024
+850164,Wind,Product Component,Downstream,33933.80099999999,Nacelle; Motor > 750kVA,2024
+850300,Wind,Product Component,Downstream,142124.28399999999,Nacelle; Motor (Miscellaneous Parts),2024
+850431,Wind,Product Component,Midstream,8479.411,Electrical transformers 1< kVA,2024
+850519,Wind,Product Component,Downstream,427.351,Permanent Magnet Components,2024
+854390,Wind,Product Component,Midstream,5882.346,Wind Substation: Parts of Electrical Goods,2024
+854411,Wind,Processed Material,Midstream,46455.604,Nacelle; Copper Wire for Use in Nacelle,2024
+854460,Wind,Product Component,Midstream,58777.295000000006,"Wind Substation: Insulated Electric Conductors, Voltage > 1000V",2024
+902580,Wind,Product Component,Midstream,3002.6449999999995,Nacelle; Thermocouples in the Control System,2024
+902680,Wind,Product Component,Midstream,9083.069,Nacelle; Apparatus for Measuring or Checking Liquid or Gas Variables,2024
+902830,Wind,Product Component,Midstream,4686.383999999999,Nacelle; Electricity Supply or Production Meters,2024
+902920,Wind,Product Component,Midstream,18585.967,"Nacelle; Speed Indicators, Tachometers, Stroboscopes",2024
+903190,Wind,Process Equipment,Downstream,4320.341,Electrode Production; Quality Control,2024
+760110,Wind,Processed Material,Midstream,962249.4039999999,Tower; Unwrought Aluminium for Use in Tower,2024
+260300,Wind,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+261310,Wind,Raw Material,Upstream,16903.343999999997,Molybdenum Ore,2024
+260400,Wind,Raw Material,Upstream,231029.502,Nickel Ore,2024
+681511,Wind,Processed Material,Midstream,156.4,Rotor; Materials for Use in Rotor (Carbon Fibre),2024
+850231,Wind,Final Product,Final Product,4850.169,Wind Turbines,2024
+260800,Wind,Raw Material,Upstream,193488.935,Zinc Ore,2024
+261400,Wind,Raw Material,Upstream,10143.332,Titanium Ore,2024
+261390,Wind,Raw Material,Upstream,1028.381,Molybdenum Ore,2024
+845430,Wind,Process Equipment,Midstream,670.759,Metal Casting Machines,2024
+220720,Biofuel,Final Product,Final Product,181794.17399999997,Ethyl Alcohol (Denatured),2024
+840490,Biofuel,Process Equipment,Downstream,8575.655,CO2 Reduction (Gas); Condenser,2024
+841381,Biofuel,Process Equipment,Downstream,5952.076,Conveyance of Product; Pumps,2024
+842121,Biofuel,Process Equipment,Downstream,207342.99000000002,Conveyance of Product; Flash Drums,2024
+840211,Biofuel,Process Equipment,Midstream,12111.760999999999,High Pressure Steam Boilers,2024
+841430,Biofuel,Process Equipment,Downstream,276568.04300000006,Compressor,2024
+151329,Biofuel,Raw Material,Upstream,2255.436,Feedstock Input; Palm Oil,2024
+260600,Biofuel,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+281122,Biofuel,Processed Material,Midstream,33823.01399999999,CO2 Reduction (Gas); Silica Gels,2024
+281820,Biofuel,Processed Material,Midstream,3353569.0030000005,Current Collector; Alumina,2024
+281830,Biofuel,Processed Material,Midstream,276678.435,Catalyst Input; Aluminum Hydroxide,2024
+282200,Biofuel,Processed Material,Midstream,3139.185,"CAM; Electrolytic Cobalt, LCO (Lithium Cobalt Oxide)",2024
+282300,Biofuel,Processed Material,Midstream,123.334,Catalyst Input; Titanium Oxides,2024
+283650,Biofuel,Processed Material,Midstream,9911.764,CO2 Reduction (Liquid); CACO3 Pellets,2024
+290511,Biofuel,Processed Material,Midstream,1857.51,Intermediate Input; Methanol,2024
+290514,Biofuel,Processed Material,Midstream,12156.057999999999,Intermediate Input; Butanol,2024
+291814,Biofuel,Processed Material,Midstream,19107.659999999996,Deodorization; Citric Acid,2024
+380210,Biofuel,Processed Material,Midstream,3473.596,CO2 Reduction (Gas); Activated Carbon,2024
+381512,Biofuel,Processed Material,Midstream,39638.630000000005,Platinum Group Metal Catalyst,2024
+381519,Biofuel,Processed Material,Midstream,390.34900000000005,"Various Catalysts; Ti-Catalyst, Co-Mo Catalyst, Zi-Catalyst",2024
+381590,Biofuel,Processed Material,Midstream,38448.70600000001,Aluminosilicates,2024
+690220,Biofuel,Processed Material,Midstream,12378.962,Catalyst; Al2O3,2024
+841410,Biofuel,Process Equipment,Midstream,14553.085000000001,Vacuum Pumps,2024
+841939,Biofuel,Process Equipment,Midstream,41622.47200000001,Electrode Production; Drying,2024
+841940,Biofuel,Process Equipment,Downstream,5067.784,Production Separation; Atmospheric Distillation Column,2024
+841950,Biofuel,Process Equipment,Downstream,173605.918,Conveyance of Product; Plate Heat Exchangers,2024
+842139,Biofuel,Process Equipment,Downstream,159936.56,Vapor-liquid Separator,2024
+150790,Biofuel,Raw Material,Upstream,163790.441,Feedstock Input; Soybean Oil,2024
+261100,Biofuel,Raw Material,Upstream,3976.953,Tungsten Ore,2024
+261310,Biofuel,Raw Material,Upstream,16903.343999999997,Molybdenum Ore,2024
+282560,Biofuel,Processed Material,Midstream,107.954,Catalyst Input; Zirconium Dioxide,2024
+382600,Biofuel,Final Product,Final Product,53194.329000000005,Biodiesel,2024
+260400,Biofuel,Raw Material,Upstream,231029.502,Nickel Ore,2024
+261400,Biofuel,Raw Material,Upstream,10143.332,Titanium Ore,2024
+261510,Biofuel,Raw Material,Upstream,8872.598,Zirconium Ore,2024
+440122,Biofuel,Raw Material,Upstream,170347.457,Feedstock Input; Forestry Product,2024
+151521,Biofuel,Raw Material,Upstream,51183.098999999995,Feedstock Input: Corn Oil,2024
+121300,Biofuel,Raw Material,Upstream,1306.964,Feedstock Input; Ag-Waste,2024
+282570,Biofuel,Processed Material,Midstream,324.9,"Catalyst Input; Molybdenum Oxide, Dioxide",2024
+151529,Biofuel,Raw Material,Upstream,7561.178000000001,Feedstock Input: Corn Oil,2024
+381511,Biofuel,Processed Material,Midstream,105.376,Ni-Catalyst,2024
+440121,Biofuel,Raw Material,Upstream,1449.68,Feedstock Input; Forestry Product,2024
+252220,Biofuel,Raw Material,Upstream,1301.54,CO2 Reduction (Liquid); Slaking Lime,2024
+281121,Biofuel,Raw Material,Upstream,333.972,Fuel Input; CO2,2024
+841370,Electrolyzers,Product Component,Downstream,75772.18900000001,Centrifugal Pumps,2024
+841490,Electrolyzers,Product Component,Downstream,45466.886999999995,"Pumps, Compressors, etc. Parts",2024
+842121,Electrolyzers,Product Component,Downstream,207342.99000000002,Conveyance of Product; Flash Drums,2024
+390230,Electrolyzers,Processed Material,Midstream,133860.473,Diaphragm; Propylene Polymer,2024
+820730,Electrolyzers,Process Equipment,Downstream,27879.784,Bi-Polar Plate; Stamping Die,2024
+854370,Electrolyzers,Process Equipment,Downstream,79837.90100000003,Bi-Polar Plate; Physical Vapour Deposition,2024
+282200,Electrolyzers,Processed Material,Midstream,3139.185,"CAM; Electrolytic Cobalt, LCO (Lithium Cobalt Oxide)",2024
+282300,Electrolyzers,Processed Material,Midstream,123.334,Catalyst Input; Titanium Oxides,2024
+381512,Electrolyzers,Product Component,Midstream,39638.630000000005,Platinum Group Metal Catalyst,2024
+390130,Electrolyzers,Processed Material,Midstream,84966.655,Diaphragm; Ethylene Polymer,2024
+390190,Electrolyzers,Processed Material,Midstream,11503.473,Diaphragm; Ethylene Polymer,2024
+390290,Electrolyzers,Processed Material,Midstream,3083.9579999999996,Diaphragm; Propylene Polymer,2024
+391000,Electrolyzers,Processed Material,Midstream,42698.70999999999,Separator; Silicone,2024
+391400,Electrolyzers,Product Component,Downstream,1620.6000000000001,Ion Exchange Membrane,2024
+400270,Electrolyzers,Processed Material,Midstream,25347.268999999997,Gasket; Ethylene Propylene Diene Rubber (EPDM),2024
+841869,Electrolyzers,Product Component,Downstream,48453.836,Freezing Equipment,2024
+841899,Electrolyzers,Product Component,Downstream,38597.723000000005,Freezing Equipment Parts,2024
+841939,Electrolyzers,Process Equipment,Downstream,41622.47199999998,Electrode Production; Drying,2024
+841950,Electrolyzers,Product Component,Downstream,173605.918,Conveyance of Product; Plate Heat Exchangers,2024
+842139,Electrolyzers,Product Component,Downstream,159936.56,Vapor-liquid Separator,2024
+845611,Electrolyzers,Process Equipment,Downstream,478.447,Catalyst Coated Membrane Production; Membrane Cutter,2024
+846150,Electrolyzers,Process Equipment,Downstream,639.5,Cell Production; Cut to Single Electrode,2024
+846261,Electrolyzers,Process Equipment,Downstream,7827.686,Diffusion Layer Production; Metal Compaction,2024
+847981,Electrolyzers,Process Equipment,Downstream,7618.921,Cell Production; Z Stacking,2024
+847982,Electrolyzers,Process Equipment,Downstream,18643.326,Electrode Production; Dry & Wet Mixing,2024
+847982,Electrolyzers,Process Equipment,Midstream,18643.326,Electrode Production; Dry & Wet Mixing,2024
+261100,Electrolyzers,Raw Material,Upstream,3976.953,Tungsten Ore,2024
+261310,Electrolyzers,Raw Material,Upstream,16903.343999999997,Molybdenum Ore,2024
+260400,Electrolyzers,Raw Material,Upstream,231029.502,Nickel Ore,2024
+261400,Electrolyzers,Raw Material,Upstream,10143.332,Titanium Ore,2024
+284330,Electrolyzers,Processed Material,Midstream,3742.461999999999,Bi-Polar Plate; Gold,2024
+854330,Electrolyzers,Final Product,Final Product,1557.3825000000002,Electrolyzers,2024
+901380,Electrolyzers,Process Equipment,Downstream,1984.9219999999998,Catalyst Coated Membrane Production; Terahertz Scanner Quality Control,2024
+261390,Electrolyzers,Raw Material,Upstream,1028.381,Molybdenum Ore,2024
+381511,Electrolyzers,Product Component,Midstream,105.376,Ni-Catalyst,2024
+401693,Geothermal,Product Component,Midstream,43697.95900000001,O-Rings,2024
+730721,Geothermal,Product Component,Midstream,4391.513,Flanges,2024
+731815,Geothermal,Product Component,Midstream,72530.04700000002,Bolts,2024
+840690,Geothermal,Product Component,Downstream,14925.504999999997,Parts of Steam Turbines,2024
+841391,Geothermal,Product Component,Midstream,76822.576,Low Pressure Impellers,2024
+843049,Geothermal,Final Product,Final Product,4640.8589999999995,Well Drilling,2024
+848210,Geothermal,Product Component,Midstream,34464.901,Bearings,2024
+851539,Geothermal,Process Equipment,Downstream,1264.203,Derrick Manufacture; Flux-cored Welding / Shielded Metal Arc Welding,2024
+260112,Geothermal,Raw Material,Upstream,3380638.405,Iron Ore (Agglomerated),2024
+843041,Geothermal,Final Product,Final Product,7097.4529999999995,Well Drilling,2024
+843143,Geothermal,Product Component,Downstream,11196.335,Kellys,2024
+250810,Geothermal,Raw Material,Upstream,5877.812,Drilling Fluid; Bentonite,2024
+252330,Geothermal,Processed Material,Midstream,505.179,Geothermal Wells; Cement,2024
+260111,Geothermal,Raw Material,Upstream,27885565.657999996,Iron Ore (Non- Agglomerated),2024
+260200,Geothermal,Raw Material,Upstream,88371.12100000001,Manganese Ore,2024
+260600,Geothermal,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+261000,Geothermal,Raw Material,Upstream,4972.585,Chromium Ore,2024
+340399,Geothermal,Product Component,Midstream,16867.824,Lubricants,2024
+390461,Geothermal,Product Component,Midstream,1973.657,O-Rings; PTFE (Polytetrafluoroethylene),2024
+391000,Geothermal,Product Component,Midstream,42698.70999999999,Separator; Silicone,2024
+400249,Geothermal,Processed Material,Midstream,731.886,Mud Hose; Chloroprene rubber,2024
+400259,Geothermal,Product Component,Midstream,7555.472000000001,O-Rings; HNBR (Hydrogenated Nitrile Rubber),2024
+400259,Geothermal,Processed Material,Midstream,7555.472000000001,O-Rings; HNBR (Hydrogenated Nitrile Rubber),2024
+720230,Geothermal,Processed Material,Midstream,53005.970000000016,Casing; Ferro-manganese,2024
+720249,Geothermal,Processed Material,Midstream,32456.265,Casing; Ferro-chromium,2024
+720270,Geothermal,Processed Material,Midstream,61354.685000000005,Casing; Ferro-molybdenum,2024
+722490,Geothermal,Processed Material,Midstream,780064.039,Casing; Semi-finished Products of Alloy Steel,2024
+730791,Geothermal,Product Component,Midstream,3387.41,Flanges,2024
+732620,Geothermal,Processed Material,Midstream,13160.822,Mud Hose; Steel Wire,2024
+820750,Geothermal,Product Component,Downstream,49378.834,Drill Bit - Tungsten Carbide Inserts (TCI),2024
+840682,Geothermal,Final Product,Final Product,24713.246,Steam Turbine <40MW,2024
+841710,Geothermal,Product Component,Midstream,2344.5829999999996,Furnace for Steel Pipe Making,2024
+841710,Geothermal,Process Equipment,Downstream,2344.5829999999996,Furnace for Steel Pipe Making,2024
+841710,Geothermal,Process Equipment,Midstream,2344.5829999999996,Furnace for Steel Pipe Making,2024
+841950,Geothermal,Final Product,Final Product,173605.918,Conveyance of Product; Plate Heat Exchangers,2024
+842139,Geothermal,Product Component,Downstream,159936.55999999994,Vapor-liquid Separator,2024
+845640,Geothermal,Process Equipment,Downstream,406.664,Derrick Manufacture; CNC Plasma Cutting,2024
+845710,Geothermal,Process Equipment,Downstream,24784.834000000003,Steam Turbine Components Production; CNC Machining,2024
+845710,Geothermal,Process Equipment,Midstream,24784.834000000003,Steam Turbine Components Production; CNC Machining,2024
+847982,Geothermal,Product Component,Downstream,37286.652,Electrode Production; Dry & Wet Mixing,2024
+850239,Geothermal,Final Product,Final Product,30536.606999999996,Electric Generating Sets,2024
+851531,Geothermal,Process Equipment,Downstream,2382.402,Steam Turbine Components; Welding Arc,2024
+845891,Geothermal,Process Equipment,Midstream,1089.603,Drill Pipes; CNC Turning,2024
+260300,Geothermal,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+720260,Geothermal,Processed Material,Midstream,586321.8,Casing; Ferro-nickel,2024
+720291,Geothermal,Processed Material,Midstream,1227.28,Casing; Ferro-titanium,2024
+260400,Geothermal,Raw Material,Upstream,231029.502,Nickel Ore,2024
+820719,Geothermal,Product Component,Downstream,1455.7839999999999,Drill Bit - Polycrystalline Diamond Compact (PDC),2024
+261400,Geothermal,Raw Material,Upstream,10143.332,Titanium Ore,2024
+260120,Geothermal,Raw Material,Upstream,6089.722,Iron (Roasted Iron Pyrites),2024
+261390,Geothermal,Raw Material,Upstream,1028.381,Molybdenum Ore,2024
+846090,Geothermal,Process Equipment,Downstream,172.695,Steam Turbine Components Production; Polishing,2024
+842641,Geothermal,Process Equipment,Downstream,624.549,Derricks,2024
+845430,Geothermal,Process Equipment,Downstream,670.759,Metal Casting Machines,2024
+845921,Geothermal,Process Equipment,Midstream,466.721,Drill Pipes; CNC Drilling,2024
+840681,Geothermal,Final Product,Final Product,11985.989000000001,Steam Turbine >40MW,2024
+841381,Heat Pumps,Product Component,Downstream,5952.076,Conveyance of Product; Pumps,2024
+841490,Heat Pumps,Product Component,Downstream,45466.886999999995,"Pumps, Compressors, etc. Parts",2024
+841430,Heat Pumps,Product Component,Downstream,276568.04300000006,Compressor,2024
+260600,Heat Pumps,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+281820,Heat Pumps,Processed Material,Midstream,3353569.0030000005,Current Collector; Alumina,2024
+741110,Heat Pumps,Product Component,Midstream,92420.532,Evaporator Coil; Copper Tubing,2024
+760120,Heat Pumps,Processed Material,Midstream,49516.668999999994,Alloyed Unwrought Aluminum,2024
+760820,Heat Pumps,Product Component,Midstream,4976.486000000001,Evaporator Coil; Aluminum Tubing,2024
+820720,Heat Pumps,Process Equipment,Midstream,742.647,Tube Extrusion; Dies for Drawing or Extruding Metal,2024
+840290,Heat Pumps,Product Component,Downstream,10416.643999999998,Heat Exchanger,2024
+841410,Heat Pumps,Product Component,Downstream,14553.085000000001,Vacuum Pumps,2024
+841581,Heat Pumps,Final Product,Final Product,1427.334,Air Conditioner (w Heat Pump),2024
+841590,Heat Pumps,Product Component,Downstream,23756.475000000002,Evaporator,2024
+841590,Heat Pumps,Product Component,Midstream,23756.475000000002,Evaporator,2024
+841899,Heat Pumps,Product Component,Downstream,38597.723000000005,Freezing Equipment Parts,2024
+846150,Heat Pumps,Process Equipment,Midstream,639.5,Cell Production; Cut to Single Electrode,2024
+260300,Heat Pumps,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+740313,Heat Pumps,Processed Material,Midstream,611.836,Copper Billets Unwrought; Copper Tubing,2024
+260400,Heat Pumps,Raw Material,Upstream,231029.502,Nickel Ore,2024
+853400,Heat Pumps,Product Component,Midstream,2280.9629999999997,Smart Controls; Electronic Printed Circuits,2024
+846229,Heat Pumps,Process Equipment,Downstream,2851.615,Sheet Metal Box Encasement Production; Numerically Controlled Press Bake,2024
+251910,Heat Pumps,Raw Material,Upstream,173.434,Magnesium Ore,2024
+261390,Heat Pumps,Raw Material,Upstream,1028.381,Molybdenum Ore,2024
+847989,Magnets,Process Equipment,Downstream,329780.053,Module-Pack Assembly; Module Assembly,2024
+260600,Magnets,Raw Material,Upstream,241142.81399999998,Bauxite Ore,2024
+284690,Magnets,Processed Material,Midstream,2284.323,"Compounds, Mixes of Rare-earths, Yttrium, Scandium",2024
+680421,Magnets,Process Equipment,Downstream,3132.9630000000006,Griding; Diamond Griding Wheel,2024
+720293,Magnets,Processed Material,Midstream,2584331.5039999997,Ferro-niobium,2024
+760120,Magnets,Processed Material,Midstream,49516.668999999994,Alloyed Unwrought Aluminum,2024
+820720,Magnets,Process Equipment,Downstream,742.647,Tube Extrusion; Dies for Drawing or Extruding Metal,2024
+847982,Magnets,Process Equipment,Downstream,37286.652,Electrode Production; Dry & Wet Mixing,2024
+850519,Magnets,Product Component,Downstream,213.6755,Permanent Magnet Components,2024
+850519,Magnets,Final Product,Final Product,213.6755,Permanent Magnet Components,2024
+260300,Magnets,Raw Material,Upstream,4170906.9540000004,Copper Ore,2024
+260400,Magnets,Raw Material,Upstream,231029.502,Nickel Ore,2024
+851440,Magnets,Process Equipment,Downstream,626.344,Induction Heating; Induction Furnace,2024
+261590,Magnets,Raw Material,Upstream,32718.725,"Niobium, Tantalum and Vanadium Ores and Concentrates",2024
+854330,Magnets,Process Equipment,Downstream,3114.7649999999994,Electrolyzers,2024
+260120,Magnets,Raw Material,Upstream,6089.722,Iron (Roasted Iron Pyrites),2024
