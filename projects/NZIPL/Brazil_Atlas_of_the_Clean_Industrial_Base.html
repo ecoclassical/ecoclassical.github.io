@@ -516,6 +516,7 @@ function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
 let currentIdx=0, worldTopo=null, centroids={};
 let selStage="ALL", selRole="ALL", selProduct="ALL";
 let tlMode="exports", scMode="pct";
+let sankeyFocus=null;
 
 const c=()=>ALL_CASES[currentIdx];
 
@@ -1336,28 +1337,46 @@ function drawAtlasSankey(){
     svg.append("line").attr("x1",x-NW).attr("x2",x+NW).attr("y1",yMid).attr("y2",yMid)
       .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",0.5);
   });
-  // Links — log-scaled widths
+  // Focus state: default to focal country (Brazil), click node to switch
+  if(sankeyFocus===null) sankeyFocus=c0.focal;
+  const foc=sankeyFocus;
+  // Click on SVG background resets to focal country
+  svg.on("click",()=>{ sankeyFocus=c0.focal; drawAtlasSankey(); });
+  // Links — log-scaled widths, dimmed unless involving focused country
   const wVals=flows.map(f=>+f.w).filter(v=>v>0);
   const minW=d3.min(wVals)||1, maxW=d3.max(wVals)||1;
   const swSc=d3.scaleLog().domain([minW,maxW]).range([0.3,3.5]).clamp(true);
   flows.forEach(f=>{
     const src=nPos.get(f.fl),tgt=nPos.get(f.tl); if(!src||!tgt) return;
+    const active=f.fc===foc||f.tc===foc;
     const col=LC[+f.fl7]||"#9ca3af";
     const x1=src.x+src.w,y1=src.y+src.h/2,x2=tgt.x,y2=tgt.y+tgt.h/2,cx=(x1+x2)/2;
     svg.append("path").attr("d",`M${x1},${y1}C${cx},${y1} ${cx},${y2} ${x2},${y2}`)
-      .attr("fill","none").attr("stroke",col).attr("stroke-width",swSc(+f.w||minW)).attr("opacity",0.22)
+      .attr("fill","none").attr("stroke",col).attr("stroke-width",active?swSc(+f.w||minW)*1.4:swSc(+f.w||minW))
+      .attr("opacity",active?0.62:0.05)
       .on("mousemove",ev=>showTip(`${cn(f.fc)} → ${cn(f.tc)}<br><b>${fmtV(+f.w)}</b>`,ev))
       .on("mouseleave",hideTip);
   });
-  // Nodes + labels
+  // Nodes + labels — highlight focused country, dim others
   nPos.forEach((n,id)=>{
+    const iso=id.split(" | ")[0];
+    const active=iso===foc;
     const col=LC[n.lane]||"#9ca3af";
-    svg.append("rect").attr("x",n.x).attr("y",n.y).attr("width",n.w).attr("height",n.h).attr("fill",col).attr("rx",1.5).attr("opacity",0.88)
-      .on("mousemove",ev=>showTip(`<b>${n.name}</b><br>${fmtV(n.wt)}`,ev)).on("mouseleave",hideTip);
+    svg.append("rect").attr("x",n.x).attr("y",n.y).attr("width",n.w).attr("height",n.h)
+      .attr("fill",col).attr("rx",1.5).attr("opacity",active?0.96:0.2)
+      .style("cursor","pointer")
+      .on("click",(ev)=>{ ev.stopPropagation(); sankeyFocus=iso; drawAtlasSankey(); })
+      .on("mousemove",ev=>showTip(`<b>${n.name}</b><br>${fmtV(n.wt)}`,ev))
+      .on("mouseleave",hideTip);
+    // Active node gets a subtle bright outline
+    if(active) svg.append("rect").attr("x",n.x-0.5).attr("y",n.y-0.5).attr("width",n.w+1).attr("height",n.h+1)
+      .attr("fill","none").attr("stroke",col).attr("stroke-width",0.8).attr("rx",2).attr("opacity",0.6);
     if(n.h>=4){
       const tx=n.ci<=2?n.x+n.w+2:n.x-2, anc=n.ci<=2?"start":"end";
       svg.append("text").attr("x",tx).attr("y",n.y+n.h/2+2).attr("text-anchor",anc)
-        .attr("font-size",5.5).attr("fill","rgba(255,255,255,.72)").text(n.name);
+        .attr("font-size",5.5).attr("fill",active?"rgba(255,255,255,.95)":"rgba(255,255,255,.22)")
+        .attr("font-weight",active?"600":"400")
+        .text(n.name);
     }
   });
 }
@@ -1383,6 +1402,7 @@ document.querySelectorAll(".nav-btn").forEach(btn=>{
     currentIdx=+btn.dataset.idx;
     selStage="ALL"; selRole="ALL"; selProduct="ALL";
     document.getElementById("sel-stage").value="ALL";
+    sankeyFocus=null;
     renderAll();
   });
 });
