@@ -1258,7 +1258,7 @@ function drawAtlasSankey(){
   const c0=c();
   const flows=c0.sankey_flows||[];
   const titleEl=document.getElementById("sankey-title");
-  if(titleEl) titleEl.textContent=`${c0.tech} · Trade Flows 2022`;
+  if(titleEl) titleEl.textContent=`${c0.tech} · Trade Flows 2022 · log-scaled`;
   const svg=d3.select("#sankey-svg");svg.selectAll("*").remove();
   const W=document.getElementById("pane-sankey").clientWidth||380;
   const H=document.getElementById("pane-sankey").clientHeight-36||250;
@@ -1271,22 +1271,32 @@ function drawAtlasSankey(){
   }
   const CNAMES={CHN:"China",USA:"USA",DEU:"Germany",JPN:"Japan",KOR:"S.Korea",IND:"India",VNM:"Vietnam",MYS:"Malaysia",FRA:"France",GBR:"UK",ITA:"Italy",ESP:"Spain",AUS:"Australia",CAN:"Canada",NLD:"Neth.",BRA:"Brazil",TWN:"Taiwan",SGP:"Singapore",THA:"Thailand",IDN:"Indonesia",NOR:"Norway",POL:"Poland",SWE:"Sweden",ZAF:"S.Africa",ARE:"UAE",BHR:"Bahrain",AUT:"Austria",KHM:"Cambodia",MEX:"Mexico",HUN:"Hungary",TUR:"Turkey",HKG:"HK",S19:"Other"};
   const cn=iso=>CNAMES[iso]||iso;
-  // 7-lane fixed positions (consistent across all techs)
-  const X=[0.045,0.20,0.355,0.505,0.645,0.785,0.96];
-  const LANE_LBL=["Raw Mat.","Proc.Mat.","Proc.Equip.","Prod.Comp.","Prod.Comp.","Proc.Equip.","Final"];
+  // 5-column layout: lane0 | lane1 | lanes2+3(stacked) | lanes5+4(stacked) | lane6
+  // lane→column index
+  const laneCol={0:0,1:1,2:2,3:2,4:3,5:3,6:4};
+  const COL_X=[0.062,0.238,0.46,0.695,0.932];
+  // SR color palette per lane
   const LC={0:"#b45309",1:"#22c55e",2:"#65a30d",3:"#16a34a",4:"#4ade80",5:"#6b7280",6:"#f97316"};
   const P={t:42,b:6,l:4,r:4};
   const iw=W-P.l-P.r, ih=H-P.t-P.b;
-  // Stage bands
-  [[0,0.13,"#b45309"],[0.14,0.585,"#073309"],[0.59,0.875,"#0369a1"],[0.88,1,"#f97316"]].forEach(([x1,x2,c])=>{
-    svg.append("rect").attr("x",P.l+x1*iw).attr("y",P.t-20).attr("width",(x2-x1)*iw).attr("height",ih+20).attr("fill",c).attr("opacity",0.045);
+  // Section bands: UPSTREAM | MIDSTREAM | DOWNSTREAM (3 sections)
+  const bandX1=[0,0.150,0.578], bandX2=[0.150,0.578,1];
+  const bandCol=["#b45309","#22c55e","#4ade80"];
+  const bandLbl=["UPSTREAM","MIDSTREAM","DOWNSTREAM"];
+  bandX1.forEach((x1,i)=>{
+    svg.append("rect").attr("x",P.l+x1*iw).attr("y",P.t-20).attr("width",(bandX2[i]-x1)*iw).attr("height",ih+20).attr("fill",bandCol[i]).attr("opacity",0.05);
+    svg.append("text").attr("x",P.l+(x1+bandX2[i])/2*iw).attr("y",10).attr("text-anchor","middle")
+      .attr("fill",bandCol[i]).attr("font-size",7).attr("font-weight","700").attr("letter-spacing","0.08em").text(bandLbl[i]);
   });
-  [["UPSTREAM","#b45309",[0]],["MIDSTREAM","#22c55e",[1,2,3]],["DOWNSTREAM","#4ade80",[4,5]],["FINAL","#f97316",[6]]].forEach(([lbl,col,lanes])=>{
-    const cx=d3.mean(lanes.map(i=>X[i]))*iw+P.l;
-    svg.append("text").attr("x",cx).attr("y",10).attr("text-anchor","middle").attr("fill",col).attr("font-size",7).attr("font-weight","700").attr("letter-spacing","0.08em").text(lbl);
+  // Column role labels (two rows for shared columns)
+  [[0,"Raw Material",LC[0],22],[1,"Proc. Material",LC[1],22],
+   [2,"Proc. Equipment",LC[2],20],[2,"Prod. Component",LC[3],28],
+   [3,"Proc. Equipment",LC[5],20],[3,"Prod. Component",LC[4],28],
+   [4,"Final Product",LC[6],22]].forEach(([ci,lbl,col,y])=>{
+    svg.append("text").attr("x",P.l+COL_X[ci]*iw).attr("y",y).attr("text-anchor","middle")
+      .attr("fill",col).attr("font-size",5).attr("opacity",0.75).text(lbl);
   });
-  X.forEach((x,i)=>{svg.append("text").attr("x",P.l+x*iw).attr("y",22).attr("text-anchor","middle").attr("fill",LC[i]).attr("font-size",5.5).attr("opacity",0.65).text(LANE_LBL[i]);});
-  // Build node maps
+  // Build node weight maps per lane
   const laneM={};
   flows.forEach(f=>{
     [[f.fl,+f.fl7],[f.tl,+f.tl7]].forEach(([id,lane])=>{
@@ -1294,39 +1304,60 @@ function drawAtlasSankey(){
       laneM[lane].set(id,(laneM[lane].get(id)||0)+(+f.w||0));
     });
   });
-  const NW=12;
+  // Log-proportional node height layout within a vertical band
+  const NW=10, GAP_NODE=2, GAP_ROLE=10;
   const nPos=new Map();
-  for(let lane=0;lane<=6;lane++){
-    const nm=laneM[lane]; if(!nm||!nm.size) continue;
+  function layoutLane(lane,yStart,yEnd){
+    const nm=laneM[lane]; if(!nm||!nm.size) return;
+    const ci=laneCol[lane];
     const sorted=[...nm.entries()].sort((a,b)=>b[1]-a[1]);
-    const n=sorted.length, availH=ih-6;
-    const hN=Math.max(3,Math.min(20,(availH-n*2)/n));
-    let y=P.t+4+(availH-n*(hN+2))/2;
-    sorted.forEach(([id,wt])=>{
-      nPos.set(id,{x:P.l+X[lane]*iw-NW/2,y,h:hN,w:NW,lane,name:cn(id.split(" | ")[0]),wt});
-      y+=hN+2;
+    const n=sorted.length;
+    const logWts=sorted.map(([,wt])=>Math.log1p(wt));
+    const sumLog=logWts.reduce((s,v)=>s+v,0)||1;
+    const availH=yEnd-yStart-GAP_NODE;
+    let y=yStart+GAP_NODE/2;
+    sorted.forEach(([id,wt],i)=>{
+      const h=Math.max(3,(availH-n*GAP_NODE)*(logWts[i]/sumLog));
+      nPos.set(id,{x:P.l+COL_X[ci]*iw-NW/2,y,h,w:NW,lane,ci,name:cn(id.split(" | ")[0]),wt});
+      y+=h+GAP_NODE;
     });
   }
-  // Links
-  const maxW=d3.max(flows,f=>+f.w)||1;
-  const swSc=d3.scaleSqrt().domain([1,maxW]).range([0.4,3.5]);
+  const yT=P.t+4, yB=P.t+4+ih-8, yMid=(yT+yB)/2;
+  layoutLane(0,yT,yB);
+  layoutLane(1,yT,yB);
+  layoutLane(2,yT,yMid-GAP_ROLE/2);
+  layoutLane(3,yMid+GAP_ROLE/2,yB);
+  layoutLane(5,yT,yMid-GAP_ROLE/2);
+  layoutLane(4,yMid+GAP_ROLE/2,yB);
+  layoutLane(6,yT,yB);
+  // Role divider tick in shared columns (col 2 and col 3)
+  [2,3].forEach(ci=>{
+    const x=P.l+COL_X[ci]*iw;
+    svg.append("line").attr("x1",x-NW).attr("x2",x+NW).attr("y1",yMid).attr("y2",yMid)
+      .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",0.5);
+  });
+  // Links — log-scaled widths
+  const wVals=flows.map(f=>+f.w).filter(v=>v>0);
+  const minW=d3.min(wVals)||1, maxW=d3.max(wVals)||1;
+  const swSc=d3.scaleLog().domain([minW,maxW]).range([0.3,3.5]).clamp(true);
   flows.forEach(f=>{
     const src=nPos.get(f.fl),tgt=nPos.get(f.tl); if(!src||!tgt) return;
     const col=LC[+f.fl7]||"#9ca3af";
     const x1=src.x+src.w,y1=src.y+src.h/2,x2=tgt.x,y2=tgt.y+tgt.h/2,cx=(x1+x2)/2;
     svg.append("path").attr("d",`M${x1},${y1}C${cx},${y1} ${cx},${y2} ${x2},${y2}`)
-      .attr("fill","none").attr("stroke",col).attr("stroke-width",swSc(+f.w||1)).attr("opacity",0.22)
+      .attr("fill","none").attr("stroke",col).attr("stroke-width",swSc(+f.w||minW)).attr("opacity",0.22)
       .on("mousemove",ev=>showTip(`${cn(f.fc)} → ${cn(f.tc)}<br><b>${fmtV(+f.w)}</b>`,ev))
       .on("mouseleave",hideTip);
   });
-  // Nodes
+  // Nodes + labels
   nPos.forEach((n,id)=>{
     const col=LC[n.lane]||"#9ca3af";
     svg.append("rect").attr("x",n.x).attr("y",n.y).attr("width",n.w).attr("height",n.h).attr("fill",col).attr("rx",1.5).attr("opacity",0.88)
       .on("mousemove",ev=>showTip(`<b>${n.name}</b><br>${fmtV(n.wt)}`,ev)).on("mouseleave",hideTip);
-    if(n.h>=6){
-      const tx=n.lane<=3?n.x+n.w+3:n.x-3, anc=n.lane<=3?"start":"end";
-      svg.append("text").attr("x",tx).attr("y",n.y+n.h/2+3).attr("text-anchor",anc).attr("font-size",6).attr("fill","rgba(255,255,255,.68)").text(n.name);
+    if(n.h>=4){
+      const tx=n.ci<=2?n.x+n.w+2:n.x-2, anc=n.ci<=2?"start":"end";
+      svg.append("text").attr("x",tx).attr("y",n.y+n.h/2+2).attr("text-anchor",anc)
+        .attr("font-size",5.5).attr("fill","rgba(255,255,255,.72)").text(n.name);
     }
   });
 }
