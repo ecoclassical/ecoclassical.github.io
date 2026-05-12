@@ -160,10 +160,10 @@ function nodeOpacity(d){
   if(!connectedIds.has(d.id)) return 0;
   // Sector hidden → very dim
   if(offSectors.has(d.sector)) return 0.04;
-  // No country highlight active → all at default opacity
-  if(highlightCountries.size===0) return 0.75;
-  // Country highlighted: focal + selected countries fully visible, others very dim
+  // Default: focal (India) fully visible, all others dimmed
   const focal=NET.focal;
+  if(highlightCountries.size===0) return d.iso2===focal ? 0.95 : 0.15;
+  // Country highlighted: focal + selected countries fully visible, others very dim
   if(d.iso2===focal||highlightCountries.has(d.iso2)) return 0.95;
   return 0.05;
 }
@@ -171,8 +171,8 @@ function nodeOpacity(d){
 function edgeOpacity(d){
   const s=d.source, t=d.target;
   if(offSectors.has(s.sector)||offSectors.has(t.sector)) return 0;
-  if(highlightCountries.size===0) return 0.25;
   const focal=NET.focal;
+  if(highlightCountries.size===0) return (s.iso2===focal||t.iso2===focal)?0.30:0.04;
   const sOk=s.iso2===focal||highlightCountries.has(s.iso2);
   const tOk=t.iso2===focal||highlightCountries.has(t.iso2);
   return (sOk&&tOk)?0.55:(sOk||tOk)?0.18:0.02;
