@@ -740,7 +740,7 @@ function drawMap(){
   svg.selectAll("*").remove();
   svg.attr("viewBox",`0 0 ${w} ${h}`);
 
-  const proj=d3.geoNaturalEarth1().rotate([-30,0,0]).scale(153*sc).translate([w*0.38,h/2+12*sc]);
+  const proj=d3.geoNaturalEarth1().rotate([30,0,0]).scale(153*sc).translate([w*0.57,h/2+12*sc]);
   savedMapProj=proj;
   const path=d3.geoPath().projection(proj);
   const feat=topojson.feature(worldTopo, worldTopo.objects.countries).features;
@@ -1338,7 +1338,7 @@ function drawFirms(){
   const focalFeat=feat.find(f=>+f.id===numId);
   const pad=28;
   const proj=d3.geoNaturalEarth1();
-  if(focalFeat) proj.fitExtent([[pad,pad],[W-pad,H-pad]], focalFeat);
+  if(focalFeat) proj.fitExtent([[pad*3,pad],[W-pad,H-pad]], focalFeat);
   const path=d3.geoPath().projection(proj);
 
   // Countries: focal very dark + semi-transparent, neighbours lighter
