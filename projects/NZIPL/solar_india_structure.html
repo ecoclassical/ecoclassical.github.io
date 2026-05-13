@@ -59,6 +59,18 @@ svg{width:100%;height:100%}
   </div>
   <div class="vsep"></div>
   <div class="ctrl">
+    <span class="cl">c</span>
+    <input type="range" id="szc" min="2" max="20" step="0.5" value="8" style="width:60px">
+    <span class="tv" id="tv-c">8</span>
+    <span class="cl">a</span>
+    <input type="range" id="sza" min="5" max="40" step="0.5" value="15" style="width:60px">
+    <span class="tv" id="tv-a">15</span>
+    <span class="cl">b</span>
+    <input type="range" id="szb" min="0.5" max="4" step="0.1" value="1.8" style="width:60px">
+    <span class="tv" id="tv-b">1.8</span>
+  </div>
+  <div class="vsep"></div>
+  <div class="ctrl">
     <span class="cl">Countries</span>
     <div class="country-btns" id="cbtn-wrap"></div>
   </div>
@@ -101,6 +113,8 @@ const showTip=(h,ev)=>{
 const hideTip=()=>tip.style("opacity",0);
 
 let thresh=0.04, sim=null;
+let szC=8, szA=15, szB=1.8;   // r = c + a * clamp(output/p95, 0, 1)^b
+let simNodes=[];               // live reference for updateSizes()
 const offSectors=new Set();
 let highlightCountries=new Set();
 let connectedIds=new Set();
@@ -125,16 +139,25 @@ function edgeColor(d){
   return "rgba(200,200,220,.12)";
 }
 
-// Power-law radius (unchanged)
+// Power-law radius: r = c + a * clamp(output/p95, 0, 1)^b
 const _outputs=NET.nodes.map(n=>n.output||0).filter(v=>v>0).sort((a,b)=>a-b);
 const _p95=_outputs[Math.floor(_outputs.length*0.95)]||1;
 const rFromOutput=d=>{
-  if(d.seed) return 16;
   const v=d.output||0;
-  if(v<=0) return 4;
+  if(v<=0) return szC;
   const x=Math.min(v/_p95,1);
-  return Math.round(4+12*Math.pow(x,1.5));
+  return Math.round(szC + szA*Math.pow(x,szB));
 };
+
+function updateSizes(){
+  simNodes.forEach(n=>{ n.r=rFromOutput(n); });
+  d3.selectAll(".ng").each(function(d){
+    const g=d3.select(this);
+    g.select("circle.nc").attr("r",d.r);
+    g.select("circle.glow").attr("r",d.r+7);
+  });
+  if(sim) sim.force("coll",d3.forceCollide().radius(d=>d.r+4)).alpha(0.15).restart();
+}
 
 // ── Role-based legend (primary) ────────────────────────────────────────────────
 function buildRoleLegend(){
@@ -243,7 +266,8 @@ function applyFilters(){
 
 function draw(){
   if(sim) sim.stop();
-  const nodes=NET.nodes.map(n=>({...n}));
+  simNodes=NET.nodes.map(n=>({...n}));
+  const nodes=simNodes;
   const edges=NET.edges.filter(e=>e.weight>=thresh);
   const nById=Object.fromEntries(nodes.map(n=>[n.id,n]));
   const links=edges.map(e=>({
@@ -334,7 +358,7 @@ function draw(){
     .on("mouseleave",hideTip);
 
   // Node fill: role/SR palette
-  ng.append("circle")
+  ng.append("circle").attr("class","nc")
     .attr("r",d=>d.r)
     .attr("fill",nodeColor)
     .attr("fill-opacity",0.88)
@@ -342,7 +366,7 @@ function draw(){
     .attr("stroke-width",d=>d.seed?2:d.focal?1.2:0.4);
 
   // Seed outer glow ring
-  ng.filter(d=>d.seed).append("circle")
+  ng.filter(d=>d.seed).append("circle").attr("class","glow")
     .attr("r",d=>d.r+7).attr("fill","none")
     .attr("stroke",d=>SRC[SEED_SR[d.product]]||"#eab308")
     .attr("stroke-opacity",0.35).attr("stroke-width",2);
@@ -389,6 +413,16 @@ const thrEl=document.getElementById("thr"), tvEl=document.getElementById("tv");
 thrEl.oninput=()=>{thresh=+thrEl.value/1000;tvEl.textContent=thresh.toFixed(3);draw();};
 document.getElementById("chg").oninput=()=>{
   if(sim) sim.force("charge",d3.forceManyBody().strength(+document.getElementById("chg").value)).alpha(0.3).restart();
+};
+// Size parameter sliders — live update without full redraw
+document.getElementById("szc").oninput=function(){
+  szC=+this.value; document.getElementById("tv-c").textContent=szC; updateSizes();
+};
+document.getElementById("sza").oninput=function(){
+  szA=+this.value; document.getElementById("tv-a").textContent=szA; updateSizes();
+};
+document.getElementById("szb").oninput=function(){
+  szB=+this.value; document.getElementById("tv-b").textContent=(+szB).toFixed(1); updateSizes();
 };
 
 buildRoleLegend();
