@@ -69,11 +69,6 @@ svg{width:100%;height:100%}
     <input type="range" id="szb" min="0.5" max="4" step="0.1" value="1.8" style="width:60px">
     <span class="tv" id="tv-b">1.8</span>
   </div>
-  <div class="vsep"></div>
-  <div class="ctrl">
-    <span class="cl">Countries</span>
-    <div class="country-btns" id="cbtn-wrap"></div>
-  </div>
 </div>
 <div class="body">
   <div class="sidebar">
@@ -91,7 +86,6 @@ svg{width:100%;height:100%}
     <div class="sr"><b>Orange</b>: downstream buyers ← seeds</div>
     <div class="sr">Node size = gross output (€, 2019)</div>
     <div class="sep"></div>
-    <div class="sr">Click country → highlight its flows with India</div>
     <div class="sr">Drag · pin · scroll to zoom</div>
   </div>
   <div class="cw">
@@ -238,25 +232,17 @@ function roleBaseOpacity(d){
 }
 
 function nodeOpacity(d){
-  if(!connectedIds.has(d.id))   return 0;
-  if(offSectors.has(d.sector))  return 0.04;
-  const focal=NET.focal;
-  if(highlightCountries.size===0) return d.iso2===focal ? roleBaseOpacity(d) : (d.seed?1.0:0.15);
-  if(d.iso2===focal||highlightCountries.has(d.iso2)) return roleBaseOpacity(d);
-  return 0.05;
+  if(!connectedIds.has(d.id))  return 0;
+  if(offSectors.has(d.sector)) return 0.04;
+  return roleBaseOpacity(d);
 }
 
 function edgeOpacity(d){
   const s=d.source, t=d.target;
   if(offSectors.has(s.sector)||offSectors.has(t.sector)) return 0;
-  const focal=NET.focal;
-  if(highlightCountries.size===0){
-    if(t.seed||s.seed) return 0.55;
-    return (s.iso2===focal||t.iso2===focal)?0.30:0.04;
-  }
-  const sOk=s.iso2===focal||highlightCountries.has(s.iso2);
-  const tOk=t.iso2===focal||highlightCountries.has(t.iso2);
-  return (sOk&&tOk)?0.60:(sOk||tOk)?0.20:0.02;
+  if(t.seed||s.seed) return 0.55;   // seed-connected edges prominent
+  if(s.focal||t.focal)              return 0.30;   // India-internal
+  return 0.12;                                     // cross-foreign
 }
 
 // Word-wrap a string into ≤ maxL lines of ≤ cpl characters each
@@ -466,7 +452,6 @@ document.getElementById("szb").oninput=function(){
 
 buildRoleLegend();
 buildSectorLegend();
-buildCountryBtns();
 draw();
 window.addEventListener("resize",draw);
 </script>
