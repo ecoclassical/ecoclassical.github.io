@@ -62,13 +62,13 @@ svg{width:100%;height:100%}
     <span style="font-size:.62rem;font-weight:700;color:rgba(255,255,255,.55)">Opacity &amp; Size:</span>
     <span style="font-size:.57rem;color:rgba(255,255,255,.28)">y = ax^b + c</span>
     <span class="cl">a</span>
-    <input type="range" id="sza" min="0" max="500" step="1" value="15" style="width:70px">
+    <input type="range" id="sza" min="0" max="40" step="0.5" value="15" style="width:110px">
     <span class="tv" id="tv-a">15</span>
     <span class="cl">b</span>
-    <input type="range" id="szb" min="-10" max="10" step="0.1" value="1.8" style="width:70px">
+    <input type="range" id="szb" min="-10" max="10" step="0.1" value="1.8" style="width:110px">
     <span class="tv" id="tv-b">1.8</span>
     <span class="cl">c</span>
-    <input type="range" id="szc" min="0" max="30" step="0.5" value="8" style="width:60px">
+    <input type="range" id="szc" min="0" max="30" step="0.5" value="8" style="width:90px">
     <span class="tv" id="tv-c">8</span>
     <span class="cl" style="margin-left:4px">log x</span>
     <input type="checkbox" id="szlog" style="cursor:pointer;width:14px;height:14px;accent-color:#3cb54a">
@@ -140,9 +140,13 @@ function edgeColor(d){
   return "rgba(200,200,220,.12)";
 }
 
-// Unified formula: y = a * tx^b + c where tx = transformed importance
+// p95 cutoff: normalise importance by 95th percentile so top 5% all get x=1
+const _imps=NET.nodes.map(n=>n.importance||0).sort((a,b)=>a-b);
+const _p95imp=_imps[Math.floor(_imps.length*0.95)]||1;
+
+// Unified formula: y = a * tx^b + c where tx = importance clipped at p95
 function tx(imp){
-  const x=Math.max(0,Math.min(1,imp||0));
+  const x=Math.max(0,Math.min(1,(imp||0)/_p95imp));   // p95-normalised
   return szLogX ? Math.log1p(x*9)/Math.log1p(9) : x;
 }
 function formula(imp){
