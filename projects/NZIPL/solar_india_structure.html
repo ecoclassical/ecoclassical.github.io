@@ -259,6 +259,29 @@ function edgeOpacity(d){
   return (sOk&&tOk)?0.60:(sOk||tOk)?0.20:0.02;
 }
 
+// Word-wrap a string into ≤ maxL lines of ≤ cpl characters each
+function wrapLabel(text,cpl,maxL){
+  const words=text.split(" ").filter(w=>w.length>0);
+  const lines=[];
+  let cur="";
+  for(let i=0;i<words.length;i++){
+    const w=words[i];
+    const test=cur?cur+" "+w:w;
+    if(test.length<=cpl){cur=test;}
+    else{
+      if(cur) lines.push(cur);
+      if(lines.length===maxL-1){
+        const rest=[w,...words.slice(i+1)].join(" ");
+        lines.push(rest.length>cpl?rest.slice(0,cpl-1)+"…":rest);
+        cur="";break;
+      }
+      cur=w;
+    }
+  }
+  if(cur&&lines.length<maxL) lines.push(cur);
+  return lines;
+}
+
 function applyFilters(){
   d3.selectAll(".ng").style("opacity",nodeOpacity);
   d3.selectAll(".el").style("opacity",edgeOpacity).attr("stroke",edgeColor);
@@ -371,18 +394,34 @@ function draw(){
     .attr("stroke",d=>SRC[SEED_SR[d.product]]||"#eab308")
     .attr("stroke-opacity",0.35).attr("stroke-width",2);
 
-  // ISO2 label
-  ng.append("text").attr("dy","0.35em").attr("text-anchor","middle")
-    .attr("font-size",d=>d.seed?6.5:5.5).attr("font-weight","700")
-    .attr("fill","rgba(255,255,255,.9)").attr("pointer-events","none")
-    .text(d=>d.iso2);
-
-  // Product label below seeds
-  ng.filter(d=>d.seed).append("text")
-    .attr("dy",d=>d.r+11).attr("text-anchor","middle")
-    .attr("font-size",5.5).attr("font-weight","600")
-    .attr("fill","rgba(255,255,255,.7)").attr("pointer-events","none")
-    .text(d=>d.product.replace(/[(][0-9]+[)]$/,"").trim().substring(0,28));
+  // Multi-line sector name + country code label
+  ng.each(function(d){
+    const r=d.r;
+    if(r<5) return;
+    const fs=r>=14?5.5:r>=9?5.0:4.5;
+    const cpl=Math.max(6,Math.floor(r*0.92));   // ~chars fitting in 2r px at this font size
+    const maxL=r>=13?3:2;
+    const prod=d.product.replace(/ *[(][0-9]+[)] *$/,"").trim();
+    const lines=wrapLabel(prod,cpl,maxL);
+    const lineH=fs*1.35;
+    const totalH=(lines.length+1)*lineH;        // +1 for country code line
+    const startDy=-totalH/2+lineH*0.45;
+    const txt=d3.select(this).append("text")
+      .attr("text-anchor","middle").attr("pointer-events","none");
+    lines.forEach((line,i)=>{
+      txt.append("tspan")
+        .attr("x",0).attr("dy",i===0?startDy:lineH)
+        .attr("font-size",fs).attr("font-weight","600")
+        .attr("fill","rgba(255,255,255,.9)")
+        .text(line);
+    });
+    // Country code on its own line, smaller + dimmer
+    txt.append("tspan")
+      .attr("x",0).attr("dy",lineH)
+      .attr("font-size",fs*0.82).attr("font-weight","400")
+      .attr("fill","rgba(255,255,255,.42)")
+      .text(d.iso2);
+  });
 
   applyFilters();
 
