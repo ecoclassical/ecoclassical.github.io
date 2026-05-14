@@ -1447,7 +1447,7 @@ function renderAll(){
   updateFixedLegend();
   populateDropdowns();
   initDrums();
-  drawMap();
+  drawMapOrFirms();
   drawTimeline();
   drawTreemap();
   drawShapRadar();
@@ -1609,9 +1609,10 @@ document.querySelectorAll(".nav-btn").forEach(btn=>{
     currentIdx=+btn.dataset.idx;
     selStage="ALL"; selRole="ALL"; selProduct="ALL";
     document.getElementById("sel-stage").value="ALL";
-    sankeyFocus=null; mapMode="trade";
+    sankeyFocus=null;
+    // Preserve mapMode — Activity stays active when switching tech
     ["map-trade","map-activity"].forEach(bid=>document.getElementById(bid)?.classList.remove("active"));
-    document.getElementById("map-trade").classList.add("active");
+    document.getElementById(mapMode==="activity"?"map-activity":"map-trade").classList.add("active");
     renderAll();
   });
 });
