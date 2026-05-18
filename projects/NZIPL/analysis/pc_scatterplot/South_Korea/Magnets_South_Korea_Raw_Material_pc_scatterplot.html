@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magnets South_Korea · PC Scatterplot · Raw_Material</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d1520;
+  font-family:"Archivo",-apple-system,"Segoe UI",sans-serif;color:#e2e8f0}
+#module-wrap{width:100%;height:100%;display:flex;flex-direction:column}
+#module-header{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:36px;background:#0a1218}
+.m-tech{font-size:.82rem;font-weight:800}
+.m-sep{color:rgba(255,255,255,.25);font-size:.75rem}
+.m-title{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.7);
+  text-transform:uppercase;letter-spacing:.07em}
+.m-meta{font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto}
+.m-sel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:3px;padding:1px 6px;color:rgba(255,255,255,.45)}
+#module-body{flex:1;min-height:0;position:relative}
+#module-body>svg,#module-body>canvas{width:100%!important;height:100%!important}
+#tooltip{position:fixed;pointer-events:none;background:rgba(0,0,0,.88);color:#fff;
+  font-size:12px;padding:8px 12px;border-radius:5px;opacity:0;transition:opacity .15s;
+  max-width:260px;z-index:9999;line-height:1.55}
+/* Pane aliases expected by drawing functions */
+#pane-shap,#pane-sc,#pane-tl,#pane-tm,#pane-den,#pane-sankey,#pane-map{
+  position:absolute;inset:0}
+
+
+</style>
+</head>
+<body>
+<div id="module-wrap">
+  <div id="module-header">
+    <span class="m-tech" style="color:#ec4899">Magnets</span>
+    <span class="m-sep">·</span>
+    <span style="color:rgba(255,255,255,.55);font-size:.82rem;font-weight:600">South_Korea</span>
+    <span class="m-sep">·</span>
+    <span class="m-title">PC Scatterplot</span>
+    <span class="m-meta">Predicted Competitiveness vs Trade · 2023</span>
+    <span class="m-sel">Raw_Material</span>
+  </div>
+  <div id="module-body">
+    <div id="pane-sc" style="position:absolute;inset:0">
+      <svg id="sc-svg" style="width:100%;height:100%"></svg>
+      
+    </div>
+  </div>
+</div>
+<div id="tooltip"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+const ALL_CASES=[{tech:"Magnets",color:"#ec4899",focal:"KOR",focal_gdp:1712793,scatter:[{"iso3":"AFG","country":"Afghanistan","region":"South Asia","pc_score":0.0006,"exp_pct": 0.0000,"imp_pct":0.0024,"exp_b": 0.0000,"imp_b": 0.0003},{"iso3":"AGO","country":"Angola","region":"Sub-Saharan Africa","pc_score":0.0002,"exp_pct": 0.0403,"imp_pct":0.1136,"exp_b": 0.0330,"imp_b": 0.0932},{"iso3":"ALB","country":"Albania","region":"Europe & Central Asia","pc_score":0.0069,"exp_pct": 0.3616,"imp_pct":0.2349,"exp_b": 0.0815,"imp_b": 0.0529},{"iso3":"ARE","country":"United Arab Emirates","region":"Middle East & North Africa","pc_score":0.0152,"exp_pct": 1.0648,"imp_pct":0.2423,"exp_b": 5.3684,"imp_b": 1.2216},{"iso3":"ARG","country":"Argentina","region":"Latin America & Caribbean","pc_score":0.0001,"exp_pct": 0.0350,"imp_pct":0.0453,"exp_b": 0.2300,"imp_b": 0.2974},{"iso3":"ARM","country":"Armenia","region":"Europe & Central Asia","pc_score":0.0005,"exp_pct": 2.3237,"imp_pct":0.1303,"exp_b": 0.5613,"imp_b": 0.0315},{"iso3":"AUS","country":"Australia","region":"East Asia & Pacific","pc_score":0.0013,"exp_pct": 0.3622,"imp_pct":0.0760,"exp_b": 6.4976,"imp_b": 1.3633},{"iso3":"AUT","country":"Austria","region":"Europe & Central Asia","pc_score":0.0215,"exp_pct": 0.3179,"imp_pct":0.3384,"exp_b": 1.6512,"imp_b": 1.7575},{"iso3":"AZE","country":"Azerbaijan","region":"Europe & Central Asia","pc_score":0.0002,"exp_pct": 0.0763,"imp_pct":0.0956,"exp_b": 0.0585,"imp_b": 0.0733},{"iso3":"BDI","country":"Burundi","region":"Sub-Saharan Africa","pc_score":0.0005,"exp_pct": 0.0434,"imp_pct":0.1277,"exp_b": 0.0016,"imp_b": 0.0046},{"iso3":"BEL","country":"Belgium","region":"Europe & Central Asia","pc_score":0.0018,"exp_pct": 0.1224,"imp_pct":0.2118,"exp_b": 0.7704,"imp_b": 1.3338},{"iso3":"BEN","country":"Benin","region":"Sub-Saharan Africa","pc_score":0.0004,"exp_pct": 0.0106,"imp_pct":0.0291,"exp_b": 0.0020,"imp_b": 0.0056},{"iso3":"BFA","country":"Burkina Faso","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0000,"imp_pct":0.0160,"exp_b": 0.0000,"imp_b": 0.0032},{"iso3":"BGD","country":"Bangladesh","region":"South Asia","pc_score":0.0001,"exp_pct": 0.0037,"imp_pct":0.0405,"exp_b": 0.0167,"imp_b": 0.1808},{"iso3":"BGR","country":"Bulgaria","region":"Europe & Central Asia","pc_score":0.0071,"exp_pct": 0.3758,"imp_pct":2.2600,"exp_b": 0.3810,"imp_b": 2.2911},{"iso3":"BHR","country":"Bahrain","region":"Middle East & North Africa","pc_score":0.0005,"exp_pct": 6.1556,"imp_pct":0.0741,"exp_b": 2.7500,"imp_b": 0.0331},{"iso3":"BIH","country":"Bosnia & Herzegovina","region":"Europe & Central Asia","pc_score":0.0071,"exp_pct": 0.4631,"imp_pct":0.6648,"exp_b": 0.1257,"imp_b": 0.1805},{"iso3":"BLR","country":"Belarus","region":"Europe & Central Asia","pc_score":0.0125,"exp_pct": 0.0243,"imp_pct":0.0777,"exp_b": 0.0174,"imp_b": 0.0558},{"iso3":"BOL","country":"Bolivia","region":"Latin America & Caribbean","pc_score":0.0007,"exp_pct": 0.0596,"imp_pct":0.0804,"exp_b": 0.0275,"imp_b": 0.0371},{"iso3":"BRA","country":"Brazil","region":"Latin America & Caribbean","pc_score":0.0014,"exp_pct": 0.3167,"imp_pct":0.0740,"exp_b": 6.8841,"imp_b": 1.6093},{"iso3":"BWA","country":"Botswana","region":"Sub-Saharan Africa","pc_score":0.0008,"exp_pct": 2.7593,"imp_pct":0.0214,"exp_b": 0.5642,"imp_b": 0.0044},{"iso3":"CAF","country":"Central African Republic","region":"Sub-Saharan Africa","pc_score":0.0003,"exp_pct": 0.0000,"imp_pct":0.0070,"exp_b": 0.0000,"imp_b": 0.0002},{"iso3":"CAN","country":"Canada","region":"North America","pc_score":0.0070,"exp_pct": 0.3987,"imp_pct":0.1689,"exp_b": 8.5330,"imp_b": 3.6156},{"iso3":"CHE","country":"Switzerland","region":"Europe & Central Asia","pc_score":0.0539,"exp_pct": 0.2235,"imp_pct":0.1968,"exp_b": 1.9774,"imp_b": 1.7411},{"iso3":"CHL","country":"Chile","region":"Latin America & Caribbean","pc_score":0.0003,"exp_pct": 7.2663,"imp_pct":0.0600,"exp_b":24.2709,"imp_b": 0.2005},{"iso3":"CHN","country":"China","region":"East Asia & Pacific","pc_score":0.9797,"exp_pct": 0.0785,"imp_pct":0.4694,"exp_b":13.9643,"imp_b":83.5286},{"iso3":"CIV","country":"Côte d’Ivoire","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.1604,"imp_pct":0.0498,"exp_b": 0.1247,"imp_b": 0.0387},{"iso3":"CMR","country":"Cameroon","region":"Sub-Saharan Africa","pc_score":0.0003,"exp_pct": 0.0305,"imp_pct":0.0434,"exp_b": 0.0146,"imp_b": 0.0208},{"iso3":"COD","country":"Congo - Kinshasa","region":"Sub-Saharan Africa","pc_score":0.0001,"exp_pct": 3.6371,"imp_pct":0.0997,"exp_b": 2.4018,"imp_b": 0.0658},{"iso3":"COG","country":"Congo - Brazzaville","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.4141,"imp_pct":0.2248,"exp_b": 0.0677,"imp_b": 0.0367},{"iso3":"COL","country":"Colombia","region":"Latin America & Caribbean","pc_score":0.0015,"exp_pct": 0.0282,"imp_pct":0.0551,"exp_b": 0.1019,"imp_b": 0.1992},{"iso3":"CRI","country":"Costa Rica","region":"Latin America & Caribbean","pc_score":0.0003,"exp_pct": 0.0043,"imp_pct":0.1345,"exp_b": 0.0037,"imp_b": 0.1163},{"iso3":"CUB","country":"Cuba","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 0.0002,"imp_pct":0.0062,"exp_b": 0.0004,"imp_b": 0.0093},{"iso3":"CYP","country":"Cyprus","region":"Europe & Central Asia","pc_score":0.0108,"exp_pct": 0.0368,"imp_pct":0.1657,"exp_b": 0.0115,"imp_b": 0.0518},{"iso3":"CZE","country":"Czechia","region":"Europe & Central Asia","pc_score":0.0658,"exp_pct": 0.2963,"imp_pct":0.4760,"exp_b": 0.9839,"imp_b": 1.5805},{"iso3":"DEU","country":"Germany","region":"Europe & Central Asia","pc_score":0.0042,"exp_pct": 0.3027,"imp_pct":0.2668,"exp_b":13.4897,"imp_b":11.8869},{"iso3":"DJI","country":"Djibouti","region":"Middle East & North Africa","pc_score":0.0000,"exp_pct": 0.0000,"imp_pct":0.1973,"exp_b": 0.0000,"imp_b": 0.0075},{"iso3":"DNK","country":"Denmark","region":"Europe & Central Asia","pc_score":0.0006,"exp_pct": 0.1899,"imp_pct":0.2317,"exp_b": 0.7694,"imp_b": 0.9387},{"iso3":"DOM","country":"Dominican Republic","region":"Latin America & Caribbean","pc_score":0.0049,"exp_pct": 0.0611,"imp_pct":0.0390,"exp_b": 0.0731,"imp_b": 0.0466},{"iso3":"DZA","country":"Algeria","region":"Middle East & North Africa","pc_score":0.0000,"exp_pct": 0.0008,"imp_pct":0.0909,"exp_b": 0.0017,"imp_b": 0.1922},{"iso3":"ECU","country":"Ecuador","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 1.0457,"imp_pct":0.0833,"exp_b": 1.2402,"imp_b": 0.0988},{"iso3":"EGY","country":"Egypt","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.0413,"imp_pct":0.0946,"exp_b": 0.1632,"imp_b": 0.3739},{"iso3":"ERI","country":"Eritrea","region":"Sub-Saharan Africa","pc_score":0.0006,"exp_pct": 8.4045,"imp_pct":0.0084,"exp_b": 0.1666,"imp_b": 0.0002},{"iso3":"ESP","country":"Spain","region":"Europe & Central Asia","pc_score":0.0012,"exp_pct": 0.1368,"imp_pct":0.3258,"exp_b": 2.1621,"imp_b": 5.1513},{"iso3":"EST","country":"Estonia","region":"Europe & Central Asia","pc_score":0.0003,"exp_pct": 0.2443,"imp_pct":0.2140,"exp_b": 0.0999,"imp_b": 0.0876},{"iso3":"ETH","country":"Ethiopia","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0100,"imp_pct":0.0177,"exp_b": 0.0169,"imp_b": 0.0302},{"iso3":"FIN","country":"Finland","region":"Europe & Central Asia","pc_score":0.0963,"exp_pct": 0.4005,"imp_pct":0.4975,"exp_b": 1.2058,"imp_b": 1.4979},{"iso3":"FRA","country":"France","region":"Europe & Central Asia","pc_score":0.0004,"exp_pct": 0.0562,"imp_pct":0.1165,"exp_b": 1.7022,"imp_b": 3.5315},{"iso3":"GAB","country":"Gabon","region":"Sub-Saharan Africa","pc_score":0.0002,"exp_pct": 0.0342,"imp_pct":0.0679,"exp_b": 0.0070,"imp_b": 0.0139},{"iso3":"GBR","country":"United Kingdom","region":"Europe & Central Asia","pc_score":0.0005,"exp_pct": 0.0596,"imp_pct":0.0732,"exp_b": 1.9877,"imp_b": 2.4394},{"iso3":"GEO","country":"Georgia","region":"Europe & Central Asia","pc_score":0.0000,"exp_pct": 0.9683,"imp_pct":0.1027,"exp_b": 0.2933,"imp_b": 0.0311},{"iso3":"GHA","country":"Ghana","region":"Sub-Saharan Africa","pc_score":0.0121,"exp_pct": 0.1394,"imp_pct":0.0542,"exp_b": 0.1086,"imp_b": 0.0422},{"iso3":"GIN","country":"Guinea","region":"Sub-Saharan Africa","pc_score":0.0076,"exp_pct":30.9365,"imp_pct":0.0209,"exp_b": 7.6293,"imp_b": 0.0052},{"iso3":"GMB","country":"Gambia","region":"Sub-Saharan Africa","pc_score":0.0004,"exp_pct": 0.0000,"imp_pct":0.0610,"exp_b": 0.0000,"imp_b": 0.0015},{"iso3":"GNB","country":"Guinea-Bissau","region":"Sub-Saharan Africa","pc_score":0.0001,"exp_pct": 0.0000,"imp_pct":0.0000,"exp_b": 0.0000,"imp_b": 0.0000},{"iso3":"GNQ","country":"Equatorial Guinea","region":"Sub-Saharan Africa","pc_score":0.0206,"exp_pct": 0.0013,"imp_pct":0.1143,"exp_b": 0.0001,"imp_b": 0.0120},{"iso3":"GRC","country":"Greece","region":"Europe & Central Asia","pc_score":0.0085,"exp_pct": 0.1597,"imp_pct":0.2625,"exp_b": 0.3803,"imp_b": 0.6251},{"iso3":"GTM","country":"Guatemala","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 0.0358,"imp_pct":0.0366,"exp_b": 0.0365,"imp_b": 0.0373},{"iso3":"HKG","country":"Hong Kong SAR China","region":"East Asia & Pacific","pc_score":0.0937,"exp_pct": 0.0422,"imp_pct":0.2231,"exp_b": 0.1591,"imp_b": 0.8416},{"iso3":"HND","country":"Honduras","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 0.0030,"imp_pct":0.0850,"exp_b": 0.0011,"imp_b": 0.0297},{"iso3":"HRV","country":"Croatia","region":"Europe & Central Asia","pc_score":0.0000,"exp_pct": 0.2245,"imp_pct":0.5670,"exp_b": 0.1839,"imp_b": 0.4645},{"iso3":"HTI","country":"Haiti","region":"Latin America & Caribbean","pc_score":0.0087,"exp_pct": 0.0000,"imp_pct":0.0035,"exp_b": 0.0000,"imp_b": 0.0008},{"iso3":"HUN","country":"Hungary","region":"Europe & Central Asia","pc_score":0.0138,"exp_pct": 0.2564,"imp_pct":0.6880,"exp_b": 0.5427,"imp_b": 1.4564},{"iso3":"IDN","country":"Indonesia","region":"East Asia & Pacific","pc_score":0.0144,"exp_pct": 0.6521,"imp_pct":0.0930,"exp_b": 8.9409,"imp_b": 1.2749},{"iso3":"IND","country":"India","region":"South Asia","pc_score":0.0001,"exp_pct": 0.0509,"imp_pct":0.1646,"exp_b": 1.8531,"imp_b": 5.9918},{"iso3":"IRL","country":"Ireland","region":"Europe & Central Asia","pc_score":0.0436,"exp_pct": 0.0231,"imp_pct":0.0774,"exp_b": 0.1258,"imp_b": 0.4219},{"iso3":"IRN","country":"Iran","region":"Middle East & North Africa","pc_score":0.0336,"exp_pct": 0.0032,"imp_pct":0.0269,"exp_b": 0.0156,"imp_b": 0.1293},{"iso3":"IRQ","country":"Iraq","region":"Middle East & North Africa","pc_score":0.0000,"exp_pct": 0.0033,"imp_pct":0.0523,"exp_b": 0.0085,"imp_b": 0.1345},{"iso3":"ISR","country":"Israel","region":"Middle East & North Africa","pc_score":0.0003,"exp_pct": 0.0173,"imp_pct":0.0587,"exp_b": 0.0880,"imp_b": 0.2990},{"iso3":"ITA","country":"Italy","region":"Europe & Central Asia","pc_score":0.0076,"exp_pct": 0.2119,"imp_pct":0.1439,"exp_b": 4.7361,"imp_b": 3.2172},{"iso3":"JAM","country":"Jamaica","region":"Latin America & Caribbean","pc_score":0.0141,"exp_pct": 0.3565,"imp_pct":0.0264,"exp_b": 0.0677,"imp_b": 0.0050},{"iso3":"JOR","country":"Jordan","region":"Middle East & North Africa","pc_score":0.0001,"exp_pct": 0.0237,"imp_pct":0.1525,"exp_b": 0.0121,"imp_b": 0.0776},{"iso3":"JPN","country":"Japan","region":"East Asia & Pacific","pc_score":0.9791,"exp_pct": 0.1385,"imp_pct":0.3982,"exp_b": 5.8335,"imp_b":16.7760},{"iso3":"KAZ","country":"Kazakhstan","region":"Europe & Central Asia","pc_score":0.0000,"exp_pct": 1.2587,"imp_pct":0.1447,"exp_b": 3.2785,"imp_b": 0.3769},{"iso3":"KEN","country":"Kenya","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0068,"imp_pct":0.0489,"exp_b": 0.0074,"imp_b": 0.0531},{"iso3":"KGZ","country":"Kyrgyzstan","region":"Europe & Central Asia","pc_score":0.0001,"exp_pct": 0.3018,"imp_pct":0.1971,"exp_b": 0.0381,"imp_b": 0.0249},{"iso3":"KHM","country":"Cambodia","region":"East Asia & Pacific","pc_score":0.0000,"exp_pct": 0.1273,"imp_pct":0.4083,"exp_b": 0.0402,"imp_b": 0.1291},{"iso3":"KOR","country":"South Korea","region":"East Asia & Pacific","pc_score":0.1274,"exp_pct": 0.4308,"imp_pct":0.5654,"exp_b": 7.3790,"imp_b": 9.6846},{"iso3":"KWT","country":"Kuwait","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.0076,"imp_pct":0.0399,"exp_b": 0.0118,"imp_b": 0.0619},{"iso3":"LAO","country":"Laos","region":"East Asia & Pacific","pc_score":0.0074,"exp_pct": 3.5123,"imp_pct":0.1322,"exp_b": 0.5460,"imp_b": 0.0206},{"iso3":"LBN","country":"Lebanon","region":"Middle East & North Africa","pc_score":0.0010,"exp_pct": 0.0402,"imp_pct":0.0792,"exp_b": 0.0102,"imp_b": 0.0201},{"iso3":"LBR","country":"Liberia","region":"Sub-Saharan Africa","pc_score":0.0004,"exp_pct": 0.7653,"imp_pct":0.1372,"exp_b": 0.0338,"imp_b": 0.0061},{"iso3":"LBY","country":"Libya","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.0203,"imp_pct":0.1174,"exp_b": 0.0097,"imp_b": 0.0559},{"iso3":"LKA","country":"Sri Lanka","region":"South Asia","pc_score":0.0006,"exp_pct": 0.0049,"imp_pct":0.0496,"exp_b": 0.0036,"imp_b": 0.0369},{"iso3":"LSO","country":"Lesotho","region":"Sub-Saharan Africa","pc_score":0.0001,"exp_pct": 0.0000,"imp_pct":0.1845,"exp_b": 0.0000,"imp_b": 0.0040},{"iso3":"LTU","country":"Lithuania","region":"Europe & Central Asia","pc_score":0.0148,"exp_pct": 0.1053,"imp_pct":0.1285,"exp_b": 0.0820,"imp_b": 0.1000},{"iso3":"LVA","country":"Latvia","region":"Europe & Central Asia","pc_score":0.0028,"exp_pct": 0.0899,"imp_pct":0.1238,"exp_b": 0.0396,"imp_b": 0.0546},{"iso3":"MAR","country":"Morocco","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.1191,"imp_pct":0.4277,"exp_b": 0.1714,"imp_b": 0.6157},{"iso3":"MDA","country":"Moldova","region":"Europe & Central Asia","pc_score":0.0001,"exp_pct": 0.0055,"imp_pct":0.0590,"exp_b": 0.0009,"imp_b": 0.0100},{"iso3":"MDG","country":"Madagascar","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0051,"imp_pct":0.0201,"exp_b": 0.0008,"imp_b": 0.0032},{"iso3":"MEX","country":"Mexico","region":"Latin America & Caribbean","pc_score":0.0139,"exp_pct": 0.2569,"imp_pct":0.3708,"exp_b": 4.5956,"imp_b": 6.6326},{"iso3":"MKD","country":"North Macedonia","region":"Europe & Central Asia","pc_score":0.0000,"exp_pct": 0.5476,"imp_pct":0.7717,"exp_b": 0.0799,"imp_b": 0.1125},{"iso3":"MLI","country":"Mali","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0013,"imp_pct":0.0112,"exp_b": 0.0003,"imp_b": 0.0023},{"iso3":"MMR","country":"Myanmar (Burma)","region":"East Asia & Pacific","pc_score":0.0067,"exp_pct": 2.2872,"imp_pct":0.0326,"exp_b": 1.4870,"imp_b": 0.0212},{"iso3":"MNG","country":"Mongolia","region":"East Asia & Pacific","pc_score":0.0026,"exp_pct":13.2677,"imp_pct":0.0969,"exp_b": 2.6353,"imp_b": 0.0192},{"iso3":"MOZ","country":"Mozambique","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.3350,"imp_pct":0.2022,"exp_b": 0.0715,"imp_b": 0.0432},{"iso3":"MRT","country":"Mauritania","region":"Sub-Saharan Africa","pc_score":0.0002,"exp_pct": 1.5745,"imp_pct":0.0847,"exp_b": 0.1657,"imp_b": 0.0089},{"iso3":"MUS","country":"Mauritius","region":"Sub-Saharan Africa","pc_score":0.0138,"exp_pct": 0.0531,"imp_pct":0.0555,"exp_b": 0.0076,"imp_b": 0.0080},{"iso3":"MWI","country":"Malawi","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0057,"imp_pct":0.0197,"exp_b": 0.0008,"imp_b": 0.0027},{"iso3":"MYS","country":"Malaysia","region":"East Asia & Pacific","pc_score":0.8967,"exp_pct": 1.0500,"imp_pct":0.7147,"exp_b": 4.3634,"imp_b": 2.9701},{"iso3":"NAM","country":"Namibia","region":"Sub-Saharan Africa","pc_score":0.0215,"exp_pct": 1.3333,"imp_pct":2.4425,"exp_b": 0.1684,"imp_b": 0.3086},{"iso3":"NER","country":"Niger","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0018,"imp_pct":0.0493,"exp_b": 0.0003,"imp_b": 0.0081},{"iso3":"NGA","country":"Nigeria","region":"Sub-Saharan Africa","pc_score":0.0133,"exp_pct": 0.0689,"imp_pct":0.0362,"exp_b": 0.2557,"imp_b": 0.1344},{"iso3":"NIC","country":"Nicaragua","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 0.0120,"imp_pct":0.0346,"exp_b": 0.0021,"imp_b": 0.0060},{"iso3":"NLD","country":"Netherlands","region":"Europe & Central Asia","pc_score":0.0004,"exp_pct": 0.2865,"imp_pct":0.2980,"exp_b": 3.1974,"imp_b": 3.3264},{"iso3":"NOR","country":"Norway","region":"Europe & Central Asia","pc_score":0.0211,"exp_pct": 0.8805,"imp_pct":0.1331,"exp_b": 4.2721,"imp_b": 0.6460},{"iso3":"NPL","country":"Nepal","region":"South Asia","pc_score":0.0004,"exp_pct": 0.0010,"imp_pct":0.0393,"exp_b": 0.0004,"imp_b": 0.0161},{"iso3":"NZL","country":"New Zealand","region":"East Asia & Pacific","pc_score":0.0015,"exp_pct": 0.0766,"imp_pct":0.0582,"exp_b": 0.1936,"imp_b": 0.1470},{"iso3":"OMN","country":"Oman","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.0154,"imp_pct":0.1248,"exp_b": 0.0168,"imp_b": 0.1362},{"iso3":"PAK","country":"Pakistan","region":"South Asia","pc_score":0.0000,"exp_pct": 0.0288,"imp_pct":0.0233,"exp_b": 0.0973,"imp_b": 0.0788},{"iso3":"PAN","country":"Panama","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 3.3498,"imp_pct":0.0336,"exp_b": 2.7931,"imp_b": 0.0280},{"iso3":"PER","country":"Peru","region":"Latin America & Caribbean","pc_score":0.0002,"exp_pct": 7.5607,"imp_pct":0.0504,"exp_b":20.0351,"imp_b": 0.1334},{"iso3":"PHL","country":"Philippines","region":"East Asia & Pacific","pc_score":0.7947,"exp_pct": 0.7305,"imp_pct":0.3942,"exp_b": 3.1895,"imp_b": 1.7213},{"iso3":"PNG","country":"Papua New Guinea","region":"East Asia & Pacific","pc_score":0.0000,"exp_pct": 2.6442,"imp_pct":0.0367,"exp_b": 0.8195,"imp_b": 0.0114},{"iso3":"POL","country":"Poland","region":"Europe & Central Asia","pc_score":0.0135,"exp_pct": 0.2149,"imp_pct":0.4612,"exp_b": 1.7373,"imp_b": 3.7274},{"iso3":"PRT","country":"Portugal","region":"Europe & Central Asia","pc_score":0.0682,"exp_pct": 0.1729,"imp_pct":0.2554,"exp_b": 0.4964,"imp_b": 0.7335},{"iso3":"PRY","country":"Paraguay","region":"Latin America & Caribbean","pc_score":0.0002,"exp_pct": 0.0029,"imp_pct":0.0931,"exp_b": 0.0013,"imp_b": 0.0406},{"iso3":"QAT","country":"Qatar","region":"Middle East & North Africa","pc_score":0.0000,"exp_pct": 0.7011,"imp_pct":0.0639,"exp_b": 1.6421,"imp_b": 0.1497},{"iso3":"ROU","country":"Romania","region":"Europe & Central Asia","pc_score":0.0069,"exp_pct": 0.2148,"imp_pct":0.2074,"exp_b": 0.7415,"imp_b": 0.7161},{"iso3":"RUS","country":"Russia","region":"Europe & Central Asia","pc_score":0.0004,"exp_pct": 0.1775,"imp_pct":0.0474,"exp_b": 3.4948,"imp_b": 0.9328},{"iso3":"RWA","country":"Rwanda","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.7299,"imp_pct":0.0139,"exp_b": 0.1024,"imp_b": 0.0020},{"iso3":"SAU","country":"Saudi Arabia","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.0713,"imp_pct":0.0968,"exp_b": 0.7609,"imp_b": 1.0336},{"iso3":"SDN","country":"Sudan","region":"Sub-Saharan Africa","pc_score":0.0088,"exp_pct": 0.0074,"imp_pct":0.0187,"exp_b": 0.0029,"imp_b": 0.0074},{"iso3":"SEN","country":"Senegal","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0516,"imp_pct":0.1197,"exp_b": 0.0162,"imp_b": 0.0375},{"iso3":"SGP","country":"Singapore","region":"East Asia & Pacific","pc_score":0.1311,"exp_pct": 0.2498,"imp_pct":0.3115,"exp_b": 1.1730,"imp_b": 1.4626},{"iso3":"SLE","country":"Sierra Leone","region":"Sub-Saharan Africa","pc_score":0.0113,"exp_pct": 1.7701,"imp_pct":0.0247,"exp_b": 0.0691,"imp_b": 0.0010},{"iso3":"SLV","country":"El Salvador","region":"Latin America & Caribbean","pc_score":0.0003,"exp_pct": 0.0021,"imp_pct":0.0833,"exp_b": 0.0007,"imp_b": 0.0288},{"iso3":"SOM","country":"Somalia","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0000,"imp_pct":0.0232,"exp_b": 0.0000,"imp_b": 0.0023},{"iso3":"SVK","country":"Slovakia","region":"Europe & Central Asia","pc_score":0.0334,"exp_pct": 0.4552,"imp_pct":0.5440,"exp_b": 0.6009,"imp_b": 0.7182},{"iso3":"SVN","country":"Slovenia","region":"Europe & Central Asia","pc_score":0.7097,"exp_pct": 0.6523,"imp_pct":0.5446,"exp_b": 0.4447,"imp_b": 0.3714},{"iso3":"SWE","country":"Sweden","region":"Europe & Central Asia","pc_score":0.0007,"exp_pct": 0.2203,"imp_pct":0.3299,"exp_b": 1.3101,"imp_b": 1.9613},{"iso3":"SWZ","country":"Eswatini","region":"Sub-Saharan Africa","pc_score":0.0272,"exp_pct": 0.0094,"imp_pct":0.0360,"exp_b": 0.0005,"imp_b": 0.0018},{"iso3":"SYR","country":"Syria","region":"Middle East & North Africa","pc_score":0.0207,"exp_pct": 0.0272,"imp_pct":0.0977,"exp_b": 0.0023,"imp_b": 0.0083},{"iso3":"TCD","country":"Chad","region":"Sub-Saharan Africa","pc_score":0.0002,"exp_pct": 0.0000,"imp_pct":0.0083,"exp_b": 0.0000,"imp_b": 0.0011},{"iso3":"TGO","country":"Togo","region":"Sub-Saharan Africa","pc_score":0.0009,"exp_pct": 0.0646,"imp_pct":0.0253,"exp_b": 0.0060,"imp_b": 0.0023},{"iso3":"THA","country":"Thailand","region":"East Asia & Pacific","pc_score":0.0536,"exp_pct": 0.1208,"imp_pct":0.3785,"exp_b": 0.6215,"imp_b": 1.9483},{"iso3":"TJK","country":"Tajikistan","region":"Europe & Central Asia","pc_score":0.0000,"exp_pct": 0.4812,"imp_pct":0.0584,"exp_b": 0.0570,"imp_b": 0.0069},{"iso3":"TKM","country":"Turkmenistan","region":"Europe & Central Asia","pc_score":0.0068,"exp_pct": 0.0008,"imp_pct":0.0398,"exp_b": 0.0004,"imp_b": 0.0223},{"iso3":"TLS","country":"Timor-Leste","region":"East Asia & Pacific","pc_score":0.0072,"exp_pct": 0.0000,"imp_pct":0.0158,"exp_b": 0.0000,"imp_b": 0.0004},{"iso3":"TTO","country":"Trinidad & Tobago","region":"Latin America & Caribbean","pc_score":0.0234,"exp_pct": 0.0005,"imp_pct":0.1218,"exp_b": 0.0002,"imp_b": 0.0343},{"iso3":"TUN","country":"Tunisia","region":"Middle East & North Africa","pc_score":0.0001,"exp_pct": 0.0596,"imp_pct":0.2164,"exp_b": 0.0306,"imp_b": 0.1111},{"iso3":"TUR","country":"Turkey","region":"Europe & Central Asia","pc_score":0.0812,"exp_pct": 0.1192,"imp_pct":0.2350,"exp_b": 1.3232,"imp_b": 2.6085},{"iso3":"TZA","country":"Tanzania","region":"Sub-Saharan Africa","pc_score":0.0067,"exp_pct": 0.3933,"imp_pct":0.0640,"exp_b": 0.3192,"imp_b": 0.0520},{"iso3":"UGA","country":"Uganda","region":"Sub-Saharan Africa","pc_score":0.0000,"exp_pct": 0.0007,"imp_pct":0.0915,"exp_b": 0.0004,"imp_b": 0.0454},{"iso3":"UKR","country":"Ukraine","region":"Europe & Central Asia","pc_score":0.0003,"exp_pct": 0.0617,"imp_pct":0.0728,"exp_b": 0.1092,"imp_b": 0.1290},{"iso3":"URY","country":"Uruguay","region":"Latin America & Caribbean","pc_score":0.0001,"exp_pct": 0.0080,"imp_pct":0.0546,"exp_b": 0.0063,"imp_b": 0.0428},{"iso3":"USA","country":"United States","region":"North America","pc_score":0.0338,"exp_pct": 0.0417,"imp_pct":0.0562,"exp_b":11.4102,"imp_b":15.3736},{"iso3":"UZB","country":"Uzbekistan","region":"Europe & Central Asia","pc_score":0.0000,"exp_pct": 0.0114,"imp_pct":0.5034,"exp_b": 0.0102,"imp_b": 0.4531},{"iso3":"VEN","country":"Venezuela","region":"Latin America & Caribbean","pc_score":0.0000,"exp_pct": 0.0255,"imp_pct":0.0044,"exp_b": 0.0557,"imp_b": 0.0095},{"iso3":"VNM","country":"Vietnam","region":"East Asia & Pacific","pc_score":0.5133,"exp_pct": 0.2966,"imp_pct":0.6588,"exp_b": 1.2892,"imp_b": 2.8630},{"iso3":"YEM","country":"Yemen","region":"Middle East & North Africa","pc_score":0.0002,"exp_pct": 0.0008,"imp_pct":0.0181,"exp_b": 0.0001,"imp_b": 0.0033},{"iso3":"ZAF","country":"South Africa","region":"Sub-Saharan Africa","pc_score":0.0003,"exp_pct": 0.2140,"imp_pct":0.0986,"exp_b": 0.8086,"imp_b": 0.3726},{"iso3":"ZMB","country":"Zambia","region":"Sub-Saharan Africa","pc_score":0.0133,"exp_pct": 1.0270,"imp_pct":0.4746,"exp_b": 0.2921,"imp_b": 0.1350},{"iso3":"ZWE","country":"Zimbabwe","region":"Sub-Saharan Africa","pc_score":0.0135,"exp_pct": 0.1549,"imp_pct":0.0796,"exp_b": 0.0436,"imp_b": 0.0224}],all_products:[{"code":"847989","name":"Pressing; Cold Isostatic Press","stage":"Downstream","role":"Process Equipment","exp":4449644,"imp":1221319},{"code":"680421","name":"Griding; Diamond Griding Wheel","stage":"Downstream","role":"Process Equipment","exp":228145,"imp":28717},{"code":"760120","name":"Aluminum Unwrought; Alloyed","stage":"Midstream","role":"Processed Material","exp":765502,"imp":1174623},{"code":"820720","name":"Casting; Strip Caster","stage":"Downstream","role":"Process Equipment","exp":22020,"imp":17042},{"code":"847982","name":"Compressed Air/gas grinding","stage":"Downstream","role":"Process Equipment","exp":339171,"imp":175884},{"code":"850519","name":"Permanent Magnet Components","stage":"Downstream","role":"Product Component","exp":70485,"imp":58338},{"code":"850511","name":"Permanent Magnets","stage":"Final Product","role":"Final Product","exp":17301,"imp":153176},{"code":"851440","name":"Induction Heating; Induction Furnace","stage":"Downstream","role":"Process Equipment","exp":16717,"imp":11504},{"code":"284690","name":"Compounds, Mixes of Rare-earths, Yttrium","stage":"Midstream","role":"Processed Material","exp":26048,"imp":62035},{"code":"260300","name":"Copper Ore and Concentrate","stage":"Upstream","role":"Raw Material","exp":599702,"imp":4721271},{"code":"280530","name":"Rare-earth Metals, Scandium and Yttrium","stage":"Midstream","role":"Processed Material","exp":1006,"imp":9547},{"code":"283324","name":"Nickel Sulfates","stage":"Midstream","role":"Processed Material","exp":217059,"imp":80209},{"code":"720293","name":"Ferro-niobium","stage":"Midstream","role":"Processed Material","exp":3057,"imp":211863},{"code":"854330","name":"Decrepitation; Hydrogen Decrepitation Ma","stage":"Downstream","role":"Process Equipment","exp":83870,"imp":48154},{"code":"261590","name":"Niobium, Tantalum and Vanadium Ores and ","stage":"Upstream","role":"Raw Material","exp":2375,"imp":708},{"code":"260400","name":"Nickel Ores and Concentrates","stage":"Upstream","role":"Raw Material","exp":165,"imp":212269},{"code":"260600","name":"Bauxite Ore","stage":"Upstream","role":"Raw Material","exp":0,"imp":35167}]}];
+let currentIdx=0;
+const c=()=>ALL_CASES[currentIdx];
+let selStage="ALL", selRole="Raw Material", selProduct="ALL";
+let tlMode="exports", scMode="pct", sankeyFocus=null;
+
+const SR_COLORS={
+  "Upstream|Raw Material":"#b45309","Upstream|Processed Material":"#c17a2e",
+  "Midstream|Processed Material":"#22c55e","Midstream|Process Equipment":"#65a30d",
+  "Midstream|Product Component":"#16a34a","Downstream|Product Component":"#4ade80",
+  "Downstream|Process Equipment":"#6b7280","Downstream|Final Product":"#f97316",
+  "Final Product|Final Product":"#f97316","Other|Product Component":"#9ca3af",
+  "Other|Process Equipment":"#9ca3af"
+};
+const SR_ORDER=["Upstream|Raw Material","Upstream|Processed Material","Midstream|Processed Material","Midstream|Process Equipment","Midstream|Product Component","Downstream|Product Component","Downstream|Process Equipment","Downstream|Final Product","Final Product|Final Product"];
+const STAGE_COLORS={"Upstream":"#b45309","Midstream":"#22c55e","Downstream":"#4ade80","Final Product":"#f97316"};
+const STAGES_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+const REGION_COLOR={EAP:"#0369a1",ECA:"#6366f1",SAS:"#10b981",NAC:"#f59e0b",LCN:"#ef4444",MEA:"#8b5cf6",SSF:"#84cc16"};
+const PROD_COLORS=["#f59e0b","#38bdf8","#4ade80","#f87171","#c084fc","#fb923c","#a78bfa","#34d399","#f472b6","#60a5fa"];
+const tip={_el:null,_get(){return this._el||(this._el=document.getElementById("tooltip"));},style(k,v){const e=this._get();if(e)e.style[k]=v;return this;},html(h){const e=this._get();if(e)e.innerHTML=h;return this;}};
+function showTip(html,ev){const vw=window.innerWidth;const tx=ev.clientX+14;const offset=tx+260>vw?ev.clientX-270:tx;tip.style("opacity","1").html(html).style("left",offset+"px").style("top",(ev.clientY-10)+"px")}
+function hideTip(){tip.style("opacity","0")}
+const fmtV=v=>v>=1e6?`$${(v/1e6).toFixed(1)}B`:v>=1e3?`$${(v/1e3).toFixed(1)}M`:`$${v.toFixed(0)}K`;
+function srColor(sr){return SR_COLORS[sr]||"#9ca3af"}
+function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
+
+
+function getPV() {
+  const c0 = c();
+  const pv = c0.selected_pv;
+  if (pv) return pv;
+  return c0.selected_pv || {code:"ALL",label:"All",stage:"ALL",role:"ALL",
+    suppliers:[],buyers:[],timeline:[],total_imp:0,total_exp:0};
+}
+
+function drawScatter(){
+  const c0=c();
+  const w=document.getElementById("pane-sc").clientWidth||300;
+  const h=document.getElementById("pane-sc").clientHeight-36||200;
+  const svg=d3.select("#sc-svg").attr("viewBox",`0 0 ${w} ${h}`);
+  svg.selectAll("*").remove();
+
+  // ── Product portfolio scatter (exports vs imports for each HS code) ────────
+  const prods=(c0.all_products||[]).filter(p=>p.exp>0||p.imp>0);
+  if(!prods.length) return;
+
+  const hasFilter=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL";
+  const selProd=selProduct!=="ALL"?prods.find(p=>p.code===selProduct):null;
+  const isGroupActive=p=>{
+    if(!hasFilter) return true;
+    if(selProd) return p.stage===selProd.stage&&p.role===selProd.role;
+    if(selStage!=="ALL"&&selRole!=="ALL") return p.stage===selStage&&p.role===selRole;
+    if(selRole!=="ALL") return p.role===selRole;
+    if(selStage!=="ALL") return p.stage===selStage;
+    return true;
+  };
+  const isSel=p=>!!selProd&&p.code===selProduct;
+  const getX=p=>tlMode==="imports"?(p.imp||0):tlMode==="balance"?Math.abs((p.exp||0)-(p.imp||0)):(p.exp||0);
+
+  // Log scale (+1 to handle zeros)
+  const M={t:8,r:12,b:30,l:48};
+  const iw=w-M.l-M.r, ih=h-M.t-M.b;
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+
+  const xMax=d3.max(prods,p=>p.exp)||1;
+  const yMax=d3.max(prods,p=>p.imp)||1;
+  const xSc=d3.scaleLog().domain([1,xMax*1.3]).range([0,iw]).clamp(true);
+  const ySc=d3.scaleLog().domain([1,yMax*1.3]).range([ih,0]).clamp(true);
+
+  // Diagonal (balanced trade line)
+  const diagMax=Math.min(xMax,yMax);
+  if(diagMax>1){g.append("line").attr("x1",xSc(1)).attr("y1",ySc(1)).attr("x2",xSc(diagMax)).attr("y2",ySc(diagMax))
+    .attr("stroke","rgba(255,255,255,.1)").attr("stroke-width",0.8).attr("stroke-dasharray","4,3");}
+
+  g.append("g").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(xSc).ticks(4).tickFormat(v=>fmtV(v)))
+    .selectAll("text").attr("fill","rgba(255,255,255,.3)").attr("font-size",7);
+  g.append("g").call(d3.axisLeft(ySc).ticks(4).tickFormat(v=>fmtV(v)))
+    .selectAll("text").attr("fill","rgba(255,255,255,.3)").attr("font-size",7);
+
+  // Size: sqrt of total trade
+  const totalMax=d3.max(prods,p=>(p.exp||0)+(p.imp||0))||1;
+  const rSc=d3.scaleSqrt().domain([0,totalMax]).range([2.5,10]);
+
+  prods.forEach(p=>{
+    const active=isGroupActive(p);
+    const sel=isSel(p);
+    const srKey=p.stage+"|"+p.role;
+    const baseCol=SR_COLORS[srKey]||"#9ca3af";
+    // Brighten for stage/role selection; keep SR color for product-group highlight
+    const col=hasFilter&&!selProd&&active?d3.color(baseCol).brighter(0.55).formatHex():baseCol;
+    const r=rSc((p.exp||0)+(p.imp||0));
+    const op=!hasFilter?0.75:sel?0.97:active?0.88:0.13;
+    const cx=xSc(Math.max(1,getX(p)||1));
+    const cy=ySc(Math.max(1,tlMode==="imports"?(p.exp||1):((p.imp)||1)));
+    g.append("circle").attr("cx",cx).attr("cy",cy).attr("r",r)
+      .attr("fill",col).attr("opacity",op)
+      .attr("stroke",sel?"white":"none").attr("stroke-width",sel?2.5:0)
+      .on("mousemove",ev=>showTip(`<b>${p.name}</b><br>HS ${p.code}<br>${p.stage} · ${p.role}<br>Exp: ${fmtV(p.exp)} · Imp: ${fmtV(p.imp)}`,ev))
+      .on("mouseleave",hideTip);
+  });
+
+  // Axis labels
+  const xLab=tlMode==="imports"?"Imports":"Exports";
+  const yLab=tlMode==="imports"?"Exports":"Imports";
+  g.append("text").attr("x",iw/2).attr("y",ih+26).attr("text-anchor","middle")
+    .attr("fill","rgba(255,255,255,.3)").attr("font-size",7.5).text(xLab+" (KUSD, log)");
+  g.append("text").attr("transform","rotate(-90)").attr("x",-ih/2).attr("y",-36)
+    .attr("text-anchor","middle").attr("fill","rgba(255,255,255,.3)").attr("font-size",7.5).text(yLab+" (KUSD, log)");
+
+  // Title
+  const scTitle=document.getElementById("sc-title");
+  if(scTitle) scTitle.textContent="PC Scatterplot";
+}
+document.addEventListener("DOMContentLoaded",()=>{ drawScatter(); });
+window.addEventListener("resize",()=>{ drawScatter(); });
+
+</script>
+</body>
+</html>

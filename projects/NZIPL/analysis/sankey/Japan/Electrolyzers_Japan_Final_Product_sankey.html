@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Electrolyzers Japan · Value Chain Sankey · Final_Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d1520;
+  font-family:"Archivo",-apple-system,"Segoe UI",sans-serif;color:#e2e8f0}
+#module-wrap{width:100%;height:100%;display:flex;flex-direction:column}
+#module-header{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:36px;background:#0a1218}
+.m-tech{font-size:.82rem;font-weight:800}
+.m-sep{color:rgba(255,255,255,.25);font-size:.75rem}
+.m-title{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.7);
+  text-transform:uppercase;letter-spacing:.07em}
+.m-meta{font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto}
+.m-sel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:3px;padding:1px 6px;color:rgba(255,255,255,.45)}
+#module-body{flex:1;min-height:0;position:relative}
+#module-body>svg,#module-body>canvas{width:100%!important;height:100%!important}
+#tooltip{position:fixed;pointer-events:none;background:rgba(0,0,0,.88);color:#fff;
+  font-size:12px;padding:8px 12px;border-radius:5px;opacity:0;transition:opacity .15s;
+  max-width:260px;z-index:9999;line-height:1.55}
+/* Pane aliases expected by drawing functions */
+#pane-shap,#pane-sc,#pane-tl,#pane-tm,#pane-den,#pane-sankey,#pane-map{
+  position:absolute;inset:0}
+
+
+</style>
+</head>
+<body>
+<div id="module-wrap">
+  <div id="module-header">
+    <span class="m-tech" style="color:#a855f7">Electrolyzers</span>
+    <span class="m-sep">·</span>
+    <span style="color:rgba(255,255,255,.55);font-size:.82rem;font-weight:600">Japan</span>
+    <span class="m-sep">·</span>
+    <span class="m-title">Value Chain Sankey</span>
+    <span class="m-meta">7-lane supply chain · top countries</span>
+    <span class="m-sel">Final_Product</span>
+  </div>
+  <div id="module-body">
+    <div id="pane-sankey" style="position:absolute;inset:0">
+      <svg id="sankey-svg" style="width:100%;height:100%"></svg>
+      <div id="sankey-title" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+<div id="tooltip"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+const ALL_CASES=[{tech:"Electrolyzers",color:"#a855f7",focal:"JPN",sankey_flows:[{"fl":"MEX | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"MEX","tc":"USA","fl7":5,"tl7":6,"w":3287767.4},{"fl":"ZAF | Processed Material · Midstream","tl":"JPN | Product Component · Midstream","fc":"ZAF","tc":"JPN","fl7":1,"tl7":3,"w":3263446.6},{"fl":"MEX | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"MEX","tc":"USA","fl7":4,"tl7":6,"w":3189833},{"fl":"CHN | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"CHN","tc":"USA","fl7":4,"tl7":6,"w":2949387.4},{"fl":"CHN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"CHN","tc":"USA","fl7":5,"tl7":6,"w":2859152.5},{"fl":"PHL | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"PHL","tc":"CHN","fl7":0,"tl7":1,"w":2589049.2},{"fl":"KOR | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"KOR","tc":"CHN","fl7":1,"tl7":3,"w":2510038.8},{"fl":"USA | Product Component · Downstream","tl":"MEX | Final Product · Final Product","fc":"USA","tc":"MEX","fl7":4,"tl7":6,"w":2266768.5},{"fl":"MKD | Product Component · Midstream","tl":"DEU | Product Component · Downstream","fc":"MKD","tc":"DEU","fl7":3,"tl7":4,"w":2183450.5},{"fl":"USA | Product Component · Downstream","tl":"CAN | Final Product · Final Product","fc":"USA","tc":"CAN","fl7":4,"tl7":6,"w":2135608.9},{"fl":"BEL | Processed Material · Midstream","tl":"DEU | Product Component · Midstream","fc":"BEL","tc":"DEU","fl7":1,"tl7":3,"w":2058664.8},{"fl":"ZAF | Processed Material · Midstream","tl":"USA | Product Component · Midstream","fc":"ZAF","tc":"USA","fl7":1,"tl7":3,"w":1806675.6},{"fl":"JPN | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"JPN","tc":"CHN","fl7":5,"tl7":6,"w":1536530.2},{"fl":"USA | Processed Material · Midstream","tl":"MEX | Product Component · Midstream","fc":"USA","tc":"MEX","fl7":1,"tl7":3,"w":1527011.3},{"fl":"CAN | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"CAN","tc":"USA","fl7":4,"tl7":6,"w":1510783.2},{"fl":"ZAF | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"ZAF","tc":"CHN","fl7":1,"tl7":3,"w":1462853.9},{"fl":"USA | Product Component · Midstream","tl":"MEX | Product Component · Downstream","fc":"USA","tc":"MEX","fl7":3,"tl7":4,"w":1456309},{"fl":"RUS | Processed Material · Midstream","tl":"USA | Product Component · Midstream","fc":"RUS","tc":"USA","fl7":1,"tl7":3,"w":1455787.8},{"fl":"USA | Processed Material · Midstream","tl":"CAN | Product Component · Midstream","fc":"USA","tc":"CAN","fl7":1,"tl7":3,"w":1444814.7},{"fl":"GBR | Processed Material · Midstream","tl":"MKD | Product Component · Midstream","fc":"GBR","tc":"MKD","fl7":1,"tl7":3,"w":1417866.6},{"fl":"CAN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"CAN","tc":"USA","fl7":5,"tl7":6,"w":1396579.9},{"fl":"IDN | Process Equipment · Downstream","tl":"SGP | Final Product · Final Product","fc":"IDN","tc":"SGP","fl7":5,"tl7":6,"w":1353045.9},{"fl":"ITA | Processed Material · Midstream","tl":"DEU | Product Component · Midstream","fc":"ITA","tc":"DEU","fl7":1,"tl7":3,"w":1312870.1},{"fl":"S19 | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"S19","tc":"CHN","fl7":1,"tl7":3,"w":1230048.8},{"fl":"USA | Process Equipment · Downstream","tl":"MEX | Final Product · Final Product","fc":"USA","tc":"MEX","fl7":5,"tl7":6,"w":1228999.9},{"fl":"DEU | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"DEU","tc":"USA","fl7":5,"tl7":6,"w":1162807},{"fl":"JPN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"JPN","tc":"USA","fl7":5,"tl7":6,"w":1148073.5},{"fl":"IDN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"IDN","tc":"USA","fl7":5,"tl7":6,"w":1112463.4},{"fl":"DEU | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"DEU","tc":"CHN","fl7":5,"tl7":6,"w":1104170.6},{"fl":"CHN | Process Equipment · Downstream","tl":"THA | Final Product · Final Product","fc":"CHN","tc":"THA","fl7":5,"tl7":6,"w":1073536.7},{"fl":"CHN | Product Component · Downstream","tl":"MEX | Final Product · Final Product","fc":"CHN","tc":"MEX","fl7":4,"tl7":6,"w":1063237.7},{"fl":"ZAF | Processed Material · Midstream","tl":"GBR | Product Component · Midstream","fc":"ZAF","tc":"GBR","fl7":1,"tl7":3,"w":1059107.2},{"fl":"CHN | Process Equipment · Downstream","tl":"HKG | Final Product · Final Product","fc":"CHN","tc":"HKG","fl7":5,"tl7":6,"w":1034855.4},{"fl":"S19 | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"S19","tc":"USA","fl7":5,"tl7":6,"w":1020526.8},{"fl":"DEU | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"DEU","tc":"USA","fl7":4,"tl7":6,"w":1004787.5},{"fl":"RUS | Processed Material · Midstream","tl":"JPN | Product Component · Midstream","fc":"RUS","tc":"JPN","fl7":1,"tl7":3,"w":984499.9},{"fl":"POL | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"POL","tc":"DEU","fl7":4,"tl7":6,"w":960831.3},{"fl":"POL | Product Component · Midstream","tl":"DEU | Product Component · Downstream","fc":"POL","tc":"DEU","fl7":3,"tl7":4,"w":955334.7},{"fl":"THA | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"THA","tc":"USA","fl7":5,"tl7":6,"w":937861.6},{"fl":"JPN | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"JPN","tc":"CHN","fl7":1,"tl7":3,"w":931428.2},{"fl":"USA | Processed Material · Midstream","tl":"ITA | Product Component · Midstream","fc":"USA","tc":"ITA","fl7":1,"tl7":3,"w":926013.8},{"fl":"SGP | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"SGP","tc":"CHN","fl7":1,"tl7":3,"w":922447.9},{"fl":"MYS | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"MYS","tc":"USA","fl7":5,"tl7":6,"w":922208.8},{"fl":"DEU | Processed Material · Midstream","tl":"USA | Product Component · Midstream","fc":"DEU","tc":"USA","fl7":1,"tl7":3,"w":905696.8},{"fl":"CHN | Product Component · Downstream","tl":"JPN | Final Product · Final Product","fc":"CHN","tc":"JPN","fl7":4,"tl7":6,"w":895200.4},{"fl":"USA | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"USA","tc":"CHN","fl7":1,"tl7":3,"w":876057.7},{"fl":"CAN | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"CAN","tc":"USA","fl7":3,"tl7":4,"w":873371.7},{"fl":"RUS | Processed Material · Midstream","tl":"HKG | Product Component · Midstream","fc":"RUS","tc":"HKG","fl7":1,"tl7":3,"w":857495.2},{"fl":"DEU | Product Component · Downstream","tl":"FRA | Final Product · Final Product","fc":"DEU","tc":"FRA","fl7":4,"tl7":6,"w":839649.9},{"fl":"CHN | Process Equipment · Downstream","tl":"JPN | Final Product · Final Product","fc":"CHN","tc":"JPN","fl7":5,"tl7":6,"w":818757.6},{"fl":"DEU | Product Component · Midstream","tl":"CZE | Product Component · Downstream","fc":"DEU","tc":"CZE","fl7":3,"tl7":4,"w":818339.6},{"fl":"CHN | Process Equipment · Downstream","tl":"DEU | Final Product · Final Product","fc":"CHN","tc":"DEU","fl7":5,"tl7":6,"w":812513.4},{"fl":"CHN | Product Component · Downstream","tl":"IDN | Final Product · Final Product","fc":"CHN","tc":"IDN","fl7":4,"tl7":6,"w":807430.6},{"fl":"CHN | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"CHN","tc":"DEU","fl7":4,"tl7":6,"w":806178.2},{"fl":"RUS | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"RUS","tc":"CHN","fl7":1,"tl7":3,"w":804560.6},{"fl":"JPN | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"JPN","tc":"USA","fl7":4,"tl7":6,"w":794820},{"fl":"USA | Process Equipment · Downstream","tl":"CAN | Final Product · Final Product","fc":"USA","tc":"CAN","fl7":5,"tl7":6,"w":794508.3},{"fl":"S19 | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"S19","tc":"CHN","fl7":5,"tl7":6,"w":792600.8},{"fl":"CHN | Product Component · Downstream","tl":"CAN | Final Product · Final Product","fc":"CHN","tc":"CAN","fl7":4,"tl7":6,"w":790176.5},{"fl":"DEU | Product Component · Downstream","tl":"CHN | Final Product · Final Product","fc":"DEU","tc":"CHN","fl7":4,"tl7":6,"w":770947.3},{"fl":"ITA | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"ITA","tc":"DEU","fl7":4,"tl7":6,"w":767342.9},{"fl":"CZE | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"CZE","tc":"DEU","fl7":4,"tl7":6,"w":758122.1},{"fl":"FRA | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"FRA","tc":"DEU","fl7":4,"tl7":6,"w":741237.6},{"fl":"CHN | Process Equipment · Downstream","tl":"GBR | Final Product · Final Product","fc":"CHN","tc":"GBR","fl7":5,"tl7":6,"w":740848.5},{"fl":"CHN | Product Component · Downstream","tl":"KOR | Final Product · Final Product","fc":"CHN","tc":"KOR","fl7":4,"tl7":6,"w":715535.9},{"fl":"JPN | Product Component · Downstream","tl":"CHN | Final Product · Final Product","fc":"JPN","tc":"CHN","fl7":4,"tl7":6,"w":708992.3},{"fl":"MOZ | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"MOZ","tc":"CHN","fl7":0,"tl7":1,"w":673839.5},{"fl":"USA | Raw Material · Upstream","tl":"NLD | Processed Material · Midstream","fc":"USA","tc":"NLD","fl7":0,"tl7":1,"w":559660.2},{"fl":"CHL | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"CHL","tc":"JPN","fl7":0,"tl7":1,"w":542866.3},{"fl":"SAU | Product Component · Midstream","tl":"DEU | Product Component · Downstream","fc":"SAU","tc":"DEU","fl7":3,"tl7":4,"w":533601},{"fl":"DEU | Product Component · Midstream","tl":"PRT | Product Component · Downstream","fc":"DEU","tc":"PRT","fl7":3,"tl7":4,"w":511703.7},{"fl":"THA | Product Component · Midstream","tl":"JPN | Product Component · Downstream","fc":"THA","tc":"JPN","fl7":3,"tl7":4,"w":460720.2},{"fl":"AUS | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"AUS","tc":"CHN","fl7":0,"tl7":1,"w":453748.4},{"fl":"PER | Raw Material · Upstream","tl":"CHL | Processed Material · Midstream","fc":"PER","tc":"CHL","fl7":0,"tl7":1,"w":433805.8},{"fl":"SWE | Product Component · Midstream","tl":"DEU | Product Component · Downstream","fc":"SWE","tc":"DEU","fl7":3,"tl7":4,"w":429374.3},{"fl":"DEU | Product Component · Midstream","tl":"POL | Product Component · Downstream","fc":"DEU","tc":"POL","fl7":3,"tl7":4,"w":415647.7},{"fl":"RUS | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"RUS","tc":"CHN","fl7":0,"tl7":1,"w":414812},{"fl":"POL | Product Component · Midstream","tl":"PRT | Product Component · Downstream","fc":"POL","tc":"PRT","fl7":3,"tl7":4,"w":391526.2},{"fl":"USA | Product Component · Midstream","tl":"CHN | Product Component · Downstream","fc":"USA","tc":"CHN","fl7":3,"tl7":4,"w":389063.8},{"fl":"NCL | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"NCL","tc":"CHN","fl7":0,"tl7":1,"w":356158.5},{"fl":"PER | Raw Material · Upstream","tl":"USA | Processed Material · Midstream","fc":"PER","tc":"USA","fl7":0,"tl7":1,"w":354553.4},{"fl":"NCL | Raw Material · Upstream","tl":"KOR | Processed Material · Midstream","fc":"NCL","tc":"KOR","fl7":0,"tl7":1,"w":348833.4},{"fl":"USA | Raw Material · Upstream","tl":"CAN | Processed Material · Midstream","fc":"USA","tc":"CAN","fl7":0,"tl7":1,"w":335436.4},{"fl":"CHL | Raw Material · Upstream","tl":"KOR | Processed Material · Midstream","fc":"CHL","tc":"KOR","fl7":0,"tl7":1,"w":301198},{"fl":"DEU | Product Component · Midstream","tl":"ROU | Product Component · Downstream","fc":"DEU","tc":"ROU","fl7":3,"tl7":4,"w":294806.6},{"fl":"FIN | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"FIN","tc":"CHN","fl7":0,"tl7":1,"w":286908.2},{"fl":"DEU | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"DEU","tc":"USA","fl7":3,"tl7":4,"w":277636.6},{"fl":"NLD | Raw Material · Upstream","tl":"BEL | Processed Material · Midstream","fc":"NLD","tc":"BEL","fl7":0,"tl7":1,"w":272754.7},{"fl":"CHL | Raw Material · Upstream","tl":"BRA | Processed Material · Midstream","fc":"CHL","tc":"BRA","fl7":0,"tl7":1,"w":271629.1},{"fl":"CHL | Raw Material · Upstream","tl":"NLD | Processed Material · Midstream","fc":"CHL","tc":"NLD","fl7":0,"tl7":1,"w":252751.6},{"fl":"ITA | Product Component · Midstream","tl":"CHN | Product Component · Downstream","fc":"ITA","tc":"CHN","fl7":3,"tl7":4,"w":240085.9},{"fl":"DEU | Process Equipment · Midstream","tl":"CHN | Process Equipment · Downstream","fc":"DEU","tc":"CHN","fl7":2,"tl7":5,"w":237442.1},{"fl":"CHL | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"CHL","tc":"CHN","fl7":0,"tl7":1,"w":226618.4},{"fl":"JPN | Product Component · Midstream","tl":"S19 | Product Component · Downstream","fc":"JPN","tc":"S19","fl7":3,"tl7":4,"w":225245.2},{"fl":"CIV | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"CIV","tc":"CHN","fl7":0,"tl7":1,"w":220446.3},{"fl":"MYS | Product Component · Midstream","tl":"THA | Product Component · Downstream","fc":"MYS","tc":"THA","fl7":3,"tl7":4,"w":218925.3},{"fl":"NCL | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"NCL","tc":"JPN","fl7":0,"tl7":1,"w":200984},{"fl":"CHN | Process Equipment · Midstream","tl":"IDN | Process Equipment · Downstream","fc":"CHN","tc":"IDN","fl7":2,"tl7":5,"w":194783.2},{"fl":"ZAF | Raw Material · Upstream","tl":"USA | Processed Material · Midstream","fc":"ZAF","tc":"USA","fl7":0,"tl7":1,"w":186424.8},{"fl":"DEU | Process Equipment · Midstream","tl":"USA | Process Equipment · Downstream","fc":"DEU","tc":"USA","fl7":2,"tl7":5,"w":183395.2},{"fl":"JPN | Product Component · Midstream","tl":"CHN | Product Component · Downstream","fc":"JPN","tc":"CHN","fl7":3,"tl7":4,"w":170430.2},{"fl":"JPN | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"JPN","tc":"USA","fl7":3,"tl7":4,"w":161274},{"fl":"IDN | Product Component · Midstream","tl":"JPN | Product Component · Downstream","fc":"IDN","tc":"JPN","fl7":3,"tl7":4,"w":160810.6},{"fl":"KOR | Process Equipment · Midstream","tl":"CHN | Process Equipment · Downstream","fc":"KOR","tc":"CHN","fl7":2,"tl7":5,"w":115496.6},{"fl":"CAN | Process Equipment · Midstream","tl":"USA | Process Equipment · Downstream","fc":"CAN","tc":"USA","fl7":2,"tl7":5,"w":114431.2},{"fl":"KOR | Process Equipment · Midstream","tl":"USA | Process Equipment · Downstream","fc":"KOR","tc":"USA","fl7":2,"tl7":5,"w":93847.3},{"fl":"DEU | Process Equipment · Midstream","tl":"FRA | Process Equipment · Downstream","fc":"DEU","tc":"FRA","fl7":2,"tl7":5,"w":89231.2},{"fl":"DEU | Process Equipment · Midstream","tl":"POL | Process Equipment · Downstream","fc":"DEU","tc":"POL","fl7":2,"tl7":5,"w":70214.6},{"fl":"USA | Process Equipment · Midstream","tl":"CAN | Process Equipment · Downstream","fc":"USA","tc":"CAN","fl7":2,"tl7":5,"w":67508.9},{"fl":"DEU | Process Equipment · Midstream","tl":"NLD | Process Equipment · Downstream","fc":"DEU","tc":"NLD","fl7":2,"tl7":5,"w":67026.4},{"fl":"CHN | Process Equipment · Midstream","tl":"USA | Process Equipment · Downstream","fc":"CHN","tc":"USA","fl7":2,"tl7":5,"w":66782.4},{"fl":"DEU | Process Equipment · Midstream","tl":"GBR | Process Equipment · Downstream","fc":"DEU","tc":"GBR","fl7":2,"tl7":5,"w":66574.3},{"fl":"KOR | Process Equipment · Midstream","tl":"HUN | Process Equipment · Downstream","fc":"KOR","tc":"HUN","fl7":2,"tl7":5,"w":62221.7},{"fl":"DEU | Process Equipment · Midstream","tl":"CHE | Process Equipment · Downstream","fc":"DEU","tc":"CHE","fl7":2,"tl7":5,"w":55481.1},{"fl":"CHN | Process Equipment · Midstream","tl":"VNM | Process Equipment · Downstream","fc":"CHN","tc":"VNM","fl7":2,"tl7":5,"w":54810.9},{"fl":"CHN | Process Equipment · Midstream","tl":"JPN | Process Equipment · Downstream","fc":"CHN","tc":"JPN","fl7":2,"tl7":5,"w":53086.1},{"fl":"DEU | Process Equipment · Midstream","tl":"ITA | Process Equipment · Downstream","fc":"DEU","tc":"ITA","fl7":2,"tl7":5,"w":53079.2},{"fl":"DEU | Process Equipment · Midstream","tl":"JPN | Process Equipment · Downstream","fc":"DEU","tc":"JPN","fl7":2,"tl7":5,"w":49755.9},{"fl":"CHN | Process Equipment · Midstream","tl":"THA | Process Equipment · Downstream","fc":"CHN","tc":"THA","fl7":2,"tl7":5,"w":49088.8},{"fl":"DEU | Process Equipment · Midstream","tl":"AUT | Process Equipment · Downstream","fc":"DEU","tc":"AUT","fl7":2,"tl7":5,"w":48532.8}]}];
+let currentIdx=0;
+const c=()=>ALL_CASES[currentIdx];
+let selStage="Final Product", selRole="Final Product", selProduct="ALL";
+let tlMode="exports", scMode="pct", sankeyFocus=null;
+
+const SR_COLORS={
+  "Upstream|Raw Material":"#b45309","Upstream|Processed Material":"#c17a2e",
+  "Midstream|Processed Material":"#22c55e","Midstream|Process Equipment":"#65a30d",
+  "Midstream|Product Component":"#16a34a","Downstream|Product Component":"#4ade80",
+  "Downstream|Process Equipment":"#6b7280","Downstream|Final Product":"#f97316",
+  "Final Product|Final Product":"#f97316","Other|Product Component":"#9ca3af",
+  "Other|Process Equipment":"#9ca3af"
+};
+const SR_ORDER=["Upstream|Raw Material","Upstream|Processed Material","Midstream|Processed Material","Midstream|Process Equipment","Midstream|Product Component","Downstream|Product Component","Downstream|Process Equipment","Downstream|Final Product","Final Product|Final Product"];
+const STAGE_COLORS={"Upstream":"#b45309","Midstream":"#22c55e","Downstream":"#4ade80","Final Product":"#f97316"};
+const STAGES_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+const REGION_COLOR={EAP:"#0369a1",ECA:"#6366f1",SAS:"#10b981",NAC:"#f59e0b",LCN:"#ef4444",MEA:"#8b5cf6",SSF:"#84cc16"};
+const PROD_COLORS=["#f59e0b","#38bdf8","#4ade80","#f87171","#c084fc","#fb923c","#a78bfa","#34d399","#f472b6","#60a5fa"];
+const tip={_el:null,_get(){return this._el||(this._el=document.getElementById("tooltip"));},style(k,v){const e=this._get();if(e)e.style[k]=v;return this;},html(h){const e=this._get();if(e)e.innerHTML=h;return this;}};
+function showTip(html,ev){const vw=window.innerWidth;const tx=ev.clientX+14;const offset=tx+260>vw?ev.clientX-270:tx;tip.style("opacity","1").html(html).style("left",offset+"px").style("top",(ev.clientY-10)+"px")}
+function hideTip(){tip.style("opacity","0")}
+const fmtV=v=>v>=1e6?`$${(v/1e6).toFixed(1)}B`:v>=1e3?`$${(v/1e3).toFixed(1)}M`:`$${v.toFixed(0)}K`;
+function srColor(sr){return SR_COLORS[sr]||"#9ca3af"}
+function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
+
+
+function getPV() {
+  const c0 = c();
+  const pv = c0.selected_pv;
+  if (pv) return pv;
+  return c0.selected_pv || {code:"ALL",label:"All",stage:"ALL",role:"ALL",
+    suppliers:[],buyers:[],timeline:[],total_imp:0,total_exp:0};
+}
+
+function drawAtlasSankey(){
+  const c0=c();
+  const flows=c0.sankey_flows||[];
+  const titleEl=document.getElementById("sankey-title");
+  if(titleEl) titleEl.textContent="SANKEY";
+  const svg=d3.select("#sankey-svg");svg.selectAll("*").remove();
+  const W=document.getElementById("pane-sankey").clientWidth||380;
+  const H=document.getElementById("pane-sankey").clientHeight-36||250;
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","transparent");
+  if(!flows.length){
+    svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.25)").attr("font-size",10).text("No sankey data");
+    return;
+  }
+  const CNAMES={CHN:"China",USA:"USA",DEU:"Germany",JPN:"Japan",KOR:"S.Korea",IND:"India",VNM:"Vietnam",MYS:"Malaysia",FRA:"France",GBR:"UK",ITA:"Italy",ESP:"Spain",AUS:"Australia",CAN:"Canada",NLD:"Neth.",BRA:"Brazil",TWN:"Taiwan",SGP:"Singapore",THA:"Thailand",IDN:"Indonesia",NOR:"Norway",POL:"Poland",SWE:"Sweden",ZAF:"S.Africa",ARE:"UAE",BHR:"Bahrain",AUT:"Austria",KHM:"Cambodia",MEX:"Mexico",HUN:"Hungary",TUR:"Turkey",HKG:"HK",S19:"Other"};
+  const cn=iso=>CNAMES[iso]||iso;
+  // 5-column layout: lane0 | lane1 | lanes2+3(stacked) | lanes5+4(stacked) | lane6
+  const laneCol={0:0,1:1,2:2,3:2,4:3,5:3,6:4};
+  const COL_X=[0.062,0.238,0.46,0.695,0.932];
+  const LC={0:"#b45309",1:"#22c55e",2:"#65a30d",3:"#16a34a",4:"#4ade80",5:"#6b7280",6:"#f97316"};
+  const P={t:18,b:6,l:4,r:4};
+  const iw=W-P.l-P.r, ih=H-P.t-P.b;
+  // Dashed vertical boundary lines between sections (UPSTREAM|MIDSTREAM and MIDSTREAM|DOWNSTREAM)
+  [0.150,0.578].forEach(xf=>{
+    svg.append("line")
+      .attr("x1",P.l+xf*iw).attr("x2",P.l+xf*iw)
+      .attr("y1",P.t).attr("y2",P.t+ih)
+      .attr("stroke","rgba(255,255,255,.12)").attr("stroke-width",0.8)
+      .attr("stroke-dasharray","4,4");
+  });
+  // Column role labels
+  [[0,"Raw Material",LC[0]],[1,"Proc. Material",LC[1]],
+   [2,"Proc. Equip. / Prod. Comp.",LC[2]],
+   [3,"Proc. Equip. / Prod. Comp.",LC[5]],
+   [4,"Final Product",LC[6]]].forEach(([ci,lbl,col])=>{
+    svg.append("text").attr("x",P.l+COL_X[ci]*iw).attr("y",12).attr("text-anchor","middle")
+      .attr("fill",col).attr("font-size",5).attr("opacity",0.65).text(lbl);
+  });
+  // Build node weight maps per lane
+  const laneM={};
+  flows.forEach(f=>{
+    [[f.fl,+f.fl7],[f.tl,+f.tl7]].forEach(([id,lane])=>{
+      if(!laneM[lane]) laneM[lane]=new Map();
+      laneM[lane].set(id,(laneM[lane].get(id)||0)+(+f.w||0));
+    });
+  });
+  // Ensure focal country (Brazil) appears in every lane, even if not in top flows
+  const braLabel=c0.focal;
+  [0,1,2,3,4,5,6].forEach(lane=>{
+    if(!laneM[lane]) laneM[lane]=new Map();
+    const hasBra=[...laneM[lane].keys()].some(k=>k.split(" | ")[0]===braLabel);
+    if(!hasBra) laneM[lane].set(braLabel,d3.min([...laneM[lane].values()])||1);
+  });
+  // Log-proportional node height layout within a vertical band
+  const NW=10, GAP_NODE=2, GAP_ROLE=10;
+  const nPos=new Map();
+  function layoutLane(lane,yStart,yEnd){
+    const nm=laneM[lane]; if(!nm||!nm.size) return;
+    const ci=laneCol[lane];
+    const sorted=[...nm.entries()].sort((a,b)=>b[1]-a[1]);
+    const n=sorted.length;
+    const logWts=sorted.map(([,wt])=>Math.log1p(wt));
+    const sumLog=logWts.reduce((s,v)=>s+v,0)||1;
+    const availH=yEnd-yStart-GAP_NODE;
+    let y=yStart+GAP_NODE/2;
+    sorted.forEach(([id,wt],i)=>{
+      const h=Math.max(3,(availH-n*GAP_NODE)*(logWts[i]/sumLog));
+      nPos.set(id,{x:P.l+COL_X[ci]*iw-NW/2,y,h,w:NW,lane,ci,name:cn(id.split(" | ")[0]),wt});
+      y+=h+GAP_NODE;
+    });
+  }
+  const yT=P.t+4, yB=P.t+4+ih-8, yMid=(yT+yB)/2;
+  layoutLane(0,yT,yB);
+  layoutLane(1,yT,yB);
+  layoutLane(2,yT,yMid-GAP_ROLE/2);
+  layoutLane(3,yMid+GAP_ROLE/2,yB);
+  layoutLane(5,yT,yMid-GAP_ROLE/2);
+  layoutLane(4,yMid+GAP_ROLE/2,yB);
+  layoutLane(6,yT,yB);
+  // Role divider tick in shared columns (col 2 and col 3)
+  [2,3].forEach(ci=>{
+    const x=P.l+COL_X[ci]*iw;
+    svg.append("line").attr("x1",x-NW).attr("x2",x+NW).attr("y1",yMid).attr("y2",yMid)
+      .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",0.5);
+  });
+  // Focus state: default to focal country (Brazil), click node to switch
+  if(sankeyFocus===null) sankeyFocus=c0.focal;
+  const foc=sankeyFocus;
+  // Click on SVG background resets to focal country
+  svg.on("click",()=>{ sankeyFocus=c0.focal; drawAtlasSankey(); });
+  // Links — log-scaled widths, dimmed unless involving focused country
+  const wVals=flows.map(f=>+f.w).filter(v=>v>0);
+  const minW=d3.min(wVals)||1, maxW=d3.max(wVals)||1;
+  const swSc=d3.scaleLog().domain([minW,maxW]).range([0.3,3.5]).clamp(true);
+  flows.forEach(f=>{
+    const src=nPos.get(f.fl),tgt=nPos.get(f.tl); if(!src||!tgt) return;
+    const active=f.fc===foc||f.tc===foc;
+    const col=LC[+f.fl7]||"#9ca3af";
+    const x1=src.x+src.w,y1=src.y+src.h/2,x2=tgt.x,y2=tgt.y+tgt.h/2,cx=(x1+x2)/2;
+    svg.append("path").attr("d",`M${x1},${y1}C${cx},${y1} ${cx},${y2} ${x2},${y2}`)
+      .attr("fill","none").attr("stroke",col).attr("stroke-width",active?swSc(+f.w||minW)*1.4:swSc(+f.w||minW))
+      .attr("opacity",active?0.75:0.25)
+      .on("mousemove",ev=>showTip(`${cn(f.fc)} → ${cn(f.tc)}<br><b>${fmtV(+f.w)}</b>`,ev))
+      .on("mouseleave",hideTip);
+  });
+  // Nodes + labels — highlight focused country, dim others
+  nPos.forEach((n,id)=>{
+    const iso=id.split(" | ")[0];
+    const active=iso===foc;
+    const col=LC[n.lane]||"#9ca3af";
+    svg.append("rect").attr("x",n.x).attr("y",n.y).attr("width",n.w).attr("height",n.h)
+      .attr("fill",col).attr("rx",1.5).attr("opacity",active?0.96:0.45)
+      .style("cursor","pointer")
+      .on("click",(ev)=>{ ev.stopPropagation(); sankeyFocus=iso; drawAtlasSankey(); })
+      .on("mousemove",ev=>showTip(`<b>${n.name}</b><br>${fmtV(n.wt)}`,ev))
+      .on("mouseleave",hideTip);
+    // Active node (Brazil default): bold white border
+    if(active) svg.append("rect").attr("x",n.x-1).attr("y",n.y-1).attr("width",n.w+2).attr("height",n.h+2)
+      .attr("fill","none").attr("stroke","#fff").attr("stroke-width",1.5).attr("rx",2).attr("opacity",0.9);
+    if(n.h>=6){
+      const iso3=id.split(" | ")[0];
+      svg.append("text").attr("x",n.x+n.w/2).attr("y",n.y+n.h/2+1.8).attr("text-anchor","middle")
+        .attr("font-size",4.5).attr("fill",active?"#fff":"rgba(255,255,255,.8)")
+        .attr("font-weight",active?"700":"400")
+        .text(iso3);
+    }
+  });
+}
+document.addEventListener("DOMContentLoaded",()=>{ drawAtlasSankey(); });
+window.addEventListener("resize",()=>{ drawAtlasSankey(); });
+
+</script>
+</body>
+</html>

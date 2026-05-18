@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solar Japan · Value Chain Timeline · Final_Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d1520;
+  font-family:"Archivo",-apple-system,"Segoe UI",sans-serif;color:#e2e8f0}
+#module-wrap{width:100%;height:100%;display:flex;flex-direction:column}
+#module-header{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:36px;background:#0a1218}
+.m-tech{font-size:.82rem;font-weight:800}
+.m-sep{color:rgba(255,255,255,.25);font-size:.75rem}
+.m-title{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.7);
+  text-transform:uppercase;letter-spacing:.07em}
+.m-meta{font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto}
+.m-sel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:3px;padding:1px 6px;color:rgba(255,255,255,.45)}
+#module-body{flex:1;min-height:0;position:relative}
+#module-body>svg,#module-body>canvas{width:100%!important;height:100%!important}
+#tooltip{position:fixed;pointer-events:none;background:rgba(0,0,0,.88);color:#fff;
+  font-size:12px;padding:8px 12px;border-radius:5px;opacity:0;transition:opacity .15s;
+  max-width:260px;z-index:9999;line-height:1.55}
+/* Pane aliases expected by drawing functions */
+#pane-shap,#pane-sc,#pane-tl,#pane-tm,#pane-den,#pane-sankey,#pane-map{
+  position:absolute;inset:0}
+
+
+</style>
+</head>
+<body>
+<div id="module-wrap">
+  <div id="module-header">
+    <span class="m-tech" style="color:#eab308">Solar</span>
+    <span class="m-sep">·</span>
+    <span style="color:rgba(255,255,255,.55);font-size:.82rem;font-weight:600">Japan</span>
+    <span class="m-sep">·</span>
+    <span class="m-title">Value Chain Timeline</span>
+    <span class="m-meta">Exports / Imports by SR group</span>
+    <span class="m-sel">Final_Product</span>
+  </div>
+  <div id="module-body">
+    <div id="pane-tl" style="position:absolute;inset:0">
+      <svg id="tl-svg" style="width:100%;height:100%"></svg>
+      
+    </div>
+  </div>
+</div>
+<div id="tooltip"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+const ALL_CASES=[{tech:"Solar",color:"#eab308",focal:"JPN",timeline:[{"sr":"Downstream|Process Equipment","year":2003,"exp":8032.7,"imp":1112.6},{"sr":"Downstream|Product Component","year":2003,"exp":4625.8,"imp":2293},{"sr":"Midstream|Process Equipment","year":2003,"exp":799.1,"imp":367.1},{"sr":"Midstream|Processed Material","year":2003,"exp":2291,"imp":1369.2},{"sr":"Midstream|Product Component","year":2003,"exp":2000.6,"imp":771.9},{"sr":"Upstream|Raw Material","year":2003,"exp":29.2,"imp":2759.2},{"sr":"Downstream|Process Equipment","year":2004,"exp":12422.3,"imp":1553.2},{"sr":"Downstream|Product Component","year":2004,"exp":6058,"imp":2997.2},{"sr":"Midstream|Process Equipment","year":2004,"exp":1329.9,"imp":430.9},{"sr":"Midstream|Processed Material","year":2004,"exp":2636.1,"imp":1737.6},{"sr":"Midstream|Product Component","year":2004,"exp":2864.8,"imp":764.3},{"sr":"Upstream|Raw Material","year":2004,"exp":96.6,"imp":4478.9},{"sr":"Downstream|Process Equipment","year":2005,"exp":11449.2,"imp":1684.6},{"sr":"Downstream|Product Component","year":2005,"exp":6758.7,"imp":3413.7},{"sr":"Midstream|Process Equipment","year":2005,"exp":1259.6,"imp":308.3},{"sr":"Midstream|Processed Material","year":2005,"exp":3332.6,"imp":2121.7},{"sr":"Midstream|Product Component","year":2005,"exp":3394.3,"imp":850.6},{"sr":"Upstream|Raw Material","year":2005,"exp":120.3,"imp":5871.6},{"sr":"Downstream|Process Equipment","year":2006,"exp":12124.1,"imp":1765.1},{"sr":"Downstream|Product Component","year":2006,"exp":7278.4,"imp":4356.8},{"sr":"Midstream|Process Equipment","year":2006,"exp":1358.4,"imp":689.2},{"sr":"Midstream|Processed Material","year":2006,"exp":4044.1,"imp":2661.8},{"sr":"Midstream|Product Component","year":2006,"exp":4267,"imp":879.5},{"sr":"Upstream|Raw Material","year":2006,"exp":81.7,"imp":9842.4},{"sr":"Downstream|Process Equipment","year":2007,"exp":16394,"imp":3568.5},{"sr":"Downstream|Product Component","year":2007,"exp":7675.1,"imp":4374.3},{"sr":"Midstream|Process Equipment","year":2007,"exp":12554.8,"imp":2917.2},{"sr":"Midstream|Processed Material","year":2007,"exp":5024.1,"imp":3230.6},{"sr":"Midstream|Product Component","year":2007,"exp":5631.6,"imp":1031.4},{"sr":"Upstream|Raw Material","year":2007,"exp":150.5,"imp":11986.3},{"sr":"Downstream|Process Equipment","year":2008,"exp":14191,"imp":2884},{"sr":"Downstream|Product Component","year":2008,"exp":8793.6,"imp":4942.6},{"sr":"Midstream|Process Equipment","year":2008,"exp":12847.5,"imp":3061},{"sr":"Midstream|Processed Material","year":2008,"exp":6356.6,"imp":4099.4},{"sr":"Midstream|Product Component","year":2008,"exp":5011.8,"imp":949.4},{"sr":"Upstream|Raw Material","year":2008,"exp":148.7,"imp":10482.5},{"sr":"Downstream|Process Equipment","year":2009,"exp":8641.5,"imp":1463.3},{"sr":"Downstream|Product Component","year":2009,"exp":6421.7,"imp":2718.9},{"sr":"Midstream|Process Equipment","year":2009,"exp":9626.4,"imp":2231.7},{"sr":"Midstream|Processed Material","year":2009,"exp":4720.9,"imp":3111.5},{"sr":"Midstream|Product Component","year":2009,"exp":2827.5,"imp":784.8},{"sr":"Upstream|Raw Material","year":2009,"exp":72.4,"imp":8648.2},{"sr":"Downstream|Process Equipment","year":2010,"exp":16148.1,"imp":2217.9},{"sr":"Downstream|Product Component","year":2010,"exp":8460.6,"imp":4953.3},{"sr":"Midstream|Process Equipment","year":2010,"exp":15458.4,"imp":3026},{"sr":"Midstream|Processed Material","year":2010,"exp":6388.3,"imp":3905.6},{"sr":"Midstream|Product Component","year":2010,"exp":4396.9,"imp":1180.5},{"sr":"Upstream|Raw Material","year":2010,"exp":106.8,"imp":12878.7},{"sr":"Downstream|Process Equipment","year":2011,"exp":19160,"imp":3045.3},{"sr":"Downstream|Product Component","year":2011,"exp":9013.9,"imp":5621.6},{"sr":"Midstream|Process Equipment","year":2011,"exp":16649.9,"imp":3578.1},{"sr":"Midstream|Processed Material","year":2011,"exp":7054.7,"imp":4731.3},{"sr":"Midstream|Product Component","year":2011,"exp":4239,"imp":1226.2},{"sr":"Upstream|Raw Material","year":2011,"exp":133.4,"imp":12437.5},{"sr":"Downstream|Process Equipment","year":2012,"exp":14567.3,"imp":1366.5},{"sr":"Downstream|Product Component","year":2012,"exp":8256.5,"imp":6276.4},{"sr":"Midstream|Process Equipment","year":2012,"exp":6166.4,"imp":1198},{"sr":"Midstream|Processed Material","year":2012,"exp":6431.3,"imp":3681.6},{"sr":"Midstream|Product Component","year":2012,"exp":3353.3,"imp":997.1},{"sr":"Upstream|Raw Material","year":2012,"exp":144.8,"imp":11985.8},{"sr":"Downstream|Process Equipment","year":2013,"exp":11669.9,"imp":1670.6},{"sr":"Downstream|Product Component","year":2013,"exp":7525.2,"imp":10267.6},{"sr":"Midstream|Process Equipment","year":2013,"exp":5323.7,"imp":1228.1},{"sr":"Midstream|Processed Material","year":2013,"exp":5579.2,"imp":3365.5},{"sr":"Midstream|Product Component","year":2013,"exp":2904.5,"imp":966.7},{"sr":"Upstream|Raw Material","year":2013,"exp":115.6,"imp":11115.6},{"sr":"Downstream|Process Equipment","year":2014,"exp":12388.6,"imp":2328.4},{"sr":"Downstream|Product Component","year":2014,"exp":7569.6,"imp":12318.9},{"sr":"Midstream|Process Equipment","year":2014,"exp":5650.8,"imp":1316.3},{"sr":"Midstream|Processed Material","year":2014,"exp":5139.9,"imp":3570.4},{"sr":"Midstream|Product Component","year":2014,"exp":2937.6,"imp":931},{"sr":"Upstream|Raw Material","year":2014,"exp":106.3,"imp":10615.5},{"sr":"Downstream|Process Equipment","year":2015,"exp":11003.3,"imp":3133.7},{"sr":"Downstream|Product Component","year":2015,"exp":6491.5,"imp":9531},{"sr":"Midstream|Process Equipment","year":2015,"exp":5136.6,"imp":1492},{"sr":"Midstream|Processed Material","year":2015,"exp":4365.6,"imp":3061.8},{"sr":"Midstream|Product Component","year":2015,"exp":2848.7,"imp":938.4},{"sr":"Upstream|Raw Material","year":2015,"exp":68.8,"imp":8369.1},{"sr":"Downstream|Process Equipment","year":2016,"exp":13509.2,"imp":2293.6},{"sr":"Downstream|Product Component","year":2016,"exp":6621.8,"imp":7704.5},{"sr":"Midstream|Process Equipment","year":2016,"exp":6990.7,"imp":1431.2},{"sr":"Midstream|Processed Material","year":2016,"exp":5141.1,"imp":3262.9},{"sr":"Midstream|Product Component","year":2016,"exp":2900,"imp":855.9},{"sr":"Upstream|Raw Material","year":2016,"exp":39,"imp":8140.5},{"sr":"Downstream|Process Equipment","year":2017,"exp":5790.9,"imp":776.3},{"sr":"Downstream|Product Component","year":2017,"exp":7712.9,"imp":8207},{"sr":"Final Product|Final Product","year":2017,"exp":806.8,"imp":641.7},{"sr":"Midstream|Process Equipment","year":2017,"exp":100.2,"imp":39.8},{"sr":"Midstream|Processed Material","year":2017,"exp":3414.2,"imp":3130.5},{"sr":"Midstream|Product Component","year":2017,"exp":4129.4,"imp":1499.3},{"sr":"Upstream|Raw Material","year":2017,"exp":44.2,"imp":9032.7},{"sr":"Downstream|Process Equipment","year":2018,"exp":6066.1,"imp":826.1},{"sr":"Downstream|Product Component","year":2018,"exp":8583.7,"imp":8335.7},{"sr":"Final Product|Final Product","year":2018,"exp":878.3,"imp":603.6},{"sr":"Midstream|Process Equipment","year":2018,"exp":121.5,"imp":46.4},{"sr":"Midstream|Processed Material","year":2018,"exp":3631.9,"imp":3442.5},{"sr":"Midstream|Product Component","year":2018,"exp":5204.1,"imp":1649.2},{"sr":"Upstream|Raw Material","year":2018,"exp":55,"imp":10017.8},{"sr":"Downstream|Process Equipment","year":2019,"exp":5606.3,"imp":868.9},{"sr":"Downstream|Product Component","year":2019,"exp":8207.4,"imp":7701.7},{"sr":"Final Product|Final Product","year":2019,"exp":811.8,"imp":574.2},{"sr":"Midstream|Process Equipment","year":2019,"exp":122.2,"imp":53.1},{"sr":"Midstream|Processed Material","year":2019,"exp":3517,"imp":2829.1},{"sr":"Midstream|Product Component","year":2019,"exp":5282.1,"imp":1548},{"sr":"Upstream|Raw Material","year":2019,"exp":40.6,"imp":8507.3},{"sr":"Downstream|Process Equipment","year":2020,"exp":5352.8,"imp":852.9},{"sr":"Downstream|Product Component","year":2020,"exp":8545.9,"imp":6567.7},{"sr":"Final Product|Final Product","year":2020,"exp":832.3,"imp":504.5},{"sr":"Midstream|Process Equipment","year":2020,"exp":81.9,"imp":32.6},{"sr":"Midstream|Processed Material","year":2020,"exp":3476.9,"imp":2339.3},{"sr":"Midstream|Product Component","year":2020,"exp":5329.1,"imp":1479.2},{"sr":"Upstream|Raw Material","year":2020,"exp":42.9,"imp":9102.7},{"sr":"Downstream|Process Equipment","year":2021,"exp":6351.1,"imp":917.8},{"sr":"Downstream|Product Component","year":2021,"exp":10170.6,"imp":7945.9},{"sr":"Final Product|Final Product","year":2021,"exp":991,"imp":502.6},{"sr":"Midstream|Process Equipment","year":2021,"exp":83.5,"imp":56.5},{"sr":"Midstream|Processed Material","year":2021,"exp":4379.4,"imp":3211.7},{"sr":"Midstream|Product Component","year":2021,"exp":6143,"imp":1620.9},{"sr":"Upstream|Raw Material","year":2021,"exp":48,"imp":13139.5},{"sr":"Downstream|Process Equipment","year":2022,"exp":4931.1,"imp":812.7},{"sr":"Downstream|Product Component","year":2022,"exp":2383,"imp":4794.8},{"sr":"Final Product|Final Product","year":2022,"exp":36.6,"imp":2171.4},{"sr":"Midstream|Process Equipment","year":2022,"exp":40.8,"imp":29.6},{"sr":"Midstream|Processed Material","year":2022,"exp":4539.9,"imp":3733.6},{"sr":"Midstream|Product Component","year":2022,"exp":7069.5,"imp":1519.3},{"sr":"Upstream|Raw Material","year":2022,"exp":60.9,"imp":14014.3},{"sr":"Downstream|Process Equipment","year":2023,"exp":4480.8,"imp":860.9},{"sr":"Downstream|Product Component","year":2023,"exp":2420,"imp":4256.1},{"sr":"Final Product|Final Product","year":2023,"exp":36,"imp":1580.5},{"sr":"Midstream|Process Equipment","year":2023,"exp":29.5,"imp":43.6},{"sr":"Midstream|Processed Material","year":2023,"exp":3623.4,"imp":2925.5},{"sr":"Midstream|Product Component","year":2023,"exp":6801.6,"imp":1391.6},{"sr":"Upstream|Raw Material","year":2023,"exp":62.7,"imp":11598.9},{"sr":"Downstream|Process Equipment","year":2024,"exp":4234.9,"imp":850.3},{"sr":"Downstream|Product Component","year":2024,"exp":2323.1,"imp":4008.4},{"sr":"Final Product|Final Product","year":2024,"exp":36.1,"imp":1053.6},{"sr":"Midstream|Process Equipment","year":2024,"exp":37.9,"imp":34},{"sr":"Midstream|Processed Material","year":2024,"exp":3600.3,"imp":2726.7},{"sr":"Midstream|Product Component","year":2024,"exp":5686,"imp":1451.8},{"sr":"Upstream|Raw Material","year":2024,"exp":64.3,"imp":13969}],all_products:[{"code":"761090","name":"Mounting Equipment; Structural Aluminum ","stage":"Downstream","role":"Product Component","exp":38331,"imp":434004},{"code":"320890","name":"Solar Miscellaneous; Antireflective Coat","stage":"Midstream","role":"Processed Material","exp":893442,"imp":106834},{"code":"390469","name":"Solar Glass; Fluoro-polymers for Back Sh","stage":"Midstream","role":"Processed Material","exp":582243,"imp":188896},{"code":"390730","name":"Epoxide Resins as Potting Agent","stage":"Midstream","role":"Processed Material","exp":693202,"imp":153091},{"code":"830249","name":"Mounting Equipment","stage":"Downstream","role":"Product Component","exp":55483,"imp":147280},{"code":"847989","name":"Module Production; Automated Glass Loadi","stage":"Downstream","role":"Process Equipment","exp":4234890,"imp":850288},{"code":"854143","name":"Modules (Assembled into Panels)","stage":"Final Product","role":"Final Product","exp":36145,"imp":1053639},{"code":"851440","name":"Ingot Production; Radio Frequency Coil H","stage":"Midstream","role":"Process Equipment","exp":28318,"imp":11219},{"code":"854149","name":"Solar Tracker; CDS Sensor","stage":"Midstream","role":"Product Component","exp":675194,"imp":239292},{"code":"280461","name":"Polysilicon","stage":"Midstream","role":"Processed Material","exp":257329,"imp":624273},{"code":"350610","name":"Solar Miscellaneous; Silver Conductive A","stage":"Midstream","role":"Processed Material","exp":292649,"imp":60324},{"code":"381800","name":"Silicon Wafers","stage":"Midstream","role":"Product Component","exp":5010778,"imp":1212458},{"code":"390130","name":"Solar Glass; Ethylene Polymers for EVA S","stage":"Midstream","role":"Processed Material","exp":113152,"imp":7519},{"code":"760120","name":"Aluminum Unwrought; Alloyed","stage":"Downstream","role":"Product Component","exp":205686,"imp":2509408},{"code":"854129","name":"Inverter","stage":"Downstream","role":"Product Component","exp":1953042,"imp":743355},{"code":"760310","name":"Cell; Powders of Non-lamellar Structure,","stage":"Midstream","role":"Processed Material","exp":8909,"imp":22564},{"code":"854142","name":"Solar Cells","stage":"Downstream","role":"Product Component","exp":46550,"imp":85327},{"code":"260300","name":"Copper Ore","stage":"Upstream","role":"Raw Material","exp":999,"imp":13498625},{"code":"280490","name":"Selenium","stage":"Upstream","role":"Raw Material","exp":16860,"imp":5653},{"code":"281820","name":"Alumina","stage":"Midstream","role":"Processed Material","exp":171623,"imp":93273},{"code":"700510","name":"Module; Glass Sheet Casing (Float)","stage":"Downstream","role":"Product Component","exp":18952,"imp":23815},{"code":"710692","name":"Cell; Silver in Semi-manufactured Forms","stage":"Midstream","role":"Processed Material","exp":292129,"imp":45958},{"code":"901820","name":"Ingot Production; Infrared Inspection","stage":"Midstream","role":"Process Equipment","exp":8344,"imp":18736},{"code":"280450","name":"Tellurium","stage":"Upstream","role":"Raw Material","exp":9599,"imp":3585},{"code":"700529","name":"Solar Glass; Glass Sheet Casing (Float)","stage":"Midstream","role":"Processed Material","exp":212626,"imp":35661},{"code":"700719","name":"Module; Glass Sheet Casing (Toughened)","stage":"Downstream","role":"Product Component","exp":4558,"imp":59100},{"code":"811292","name":"Indium","stage":"Upstream","role":"Raw Material","exp":33861,"imp":116565},{"code":"250510","name":"Silica","stage":"Upstream","role":"Raw Material","exp":1515,"imp":91579},{"code":"280469","name":"Ingot; Hydrochloric Acid","stage":"Midstream","role":"Processed Material","exp":27052,"imp":379134},{"code":"281410","name":"Solar Miscellaneous; Ammonia for PECVD","stage":"Midstream","role":"Processed Material","exp":770,"imp":119361},{"code":"390761","name":"Solar Glass; Polyethylene Terephthalate ","stage":"Midstream","role":"Processed Material","exp":55165,"imp":889784},{"code":"851432","name":"Polysilicon Production; Electric Arc Fur","stage":"Midstream","role":"Process Equipment","exp":1268,"imp":4037},{"code":"260400","name":"Nickel Ore","stage":"Upstream","role":"Raw Material","exp":139,"imp":38432},{"code":"850180","name":"Photovoltaic AC Generators","stage":"Downstream","role":"Product Component","exp":146,"imp":251},{"code":"850172","name":"Photovoltaic DC generators over 50 MW","stage":"Downstream","role":"Product Component","exp":317,"imp":5242},{"code":"260600","name":"Solar Miscellaneous; Materials for Alumi","stage":"Upstream","role":"Raw Material","exp":540,"imp":14941},{"code":"251910","name":"Magnesium Ore","stage":"Upstream","role":"Raw Material","exp":828,"imp":8025},{"code":"261610","name":"Silver Ore","stage":"Upstream","role":"Raw Material","exp":0,"imp":191602},{"code":"850171","name":"Photovoltaic DC Generators Under 50 MW","stage":"Downstream","role":"Product Component","exp":0,"imp":645}],selected_pv:{"code":"ROLE:Final Product","label":"Final Product","stage":"Final Product","role":"Final Product","total_imp":1051035,"total_exp":33790,"suppliers":[{"iso3":"CHN","name":"873314.538","value":NA},{"iso3":"PHL","name":"140013.425","value":NA},{"iso3":"S19","name":" 18291.676","value":NA},{"iso3":"KOR","name":"  5019.789","value":NA},{"iso3":"DEU","name":"  4698.710","value":NA},{"iso3":"USA","name":"  2968.715","value":NA},{"iso3":"MEX","name":"  2672.874","value":NA},{"iso3":"CZE","name":"  1595.477","value":NA},{"iso3":"HKG","name":"  1302.194","value":NA},{"iso3":"MYS","name":"  1157.341","value":NA}],"buyers":[{"iso3":"PHL","name":"11511.755","value":NA},{"iso3":"FRA","name":" 8625.887","value":NA},{"iso3":"USA","name":" 8235.770","value":NA},{"iso3":"NGA","name":" 1949.806","value":NA},{"iso3":"ARE","name":" 1193.826","value":NA},{"iso3":"HUN","name":"  547.191","value":NA},{"iso3":"FIN","name":"  491.048","value":NA},{"iso3":"ITA","name":"  446.222","value":NA},{"iso3":"DNK","name":"  401.154","value":NA},{"iso3":"THA","name":"  387.793","value":NA}],"timeline":[]}}];
+let currentIdx=0;
+const c=()=>ALL_CASES[currentIdx];
+let selStage="Final Product", selRole="Final Product", selProduct="ALL";
+let tlMode="exports", scMode="pct", sankeyFocus=null;
+
+const SR_COLORS={
+  "Upstream|Raw Material":"#b45309","Upstream|Processed Material":"#c17a2e",
+  "Midstream|Processed Material":"#22c55e","Midstream|Process Equipment":"#65a30d",
+  "Midstream|Product Component":"#16a34a","Downstream|Product Component":"#4ade80",
+  "Downstream|Process Equipment":"#6b7280","Downstream|Final Product":"#f97316",
+  "Final Product|Final Product":"#f97316","Other|Product Component":"#9ca3af",
+  "Other|Process Equipment":"#9ca3af"
+};
+const SR_ORDER=["Upstream|Raw Material","Upstream|Processed Material","Midstream|Processed Material","Midstream|Process Equipment","Midstream|Product Component","Downstream|Product Component","Downstream|Process Equipment","Downstream|Final Product","Final Product|Final Product"];
+const STAGE_COLORS={"Upstream":"#b45309","Midstream":"#22c55e","Downstream":"#4ade80","Final Product":"#f97316"};
+const STAGES_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+const REGION_COLOR={EAP:"#0369a1",ECA:"#6366f1",SAS:"#10b981",NAC:"#f59e0b",LCN:"#ef4444",MEA:"#8b5cf6",SSF:"#84cc16"};
+const PROD_COLORS=["#f59e0b","#38bdf8","#4ade80","#f87171","#c084fc","#fb923c","#a78bfa","#34d399","#f472b6","#60a5fa"];
+const tip={_el:null,_get(){return this._el||(this._el=document.getElementById("tooltip"));},style(k,v){const e=this._get();if(e)e.style[k]=v;return this;},html(h){const e=this._get();if(e)e.innerHTML=h;return this;}};
+function showTip(html,ev){const vw=window.innerWidth;const tx=ev.clientX+14;const offset=tx+260>vw?ev.clientX-270:tx;tip.style("opacity","1").html(html).style("left",offset+"px").style("top",(ev.clientY-10)+"px")}
+function hideTip(){tip.style("opacity","0")}
+const fmtV=v=>v>=1e6?`$${(v/1e6).toFixed(1)}B`:v>=1e3?`$${(v/1e3).toFixed(1)}M`:`$${v.toFixed(0)}K`;
+function srColor(sr){return SR_COLORS[sr]||"#9ca3af"}
+function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
+
+
+function getPV() {
+  const c0 = c();
+  const pv = c0.selected_pv;
+  if (pv) return pv;
+  return c0.selected_pv || {code:"ALL",label:"All",stage:"ALL",role:"ALL",
+    suppliers:[],buyers:[],timeline:[],total_imp:0,total_exp:0};
+}
+
+function drawTimeline(){
+  const c0=c();
+  const w=document.getElementById("pane-tl").clientWidth||400;
+  const h=document.getElementById("pane-tl").clientHeight-66||160;
+  const tl=c0.timeline;
+  if(!tl||tl.length===0) return;
+
+  const svg=d3.select("#tl-svg").attr("viewBox",`0 0 ${w} ${h}`);
+  svg.selectAll("*").remove();
+
+  const M={t:8,r:12,b:28,l:44};
+  const iw=w-M.l-M.r, ih=h-M.t-M.b;
+  const tlg=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+
+  const key=tlMode==="imports"?"imp":"exp";
+  const srs=[...new Set(tl.map(d=>d.sr))];
+  const years=[...new Set(tl.map(d=>+d.year))].sort();
+  const stacked=d3.stack().keys(srs).value((d,k)=>(tl.find(r=>r.year===d&&r.sr===k)||{})[key]||0)(years);
+
+  const xSc=d3.scaleLinear().domain(d3.extent(years)).range([0,iw]);
+  const maxV=d3.max(stacked[stacked.length-1],d=>d[1])||1;
+  const ySc=d3.scaleLinear().domain([0,maxV]).range([ih,0]);
+
+  const area=d3.area().x(d=>xSc(d.data)).y0(d=>ySc(d[0])).y1(d=>ySc(d[1])).curve(d3.curveMonotoneX);
+  const hasFilterTL=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL";
+  function srActiveTL(srKey){
+    const[st,ro]=srKey.split("|");
+    if(selProduct!=="ALL"){
+      const pd=(c0.den_products||[]).find(p=>p.code===selProduct);
+      return pd?pd.stage===st&&pd.role===ro:false;
+    }
+    if(selStage!=="ALL"&&selRole!=="ALL") return st===selStage&&ro===selRole;
+    if(selRole!=="ALL") return ro===selRole;
+    if(selStage!=="ALL") return st===selStage;
+    return true;
+  }
+  stacked.forEach(stk=>{
+    const alpha=hasFilterTL?(srActiveTL(stk.key)?0.85:0.12):0.52;
+    tlg.append("path").datum(stk).attr("fill",SR_COLORS[stk.key]||"#4b5563").attr("opacity",alpha).attr("d",area);
+  });
+
+  tlg.append("g").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(xSc).ticks(6).tickFormat(d3.format("d")))
+    .selectAll("text").attr("fill","rgba(255,255,255,.4)").attr("font-size",9);
+  tlg.append("g").call(d3.axisLeft(ySc).ticks(4).tickFormat(d=>`${d.toFixed(0)}`))
+    .selectAll("text").attr("fill","rgba(255,255,255,.4)").attr("font-size",9);
+
+  // ── Bold product line when a specific product is selected ──────────────────
+  if(selProduct!=="ALL"){
+    const pvs=c0.product_views||[];
+    const pv=pvs.find(p=>p.code===selProduct);
+    if(pv&&pv.timeline&&pv.timeline.length>0){
+      const lineKey=tlMode==="imports"?"imp":"exp";
+      const prod=(c0.den_products||[]).find(p=>p.code===selProduct);
+      const srKey=prod?`${prod.stage}|${prod.role}`:"";
+      const lineCol=SR_COLORS[srKey]||c0.color||"#3cb54a";
+      const pvYears=new Map(pv.timeline.map(d=>[+d.year,+d[lineKey]||0]));
+      const lineData=years.map(yr=>[yr,pvYears.get(yr)||0]);
+      const boldLine=d3.line().x(d=>xSc(d[0])).y(d=>ySc(d[1])).curve(d3.curveMonotoneX);
+      // Glow/halo
+      tlg.append("path").datum(lineData).attr("fill","none")
+        .attr("stroke",lineCol).attr("stroke-width",5).attr("opacity",0.25).attr("d",boldLine);
+      // Main line
+      tlg.append("path").datum(lineData).attr("fill","none")
+        .attr("stroke",lineCol).attr("stroke-width",2.5).attr("opacity",0.95).attr("d",boldLine);
+      // End dot
+      const lastVal=lineData[lineData.length-1];
+      if(lastVal[1]>0){
+        tlg.append("circle").attr("cx",xSc(lastVal[0])).attr("cy",ySc(lastVal[1])).attr("r",4)
+          .attr("fill",lineCol).attr("stroke","white").attr("stroke-width",1.5);
+        tlg.append("text").attr("x",xSc(lastVal[0])+6).attr("y",ySc(lastVal[1])+3)
+          .attr("fill",lineCol).attr("font-size",8).attr("font-weight",700)
+          .text(prod?prod.name.substring(0,18):selProduct);
+      }
+    }
+  }
+}
+document.addEventListener("DOMContentLoaded",()=>{ drawTimeline(); });
+window.addEventListener("resize",()=>{ drawTimeline(); });
+
+</script>
+</body>
+</html>

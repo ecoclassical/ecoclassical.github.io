@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solar Brazil · Activity Map · All</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d1520;
+  font-family:"Archivo",-apple-system,"Segoe UI",sans-serif;color:#e2e8f0}
+#module-wrap{width:100%;height:100%;display:flex;flex-direction:column}
+#module-header{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:36px;background:#0a1218}
+.m-tech{font-size:.82rem;font-weight:800}
+.m-sep{color:rgba(255,255,255,.25);font-size:.75rem}
+.m-title{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.7);
+  text-transform:uppercase;letter-spacing:.07em}
+.m-meta{font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto}
+.m-sel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:3px;padding:1px 6px;color:rgba(255,255,255,.45)}
+#module-body{flex:1;min-height:0;position:relative}
+#module-body>svg,#module-body>canvas{width:100%!important;height:100%!important}
+#tooltip{position:fixed;pointer-events:none;background:rgba(0,0,0,.88);color:#fff;
+  font-size:12px;padding:8px 12px;border-radius:5px;opacity:0;transition:opacity .15s;
+  max-width:260px;z-index:9999;line-height:1.55}
+/* Pane aliases expected by drawing functions */
+#pane-shap,#pane-sc,#pane-tl,#pane-tm,#pane-den,#pane-sankey,#pane-map{
+  position:absolute;inset:0}
+
+
+#module-body { background:#141e2a; }
+.map-legend-row { display:flex; align-items:center; gap:6px; font-size:11px; margin-bottom:4px; }
+
+</style>
+</head>
+<body>
+<div id="module-wrap">
+  <div id="module-header">
+    <span class="m-tech" style="color:#eab308">Solar</span>
+    <span class="m-sep">·</span>
+    <span style="color:rgba(255,255,255,.55);font-size:.82rem;font-weight:600">Brazil</span>
+    <span class="m-sep">·</span>
+    <span class="m-title">Activity Map</span>
+    <span class="m-meta">Firm locations by stage</span>
+    <span class="m-sel">All</span>
+  </div>
+  <div id="module-body">
+    <div id="pane-map" style="position:absolute;inset:0">
+      <svg id="map-svg" style="width:100%;height:100%"></svg>
+      
+    <div id="map-overlay" style="position:absolute;top:12px;left:12px;background:rgba(10,18,24,.82);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:12px 16px;min-width:200px;font-size:12px;z-index:10;pointer-events:none;"></div>
+    <div id="firm-overlay" style="display:none;position:absolute;top:12px;left:12px;background:rgba(10,18,24,.82);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:12px 16px;font-size:12px;z-index:10;pointer-events:none;"></div>
+    <div id="trade-legend" style="display:none;"></div>
+    <div id="firm-legend"  style="display:none;"></div>
+
+    </div>
+  </div>
+</div>
+<div id="tooltip"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+const ALL_CASES=[{tech:"Solar",color:"#eab308",focal:"BRA",firms:[{"lat":-23.53,"lon":-46.63,"stage":"Midstream","role":"Processed Material","city":"São Paulo","n":25},{"lat":-23.53,"lon":-46.63,"stage":"Downstream","role":"Processed Material","city":"São Paulo","n":13},{"lat":-22.91,"lon":-43.2,"stage":"Upstream","role":"Raw Material","city":"Rio de Janeiro","n": 9},{"lat":-23.46,"lon":-46.49,"stage":"Midstream","role":"Processed Material","city":"Guarulhos","n": 8},{"lat":-22.91,"lon":-43.2,"stage":"Midstream","role":"Processed Material","city":"Rio de Janeiro","n": 7},{"lat":-12.7,"lon":-38.33,"stage":"Downstream","role":"Processed Material","city":"Camaçari","n": 6},{"lat":-23.53,"lon":-46.63,"stage":"Midstream","role":"Process Equipment","city":"São Paulo","n": 6},{"lat":-19.92,"lon":-43.94,"stage":"Upstream","role":"Raw Material","city":"Belo Horizonte","n": 6},{"lat":-23.53,"lon":-46.63,"stage":"Downstream","role":"Final Product","city":"São Paulo","n": 5},{"lat":-23.49,"lon":-47.47,"stage":"Downstream","role":"Process Equipment","city":"Sorocaba","n": 5},{"lat":-3.12,"lon":-60.02,"stage":"Downstream","role":"Processed Material","city":"Manaus","n": 5},{"lat":-23.69,"lon":-46.61,"stage":"Midstream","role":"Processed Material","city":"Diadema","n": 5},{"lat":-23.71,"lon":-46.54,"stage":"Midstream","role":"Processed Material","city":"São Bernardo do Campo","n": 5},{"lat":-15.61,"lon":-56.09,"stage":"Upstream","role":"Raw Material","city":"Cuiabá","n": 5},{"lat":-23.53,"lon":-46.63,"stage":"Upstream","role":"Raw Material","city":"São Paulo","n": 5},{"lat":-23.53,"lon":-46.63,"stage":"Downstream","role":"Process Equipment","city":"São Paulo","n": 4},{"lat":-22.91,"lon":-47.08,"stage":"Downstream","role":"Processed Material","city":"Campinas","n": 4},{"lat":-23.47,"lon":-46.35,"stage":"Midstream","role":"Processed Material","city":"Itaquaquecetuba","n": 4},{"lat":-3.89,"lon":-38.64,"stage":"Midstream","role":"Processed Material","city":"Maracanaú","n": 4},{"lat":-23.71,"lon":-46.54,"stage":"Downstream","role":"Process Equipment","city":"São Bernardo do Campo","n": 3},{"lat":-21.78,"lon":-46.57,"stage":"Downstream","role":"Processed Material","city":"Poços de Caldas","n": 3},{"lat":-22.91,"lon":-43.2,"stage":"Downstream","role":"Processed Material","city":"Rio de Janeiro","n": 3},{"lat":-23.53,"lon":-46.63,"stage":"Downstream","role":"Product Component","city":"São Paulo","n": 3},{"lat":-22.99,"lon":-46.84,"stage":"Midstream","role":"Processed Material","city":"Itatiba","n": 3},{"lat":-23.3,"lon":-45.96,"stage":"Midstream","role":"Processed Material","city":"Jacareí","n": 3},{"lat":-23.12,"lon":-46.57,"stage":"Downstream","role":"Final Product","city":"Atibaia","n": 2},{"lat":-12.71,"lon":-38.51,"stage":"Downstream","role":"Processed Material","city":"Candeias","n": 2},{"lat":-23.6,"lon":-46.94,"stage":"Downstream","role":"Processed Material","city":"Cotia","n": 2},{"lat":-23.46,"lon":-46.49,"stage":"Downstream","role":"Processed Material","city":"Guarulhos","n": 2},{"lat":-22.99,"lon":-46.84,"stage":"Downstream","role":"Processed Material","city":"Itatiba","n": 2},{"lat":-23.66,"lon":-46.46,"stage":"Downstream","role":"Processed Material","city":"Mauá","n": 2},{"lat":-22.92,"lon":-45.47,"stage":"Downstream","role":"Processed Material","city":"Pindamonhangaba","n": 2},{"lat":-30.04,"lon":-51.22,"stage":"Downstream","role":"Processed Material","city":"Porto Alegre","n": 2},{"lat":-23.95,"lon":-46.33,"stage":"Downstream","role":"Processed Material","city":"Santos","n": 2},{"lat":-23.71,"lon":-46.54,"stage":"Downstream","role":"Processed Material","city":"São Bernardo do Campo","n": 2},{"lat":-29.18,"lon":-51.17,"stage":"Downstream","role":"Product Component","city":"Caxias do Sul","n": 2},{"lat":-26.48,"lon":-49.1,"stage":"Downstream","role":"Product Component","city":"Jaraguá do Sul","n": 2},{"lat":-23.49,"lon":-46.86,"stage":"Midstream","role":"Processed Material","city":"Barueri","n": 2},{"lat":-12.71,"lon":-38.51,"stage":"Midstream","role":"Processed Material","city":"Candeias","n": 2},{"lat":-29.18,"lon":-51.17,"stage":"Midstream","role":"Processed Material","city":"Caxias do Sul","n": 2},{"lat":-28.68,"lon":-49.39,"stage":"Midstream","role":"Processed Material","city":"Criciúma","n": 2},{"lat":-25.42,"lon":-49.29,"stage":"Midstream","role":"Processed Material","city":"Curitiba","n": 2},{"lat":-23.09,"lon":-47.21,"stage":"Midstream","role":"Processed Material","city":"Indaiatuba","n": 2},{"lat":-23.55,"lon":-46.94,"stage":"Midstream","role":"Processed Material","city":"Itapevi","n": 2},{"lat":-3.12,"lon":-60.02,"stage":"Midstream","role":"Processed Material","city":"Manaus","n": 2},{"lat":-23.53,"lon":-46.78,"stage":"Midstream","role":"Processed Material","city":"Osasco","n": 2},{"lat":-22.75,"lon":-47.17,"stage":"Midstream","role":"Processed Material","city":"Paulínia","n": 2},{"lat":-12.82,"lon":-38.4,"stage":"Midstream","role":"Processed Material","city":"Simões Filho","n": 2},{"lat":-9.11,"lon":-37.12,"stage":"Midstream","role":"Processed Material","city":"Águas Belas","n": 2},{"lat":-19.58,"lon":-46.95,"stage":"Upstream","role":"Raw Material","city":"Araxá","n": 2},{"lat":-9.94,"lon":-63.08,"stage":"Upstream","role":"Raw Material","city":"Ariquemes","n": 2},{"lat":-25.44,"lon":-49.54,"stage":"Upstream","role":"Raw Material","city":"Campo Largo","n": 2},{"lat":-1.76,"lon":-55.87,"stage":"Upstream","role":"Raw Material","city":"Oriximiná","n": 2},{"lat":-21.78,"lon":-46.57,"stage":"Upstream","role":"Raw Material","city":"Poços de Caldas","n": 2},{"lat":-22.75,"lon":-47.33,"stage":"Downstream","role":"Final Product","city":"Americana","n": 1},{"lat":-26.38,"lon":-48.62,"stage":"Downstream","role":"Final Product","city":"Araquari","n": 1},{"lat":-23.49,"lon":-46.86,"stage":"Downstream","role":"Final Product","city":"Barueri","n": 1},{"lat":-19.92,"lon":-43.94,"stage":"Downstream","role":"Final Product","city":"Belo Horizonte","n": 1},{"lat":-19.97,"lon":-44.19,"stage":"Downstream","role":"Final Product","city":"Betim","n": 1},{"lat":-21.29,"lon":-50.34,"stage":"Downstream","role":"Final Product","city":"Birigui","n": 1},{"lat":-27.1,"lon":-52.64,"stage":"Downstream","role":"Final Product","city":"Chapecó","n": 1},{"lat":-25.42,"lon":-49.29,"stage":"Downstream","role":"Final Product","city":"Curitiba","n": 1},{"lat":-27.63,"lon":-52.27,"stage":"Downstream","role":"Final Product","city":"Erechim","n": 1},{"lat":-27.6,"lon":-48.54,"stage":"Downstream","role":"Final Product","city":"Florianópolis","n": 1},{"lat":-21.28,"lon":-48.49,"stage":"Downstream","role":"Final Product","city":"Monte Alto","n": 1},{"lat":-30.04,"lon":-51.22,"stage":"Downstream","role":"Final Product","city":"Porto Alegre","n": 1},{"lat":-8.08,"lon":-34.92,"stage":"Downstream","role":"Final Product","city":"Recife","n": 1},{"lat":-22.91,"lon":-43.2,"stage":"Downstream","role":"Final Product","city":"Rio de Janeiro","n": 1},{"lat":-23.65,"lon":-46.53,"stage":"Downstream","role":"Final Product","city":"Santo André","n": 1},{"lat":-22.02,"lon":-47.89,"stage":"Downstream","role":"Final Product","city":"São Carlos","n": 1},{"lat":-29.78,"lon":-51.15,"stage":"Downstream","role":"Final Product","city":"São Leopoldo","n": 1},{"lat":-22.75,"lon":-47.33,"stage":"Downstream","role":"Process Equipment","city":"Americana","n": 1},{"lat":-22.33,"lon":-49.08,"stage":"Downstream","role":"Process Equipment","city":"Bauru","n": 1},{"lat":-22.95,"lon":-46.55,"stage":"Downstream","role":"Process Equipment","city":"Bragança Paulista","n": 1},{"lat":-19.79,"lon":-42.14,"stage":"Downstream","role":"Process Equipment","city":"Caratinga","n": 1},{"lat":-25.42,"lon":-49.29,"stage":"Downstream","role":"Process Equipment","city":"Curitiba","n": 1},{"lat":-23.69,"lon":-46.61,"stage":"Downstream","role":"Process Equipment","city":"Diadema","n": 1},{"lat":-23.46,"lon":-46.49,"stage":"Downstream","role":"Process Equipment","city":"Guarulhos","n": 1},{"lat":-22.55,"lon":-47.4,"stage":"Downstream","role":"Process Equipment","city":"Limeira","n": 1},{"lat":-23.66,"lon":-46.46,"stage":"Downstream","role":"Process Equipment","city":"Mauá","n": 1},{"lat":-22.37,"lon":-46.95,"stage":"Downstream","role":"Process Equipment","city":"Mogi Guaçu","n": 1},{"lat":-30.04,"lon":-51.22,"stage":"Downstream","role":"Process Equipment","city":"Porto Alegre","n": 1},{"lat":-23.72,"lon":-46.41,"stage":"Downstream","role":"Process Equipment","city":"Ribeirão Pires","n": 1},{"lat":-23.45,"lon":-46.92,"stage":"Downstream","role":"Process Equipment","city":"Santana de Parnaíba","n": 1},{"lat":-25.57,"lon":-49.18,"stage":"Downstream","role":"Process Equipment","city":"São José dos Pinhais","n": 1},{"lat":-22.97,"lon":-46.99,"stage":"Downstream","role":"Process Equipment","city":"Valinhos","n": 1},{"lat":-26.38,"lon":-48.62,"stage":"Downstream","role":"Processed Material","city":"Araquari","n": 1},{"lat":-23.12,"lon":-46.57,"stage":"Downstream","role":"Processed Material","city":"Atibaia","n": 1},{"lat":-1.51,"lon":-48.66,"stage":"Downstream","role":"Processed Material","city":"Barcarena","n": 1},{"lat":-19.92,"lon":-43.94,"stage":"Downstream","role":"Processed Material","city":"Belo Horizonte","n": 1},{"lat":-23.23,"lon":-51.26,"stage":"Downstream","role":"Processed Material","city":"Cambé","n": 1},{"lat":-29.58,"lon":-51.09,"stage":"Downstream","role":"Processed Material","city":"Campo Bom","n": 1},{"lat":-25.44,"lon":-49.54,"stage":"Downstream","role":"Processed Material","city":"Campo Largo","n": 1},{"lat":-29.18,"lon":-51.17,"stage":"Downstream","role":"Processed Material","city":"Caxias do Sul","n": 1},{"lat":-23.1,"lon":-45.71,"stage":"Downstream","role":"Processed Material","city":"Caçapava","n": 1},{"lat":-25.42,"lon":-49.29,"stage":"Downstream","role":"Processed Material","city":"Curitiba","n": 1},{"lat":-22.77,"lon":-43.31,"stage":"Downstream","role":"Processed Material","city":"Duque de Caxias","n": 1},{"lat":-3.78,"lon":-38.59,"stage":"Downstream","role":"Processed Material","city":"Fortaleza","n": 1},{"lat":-22.82,"lon":-45.19,"stage":"Downstream","role":"Processed Material","city":"Guaratingueta","n": 1},{"lat":-24,"lon":-46.27,"stage":"Downstream","role":"Processed Material","city":"Guarujá","n": 1},{"lat":-22.85,"lon":-47.26,"stage":"Downstream","role":"Processed Material","city":"Hortolândia","n": 1},{"lat":-8.4,"lon":-35.07,"stage":"Downstream","role":"Processed Material","city":"Ipojuca","n": 1},{"lat":-23.98,"lon":-48.88,"stage":"Downstream","role":"Processed Material","city":"Itapeva","n": 1},{"lat":-23.3,"lon":-45.96,"stage":"Downstream","role":"Processed Material","city":"Jacareí","n": 1},{"lat":-5.89,"lon":-38.62,"stage":"Downstream","role":"Processed Material","city":"Jaguaribe","n": 1},{"lat":-23.54,"lon":-46.92,"stage":"Downstream","role":"Processed Material","city":"Jandira","n": 1},{"lat":-21.13,"lon":-42.39,"stage":"Downstream","role":"Processed Material","city":"Muriae","n": 1},{"lat":-22.75,"lon":-47.17,"stage":"Downstream","role":"Processed Material","city":"Paulínia","n": 1},{"lat":-8.08,"lon":-34.92,"stage":"Downstream","role":"Processed Material","city":"Recife","n": 1},{"lat":-22.41,"lon":-47.56,"stage":"Downstream","role":"Processed Material","city":"Rio Claro","n": 1},{"lat":-23.31,"lon":-51.38,"stage":"Downstream","role":"Processed Material","city":"Rolândia","n": 1},{"lat":-23.65,"lon":-46.53,"stage":"Downstream","role":"Processed Material","city":"Santo André","n": 1},{"lat":-20.13,"lon":-40.32,"stage":"Downstream","role":"Processed Material","city":"Serra","n": 1},{"lat":-21.23,"lon":-47.6,"stage":"Downstream","role":"Processed Material","city":"Serrana","n": 1},{"lat":-12.82,"lon":-38.4,"stage":"Downstream","role":"Processed Material","city":"Simões Filho","n": 1},{"lat":-23.55,"lon":-46.31,"stage":"Downstream","role":"Processed Material","city":"Suzano","n": 1},{"lat":-23.2,"lon":-45.88,"stage":"Downstream","role":"Processed Material","city":"São José dos Campos","n": 1},{"lat":-25.57,"lon":-49.18,"stage":"Downstream","role":"Processed Material","city":"São José dos Pinhais","n": 1},{"lat":-21.13,"lon":-44.25,"stage":"Downstream","role":"Processed Material","city":"São João del Rei","n": 1},{"lat":-2.5,"lon":-44.3,"stage":"Downstream","role":"Processed Material","city":"São Luís","n": 1},{"lat":-21.56,"lon":-45.43,"stage":"Downstream","role":"Processed Material","city":"Varginha","n": 1},{"lat":-23.02,"lon":-46.99,"stage":"Downstream","role":"Processed Material","city":"Vinhedo","n": 1},{"lat":-26.38,"lon":-48.62,"stage":"Downstream","role":"Product Component","city":"Araquari","n": 1},{"lat":-21.75,"lon":-48.13,"stage":"Downstream","role":"Product Component","city":"Araraquara","n": 1},{"lat":-22.91,"lon":-47.08,"stage":"Downstream","role":"Product Component","city":"Campinas","n": 1},{"lat":-24.96,"lon":-53.46,"stage":"Downstream","role":"Product Component","city":"Cascavel","n": 1},{"lat":-19.91,"lon":-44.1,"stage":"Downstream","role":"Product Component","city":"Contagem","n": 1},{"lat":-23.09,"lon":-47.21,"stage":"Downstream","role":"Product Component","city":"Indaiatuba","n": 1},{"lat":-22.42,"lon":-45.45,"stage":"Downstream","role":"Product Component","city":"Itajubá","n": 1},{"lat":-19.39,"lon":-40.05,"stage":"Downstream","role":"Product Component","city":"Linhares","n": 1},{"lat":-23.55,"lon":-47.17,"stage":"Downstream","role":"Product Component","city":"Mairinque","n": 1},{"lat":-22.26,"lon":-42.54,"stage":"Downstream","role":"Product Component","city":"Nova Friburgo","n": 1},{"lat":-7.9,"lon":-34.91,"stage":"Downstream","role":"Product Component","city":"Paulista","n": 1},{"lat":-30.04,"lon":-51.22,"stage":"Downstream","role":"Product Component","city":"Porto Alegre","n": 1},{"lat":-21.17,"lon":-47.8,"stage":"Downstream","role":"Product Component","city":"Ribeirão Preto","n": 1},{"lat":-22.75,"lon":-47.42,"stage":"Downstream","role":"Product Component","city":"Santa Bárbara d'Oeste","n": 1},{"lat":-20.13,"lon":-40.32,"stage":"Downstream","role":"Product Component","city":"Serra","n": 1},{"lat":-25.57,"lon":-49.18,"stage":"Downstream","role":"Product Component","city":"São José dos Pinhais","n": 1},{"lat":-21.98,"lon":-46.79,"stage":"Downstream","role":"Product Component","city":"São João da Boa Vista","n": 1},{"lat":-26.85,"lon":-49.28,"stage":"Downstream","role":"Product Component","city":"Timbó","n": 1},{"lat":-14.85,"lon":-40.84,"stage":"Downstream","role":"Product Component","city":"Vitória da Conquista","n": 1},{"lat":-19.65,"lon":-43.9,"stage":"Midstream","role":"Process Equipment","city":"Lagoa Santa","n": 1},{"lat":-21.17,"lon":-47.8,"stage":"Midstream","role":"Process Equipment","city":"Ribeirão Preto","n": 1},{"lat":-22.02,"lon":-47.89,"stage":"Midstream","role":"Process Equipment","city":"São Carlos","n": 1},{"lat":-16.32,"lon":-48.96,"stage":"Midstream","role":"Processed Material","city":"Anápolis","n": 1},{"lat":-16.82,"lon":-49.24,"stage":"Midstream","role":"Processed Material","city":"Aparecida de Goiânia","n": 1},{"lat":-23.41,"lon":-51.43,"stage":"Midstream","role":"Processed Material","city":"Arapongas","n": 1},{"lat":-21.75,"lon":-48.13,"stage":"Midstream","role":"Processed Material","city":"Araraquara","n": 1},{"lat":-19.92,"lon":-43.94,"stage":"Midstream","role":"Processed Material","city":"Belo Horizonte","n": 1},{"lat":-1.36,"lon":-48.24,"stage":"Midstream","role":"Processed Material","city":"Benevides","n": 1},{"lat":-29.95,"lon":-51.09,"stage":"Midstream","role":"Processed Material","city":"Cachoeirinha","n": 1},{"lat":-23.35,"lon":-46.89,"stage":"Midstream","role":"Processed Material","city":"Cajamar","n": 1},{"lat":-22.62,"lon":-46.07,"stage":"Midstream","role":"Processed Material","city":"Cambuí","n": 1},{"lat":-23.23,"lon":-51.26,"stage":"Midstream","role":"Processed Material","city":"Cambé","n": 1},{"lat":-7.23,"lon":-35.88,"stage":"Midstream","role":"Processed Material","city":"Campina Grande","n": 1},{"lat":-25.31,"lon":-49.08,"stage":"Midstream","role":"Processed Material","city":"Campina Grande do Sul","n": 1},{"lat":-23.2,"lon":-46.8,"stage":"Midstream","role":"Processed Material","city":"Campo Limpo Paulista","n": 1},{"lat":-20.42,"lon":-54.07,"stage":"Midstream","role":"Processed Material","city":"Campo Verde","n": 1},{"lat":-23.01,"lon":-47.52,"stage":"Midstream","role":"Processed Material","city":"Capivari","n": 1},{"lat":-27.1,"lon":-52.64,"stage":"Midstream","role":"Processed Material","city":"Chapecó","n": 1},{"lat":-19.91,"lon":-44.1,"stage":"Midstream","role":"Processed Material","city":"Contagem","n": 1},{"lat":-23.6,"lon":-46.94,"stage":"Midstream","role":"Processed Material","city":"Cotia","n": 1},{"lat":-21.32,"lon":-47.75,"stage":"Midstream","role":"Processed Material","city":"Cravinhos","n": 1},{"lat":-15.61,"lon":-56.09,"stage":"Midstream","role":"Processed Material","city":"Cuiabá","n": 1},{"lat":-27.29,"lon":-50.58,"stage":"Midstream","role":"Processed Material","city":"Curitibanos","n": 1},{"lat":-3.78,"lon":-38.59,"stage":"Midstream","role":"Processed Material","city":"Fortaleza","n": 1},{"lat":-20.53,"lon":-47.39,"stage":"Midstream","role":"Processed Material","city":"Franca","n": 1},{"lat":-26.94,"lon":-48.96,"stage":"Midstream","role":"Processed Material","city":"Gaspar","n": 1},{"lat":-26.45,"lon":-49,"stage":"Midstream","role":"Processed Material","city":"Guaramirim","n": 1},{"lat":-21.29,"lon":-46.71,"stage":"Midstream","role":"Processed Material","city":"Guaxupé","n": 1},{"lat":-25.47,"lon":-50.66,"stage":"Midstream","role":"Processed Material","city":"Irati","n": 1},{"lat":-22.75,"lon":-42.87,"stage":"Midstream","role":"Processed Material","city":"Itaboraí","n": 1},{"lat":-28.7,"lon":-49.3,"stage":"Midstream","role":"Processed Material","city":"Içara","n": 1},{"lat":-23.54,"lon":-46.92,"stage":"Midstream","role":"Processed Material","city":"Jandira","n": 1},{"lat":-26.32,"lon":-48.84,"stage":"Midstream","role":"Processed Material","city":"Joinville","n": 1},{"lat":-23.2,"lon":-46.88,"stage":"Midstream","role":"Processed Material","city":"Jundiaí","n": 1},{"lat":-20.02,"lon":-45.54,"stage":"Midstream","role":"Processed Material","city":"Lagoa da Prata","n": 1},{"lat":-10.79,"lon":-37.18,"stage":"Midstream","role":"Processed Material","city":"Laranjeiras","n": 1},{"lat":-23.07,"lon":-46.97,"stage":"Midstream","role":"Processed Material","city":"Louveira","n": 1},{"lat":-5.85,"lon":-35.35,"stage":"Midstream","role":"Processed Material","city":"Macaíba","n": 1},{"lat":-24.56,"lon":-54.07,"stage":"Midstream","role":"Processed Material","city":"Marechal Cândido Rondon","n": 1},{"lat":-23.66,"lon":-46.46,"stage":"Midstream","role":"Processed Material","city":"Mauá","n": 1},{"lat":-21.46,"lon":-47.01,"stage":"Midstream","role":"Processed Material","city":"Mococa","n": 1},{"lat":-22.74,"lon":-43.47,"stage":"Midstream","role":"Processed Material","city":"Nova Iguaçu","n": 1},{"lat":-29.71,"lon":-51.14,"stage":"Midstream","role":"Processed Material","city":"Novo Hamburgo","n": 1},{"lat":-3.97,"lon":-38.62,"stage":"Midstream","role":"Processed Material","city":"Pacatuba","n": 1},{"lat":-25.54,"lon":-49.22,"stage":"Midstream","role":"Processed Material","city":"Pinhais","n": 1},{"lat":-23.05,"lon":-46.36,"stage":"Midstream","role":"Processed Material","city":"Piracaia","n": 1},{"lat":-22.71,"lon":-47.64,"stage":"Midstream","role":"Processed Material","city":"Piracicaba","n": 1},{"lat":-17.33,"lon":-44.93,"stage":"Midstream","role":"Processed Material","city":"Pirapora","n": 1},{"lat":-30.04,"lon":-51.22,"stage":"Midstream","role":"Processed Material","city":"Porto Alegre","n": 1},{"lat":-21.17,"lon":-47.8,"stage":"Midstream","role":"Processed Material","city":"Ribeirão Preto","n": 1},{"lat":-22.41,"lon":-47.56,"stage":"Midstream","role":"Processed Material","city":"Rio Claro","n": 1},{"lat":-23.19,"lon":-47.29,"stage":"Midstream","role":"Processed Material","city":"Salto","n": 1},{"lat":-12.97,"lon":-38.5,"stage":"Midstream","role":"Processed Material","city":"Salvador","n": 1},{"lat":-29.71,"lon":-52.44,"stage":"Midstream","role":"Processed Material","city":"Santa Cruz do Sul","n": 1},{"lat":-23.65,"lon":-46.53,"stage":"Midstream","role":"Processed Material","city":"Santo André","n": 1},{"lat":-20.09,"lon":-45.3,"stage":"Midstream","role":"Processed Material","city":"Santo Antonio Do Monte","n": 1},{"lat":-23.49,"lon":-47.47,"stage":"Midstream","role":"Processed Material","city":"Sorocaba","n": 1},{"lat":-22.8,"lon":-47.29,"stage":"Midstream","role":"Processed Material","city":"Sumaré","n": 1}],all_products:[{"code":"320890","name":"Solar Miscellaneous; Antireflective Coat","stage":"Midstream","role":"Processed Material","exp":49531,"imp":80115},{"code":"847989","name":"Module Production; Automated Glass Loadi","stage":"Downstream","role":"Process Equipment","exp":329780,"imp":914306},{"code":"901820","name":"Ingot Production; Infrared Inspection","stage":"Midstream","role":"Process Equipment","exp":6508,"imp":45072},{"code":"250510","name":"Silica","stage":"Upstream","role":"Raw Material","exp":2373,"imp":2516},{"code":"260600","name":"Solar Miscellaneous; Materials for Alumi","stage":"Upstream","role":"Raw Material","exp":241143,"imp":3431},{"code":"280469","name":"Ingot; Hydrochloric Acid","stage":"Midstream","role":"Processed Material","exp":476963,"imp":15831},{"code":"280490","name":"Selenium","stage":"Upstream","role":"Raw Material","exp":661,"imp":2054},{"code":"281820","name":"Alumina","stage":"Midstream","role":"Processed Material","exp":3353569,"imp":17930},{"code":"350610","name":"Solar Miscellaneous; Silver Conductive A","stage":"Midstream","role":"Processed Material","exp":13673,"imp":86134},{"code":"390130","name":"Solar Glass; Ethylene Polymers for EVA S","stage":"Midstream","role":"Processed Material","exp":84967,"imp":71844},{"code":"390469","name":"Solar Glass; Fluoro-polymers for Back Sh","stage":"Midstream","role":"Processed Material","exp":1003,"imp":88125},{"code":"390730","name":"Epoxide Resins as Potting Agent","stage":"Midstream","role":"Processed Material","exp":17753,"imp":126966},{"code":"390761","name":"Solar Glass; Polyethylene Terephthalate ","stage":"Midstream","role":"Processed Material","exp":111067,"imp":129068},{"code":"700510","name":"Module; Glass Sheet Casing (Float)","stage":"Downstream","role":"Product Component","exp":6637,"imp":5880},{"code":"700719","name":"Module; Glass Sheet Casing (Toughened)","stage":"Downstream","role":"Product Component","exp":1869,"imp":58186},{"code":"710692","name":"Cell; Silver in Semi-manufactured Forms","stage":"Midstream","role":"Processed Material","exp":2999,"imp":8773},{"code":"760120","name":"Aluminum Unwrought; Alloyed","stage":"Downstream","role":"Product Component","exp":49517,"imp":370638},{"code":"761090","name":"Mounting Equipment; Structural Aluminum ","stage":"Downstream","role":"Product Component","exp":2510,"imp":35110},{"code":"830249","name":"Mounting Equipment","stage":"Downstream","role":"Product Component","exp":2700,"imp":35325},{"code":"850172","name":"Photovoltaic DC generators over 50 MW","stage":"Downstream","role":"Product Component","exp":359,"imp":1970},{"code":"850180","name":"Photovoltaic AC Generators","stage":"Downstream","role":"Product Component","exp":1271,"imp":5188},{"code":"854129","name":"Inverter","stage":"Downstream","role":"Product Component","exp":724,"imp":86591},{"code":"260300","name":"Copper Ore","stage":"Upstream","role":"Raw Material","exp":4170907,"imp":0},{"code":"700529","name":"Solar Glass; Glass Sheet Casing (Float)","stage":"Midstream","role":"Processed Material","exp":7581,"imp":46426},{"code":"260400","name":"Nickel Ore","stage":"Upstream","role":"Raw Material","exp":231030,"imp":2635},{"code":"851440","name":"Ingot Production; Radio Frequency Coil H","stage":"Midstream","role":"Process Equipment","exp":626,"imp":5155},{"code":"260900","name":"Tin Ore","stage":"Upstream","role":"Raw Material","exp":4025,"imp":1158},{"code":"811292","name":"Indium","stage":"Upstream","role":"Raw Material","exp":65088,"imp":593},{"code":"854143","name":"Modules (Assembled into Panels)","stage":"Final Product","role":"Final Product","exp":361,"imp":2838823},{"code":"261610","name":"Silver Ore","stage":"Upstream","role":"Raw Material","exp":28155,"imp":0},{"code":"251910","name":"Magnesium Ore","stage":"Upstream","role":"Raw Material","exp":173,"imp":0},{"code":"760310","name":"Cell; Powders of Non-lamellar Structure,","stage":"Midstream","role":"Processed Material","exp":4071,"imp":2651},{"code":"280461","name":"Polysilicon","stage":"Midstream","role":"Processed Material","exp":5887,"imp":0},{"code":"281410","name":"Solar Miscellaneous; Ammonia for PECVD","stage":"Midstream","role":"Processed Material","exp":422,"imp":214972},{"code":"851432","name":"Polysilicon Production; Electric Arc Fur","stage":"Midstream","role":"Process Equipment","exp":0,"imp":125},{"code":"280450","name":"Tellurium","stage":"Upstream","role":"Raw Material","exp":0,"imp":567},{"code":"381800","name":"Silicon Wafers","stage":"Midstream","role":"Product Component","exp":0,"imp":4798},{"code":"854142","name":"Solar Cells","stage":"Downstream","role":"Product Component","exp":0,"imp":5161},{"code":"854149","name":"Solar Tracker; CDS Sensor","stage":"Midstream","role":"Product Component","exp":0,"imp":13849}],selected_pv:{"code":"ALL","label":"All Products","stage":"ALL","role":"ALL","total_imp":8792731,"total_exp":56929417,"suppliers":[{"iso3":"CHN","name":"4109971.1","value":NA},{"iso3":"USA","name":" 949376.1","value":NA},{"iso3":"DEU","name":" 811832.8","value":NA},{"iso3":"ITA","name":" 400881.3","value":NA},{"iso3":"IND","name":" 379146.3","value":NA},{"iso3":"ARG","name":" 366286.8","value":NA},{"iso3":"DNK","name":" 301328.1","value":NA},{"iso3":"ESP","name":" 245610.4","value":NA},{"iso3":"GBR","name":" 231744.4","value":NA},{"iso3":"JPN","name":" 216234.5","value":NA},{"iso3":"TTO","name":" 186011.6","value":NA},{"iso3":"BHR","name":" 176158.7","value":NA},{"iso3":"KOR","name":" 154257.3","value":NA},{"iso3":"FRA","name":" 143799.0","value":NA},{"iso3":"ARE","name":" 120092.1","value":NA}],"buyers":[{"iso3":"CAN","name":"11023698.6","value":NA},{"iso3":"CHN","name":" 8124241.5","value":NA},{"iso3":"DEU","name":" 6169486.4","value":NA},{"iso3":"NOR","name":" 5176741.5","value":NA},{"iso3":"POL","name":" 4024364.7","value":NA},{"iso3":"ESP","name":" 3617546.3","value":NA},{"iso3":"BGR","name":" 3461774.5","value":NA},{"iso3":"SWE","name":" 3209546.1","value":NA},{"iso3":"USA","name":" 2736911.2","value":NA},{"iso3":"FIN","name":" 2313897.6","value":NA},{"iso3":"S19","name":" 2193824.1","value":NA},{"iso3":"ISL","name":" 1844473.1","value":NA},{"iso3":"SGP","name":" 1467914.7","value":NA},{"iso3":"ARG","name":"  905319.3","value":NA},{"iso3":"PHL","name":"  659677.6","value":NA}],"timeline":[]}}];
+let currentIdx=0;
+const c=()=>ALL_CASES[currentIdx];
+let selStage="ALL", selRole="ALL", selProduct="ALL";
+let tlMode="exports", scMode="pct", sankeyFocus=null;
+
+const SR_COLORS={
+  "Upstream|Raw Material":"#b45309","Upstream|Processed Material":"#c17a2e",
+  "Midstream|Processed Material":"#22c55e","Midstream|Process Equipment":"#65a30d",
+  "Midstream|Product Component":"#16a34a","Downstream|Product Component":"#4ade80",
+  "Downstream|Process Equipment":"#6b7280","Downstream|Final Product":"#f97316",
+  "Final Product|Final Product":"#f97316","Other|Product Component":"#9ca3af",
+  "Other|Process Equipment":"#9ca3af"
+};
+const SR_ORDER=["Upstream|Raw Material","Upstream|Processed Material","Midstream|Processed Material","Midstream|Process Equipment","Midstream|Product Component","Downstream|Product Component","Downstream|Process Equipment","Downstream|Final Product","Final Product|Final Product"];
+const STAGE_COLORS={"Upstream":"#b45309","Midstream":"#22c55e","Downstream":"#4ade80","Final Product":"#f97316"};
+const STAGES_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+const REGION_COLOR={EAP:"#0369a1",ECA:"#6366f1",SAS:"#10b981",NAC:"#f59e0b",LCN:"#ef4444",MEA:"#8b5cf6",SSF:"#84cc16"};
+const PROD_COLORS=["#f59e0b","#38bdf8","#4ade80","#f87171","#c084fc","#fb923c","#a78bfa","#34d399","#f472b6","#60a5fa"];
+const tip={_el:null,_get(){return this._el||(this._el=document.getElementById("tooltip"));},style(k,v){const e=this._get();if(e)e.style[k]=v;return this;},html(h){const e=this._get();if(e)e.innerHTML=h;return this;}};
+function showTip(html,ev){const vw=window.innerWidth;const tx=ev.clientX+14;const offset=tx+260>vw?ev.clientX-270:tx;tip.style("opacity","1").html(html).style("left",offset+"px").style("top",(ev.clientY-10)+"px")}
+function hideTip(){tip.style("opacity","0")}
+const fmtV=v=>v>=1e6?`$${(v/1e6).toFixed(1)}B`:v>=1e3?`$${(v/1e3).toFixed(1)}M`:`$${v.toFixed(0)}K`;
+function srColor(sr){return SR_COLORS[sr]||"#9ca3af"}
+function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
+
+
+function getPV() {
+  const c0 = c();
+  const pv = c0.selected_pv;
+  if (pv) return pv;
+  return c0.selected_pv || {code:"ALL",label:"All",stage:"ALL",role:"ALL",
+    suppliers:[],buyers:[],timeline:[],total_imp:0,total_exp:0};
+}
+
+function drawFirms(){
+  if(!worldTopo) return;
+  const c0=c(), allFirms=c0.firms||[];
+  const svg=d3.select("#map-svg");
+  const W=document.getElementById("pane-map").clientWidth||800;
+  const H=document.getElementById("pane-map").clientHeight-80||350;
+  svg.selectAll("*").remove();
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+
+  // Swap overlays
+  document.getElementById("map-overlay").style.display="none";
+  document.getElementById("firm-overlay").style.display="";
+  document.getElementById("trade-legend").style.display="none";
+  document.getElementById("firm-legend").style.display="";
+
+  // Determine which stage|role the selected product belongs to (for white-ring highlight)
+  const selProd=c0.all_products||[];
+  const prodMeta=selProduct!=="ALL"?selProd.find(p=>p.code===selProduct):null;
+  const prodSR=prodMeta?`${prodMeta.stage}|${prodMeta.role}`:null;
+
+  // Filter logic: which firms match the drum selection
+  const hasFilter=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL";
+  const isActive=f=>{
+    if(selStage!=="ALL"&&f.stage!==selStage) return false;
+    if(selRole!=="ALL"&&f.role!==selRole) return false;
+    return true;
+  };
+  const isProdMatch=f=>prodSR&&`${f.stage}|${f.role}`===prodSR;
+
+  // Country-centered projection
+  const feat=topojson.feature(worldTopo, worldTopo.objects.countries).features;
+  const numId=ISO3N[c0.focal];
+  const focalFeat=feat.find(f=>+f.id===numId);
+  const pad=28;
+  const proj=d3.geoNaturalEarth1();
+  if(focalFeat) proj.fitExtent([[pad,pad],[W-pad,H-pad]], focalFeat);
+  const path=d3.geoPath().projection(proj);
+
+  // Countries: focal very dark + semi-transparent, neighbours lighter
+  const g=svg.append("g");
+  g.selectAll("path").data(feat).join("path")
+    .attr("d",path)
+    .attr("fill",d=>{
+      const id=String(d.id).padStart(3,"0");
+      const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+      return iso===c0.focal?"#071a0c":"#141e2a";
+    })
+    .attr("opacity",d=>{
+      const id=String(d.id).padStart(3,"0");
+      const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+      return iso===c0.focal?0.55:0.35;
+    })
+    .attr("stroke","#0d1520").attr("stroke-width",0.3);
+
+  if(focalFeat) g.append("path").attr("d",path(focalFeat))
+    .attr("fill","none").attr("stroke","#3cb54a").attr("stroke-width",1.5)
+    .attr("pointer-events","none");
+
+  if(!allFirms.length){
+    svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.3)").attr("font-size",12).text("No S&P firm data for this tech");
+  } else {
+    const activeFirms=hasFilter?allFirms.filter(isActive):allFirms;
+    const maxN=d3.max(allFirms,f=>f.n)||1;
+    const rScale=d3.scaleSqrt().domain([0,maxN]).range([3,16]);
+    const seenSR=new Set();
+
+    [...allFirms].sort((a,b)=>b.n-a.n).forEach(f=>{
+      const px=proj([+f.lon,+f.lat]);
+      if(!px) return;
+      const [x,y]=px;
+      if(x<-10||x>W+10||y<-10||y>H+10) return;
+      const srKey=f.stage+"|"+f.role;
+      const col=SR_COLORS[srKey]||"#9ca3af";
+      const active=!hasFilter||isActive(f);
+      const prodHit=isProdMatch(f);
+      if(active) seenSR.add(srKey);
+      const op=!hasFilter?0.8:active?(prodHit?1:0.75):0.12;
+      const r=rScale(f.n);
+      g.append("circle").attr("cx",x).attr("cy",y).attr("r",r)
+        .attr("fill",col+(active?"cc":"30")).attr("stroke",active?col:"rgba(255,255,255,.1)")
+        .attr("stroke-width",active?0.8:0.3).attr("opacity",op)
+        .attr("cursor","pointer")
+        .on("mousemove",ev=>showTip(`<b>${f.city}</b><br>${f.stage} · ${f.role}<br><b>${f.n}</b> firms`,ev))
+        .on("mouseleave",hideTip);
+      if(prodHit){
+        g.append("circle").attr("cx",x).attr("cy",y).attr("r",r+4)
+          .attr("fill","none").attr("stroke","#fff").attr("stroke-width",2).attr("opacity",1)
+          .attr("pointer-events","none");
+      }
+    });
+
+    // Legend: only show SR keys present in active firms
+    const legEl=document.getElementById("firm-legend");
+    legEl.innerHTML=SR_ORDER.filter(k=>seenSR.has(k)).map(k=>{
+      const col=SR_COLORS[k]||"#9ca3af";
+      return `<div class="leg-item"><div class="leg-circle" style="background:${col}cc;border-color:${col}"></div>${k.split("|")[1]}</div>`;
+    }).join("");
+
+    // Firm stats overlay
+    const dispFirms=hasFilter?activeFirms:allFirms;
+    const totalN=dispFirms.reduce((s,f)=>s+f.n,0);
+    const nCities=new Set(dispFirms.map(f=>f.city)).size;
+    document.getElementById("ov-firm-count").textContent=totalN.toLocaleString();
+    document.getElementById("ov-firm-cities-n").textContent=nCities;
+    const filterLbl=selProduct!=="ALL"?(prodMeta?`${prodMeta.stage} · ${prodMeta.role}`:selProduct):
+                    selRole!=="ALL"?`${selStage!=="ALL"?selStage+" · ":""}${selRole}`:
+                    selStage!=="ALL"?selStage:"All products";
+    document.getElementById("ov-firm-filter").textContent=filterLbl;
+    const topCities=[...dispFirms].sort((a,b)=>b.n-a.n).slice(0,6);
+    const maxC=topCities[0]?.n||1;
+    document.getElementById("ov-firm-cities").innerHTML=topCities.map(f=>{
+      const col=SR_COLORS[`${f.stage}|${f.role}`]||"#9ca3af";
+      const barW=Math.round(60*(f.n/maxC));
+      return `<div class="ov-partner"><span class="ov-flag" style="color:${col}">●</span><span class="ov-name">${f.city}</span><span class="ov-val" style="background:rgba(255,255,255,.06);border-radius:2px;padding:0 4px">${f.n}</span></div>`;
+    }).join("");
+    const stageMap={};
+    dispFirms.forEach(f=>{stageMap[f.stage]=(stageMap[f.stage]||0)+f.n;});
+    const STAGE_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+    document.getElementById("ov-firm-stages").innerHTML=STAGE_ORDER.filter(s=>stageMap[s]).map(s=>{
+      const col=STAGE_COLORS[s]||"#9ca3af";
+      return `<div class="ov-partner"><span class="ov-flag" style="color:${col}">▪</span><span class="ov-name">${s}</span><span class="ov-val">${stageMap[s]}</span></div>`;
+    }).join("");
+  }
+}
+
+const ISO3N={
+  AFG:4,ALB:8,DZA:12,AGO:24,ARG:32,ARM:51,AUS:36,AUT:40,AZE:31,
+  BGD:50,BLR:112,BEL:56,BFA:854,BDI:108,KHM:116,CMR:120,CAN:124,
+  TCD:148,CHL:152,CHN:156,COL:170,COD:180,COG:178,HRV:191,CUB:192,
+  CYP:196,CZE:203,DNK:208,DOM:214,ECU:218,EGY:818,ETH:231,
+  FJI:242,FIN:246,FRA:250,DEU:276,GHA:288,GRC:300,GTM:320,
+  HND:340,HKG:344,HUN:348,IND:356,IDN:360,IRN:364,IRQ:368,
+  IRL:372,ISR:376,ITA:380,JPN:392,JOR:400,KAZ:398,KEN:404,
+  PRK:408,KOR:410,KWT:414,LAO:418,LVA:428,LBN:422,LBY:434,
+  LTU:440,LUX:442,MDG:450,MWI:454,MYS:458,MLI:466,MLT:470,
+  MRT:478,MEX:484,MDA:498,MNG:496,MAR:504,MOZ:508,MMR:104,
+  NAM:516,NPL:524,NLD:528,NZL:554,NGA:566,NOR:578,OMN:512,
+  PAK:586,PAN:591,PER:604,PHL:608,POL:616,PRT:620,QAT:634,
+  ROU:642,RUS:643,SAU:682,SEN:686,SGP:702,SVK:703,ZAF:710,
+  ESP:724,LKA:144,SWE:752,CHE:756,SYR:760,TWN:158,TJK:762,
+  TZA:834,THA:764,TTO:780,TUN:788,TUR:792,TKM:795,UGA:800,
+  UKR:804,ARE:784,GBR:826,USA:840,URY:858,UZB:860,VNM:704,
+  YEM:887,ZMB:894,ZWE:716,BOL:68,BRA:76,BHR:48,DJI:262,
+  SWZ:748,GEO:268,SLV:222,GNQ:226,EST:233,GUY:328,HTI:332,
+  RWA:646,SLE:694,SDN:729,SUR:740,NER:562,CAF:140,ERI:232
+};
+function precomputeCentroids(topo){
+  const proj=d3.geoNaturalEarth1().scale(153).translate([480,250]);
+  topojson.feature(topo,topo.objects.countries).features.forEach(f=>{
+    const id=String(f.id).padStart(3,"0");
+    const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+    if(iso){
+      try{const c=d3.geoCentroid(f); centroids[iso]=c;}catch(e){}
+    }
+  });
+}
+let worldTopo=null, centroids={}, savedMapProj=null;
+function restoreTradeMap(){
+  document.getElementById("map-overlay").style.display="";
+  document.getElementById("firm-overlay").style.display="none";
+  document.getElementById("trade-legend").style.display="";
+  document.getElementById("firm-legend").style.display="none";
+  drawMap();
+}
+const WORLD_TOPO_URL="https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const TOPOJSON_CDN="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js";
+function boot(){
+  fetch(WORLD_TOPO_URL).then(r=>r.json()).then(topo=>{
+    worldTopo=topo; precomputeCentroids(topo); drawFirms();
+  }).catch(()=>{ /* map unavailable */ });
+}
+const s=document.createElement("script");
+s.src=TOPOJSON_CDN; s.onload=boot; s.onerror=()=>{}; document.head.appendChild(s);
+
+
+</script>
+</body>
+</html>
