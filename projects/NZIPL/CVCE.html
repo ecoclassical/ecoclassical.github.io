@@ -259,11 +259,15 @@ section:last-of-type { padding-bottom: 88px; }
 .footer-links a { color: var(--muted); text-decoration: none; transition: color .15s; }
 .footer-links a:hover { color: var(--text); }
 
+/* ── Browser grid ── */
+#br-grid a:hover { transform: scale(1.03); }
+
 @media (max-width: 800px) {
   .atlas-3col { grid-template-columns: 1fr; }
   .atlas-2col { grid-template-columns: 1fr; }
   .kit-grid   { grid-template-columns: 1fr; }
   .cases-grid { grid-template-columns: repeat(2, 1fr); }
+  #br-grid    { grid-template-columns: 90px repeat(4,1fr); font-size:9px; }
 }
 </style>
 </head>
@@ -280,8 +284,9 @@ section:last-of-type { padding-bottom: 88px; }
     <a href="#production">04 Production</a>
     <a href="#sankeys">05 Sankeys</a>
     <a href="#dendrites">06 Dendrites</a>
-    <a href="#portfolio">07 Portfolio</a>
-    <a href="#kit">08 Claude Kit</a>
+    <a href="#browser">07 Module Browser</a>
+    <a href="#portfolio">08 Portfolio</a>
+    <a href="#kit">09 Claude Kit</a>
   </nav>
 </div>
 
@@ -474,7 +479,7 @@ section:last-of-type { padding-bottom: 88px; }
         <div class="r-sub">India's emergence as a major solar manufacturer — supply chain dependencies, domestic capability gaps, SHAP feature drivers, and competitiveness trajectory 2003–2024. Integrates trade map, investment data, benchmarking, treemaps, PC scores, and policy synthesis.</div>
         <div class="r-links" style="margin-top:14px;">
           <a class="r-link primary" href="analysis/intelligence/solar_india_intelligence_report.html">Intelligence Report</a>
-          <a class="r-link" href="solar_india_trade_network.html">Trade Network</a>
+          <a class="r-link" href="analysis/intelligence/solar_india_deep_dive.html">Deep Dive</a>
         </div>
         <p class="wip-note">Additional country × technology intelligence reports in development.</p>
       </div>
@@ -539,6 +544,16 @@ section:last-of-type { padding-bottom: 88px; }
         <div class="t-title">IO Use Shares Methodology</div>
         <div class="t-sub">EXIOBASE Leontief use shares for HS products — Z-based aggregation, leontief vs direct share, supervisor review v2</div>
       </a>
+      <a class="t-card" href="analysis/ml_model/ml_model_trade_variables.html">
+        <div class="t-icon" style="color:var(--accent)">TRADE VARS</div>
+        <div class="t-title">ML Trade Variables</div>
+        <div class="t-sub">Trade-based features used in the competitiveness model — HS6 export/import variables</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/nature_industrial_base_summary.html">
+        <div class="t-icon" style="color:var(--accent)">SUMMARY</div>
+        <div class="t-title">Industrial Base Summary</div>
+        <div class="t-sub">Nature-style summary of the clean industrial base methodology and findings</div>
+      </a>
     </div>
   </div>
 </section>
@@ -591,6 +606,14 @@ section:last-of-type { padding-bottom: 88px; }
         <div class="tech-thumb-label">Biofuel<span>Firm locations · ORBIS</span></div>
       </a>
     </div>
+    <div class="rp-sub" style="margin-top:16px;">Combined View</div>
+    <div class="tools-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+      <a class="t-card" href="analysis/orbis/orbis_viewer_combined.html">
+        <div class="t-icon" style="color:var(--accent)">ALL TECHS</div>
+        <div class="t-title">Combined Firm Viewer</div>
+        <div class="t-sub">All 10 technologies on one map — firm locations by stage · ORBIS</div>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -600,63 +623,49 @@ section:last-of-type { padding-bottom: 88px; }
 <section id="sankeys">
   <div class="wrap">
     <div class="section-label"><span class="sl-num">05 —</span> Sankey Diagrams</div>
-    <div class="rp-sub">Trade Flow Sankeys · By Technology · 2022</div>
-    <div class="tech-grid" style="margin-bottom:18px;">
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_solar_2022.html" style="border-color:rgba(234,179,8,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div>
-        <div class="tech-thumb-label">Solar<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_batteries_2022.html" style="border-color:rgba(245,158,11,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div>
-        <div class="tech-thumb-label">Batteries<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_wind_2022.html" style="border-color:rgba(59,130,246,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div>
-        <div class="tech-thumb-label">Wind<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_nuclear_2022.html" style="border-color:rgba(14,165,233,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div>
-        <div class="tech-thumb-label">Nuclear<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_transmission_2022.html" style="border-color:rgba(6,182,212,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div>
-        <div class="tech-thumb-label">Transmission<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_biofuel_2022.html" style="border-color:rgba(132,204,22,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div>
-        <div class="tech-thumb-label">Biofuel<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_electrolyzers_2022.html" style="border-color:rgba(168,85,247,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div>
-        <div class="tech-thumb-label">Electrolyzers<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_geothermal_2022.html" style="border-color:rgba(239,68,68,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div>
-        <div class="tech-thumb-label">Geothermal<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_heat_pumps_2022.html" style="border-color:rgba(249,115,22,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div>
-        <div class="tech-thumb-label">Heat Pumps<span>Trade flow · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_magnets_2022.html" style="border-color:rgba(236,72,153,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div>
-        <div class="tech-thumb-label">Magnets<span>Trade flow · 2022</span></div>
-      </a>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">7-lane atlas-style Sankeys showing top country flows through the full value chain. Available for India and Brazil across all 10 technologies and 4 product selections.</p>
+
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="sk-country-btns">
+      <button class="ir-tab-card active" onclick="skCountry('India',this)" style="cursor:pointer">
+        <span class="ir-tab-tech" style="color:var(--accent)">India</span>
+        <span class="ir-tab-country">IND · 40 files</span>
+      </button>
+      <button class="ir-tab-card" onclick="skCountry('Brazil',this)" style="cursor:pointer">
+        <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
+        <span class="ir-tab-country">BRA · 40 files</span>
+      </button>
     </div>
-    <div class="rp-sub">Material-Level Sankeys · 2022</div>
-    <div class="mat-grid">
-      <a class="tech-thumb" href="analysis/sankey/sankey_cobalt_ore_2022.html" style="border-color:rgba(168,85,247,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.1),rgba(168,85,247,.03));border-bottom:2px solid #8b5cf6"><span style="color:#8b5cf6;font-size:12px;font-weight:900">Co</span></div>
-        <div class="tech-thumb-label">Cobalt Ore<span>Material Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_lithium_2022.html" style="border-color:rgba(6,182,212,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.1),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission);font-size:12px;font-weight:900">Li</span></div>
-        <div class="tech-thumb-label">Lithium<span>Material Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_natural_graphite_2022.html" style="border-color:rgba(107,114,128,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(107,114,128,.1),rgba(107,114,128,.03));border-bottom:2px solid #6b7280"><span style="color:#9ca3af;font-size:12px;font-weight:900">C</span></div>
-        <div class="tech-thumb-label">Natural Graphite<span>Material Sankey · 2022</span></div>
-      </a>
+
+    <div id="sk-India" class="sk-country">
+      <div class="rp-sub">India · All Selections</div>
+      <div class="tech-grid">
+        <a class="tech-thumb" href="analysis/sankey/India/Solar_India_All_sankey.html" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Batteries_India_All_sankey.html" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Wind_India_All_sankey.html" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Nuclear_India_All_sankey.html" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Transmission_India_All_sankey.html" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Biofuel_India_All_sankey.html" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Electrolyzers_India_All_sankey.html" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Geothermal_India_All_sankey.html" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Heat_Pumps_India_All_sankey.html" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Magnets_India_All_sankey.html" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>India · All products</span></div></a>
+      </div>
+    </div>
+
+    <div id="sk-Brazil" class="sk-country" style="display:none">
+      <div class="rp-sub">Brazil · All Selections</div>
+      <div class="tech-grid">
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Solar_Brazil_All_sankey.html" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Batteries_Brazil_All_sankey.html" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Wind_Brazil_All_sankey.html" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Nuclear_Brazil_All_sankey.html" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Transmission_Brazil_All_sankey.html" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Biofuel_Brazil_All_sankey.html" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Electrolyzers_Brazil_All_sankey.html" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Geothermal_Brazil_All_sankey.html" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Heat_Pumps_Brazil_All_sankey.html" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Magnets_Brazil_All_sankey.html" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>Brazil · All products</span></div></a>
+      </div>
     </div>
   </div>
 </section>
@@ -713,11 +722,48 @@ section:last-of-type { padding-bottom: 88px; }
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     07 — PORTFOLIO
+     07 — MODULAR VISUALIZATION BROWSER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="browser">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">07 —</span> Modular Visualization Browser</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:20px;">640 standalone panels rendered from the atlas engine — one per module × country × tech × selection. Select a module and country, then click any tech × selection tile to open it.</p>
+
+    <div class="rp-sub">Module</div>
+    <div id="br-mod-btns" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;"></div>
+
+    <div class="rp-sub">Country</div>
+    <div id="br-country-btns" style="display:flex;gap:8px;margin-bottom:20px;">
+      <button class="ir-tab-card active" onclick="brCountry('India',this)" style="cursor:pointer">
+        <span class="ir-tab-tech" style="color:var(--accent)">India</span>
+        <span class="ir-tab-country">IND</span>
+      </button>
+      <button class="ir-tab-card" onclick="brCountry('Brazil',this)" style="cursor:pointer">
+        <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
+        <span class="ir-tab-country">BRA</span>
+      </button>
+    </div>
+
+    <!-- Tech × Selection grid (generated by JS) -->
+    <div id="br-grid" style="
+      display:grid;
+      grid-template-columns:120px repeat(4,1fr);
+      gap:4px;
+      font-size:11px;
+    "></div>
+
+    <p id="br-note" style="font-size:11px;color:rgba(255,255,255,.3);margin-top:12px;font-style:italic;">
+      Files are local — open CVCE.html from the project root for links to work.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     08 — PORTFOLIO
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="portfolio">
   <div class="wrap">
-    <div class="section-label"><span class="sl-num">07 —</span> Portfolio</div>
+    <div class="section-label"><span class="sl-num">08 —</span> Portfolio</div>
     <div class="portfolio-grid">
       <a class="t-card" href="docs/workplan.html">
         <div class="t-icon" style="color:var(--accent)">WORK PLAN</div>
@@ -739,11 +785,11 @@ section:last-of-type { padding-bottom: 88px; }
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     08 — NZIPL TEAM CLAUDE KIT
+     09 — NZIPL TEAM CLAUDE KIT
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="kit">
   <div class="wrap">
-    <div class="section-label"><span class="sl-num">08 —</span> NZIPL Team Claude Kit</div>
+    <div class="section-label"><span class="sl-num">09 —</span> NZIPL Team Claude Kit</div>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:20px;">Shared knowledge base maintained by Gilberto García-Vázquez. Loads automatically into Claude Code sessions — data source conventions, API patterns, design tokens, and hard-won gotchas so the team doesn't rediscover the same issues independently.</p>
 
     <div class="kit-grid">
@@ -817,12 +863,120 @@ section:last-of-type { padding-bottom: 88px; }
 </div>
 
 <script>
+// ── Intelligence report tabs ──────────────────────────────────────────────────
 function irTabSwitch(id, el) {
   document.querySelectorAll('.ir-tab-card').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.ir-tab-content').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('ir-content-' + id).classList.add('active');
 }
+
+// ── Sankey country toggle ─────────────────────────────────────────────────────
+function skCountry(name, el) {
+  document.querySelectorAll('#sk-country-btns .ir-tab-card').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.sk-country').forEach(d => d.style.display = 'none');
+  document.getElementById('sk-' + name).style.display = '';
+}
+
+// ── Modular Visualization Browser ────────────────────────────────────────────
+const BR_MODULES = [
+  {id:'radar',           label:'Capability Radar',    desc:'SHAP vs RCA'},
+  {id:'pc_scatterplot',  label:'PC Scatterplot',       desc:'155 countries'},
+  {id:'trade_timeline',  label:'Trade Timeline',       desc:'Exports/imports'},
+  {id:'trade_composition',label:'Trade Composition',  desc:'Treemap'},
+  {id:'tech_tree',       label:'Tech Tree',            desc:'Value chain dendrite'},
+  {id:'sankey',          label:'Sankey',               desc:'7-lane flows'},
+  {id:'trade_map',       label:'Trade Map',            desc:'World map'},
+  {id:'activity_map',    label:'Activity Map',         desc:'Firm locations'},
+];
+const BR_TECHS = [
+  {name:'Solar',         slug:'Solar',         col:'#eab308'},
+  {name:'Nuclear',       slug:'Nuclear',       col:'#0ea5e9'},
+  {name:'Batteries',     slug:'Batteries',     col:'#f59e0b'},
+  {name:'Transmission',  slug:'Transmission',  col:'#06b6d4'},
+  {name:'Wind',          slug:'Wind',          col:'#3b82f6'},
+  {name:'Biofuel',       slug:'Biofuel',       col:'#84cc16'},
+  {name:'Electrolyzers', slug:'Electrolyzers', col:'#a855f7'},
+  {name:'Geothermal',    slug:'Geothermal',    col:'#ef4444'},
+  {name:'Heat Pumps',    slug:'Heat_Pumps',    col:'#f97316'},
+  {name:'Magnets',       slug:'Magnets',       col:'#ec4899'},
+];
+const BR_SELS = [
+  {slug:'All',           label:'All'},
+  {slug:'Midstream',     label:'Midstream'},
+  {slug:'Final_Product', label:'Final Prod.'},
+  {slug:'Raw_Material',  label:'Raw Mat.'},
+];
+
+let brMod = 'radar', brCountry = 'India';
+
+function brBuildModBtns() {
+  const el = document.getElementById('br-mod-btns');
+  el.innerHTML = BR_MODULES.map(m => `
+    <button onclick="brSetMod('${m.id}',this)"
+      style="padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,${m.id===brMod?.15:.08});
+             background:${m.id===brMod?'rgba(60,181,74,.12)':'rgba(255,255,255,.03)'};
+             color:${m.id===brMod?'#3cb54a':'rgba(255,255,255,.55)'};
+             font-size:11px;font-weight:${m.id===brMod?700:500};cursor:pointer;
+             font-family:inherit;transition:all .15s">
+      <div style="font-weight:700">${m.label}</div>
+      <div style="font-size:9.5px;opacity:.6">${m.desc}</div>
+    </button>`).join('');
+}
+
+function brSetMod(id, el) {
+  brMod = id;
+  brBuildModBtns();
+  brBuildGrid();
+}
+
+function brCountry(name, el) {
+  brCountry = name;
+  document.querySelectorAll('#br-country-btns .ir-tab-card').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  brBuildGrid();
+}
+
+function brBuildGrid() {
+  const grid = document.getElementById('br-grid');
+  // Header row
+  let html = `<div style="grid-column:1;"></div>` +
+    BR_SELS.map(s => `<div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,.35);
+      letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:4px 0">${s.label}</div>`).join('');
+
+  BR_TECHS.forEach(t => {
+    html += `<div style="display:flex;align-items:center;padding:3px 6px 3px 0;
+               font-size:11px;font-weight:700;color:${t.col}">${t.name}</div>`;
+    BR_SELS.forEach(s => {
+      const path = `analysis/${brMod}/${brCountry}/${t.slug}_${brCountry}_${s.slug}_${brMod}.html`;
+      html += `<a href="${path}" target="_blank"
+        style="display:flex;align-items:center;justify-content:center;
+               padding:5px 4px;border-radius:5px;border:1px solid rgba(${hexToRgb(t.col)},.2);
+               background:rgba(${hexToRgb(t.col)},.06);text-decoration:none;
+               font-size:9.5px;font-weight:600;color:rgba(255,255,255,.5);
+               transition:all .15s;text-align:center"
+        onmouseover="this.style.background='rgba(${hexToRgb(t.col)},.18)';this.style.color='${t.col}'"
+        onmouseout="this.style.background='rgba(${hexToRgb(t.col)},.06)';this.style.color='rgba(255,255,255,.5)'">
+        Open
+      </a>`;
+    });
+  });
+  grid.innerHTML = html;
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+// Boot
+document.addEventListener('DOMContentLoaded', () => {
+  brBuildModBtns();
+  brBuildGrid();
+});
 </script>
 </body>
 </html>
