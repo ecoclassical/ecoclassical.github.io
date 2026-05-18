@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collective Intelligence for the Lab &mdash; NZIPL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1A1B1E;
+  color: #C1C2C5;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  color: #EAEAEA;
+}
+a { color: #7fc77f; text-decoration: none; }
+a:hover { color: #9dd49d; }
+
+/* Slide system */
+.slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+}
+.slide + .slide { border-top: 1px solid #373A40; }
+
+/* Slide number */
+.slide-num {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5C5F66;
+  letter-spacing: 0.5px;
+}
+
+/* Act label */
+.act-label {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #56a360;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Section marker */
+.marker {
+  display: block;
+  width: 36px;
+  height: 3px;
+  background: #56a360;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+/* Title slide */
+.title-slide h1 {
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+.title-slide .subtitle {
+  font-size: 1.125rem;
+  color: #909296;
+  max-width: 640px;
+  margin-bottom: 2rem;
+}
+.title-slide .meta {
+  font-size: 0.875rem;
+  color: #5C5F66;
+}
+
+/* Content slides */
+.slide h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+}
+.slide p {
+  font-size: 1rem;
+  max-width: 720px;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+.slide p.lead {
+  font-size: 1.125rem;
+  color: #EAEAEA;
+}
+
+/* Cards */
+.card {
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.25);
+}
+.card + .card { margin-top: 0.75rem; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
+
+.card-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 768px) { .card-grid.three-col { grid-template-columns: 1fr; } }
+
+.card-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #909296;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.25rem;
+}
+.card-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #56a360;
+}
+.card-note {
+  font-size: 0.8rem;
+  color: #5C5F66;
+  margin-top: 0.25rem;
+}
+.card-body {
+  font-size: 0.875rem;
+  color: #C1C2C5;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Diagram boxes */
+.diagram {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+.diagram-box {
+  flex: 1;
+  min-width: 180px;
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  text-align: center;
+}
+.diagram-box.active {
+  border-color: #56a360;
+  box-shadow: 0 0 0 1px #56a360;
+}
+.diagram-box h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #56a360;
+  margin-bottom: 0.5rem;
+}
+.diagram-box p {
+  font-size: 0.8rem;
+  color: #909296;
+  margin: 0;
+  line-height: 1.4;
+}
+.diagram-arrow {
+  display: flex;
+  align-items: center;
+  color: #56a360;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .diagram { flex-direction: column; align-items: center; }
+  .diagram-arrow { transform: rotate(90deg); }
+}
+
+/* Flow diagram (horizontal) */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.flow-step {
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #EAEAEA;
+  text-align: center;
+}
+.flow-step.highlight {
+  border-color: #56a360;
+  color: #56a360;
+  font-weight: 600;
+}
+.flow-arrow {
+  color: #56a360;
+  font-size: 1.25rem;
+}
+
+/* Code/file mock */
+.file-mock {
+  background: #141517;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.file-mock .filename {
+  font-family: 'Archivo', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #56a360;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.file-mock .line { color: #909296; }
+.file-mock .line .date { color: #5C5F66; }
+.file-mock .line .author { color: #7fc77f; }
+.file-mock .line .finding { color: #C1C2C5; }
+.file-mock .line.new { color: #EAEAEA; background: rgba(86,163,96,0.08); margin: 0 -1.25rem; padding: 0.125rem 1.25rem; }
+.file-mock .line.new .finding { color: #EAEAEA; }
+
+.file-mock .tag {
+  display: inline-block;
+  font-family: 'Archivo', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+.tag.data-source { background: rgba(91,141,184,0.2); color: #5B8DB8; }
+.tag.gotcha { background: rgba(201,74,74,0.2); color: #c94a4a; }
+.tag.pattern { background: rgba(86,163,96,0.2); color: #56a360; }
+.tag.command { background: rgba(232,155,63,0.2); color: #e89b3f; }
+.tag.pipeline { background: rgba(91,141,184,0.2); color: #5B8DB8; }
+
+/* Table */
+.file-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin: 1.5rem 0;
+}
+.file-table th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #909296;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #373A40;
+}
+.file-table td {
+  padding: 0.5rem 0.75rem;
+  color: #C1C2C5;
+  border-bottom: 1px solid #2C2E33;
+  vertical-align: top;
+}
+.file-table code {
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.8rem;
+  color: #7fc77f;
+}
+.file-table .snippet {
+  display: block;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.72rem;
+  color: #5C5F66;
+  margin-top: 0.25rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid #2C2E33;
+}
+
+/* Callout */
+.callout {
+  background: rgba(86,163,96,0.08);
+  border-left: 3px solid #56a360;
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  color: #EAEAEA;
+}
+.callout.warn {
+  background: rgba(232,155,63,0.08);
+  border-left-color: #e89b3f;
+}
+
+/* Numbered steps */
+.steps { margin: 1.5rem 0; counter-reset: step; }
+.step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  counter-increment: step;
+}
+.step::before {
+  content: counter(step);
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: #56a360;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-text { font-size: 0.95rem; padding-top: 0.2rem; }
+
+/* Before/after */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 768px) { .before-after { grid-template-columns: 1fr; } }
+.ba-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.5rem;
+}
+.ba-label.before { color: #c94a4a; }
+.ba-label.after { color: #56a360; }
+
+/* Big quote */
+.big-statement {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #EAEAEA;
+  line-height: 1.35;
+  max-width: 640px;
+  margin: 1rem 0 1.5rem;
+}
+.big-statement span { color: #56a360; }
+
+/* Vertical progression / levels */
+.levels {
+  margin: 1.5rem 0;
+  position: relative;
+  padding-left: 2.5rem;
+}
+.levels::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: #373A40;
+}
+.level-item {
+  position: relative;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.level-item:last-child { margin-bottom: 0; }
+.level-dot {
+  position: absolute;
+  left: -2.5rem;
+  top: 0.15rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #373A40;
+  color: #909296;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+.level-item.active .level-dot {
+  background: #56a360;
+  color: #fff;
+}
+.level-item.highlight .level-dot {
+  background: #56a360;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(86,163,96,0.25);
+}
+.level-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #EAEAEA;
+}
+.level-desc {
+  font-size: 0.8rem;
+  color: #909296;
+  line-height: 1.4;
+}
+.level-item.active .level-title { color: #56a360; }
+.level-item.faint { opacity: 0.45; }
+.level-item.faint .level-title { font-style: italic; }
+
+/* Layer stack */
+.layer-stack {
+  margin: 1.5rem 0;
+}
+.layer-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.layer-label {
+  width: 140px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #56a360;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.layer-content {
+  flex: 1;
+  background: #25262B;
+  border: 1px solid #373A40;
+  padding: 0.875rem 1rem;
+  font-size: 0.8rem;
+  color: #C1C2C5;
+  line-height: 1.4;
+}
+.layer-row:first-child .layer-content { border-radius: 0.5rem 0.5rem 0 0; }
+.layer-row:last-child .layer-content { border-radius: 0 0 0.5rem 0.5rem; }
+.layer-row + .layer-row .layer-content { border-top: none; }
+@media (max-width: 768px) {
+  .layer-label { width: 80px; font-size: 0.65rem; }
+}
+
+/* Two columns */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+.col-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.75rem;
+}
+
+/* Terminal mock */
+.terminal-mock {
+  background: #141517;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.terminal-mock .prompt { color: #56a360; }
+.terminal-mock .cmd { color: #EAEAEA; }
+.terminal-mock .output { color: #909296; }
+.terminal-mock .comment { color: #5C5F66; }
+.terminal-mock .recorded-tag {
+  display: inline-block;
+  font-family: 'Archivo', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #e08585;
+  background: rgba(224,133,133,0.12);
+  padding: 0.1rem 0.45rem;
+  border-radius: 0.25rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  letter-spacing: 0.3px;
+}
+
+/* Demo slide indicator */
+.demo-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(224,133,133,0.12);
+  color: #e08585;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+.demo-indicator::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e05555;
+  display: inline-block;
+}
+
+/* Video placeholder */
+.video-placeholder {
+  background: #0e0f11;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+.video-placeholder .play-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(86,163,96,0.12);
+  border: 2px solid #56a360;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #56a360;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+.video-placeholder .video-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #EAEAEA;
+  margin-bottom: 0.25rem;
+}
+.video-placeholder .video-caption {
+  font-size: 0.8rem;
+  color: #909296;
+  max-width: 480px;
+}
+.video-placeholder .video-meta {
+  font-size: 0.7rem;
+  color: #5C5F66;
+  margin-top: 1rem;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+}
+
+/* Interactive moment indicator */
+.interactive-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(86,163,96,0.15);
+  color: #7fc77f;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+.interactive-indicator::before {
+  content: '\25C6';
+  font-size: 0.75rem;
+  color: #56a360;
+}
+
+/* Primer indicator */
+.primer-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(91,141,184,0.15);
+  color: #7aafda;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+.primer-indicator::before {
+  content: '\25CF';
+  font-size: 0.75rem;
+  color: #5B8DB8;
+}
+
+/* Prompt/interactive call-to-action box */
+.prompt-box {
+  background: rgba(86,163,96,0.08);
+  border: 1px solid #56a360;
+  border-radius: 0.5rem;
+  padding: 1.5rem 1.75rem;
+  margin: 1.5rem 0;
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.125rem;
+  color: #EAEAEA;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.prompt-box .prompt-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #56a360;
+  margin-bottom: 0.5rem;
+}
+
+/* Poll options */
+.poll-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 768px) { .poll-options { grid-template-columns: 1fr; } }
+.poll-option {
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.poll-letter {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #373A40;
+  color: #7fc77f;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.poll-text {
+  font-size: 0.9rem;
+  color: #C1C2C5;
+  line-height: 1.4;
+}
+
+/* Phase timeline */
+.phases {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.phase {
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1rem 1.1rem;
+  border-top: 3px solid #56a360;
+}
+.phase.future {
+  border-top-color: #5C5F66;
+  opacity: 0.78;
+}
+.phase-label {
+  font-size: 0.7rem;
+  color: #56a360;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.25rem;
+}
+.phase.future .phase-label { color: #909296; }
+.phase-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #EAEAEA;
+  margin-bottom: 0.4rem;
+}
+.phase-desc {
+  font-size: 0.8rem;
+  color: #909296;
+  line-height: 1.5;
+}
+@media (max-width: 768px) { .phases { grid-template-columns: 1fr; } }
+
+/* Limits grid */
+.limits {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.limit {
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+  padding: 1.1rem 1.25rem;
+}
+.limit-q {
+  font-size: 0.8rem;
+  color: #e89b3f;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.limit-a {
+  font-size: 0.85rem;
+  color: #C1C2C5;
+  line-height: 1.55;
+}
+@media (max-width: 768px) { .limits { grid-template-columns: 1fr; } }
+
+/* Tip rows (prompting guide) */
+.tip-row {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 1rem;
+  align-items: start;
+  margin: 0.75rem 0;
+  padding: 1rem 1.25rem;
+  background: #25262B;
+  border: 1px solid #373A40;
+  border-radius: 0.5rem;
+}
+.tip-num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #56a360;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tip-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #EAEAEA;
+  margin-bottom: 0.4rem;
+}
+.tip-weak, .tip-strong {
+  display: block;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin: 0.15rem 0;
+}
+.tip-weak { color: #c07575; }
+.tip-weak::before { content: '\2717  '; font-family: 'Archivo', sans-serif; font-weight: 700; color: #c94a4a; }
+.tip-strong { color: #9dd49d; }
+.tip-strong::before { content: '\2713  '; font-family: 'Archivo', sans-serif; font-weight: 700; color: #56a360; }
+
+/* Timeline rows (implementation) */
+.timeline-list {
+  margin: 1.5rem 0;
+  border-left: 2px solid #373A40;
+  padding-left: 0;
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 1.25rem;
+  padding: 0.85rem 1.25rem;
+  border-left: 3px solid transparent;
+  margin-left: -2px;
+  align-items: baseline;
+}
+.timeline-item.active { border-left-color: #56a360; }
+.timeline-item.future { opacity: 0.75; }
+.timeline-when {
+  font-size: 0.75rem;
+  color: #56a360;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.timeline-item.future .timeline-when { color: #909296; }
+.timeline-what {
+  font-size: 0.9rem;
+  color: #C1C2C5;
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  .timeline-item { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+/* Appendix divider */
+.appendix-divider {
+  text-align: center;
+  padding: 4rem 2rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+  border-top: 2px dashed #373A40;
+}
+.appendix-divider h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #909296;
+  margin-bottom: 0.5rem;
+}
+.appendix-divider p {
+  font-size: 0.875rem;
+  color: #5C5F66;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Attribution footer */
+.attribution {
+  text-align: center;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.75rem;
+  color: #5C5F66;
+  border-top: 1px solid #373A40;
+}
+
+/* Nav hint */
+.nav-hint {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 2rem;
+  font-size: 0.7rem;
+  color: #5C5F66;
+  z-index: 100;
+  background: rgba(26,27,30,0.9);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Scroll snap */
+html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
+.slide { scroll-snap-align: start; }
+
+/* Compound curve */
+.compound-visual {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  height: 120px;
+  margin: 1.5rem 0;
+  max-width: 600px;
+}
+.compound-bar {
+  flex: 1;
+  background: #56a360;
+  border-radius: 3px 3px 0 0;
+  position: relative;
+  min-width: 0;
+  transition: height 0.3s;
+}
+.compound-bar.dim { background: #373A40; }
+.bar-label {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  color: #5C5F66;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="nav-hint">&darr; scroll &middot; arrow keys</div>
+
+<!-- ============================================================ -->
+<!-- OPENING                                                      -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 1: Title -->
+<section class="slide title-slide" id="s1">
+  <span class="slide-num">1 / 27</span>
+  <span class="marker"></span>
+  <h1>Collective Intelligence<br>for the Lab</h1>
+  <p class="subtitle">How shared context, codified workflows, and team contributions compound what the Lab knows.</p>
+  <p class="meta">Net Zero Industrial Policy Lab &middot; Johns Hopkins University</p>
+</section>
+
+<!-- SLIDE 2: Problem -->
+<section class="slide" id="s2">
+  <span class="slide-num">2 / 27</span>
+  <span class="marker"></span>
+  <h2>The problem: knowledge stays local</h2>
+  <p class="lead">We use Claude independently. Every session starts from zero.</p>
+  <p>When one person discovers that DataMexico's /data endpoint silently drops manufacturing sectors, that knowledge lives in their session. The next person hits the same wall.</p>
+
+  <div class="before-after">
+    <div>
+      <div class="ba-label before">Today</div>
+      <div class="card">
+        <p style="margin:0; font-size:0.875rem;">Person A discovers an API gotcha.<br>Person B discovers the same gotcha two weeks later.<br>Person C discovers it next month.</p>
+      </div>
+    </div>
+    <div>
+      <div class="ba-label after">With shared context</div>
+      <div class="card">
+        <p style="margin:0; font-size:0.875rem;">Person A adds a one-liner.<br>Person B and C never hit the problem.<br>Their Claude sessions already know.</p>
+      </div>
+    </div>
+  </div>
+
+  <p>Same for data sources, methodology patterns, reusable commands, and design standards. Every insight that stays local is an insight the team rediscovers.</p>
+</section>
+
+<!-- SLIDE 3: Poll -->
+<section class="slide" id="s3">
+  <span class="slide-num">3 / 27</span>
+  <span class="marker"></span>
+  <span class="interactive-indicator">Interactive &middot; Zoom poll</span>
+  <h2>Where are you today?</h2>
+  <p class="lead">Quick read on the room. Pick the one that best describes you right now.</p>
+
+  <div class="poll-options">
+    <div class="poll-option">
+      <div class="poll-letter">A</div>
+      <div class="poll-text">I use Claude.ai (or ChatGPT) in a browser for writing and research.</div>
+    </div>
+    <div class="poll-option">
+      <div class="poll-letter">B</div>
+      <div class="poll-text">I have used an AI coding tool in a terminal or IDE.</div>
+    </div>
+    <div class="poll-option">
+      <div class="poll-letter">C</div>
+      <div class="poll-text">I run pipelines, build prompts, or set up automations with Claude.</div>
+    </div>
+    <div class="poll-option">
+      <div class="poll-letter">D</div>
+      <div class="poll-text">I have never used Claude or anything like it.</div>
+    </div>
+  </div>
+
+  <p>No wrong answer. The session is calibrated so that whichever letter you pick, you leave with something useful.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- PRIMER MINI-ACT                                               -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 4 (NEW A): What Claude is, and isn't -->
+<section class="slide" id="s4">
+  <span class="slide-num">4 / 27</span>
+  <span class="act-label">Primer</span>
+  <span class="marker"></span>
+  <span class="primer-indicator">For anyone new to Claude</span>
+  <h2>What Claude is (and isn't)</h2>
+  <p class="lead">Level-set before we talk about how we use it as a Lab.</p>
+
+  <p>Claude is an AI assistant that makes it easier to talk to a computer. You describe what you want in plain English &mdash; no code to write, no command syntax to memorize, no buried menus to navigate &mdash; and Claude translates that into the underlying work: reading files, pulling data, drafting text, running an analysis. Useful framing: a very well-read generalist who also speaks every technical language the Lab uses, joined yesterday, no institutional memory, has to be briefed every time.</p>
+
+  <div class="two-col">
+    <div>
+      <div class="col-header" style="color: #56a360;">Good at</div>
+      <div class="card">
+        <div class="card-body">
+          Turning a plain-English question into working code, a query, or an analysis<br>
+          Working with data you give it &mdash; summarizing, reshaping, comparing, spotting patterns<br>
+          Moving between formats (CSV &harr; JSON, table &harr; chart, prose &harr; outline, EN &harr; ES)<br>
+          Explaining unfamiliar concepts, codebases, or datasets in accessible terms<br>
+          Drafting a first version of almost anything, fast<br>
+          Structured reasoning when you supply the structure
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="col-header" style="color: #e89b3f;">Limited at</div>
+      <div class="card">
+        <div class="card-body">
+          Facts after its training cutoff &mdash; confirm with a live source<br>
+          Exact arithmetic on anything nontrivial &mdash; have it write the calculation, don't trust the mental math<br>
+          Citing specific papers without source material in front of it &mdash; will hallucinate references<br>
+          Things you didn't tell it about &mdash; unpublished work, internal context, sensitive data<br>
+          Replacing your judgment on contested questions
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    The kit fills the "didn't tell it about" gap &mdash; for the Lab.
+  </div>
+</section>
+
+<!-- SLIDE 5 (NEW B): How to talk to Claude -->
+<section class="slide" id="s5">
+  <span class="slide-num">5 / 27</span>
+  <span class="act-label">Primer</span>
+  <span class="marker"></span>
+  <span class="primer-indicator">For anyone new to Claude</span>
+  <h2>How to talk to Claude effectively</h2>
+  <p class="lead">Five moves that improve most prompts.</p>
+
+  <div class="tip-row">
+    <div class="tip-num">1</div>
+    <div>
+      <div class="tip-title">Be specific about the data and the output you want</div>
+      <span class="tip-weak">Analyze this data.</span>
+      <span class="tip-strong">Open <code>nzipl_mex_state_rca.json</code>. Return the top 5 states for EV Components by RCA, as a markdown table with state name, RCA, exports (USD), and product count. Sort descending.</span>
+    </div>
+  </div>
+
+  <div class="tip-row">
+    <div class="tip-num">2</div>
+    <div>
+      <div class="tip-title">Give context before the ask</div>
+      <span class="tip-weak">Is this pipeline right?</span>
+      <span class="tip-strong">This Python pipeline pulls DataMexico <code>/stats/rca</code> to get state-level manufacturing employment by SCIAN code. I'm worried the multi-month parameter isn't doing what I think. Walk me through what each request returns and where the aggregation happens.</span>
+    </div>
+  </div>
+
+  <div class="tip-row">
+    <div class="tip-num">3</div>
+    <div>
+      <div class="tip-title">Iterate &mdash; the first answer is a draft</div>
+      <span class="tip-weak">Build me a dashboard.</span>
+      <span class="tip-strong">First pass: a single HTML page with Leaflet, Mexico states shaded by RCA for grid hardware, using the design tokens from <code>nzipl-design</code>. Keep it minimal. We'll iterate on layers, filters, and click behavior after I see the base map.</span>
+    </div>
+  </div>
+
+  <div class="tip-row">
+    <div class="tip-num">4</div>
+    <div>
+      <div class="tip-title">Ask it to cite its sources and show reasoning</div>
+      <span class="tip-weak">Why is Nuevo Le&oacute;n's RCA high?</span>
+      <span class="tip-strong">Using <code>nzipl_mex_state_rca.json</code>, explain Nuevo Le&oacute;n's RCA for grid hardware. Point to the specific HS6 products driving the score and the exports that anchor them. Flag anything ambiguous or anything that might be a data artifact.</span>
+    </div>
+  </div>
+
+  <div class="tip-row">
+    <div class="tip-num">5</div>
+    <div>
+      <div class="tip-title">Tell it what good looks like</div>
+      <span class="tip-weak">Make me a chart.</span>
+      <span class="tip-strong">Build a horizontal bar chart of the top 10 EV Components exporters by state using D3 v7. Match the chart style in <code>nzipl-playcard-mexico-ev-components.html</code> &mdash; dark background, green bars, Archivo font, animate on scroll using the observer pattern the other cards use.</span>
+    </div>
+  </div>
+
+  <p style="margin-top: 1.5rem; color:#909296; font-size:0.9rem;">Bad answers are usually under-prompted. Good answers are specific, contextualized, and iterated.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- ACT 1: SHARED CONTEXT                                         -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 6: Team Plan -->
+<section class="slide" id="s6">
+  <span class="slide-num">6 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>Claude Team: what it solves and what it doesn't</h2>
+  <p class="lead">A Team subscription gives everyone access. But access is not the bottleneck.</p>
+
+  <div class="two-col">
+    <div>
+      <div class="col-header" style="color: #56a360;">What a Team plan solves</div>
+      <div class="card">
+        <div class="card-body">
+          <strong>Shared billing</strong>. One invoice, one admin, no personal subscriptions.<br><br>
+          <strong>Higher usage limits</strong>. More messages, longer context, priority access.<br><br>
+          <strong>Projects</strong>. Upload documents to a Project and Claude remembers them across conversations.<br><br>
+          <strong>Web access</strong>. Everyone can use claude.ai for writing, research, and analysis from day one.
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="col-header" style="color: #c94a4a;">What it does not solve</div>
+      <div class="card">
+        <div class="card-body">
+          <strong>No shared memory</strong>. One person's conversation history is invisible to another's.<br><br>
+          <strong>No code execution</strong>. Claude can write code but can't run it. No pipelines, no file generation.<br><br>
+          <strong>No repo awareness</strong>. Claude doesn't know what's in our codebase, data files, or deliverable architecture.<br><br>
+          <strong>No compounding</strong>. Each session starts fresh. Team knowledge doesn't accumulate.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>The Team plan is the foundation. What we build on top of it is what matters.</p>
+</section>
+
+<!-- SLIDE 7 (NEW C): What Claude shouldn't see -->
+<section class="slide" id="s7">
+  <span class="slide-num">7 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>What Claude shouldn't see</h2>
+  <p class="lead">Privacy rules for a research Lab.</p>
+
+  <div class="two-col">
+    <div>
+      <div class="col-header" style="color: #56a360;">OK to share</div>
+      <div class="card">
+        <div class="card-body">
+          Published data and papers<br>
+          Public trade data, public policy documents<br>
+          Anonymized methodology<br>
+          Your own draft thinking<br>
+          The kit's content (shared by design)
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="col-header" style="color: #c94a4a;">Never share</div>
+      <div class="card">
+        <div class="card-body">
+          Unpublished findings shared in confidence<br>
+          Client or partner data marked confidential<br>
+          Unsigned grant agreements or proposals<br>
+          Personal data about identifiable individuals<br>
+          Anything covered by NDA
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>The Claude Team plan does not use your conversations to train the model.</strong> Anthropic has committed to zero training on Team and Enterprise inputs. Model behavior is not the same as data handling &mdash; treat anything you paste as if it could leave your screen. When in doubt, ask before pasting.
+  </div>
+</section>
+
+<!-- SLIDE 8: Claude Code -->
+<section class="slide" id="s8">
+  <span class="slide-num">8 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>Claude Code: the step beyond chat</h2>
+  <p class="lead">A version of Claude that lives on your computer, next to the files you work with every day. Point it at a project folder and it reads what's there, writes new files, and runs code for you &mdash; no copy-paste loop between a browser and your laptop.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Reads your project folder</div>
+      <div class="card-note">Claude sees the data files, documentation, code, and deliverables in the folder. It understands the whole project, not just what you paste into a chat box.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Runs code for you</div>
+      <div class="card-note">Python pipelines, data processing, small scripts. Results come back in the same conversation. You don't need to run anything yourself.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Writes and edits files</div>
+      <div class="card-note">Generates HTML deliverables, updates JSON configs, creates charts. The output lands directly in the project folder &mdash; ready to open, share, or commit.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Reads a briefing file on start</div>
+      <div class="card-note"><code style="color:#7fc77f;">CLAUDE.md</code> is a plain-text file at the top of the project folder. Think of it as the note the Lab leaves for any new analyst on their first day: data sources, vocabulary, methodology, what to watch out for. Claude reads it before you say anything, so every session starts already briefed.</div>
+    </div>
+  </div>
+
+  <p>Included with every Claude Team subscription. No separate license.</p>
+</section>
+
+<!-- SLIDE 9: How Claude Code Learns -->
+<section class="slide" id="s9">
+  <span class="slide-num">9 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>How Claude Code learns from a repo</h2>
+  <p>Three mechanisms. Each loaded automatically when Claude Code opens in the repo directory:</p>
+
+  <div class="diagram">
+    <div class="diagram-box">
+      <h4>CLAUDE.md</h4>
+      <p>Auto-loaded context. Data sources, API patterns, deliverable standards, glossary, methodology.</p>
+    </div>
+    <div class="diagram-arrow">&rarr;</div>
+    <div class="diagram-box">
+      <h4>Skills</h4>
+      <p>Invocable expertise. Design system, chart styles, analytical templates. Run with /skill-name.</p>
+    </div>
+    <div class="diagram-arrow">&rarr;</div>
+    <div class="diagram-box">
+      <h4>Commands</h4>
+      <p>Reusable prompts. Structured tasks anyone can run, producing consistent output. Run with /command-name.</p>
+    </div>
+  </div>
+
+  <p>The content of these files is the Lab's collective knowledge. When anyone opens Claude Code in this repo, they inherit everything the team has documented.</p>
+</section>
+
+<!-- SLIDE 10: The Kit -->
+<section class="slide" id="s10">
+  <span class="slide-num">10 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>What's in the kit</h2>
+  <p class="lead">One repo. Clone it and your Claude sessions know the Lab.</p>
+
+  <table class="file-table">
+    <thead>
+      <tr><th>File</th><th>Content (actual snippet)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CLAUDE.md</code></td>
+        <td>Lab context loaded on session start.<span class="snippet">OEC API requires three headers plus browser User-Agent (Cloudflare protection).</span></td>
+      </tr>
+      <tr>
+        <td><code>glossary.md</code></td>
+        <td>31 acronyms + 22 internal terms.<span class="snippet">Relatedness density: mean proximity of a play's target products to a location's existing exports. Forward-looking complement to RCA.</span></td>
+      </tr>
+      <tr>
+        <td><code>gotchas.md</code></td>
+        <td>Documented silent-failure issues.<span class="snippet">DataMexico /data drops sectors 31-33. Workaround: /stats/rca with multi-month parameter.</span></td>
+      </tr>
+      <tr>
+        <td><code>discoveries.md</code></td>
+        <td>Running log, append-only. Primary way the kit grows (next slide).</td>
+      </tr>
+      <tr>
+        <td><code>.claude/skills/nzipl-design/</code></td>
+        <td>CICE design system: tokens, HTML patterns, chart styles, PPTX layouts. This deck uses it.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The structure is scaffolding. The team fills it. Not one person's work product; a shared resource that gets better as more people contribute.</p>
+</section>
+
+<!-- SLIDE 11: discoveries.md -->
+<section class="slide" id="s11">
+  <span class="slide-num">11 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>discoveries.md</h2>
+  <p class="lead">One line, push, done. That is the contribution mechanism.</p>
+  <p>Not just errors. Data sources, patterns, commands, methodology insights. Anything worth sharing.</p>
+
+  <div class="file-mock">
+    <span class="filename">discoveries.md &middot; actual entries</span>
+    <div class="line"><span class="date">2026-04-07</span> | <span class="author">ggv</span> | <span class="finding">DataMexico /data drops manufacturing sectors 31-33; use /stats/rca with multi-month parameter</span> <span class="tag pipeline">pipeline:denue</span></div>
+    <div class="line"><span class="date">2026-04-08</span> | <span class="author">ggv</span> | <span class="finding">FDI enrichment: one web search per row covers 5-7 of 8 source columns; don't search per-column</span> <span class="tag pipeline">pipeline:enrichment</span></div>
+    <div class="line new"><span class="date">2026-04-21</span> | <span class="author">you</span> | <span class="finding">Your next discovery goes here &mdash; one line, any teammate can add</span> <span class="tag pattern">pattern</span></div>
+  </div>
+
+  <p>The tags are optional. In practice, just write a one-liner. The cost is 30 seconds. The return is permanent: every Claude session from that point forward knows what you wrote.</p>
+</section>
+
+<!-- SLIDE 12: Your turn -->
+<section class="slide" id="s12">
+  <span class="slide-num">12 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <span class="interactive-indicator">Interactive &middot; Chat &middot; 3 min</span>
+  <h2>Your turn</h2>
+  <p class="lead">Make contribution concrete, not hypothetical.</p>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Post in Zoom chat</div>
+    One thing you rediscovered in the last month. A data source, an API quirk, a methodology pattern, a naming convention. One line is enough.
+  </div>
+
+  <p>We'll read 2-3 aloud and reframe each one. Each is a candidate entry for <code style="color:#7fc77f;">discoveries.md</code>. Today it lives in your head. With the kit, it becomes a line the whole Lab inherits.</p>
+
+  <p style="color:#7fc77f; font-size:0.9rem;">No judgment. Half-formed thoughts welcome. The point is to feel the difference between "I know this" and "the Lab knows this."</p>
+</section>
+
+<!-- SLIDE 13: /enrich-fdi example -->
+<section class="slide" id="s13">
+  <span class="slide-num">13 / 27</span>
+  <span class="act-label">Act 1 &middot; Shared Context</span>
+  <span class="marker"></span>
+  <h2>Example: /enrich-fdi</h2>
+  <p class="lead">A task that started as one person's need. Now it's shared infrastructure.</p>
+
+  <p>The fDi Markets dataset has 698 FDI project rows. Each needs independent source URLs from press releases, trade publications, and government announcements. Manually, this takes hours.</p>
+
+  <div class="before-after">
+    <div>
+      <div class="ba-label before">Input</div>
+      <div class="card" style="font-size:0.8rem;">
+        <p style="margin:0;"><strong>xlsx file</strong> with FDI project data<br>Columns A-O: company, sector, city, investment, year<br>Columns P-W: <span style="color:#c94a4a;">empty (need source URLs)</span></p>
+      </div>
+    </div>
+    <div>
+      <div class="ba-label after">Output</div>
+      <div class="card" style="font-size:0.8rem;">
+        <p style="margin:0;"><strong>Same xlsx</strong>, columns P-W filled<br>Each cell: URL to confirming article<br><span style="color:#56a360;">Reuters, PV Magazine, Electrive, press releases</span></p>
+      </div>
+    </div>
+  </div>
+
+  <p>Anyone can run <code style="color:#7fc77f;">/enrich-fdi</code> from the kit. The command knows the column map, search strategy, quality rules, and fallback logic. The person running it doesn't need to know any of that.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- ACT 2: SHARED PLATFORM                                        -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 14: Platform layers -->
+<section class="slide" id="s14">
+  <span class="slide-num">14 / 27</span>
+  <span class="act-label">Act 2 &middot; Shared Platform</span>
+  <span class="marker"></span>
+  <h2>From deliverables to platform</h2>
+
+  <div class="big-statement">The Lab already produces play cards, infrastructure maps, and cross-country comparators. The question is whether they stay <span>bespoke</span> or become a <span>system the team operates</span>.</div>
+
+  <p>Behind every deliverable is a stack: trade data pulled, RCA computed, infrastructure layers assembled, charts generated. That stack can be parameterized so any team member produces analytical output for any country and play.</p>
+
+  <div class="layer-stack">
+    <div class="layer-row">
+      <div class="layer-label">Knowledge</div>
+      <div class="layer-content"><strong>The kit (Act 1).</strong> Glossary, gotchas, discoveries, design system, commands. Makes the other three layers accessible.</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label">Visualization</div>
+      <div class="layer-content">Play cards, infrastructure maps, play selectors. Self-contained HTML, scrollytelling, D3, Leaflet.</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label">Analytical</div>
+      <div class="layer-content">Play selection scoring, subnational RCA, relatedness density, supply chain mapping, infrastructure readiness.</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label">Data</div>
+      <div class="layer-content">OEC, DataMexico, BNEF, DENUE, OSM, WRI. Python stdlib only. Cached JSON. Reproducible.</div>
+    </div>
+  </div>
+
+  <p>These layers exist for Mexico. The question is whether they stay as one person's toolbox or become something the team operates.</p>
+</section>
+
+<!-- SLIDE 15: Where we are -->
+<section class="slide" id="s15">
+  <span class="slide-num">15 / 27</span>
+  <span class="act-label">Act 2 &middot; Shared Platform</span>
+  <span class="marker"></span>
+  <h2>Where we are</h2>
+  <p class="lead">Mexico proved the architecture end-to-end. The rest is a roadmap, not a promise.</p>
+
+  <p>Mexico: three play cards, an infrastructure map with 15 layers, a play selector, a working Atlas Bot prototype. Meanwhile CICE serves cross-country comparisons, WP4 maps competitiveness across 155 countries, and the team uses Claude for research and writing. None of this starts from zero.</p>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-label">Phase 1 &middot; this summer</div>
+      <div class="phase-title">Systematize Mexico + Brazil</div>
+      <div class="phase-desc">Country pipeline configs. <code style="color:#7fc77f;">/play-card --country=brazil --play=solar</code> as the goal command.</div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">Phase 2 &middot; fall</div>
+      <div class="phase-title">Extend to India + CICE</div>
+      <div class="phase-desc">India data + play cards. Formal export pipeline from the analytical layer into CICE's data format.</div>
+    </div>
+    <div class="phase future">
+      <div class="phase-label">Phase 3 &middot; winter</div>
+      <div class="phase-title">Atlas vision</div>
+      <div class="phase-desc">Subnational depth for CICE. Process chains. Temporal dimension. Policy interface. <em>Details in appendix.</em></div>
+    </div>
+  </div>
+
+  <div class="before-after" style="margin-top: 1rem;">
+    <div>
+      <div class="ba-label before">Current workflow</div>
+      <div class="card" style="font-size:0.8rem;">
+        <p style="margin:0;">One person runs the pipeline, embeds the data, builds the deliverable, publishes. <span style="color:#c94a4a;">Single point of production.</span></p>
+      </div>
+    </div>
+    <div>
+      <div class="ba-label after">Platform workflow</div>
+      <div class="card" style="font-size:0.8rem;">
+        <p style="margin:0;">A team member runs <code style="color:#7fc77f;">/play-card --country brazil --play solar</code>. Claude handles pipeline, data, template. The team member reviews, refines, adds local knowledge. <span style="color:#56a360;">Multiplied production.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ACT 3: HOW THE TEAM ADOPTS THIS                              -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 16: Levels -->
+<section class="slide" id="s16">
+  <span class="slide-num">16 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <h2>Levels of Claude adoption</h2>
+  <p class="lead">Most of the team is at Level 0. The kit moves everyone to Level 1 on day one.</p>
+
+  <div class="levels">
+    <div class="level-item highlight">
+      <div class="level-dot">0</div>
+      <div>
+        <div class="level-title">Chat</div>
+        <div class="level-desc">Claude Pro or Team, web interface. Writing assistance, research synthesis, data interpretation. Stateless: every session starts from zero.</div>
+      </div>
+    </div>
+    <div class="level-item active">
+      <div class="level-dot">1</div>
+      <div>
+        <div class="level-title">Kit-informed</div>
+        <div class="level-desc">Clone the kit repo, open Claude Code. Sessions load Lab context automatically. Every answer uses the right vocabulary, data sources, and methodology.</div>
+      </div>
+    </div>
+    <div class="level-item">
+      <div class="level-dot">2</div>
+      <div>
+        <div class="level-title">Pipeline</div>
+        <div class="level-desc">Run data pipelines and generate deliverables via commands. Claude handles the code; you review and refine the output.</div>
+      </div>
+    </div>
+    <div class="level-item">
+      <div class="level-dot">3</div>
+      <div>
+        <div class="level-title">Contributor</div>
+        <div class="level-desc">Append discoveries, propose gotchas, improve commands. The kit gets smarter because you used it.</div>
+      </div>
+    </div>
+    <div class="level-item faint">
+      <div class="level-dot">4</div>
+      <div>
+        <div class="level-title">Agent</div>
+        <div class="level-desc">Scheduled tasks that run without prompting &mdash; data freshness, consistency audits, deliverable QA. Aspirational. Later in the year. Not the ask today.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Nobody needs to jump to Level 4. Level 1 is free, immediate, already valuable.</p>
+</section>
+
+<!-- SLIDE 17: L0 vs L1 -->
+<section class="slide" id="s17">
+  <span class="slide-num">17 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <h2>Level 0 vs. Level 1</h2>
+  <p class="lead">The difference is context. The effort is zero.</p>
+
+  <div class="before-after">
+    <div>
+      <div class="ba-label before">Level 0: Generic Claude</div>
+      <div class="terminal-mock">
+        <div><span class="prompt">You:</span> <span class="cmd">What is Mexico's comparative advantage in solar equipment?</span></div>
+        <div style="margin-top:0.5rem;"><span class="output">Mexico has a growing solar industry... [generic overview, no HS6 codes, no subnational detail, no Lab methodology]</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="ba-label after">Level 1: Kit-informed</div>
+      <div class="terminal-mock">
+        <div><span class="prompt">You:</span> <span class="cmd">What is Mexico's RCA for solar supply chain products?</span></div>
+        <div style="margin-top:0.5rem;"><span class="output">Running S0 methodology against BACI 2022. Mexico has RCA &gt; 1 for several HS6 products in the solar supply chain. Pipeline: nzipl_playcard_pipeline.py --play solar</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p>Same user. Same question. The only difference: the kit repo was cloned. Claude loaded CLAUDE.md on session start and answered in the Lab's analytical frame.</p>
+</section>
+
+<!-- SLIDE 18: Demo -->
+<section class="slide" id="s18">
+  <span class="slide-num">18 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <span class="demo-indicator">Live demo &middot; 2 min</span>
+  <h2>Watch it happen</h2>
+  <p class="lead">Same prompt, two places. One has the kit loaded. One doesn't.</p>
+
+  <div class="prompt-box">
+    <div class="prompt-label">The prompt, both times</div>
+    What is Mexico's RCA for grid hardware?
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="col-header" style="color: #c94a4a;">A volunteer &middot; Claude.ai, no context</div>
+      <div class="card">
+        <div class="card-body">
+          I'll ask one person in the room to open Claude.ai in a fresh browser, paste the prompt, and read the answer aloud.<br><br>
+          Expect: a general description of RCA, some high-level language about Mexico's industrial base, no specific numbers tied to our taxonomy.
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="col-header" style="color: #56a360;">Me &middot; Claude Code inside the kit</div>
+      <div class="card">
+        <div class="card-body">
+          I'll run the same prompt from the kit folder on my machine.<br><br>
+          Expect: RCA 3.02, $16.8B exports, top states (Nuevo Le&oacute;n, Sonora, Baja California), references to the underlying data file &mdash; because <code style="color:#7fc77f;">CLAUDE.md</code> briefed Claude on the Lab's methodology before the question was even asked.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>Same person could run either side. The only variable is whether the kit is loaded.</p>
+</section>
+
+<!-- SLIDE 19 (NEW D): Research use cases -->
+<section class="slide" id="s19">
+  <span class="slide-num">19 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <h2>Research use cases</h2>
+  <p class="lead">Six workflow stages where a Lab-informed Claude earns its seat at the table.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Data integration</div>
+      <div class="card-body" style="font-size:0.82rem;">"Pull this World Bank csv and this DataMexico file. Normalize the country codes, align on year, and produce a single tidy dataset we can use to compare EV components trade."</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Data analysis and sense-making</div>
+      <div class="card-body" style="font-size:0.82rem;">"Why might Nuevo Le&oacute;n's RCA for grid hardware have dropped between 2019 and 2023? Check the kit's HS6 taxonomy, flag the products doing most of the work, and propose two candidate explanations."</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Visualization</div>
+      <div class="card-body" style="font-size:0.82rem;">"Suggest three chart types for comparing subnational RCA across 32 Mexican states for three plays. Build the strongest one in D3 using the Lab's design tokens."</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Rapid prototyping</div>
+      <div class="card-body" style="font-size:0.82rem;">"Sketch a one-page Leaflet map of Mexican industrial parks colored by net-zero readiness. Use <code>nzipl_industrial_parks.json</code>. Working prototype I can click through, no polish yet."</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Deep research</div>
+      <div class="card-body" style="font-size:0.82rem;">"Scan the last 18 months of published work on barriers to EV component manufacturing in Mexico. Summarize the three main arguments, name the most cited sources, and flag where the evidence is thin."</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Peer review of your own work</div>
+      <div class="card-body" style="font-size:0.82rem;">"Read this draft. Where would an economist from a different school of thought push back? Where are my assumptions unexamined?"</div>
+    </div>
+  </div>
+
+  <p>Pick one. Try it next week against something already on your plate.</p>
+</section>
+
+<!-- SLIDE 20: Level 2 -->
+<section class="slide" id="s20">
+  <span class="slide-num">20 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <h2>Level 2: pipeline users</h2>
+  <p class="lead">Run the analysis. Review the output. Refine what matters.</p>
+
+  <div class="terminal-mock">
+    <div><span class="prompt">You:</span> <span class="cmd">/enrich-fdi</span></div>
+    <div style="margin-top:0.5rem;"><span class="output">Reading FDI_Combined.xlsx... 698 rows, columns P-W empty.</span></div>
+    <div><span class="output">Starting batch 1 (rows 1-20). Searching for confirming articles...</span></div>
+    <div><span class="output">Row 1: Tesla Gigafactory Monterrey - found Reuters, El Financiero, fDi Intelligence.</span></div>
+    <div><span class="output">Row 2: BMW San Luis Potosi expansion - found Automotive News, SLP government release.</span></div>
+    <div><span class="output">...</span></div>
+    <div><span class="output">Batch 1 complete. 12/20 fully sourced, 8 partial. Writing to xlsx.</span></div>
+    <div style="margin-top:0.5rem;"><span class="comment"># The command knows the column map, search strategy, quality rules.</span></div>
+    <div><span class="comment"># The user didn't write a single line of code.</span></div>
+  </div>
+
+  <p>A command wraps expertise into a reusable prompt. The critical skill at Level 2 is not coding; it is knowing what the output means and whether it is right. That is analytical judgment, which the Lab already has.</p>
+</section>
+
+<!-- SLIDE 21: Level 3 -->
+<section class="slide" id="s21">
+  <span class="slide-num">21 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <h2>Level 3: the norm that makes it work</h2>
+  <p class="lead">The kit grows because the team uses it. One line at a time.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">When you hit an API quirk</div>
+      <div class="card-body">Add a line to <code style="color:#7fc77f;">discoveries.md</code>. The next person's Claude session inherits it. You just saved a colleague two hours.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">When you find a better data source</div>
+      <div class="card-body">Append to <code style="color:#7fc77f;">discoveries.md</code> with the endpoint, auth details, any quirks. Significant ones get promoted to the glossary at quarterly review.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">When a task recurs</div>
+      <div class="card-body">Draft a command following the <code style="color:#7fc77f;">/enrich-fdi</code> pattern. Save to <code style="color:#7fc77f;">.claude/commands/</code>. Everyone can now run it.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">When Claude misreads the kit</div>
+      <div class="card-body">That is also a discovery. Note which file confused it. The kit is wrong, not Claude. Fix the kit.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2rem; font-size: 1rem; color: #EAEAEA; font-weight: 600;">How you actually do it</h3>
+
+  <div class="two-col" style="margin-top: 0.75rem;">
+    <div>
+      <div class="col-header" style="color: #56a360;">Add a line to discoveries.md</div>
+      <div class="file-mock" style="margin: 0;">
+        <span class="filename">discoveries.md &middot; append at the bottom</span>
+        <div class="line"><span class="date">2026-04-21</span> | <span class="author">your-initials</span> | <span class="finding">The thing you learned, in one sentence</span></div>
+      </div>
+      <p style="font-size: 0.8rem; color: #909296; margin-top: 0.5rem; line-height: 1.5;">Open the file in any editor, type the line, save, push. If Git feels like a hurdle, ask Claude: "add this as a new entry in discoveries.md and commit it." Claude does the rest.</p>
+    </div>
+    <div>
+      <div class="col-header" style="color: #56a360;">Draft a command</div>
+      <div class="file-mock" style="margin: 0;">
+        <span class="filename">.claude/commands/your-command.md</span>
+        <div class="line"><span class="finding">---</span></div>
+        <div class="line"><span class="finding">description: One-line summary of what this does</span></div>
+        <div class="line"><span class="finding">---</span></div>
+        <div class="line"><span class="finding"></span></div>
+        <div class="line"><span class="finding">Plain-English instructions for Claude:</span></div>
+        <div class="line"><span class="finding">&middot; what file(s) to read</span></div>
+        <div class="line"><span class="finding">&middot; what steps to follow</span></div>
+        <div class="line"><span class="finding">&middot; what to produce</span></div>
+        <div class="line"><span class="finding">&middot; quality rules, fallbacks, edge cases</span></div>
+      </div>
+      <p style="font-size: 0.8rem; color: #909296; margin-top: 0.5rem; line-height: 1.5;">You can write this by hand, or ask Claude to draft it after you've run a task once manually: "turn what we just did into a reusable command." Save as <code style="color:#7fc77f;">/your-command</code>, anyone on the team can run it.</p>
+    </div>
+  </div>
+
+  <p style="color:#909296; font-size:0.9rem; margin-top: 1.5rem;">Level 4 (scheduled agents for data freshness, consistency audits, deliverable QA) is real and running in other corners of this work. We'll explore it for the Lab later this year. Appendix has details.</p>
+</section>
+
+<!-- SLIDE 22: Compounding -->
+<section class="slide" id="s22">
+  <span class="slide-num">22 / 27</span>
+  <span class="act-label">Act 3 &middot; How the team adopts this</span>
+  <span class="marker"></span>
+  <h2>The compounding effect</h2>
+
+  <div class="big-statement">Every discovery makes every future session <span>smarter</span>. Every command makes every future task <span>faster</span>. Every glossary entry saves a question.</div>
+
+  <div class="compound-visual">
+    <div class="compound-bar dim" style="height: 15%;"><span class="bar-label">Month 1</span></div>
+    <div class="compound-bar dim" style="height: 22%;"><span class="bar-label">2</span></div>
+    <div class="compound-bar dim" style="height: 30%;"><span class="bar-label">3</span></div>
+    <div class="compound-bar" style="height: 40%;"><span class="bar-label">4</span></div>
+    <div class="compound-bar" style="height: 52%;"><span class="bar-label">5</span></div>
+    <div class="compound-bar" style="height: 66%;"><span class="bar-label">6</span></div>
+    <div class="compound-bar" style="height: 82%;"><span class="bar-label">7</span></div>
+    <div class="compound-bar" style="height: 100%;"><span class="bar-label">8</span></div>
+  </div>
+
+  <p>Chat is linear: each session is independent. Collective intelligence compounds: each session builds on everything the team has contributed before it. The gap widens every month.</p>
+
+  <div class="callout">
+    The team that treats Claude as a chatbot gets a calculator. The team that builds collective intelligence gets an operating system.
+  </div>
+</section>
+
+<!-- SLIDE 23 (NEW F): What Claude doesn't replace -->
+<section class="slide" id="s23">
+  <span class="slide-num">23 / 27</span>
+  <span class="marker"></span>
+  <h2>What Claude doesn't replace</h2>
+  <p class="lead">Drawing a clear line around what stays human.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Lab judgment</div>
+      <div class="card-body">Which plays to prioritize, which countries to engage, which partners to work with. Contested decisions belong to humans with context Claude doesn't have.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Peer review</div>
+      <div class="card-body">Methodological rigor, contested interpretations, credentialing. Claude can spot gaps; it cannot confer validity.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Fieldwork</div>
+      <div class="card-body">Interviews, site visits, relationships with ministries and firms. The signal isn't in the transcript &mdash; it's in the room.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Client trust</div>
+      <div class="card-body">The Lab's reputation rests on humans being in the room. Claude reduces friction; it doesn't shortcut presence.</div>
+    </div>
+  </div>
+
+  <p>The kit is a force multiplier, not a substitute. A Lab without judgment, peer review, fieldwork, and trust doesn't become a Lab by adding Claude.</p>
+</section>
+
+<!-- SLIDE 24: Honest limits -->
+<section class="slide" id="s24">
+  <span class="slide-num">24 / 27</span>
+  <span class="marker"></span>
+  <h2>Honest limits</h2>
+  <p class="lead">Three questions worth answering before you ask them.</p>
+
+  <div class="limits">
+    <div class="limit">
+      <div class="limit-q">What breaks?</div>
+      <div class="limit-a">The kit drifts from reality if nobody updates it. The first stale entry erodes trust. Mitigation: quarterly review, named maintainer, team contributes.</div>
+    </div>
+    <div class="limit">
+      <div class="limit-q">What's the risk?</div>
+      <div class="limit-a">Wrong discoveries propagate. Mitigation: two-lane system. <code style="color:#7fc77f;">discoveries.md</code> is free-for-all (fast). Promotion to <code style="color:#7fc77f;">gotchas.md</code> or <code style="color:#7fc77f;">glossary.md</code> requires PR review.</div>
+    </div>
+    <div class="limit">
+      <div class="limit-q">What's the cost?</div>
+      <div class="limit-a">Claude Team: ~$30/seat/month. Contribution: 30 seconds per discovery, maybe once a week. That's the full operating cost of collective intelligence.</div>
+    </div>
+  </div>
+
+  <p>If you have a fourth worry not covered here, Q&amp;A is coming.</p>
+</section>
+
+<!-- SLIDE 25 (NEW G): Implementation timeline -->
+<section class="slide" id="s25">
+  <span class="slide-num">25 / 27</span>
+  <span class="marker"></span>
+  <h2>Implementation timeline</h2>
+  <p class="lead">From "yes" to "everyone is contributing" in one quarter.</p>
+
+  <div class="timeline-list">
+    <div class="timeline-item active">
+      <div class="timeline-when">Week 1 &middot; Admin</div>
+      <div class="timeline-what">Team plan signed. Seats provisioned. Kit repo shared at Lab level. Admin owner: one named person.</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-when">Week 2 &middot; Onboarding</div>
+      <div class="timeline-what">30-min hands-on session per person. Open Claude with the kit loaded. Try one real prompt from an actual task they're working on.</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-when">Week 3 &middot; First discoveries</div>
+      <div class="timeline-what">First Lab-wide <code style="color:#7fc77f;">discoveries.md</code> entry contributed by someone other than me.</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-when">Month 1 &middot; First pipeline</div>
+      <div class="timeline-what">A team member (other than me) runs an existing command like <code style="color:#7fc77f;">/enrich-fdi</code> and ships the output into a live deliverable.</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-when">Month 3 &middot; First contributed command</div>
+      <div class="timeline-what">A team member drafts a new command from a recurring task. PR, review, merge. The kit expands under new authorship.</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-when">Quarterly &middot; Review</div>
+      <div class="timeline-what">Measure discoveries contributed, commands created, pipeline runs by team members. Decide what to systematize next. Promote signal entries to <code style="color:#7fc77f;">gotchas.md</code>.</div>
+    </div>
+  </div>
+
+  <p>None of this depends on everyone becoming technical. It depends on one norm: when you learn something, add it.</p>
+</section>
+
+<!-- SLIDE 26: The Ask -->
+<section class="slide" id="s26">
+  <span class="slide-num">26 / 27</span>
+  <span class="marker"></span>
+  <h2>The ask</h2>
+  <p class="lead">Four things to make this work at Lab scale.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label" style="color:#e89b3f;">&#9744; Claude Team plan</div>
+      <div class="card-body">A shared subscription for the Lab. Claude.ai for everyone (chat, Projects, web) plus Claude Code for pipeline and deliverable work. One invoice, one admin.</div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:#e89b3f;">&#9744; Kit as Lab resource</div>
+      <div class="card-body">Repo at <code>github.com/Gilix/nzipl-claude-kit</code>. Already public, already readable. Once the Team plan lands, everyone can use it, contribute to it, and inherit what others have added.</div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:#e89b3f;">&#9744; One norm</div>
+      <div class="card-body">When you learn something worth sharing, add a line to <code style="color:#7fc77f;">discoveries.md</code>. 30 seconds. Permanent return across the whole team.</div>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:#e89b3f;">&#9744; Quarterly review</div>
+      <div class="card-body">Measure discoveries, commands, pipeline runs. Review the roadmap. Decide what to build or systematize next. First review ~90 days after approval.</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 2rem;">
+    The gap between "I learned something" and "the whole Lab knows it" should be one line and one push. That's what a yes gets us.
+  </div>
+</section>
+
+<!-- SLIDE 27: Commitment -->
+<section class="slide" id="s27">
+  <span class="slide-num">27 / 27</span>
+  <span class="marker"></span>
+  <span class="interactive-indicator">Interactive &middot; Chat &middot; 3 min</span>
+  <h2>One question before Q&amp;A</h2>
+  <p class="lead">Help me understand what would be most useful to you.</p>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Post in Zoom chat</div>
+    What question would you most want answered by a Lab-informed Claude? One sentence.
+  </div>
+
+  <p>Your answers become the first test cases for the kit &mdash; the list of questions a Lab-informed Claude should be able to answer once the team has access.</p>
+
+  <p style="color:#7fc77f; font-size:0.95rem; margin-top: 1rem;">Questions &rarr;</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- APPENDIX                                                     -->
+<!-- ============================================================ -->
+
+<div class="appendix-divider">
+  <h3>Appendix</h3>
+  <p>Reference material for the curious. Not presented in the session.</p>
+</div>
+
+<!-- APPENDIX A: Atlas -->
+<section class="slide" id="appendix-a">
+  <span class="slide-num">A / B</span>
+  <span class="act-label">Appendix A</span>
+  <span class="marker"></span>
+  <h2>Toward the Atlas</h2>
+  <p class="lead">CICE evolves from cross-country snapshots to subnational depth.</p>
+
+  <p>The Clean Industrial Capabilities Explorer shows which countries have competitive advantages in clean energy technologies. The Atlas extends this in four dimensions:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">More depth</div>
+      <div class="card-body">Subnational data: state-level RCA, municipality trade, supply chain employment, infrastructure readiness. Replicated per country.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">More technologies</div>
+      <div class="card-body">Process chain products (capital goods, testing equipment) alongside supply chain products. Connects to WP4's capability cluster framework.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Temporal dimension</div>
+      <div class="card-body">Competitiveness trajectories over time, not just snapshots. Which regions are building capability? Which are losing it?</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Policy interface</div>
+      <div class="card-body">Constraint maps, sequencing timelines, finance architecture alongside the data. Analysis that leads to action.</div>
+    </div>
+  </div>
+
+  <p>The platform produces the analytical layer. CICE displays it. The platform feeds the Atlas.</p>
+</section>
+
+<!-- APPENDIX B: Level 4 Agents -->
+<section class="slide" id="appendix-b">
+  <span class="slide-num">B / B</span>
+  <span class="act-label">Appendix B</span>
+  <span class="marker"></span>
+  <h2>Level 4: scheduled agents</h2>
+  <p class="lead">Aspirational tier. Scheduled tasks that run without prompting.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Data freshness</div>
+      <div class="card-body">Check whether OEC BACI data has been updated. Flag stale caches. Refresh when upstream changes.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Consistency audit</div>
+      <div class="card-body">Verify all play cards use the same HS6 taxonomy version. Flag drift between country pipelines.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Deliverable QA</div>
+      <div class="card-body">Scan HTML files for broken chart containers, missing data sections, design token violations. Surface issues before they reach a presentation.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Discoveries triage</div>
+      <div class="card-body">Cluster new discoveries by topic. Propose which should be promoted to glossary or gotchas at the next quarterly review.</div>
+    </div>
+  </div>
+
+  <p>Not speculative in general &mdash; scheduled Claude agents already run in production elsewhere in this work. Weekly status reports, risk scans, compliance checks. The pattern transfers directly to the Lab's analytical pipeline. Post-approval, Q3 2026.</p>
+</section>
+
+<!-- Attribution -->
+<footer class="attribution">
+  Net Zero Industrial Policy Lab | Johns Hopkins University | netzeropolicylab.com
+</footer>
+
+<script>
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  var slides = document.querySelectorAll('.slide');
+  var vh = window.innerHeight;
+  var currentIndex = Math.round(window.scrollY / vh);
+
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    var next = Math.min(currentIndex + 1, slides.length - 1);
+    slides[next].scrollIntoView({ behavior: 'smooth' });
+  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    e.preventDefault();
+    var prev = Math.max(currentIndex - 1, 0);
+    slides[prev].scrollIntoView({ behavior: 'smooth' });
+  }
+});
+</script>
+</body>
+</html>
