@@ -734,11 +734,11 @@ section:last-of-type { padding-bottom: 88px; }
 
     <div class="rp-sub">Country</div>
     <div id="br-country-btns" style="display:flex;gap:8px;margin-bottom:20px;">
-      <button class="ir-tab-card active" onclick="brCountry('India',this)" style="cursor:pointer">
+      <button class="ir-tab-card active" onclick="brSetCountry('India',this)" style="cursor:pointer">
         <span class="ir-tab-tech" style="color:var(--accent)">India</span>
         <span class="ir-tab-country">IND</span>
       </button>
-      <button class="ir-tab-card" onclick="brCountry('Brazil',this)" style="cursor:pointer">
+      <button class="ir-tab-card" onclick="brSetCountry('Brazil',this)" style="cursor:pointer">
         <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
         <span class="ir-tab-country">BRA</span>
       </button>
@@ -909,16 +909,16 @@ const BR_SELS = [
   {slug:'Raw_Material',  label:'Raw Mat.'},
 ];
 
-let brMod = 'radar', brCountry = 'India';
+let brMod = 'radar', brCurCountry = 'India';
 
 function brBuildModBtns() {
   const el = document.getElementById('br-mod-btns');
   el.innerHTML = BR_MODULES.map(m => `
     <button onclick="brSetMod('${m.id}',this)"
-      style="padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,${m.id===brMod?.15:.08});
-             background:${m.id===brMod?'rgba(60,181,74,.12)':'rgba(255,255,255,.03)'};
-             color:${m.id===brMod?'#3cb54a':'rgba(255,255,255,.55)'};
-             font-size:11px;font-weight:${m.id===brMod?700:500};cursor:pointer;
+      style="padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,${m.id===brMod ? .15 : .08});
+             background:${m.id===brMod ? 'rgba(60,181,74,.12)' : 'rgba(255,255,255,.03)'};
+             color:${m.id===brMod ? '#3cb54a' : 'rgba(255,255,255,.55)'};
+             font-size:11px;font-weight:${m.id===brMod ? 700 : 500};cursor:pointer;
              font-family:inherit;transition:all .15s">
       <div style="font-weight:700">${m.label}</div>
       <div style="font-size:9.5px;opacity:.6">${m.desc}</div>
@@ -931,8 +931,8 @@ function brSetMod(id, el) {
   brBuildGrid();
 }
 
-function brCountry(name, el) {
-  brCountry = name;
+function brSetCountry(name, el) {
+  brCurCountry = name;
   document.querySelectorAll('#br-country-btns .ir-tab-card').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   brBuildGrid();
@@ -949,7 +949,7 @@ function brBuildGrid() {
     html += `<div style="display:flex;align-items:center;padding:3px 6px 3px 0;
                font-size:11px;font-weight:700;color:${t.col}">${t.name}</div>`;
     BR_SELS.forEach(s => {
-      const path = `analysis/${brMod}/${brCountry}/${t.slug}_${brCountry}_${s.slug}_${brMod}.html`;
+      const path = `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${s.slug}_${brMod}.html`;
       html += `<a href="${path}" target="_blank"
         style="display:flex;align-items:center;justify-content:center;
                padding:5px 4px;border-radius:5px;border:1px solid rgba(${hexToRgb(t.col)},.2);
