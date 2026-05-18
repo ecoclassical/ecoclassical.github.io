@@ -568,12 +568,21 @@ section:last-of-type { padding-bottom: 88px; }
     <!-- Module + Country selectors -->
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
       <div id="br-mod-btns" style="display:flex;flex-wrap:wrap;gap:5px;flex:1;"></div>
-      <div id="br-country-btns" style="display:flex;gap:6px;flex-shrink:0;">
-        <button class="ir-tab-card active" onclick="brSetCountry('India',this)" style="cursor:pointer;padding:6px 14px;">
+      <div id="br-country-btns" style="display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;">
+        <button class="ir-tab-card active" onclick="brSetCountry('India',this)" style="cursor:pointer;padding:5px 12px;">
           <span class="ir-tab-tech" style="color:var(--accent)">India</span>
         </button>
-        <button class="ir-tab-card" onclick="brSetCountry('Brazil',this)" style="cursor:pointer;padding:6px 14px;">
+        <button class="ir-tab-card" onclick="brSetCountry('Brazil',this)" style="cursor:pointer;padding:5px 12px;">
           <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Japan',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--nuclear)">Japan</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('South_Korea',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--transmission)">S. Korea</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Vietnam',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--wind)">Vietnam</span>
         </button>
       </div>
     </div>
