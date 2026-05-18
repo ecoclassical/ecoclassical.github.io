@@ -972,6 +972,9 @@ function brBuildModBtns() {
 function brSetMod(id) {
   brMod = id;
   brBuildModBtns();
+  // Show/hide country selector — tech_tree has no country dimension
+  const ctryRow = document.getElementById('br-country-btns').parentElement;
+  ctryRow.style.display = brMod === 'tech_tree' ? 'none' : '';
   brBuildLeft();
 }
 
@@ -1005,11 +1008,17 @@ function brPreview(path, label) {
 
 function brBuildLeft() {
   const left = document.getElementById('br-left');
+  const isTechOnly = brMod === 'tech_tree';
   left.innerHTML = BR_TECHS.map(t => {
     const rgb = hexToRgb(t.col);
     const btns = BR_SELS.map(s => {
-      const path  = `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${s.slug}_${brMod}.html`;
-      const label = `${t.name} · ${brCurCountry} · ${s.label} · ${brMod}`;
+      // tech_tree: no country in path or filename
+      const path  = isTechOnly
+        ? `analysis/tech_tree/${t.slug}/${t.slug}_${s.slug}_tech_tree.html`
+        : `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${s.slug}_${brMod}.html`;
+      const label = isTechOnly
+        ? `${t.name} · ${s.label} · Tech Tree`
+        : `${t.name} · ${brCurCountry} · ${s.label} · ${brMod}`;
       return `<button
         onmouseenter="brPreview('${path}','${label}')"
         onclick="window.open('${path}','_blank')"
