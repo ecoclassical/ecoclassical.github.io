@@ -1701,8 +1701,40 @@ function loadD3(idx){
   document.head.appendChild(s);
 }
 
+function setStatus(msg,col){
+  const el=document.getElementById("_status");
+  if(!el)return;
+  el.textContent=msg;
+  el.style.borderLeft="3px solid "+(col||"#3cb54a");
+  el.style.opacity=msg?"1":"0";
+}
+
+const _loadD3Orig=loadD3;
+function loadD3(idx){
+  setStatus(idx===0?"Loading D3 (CDN 1/3)...":"Trying D3 CDN "+(idx+1)+"/3...","#f59e0b");
+  _loadD3Orig(idx);
+}
+const _loadTopoOrig=loadTopojson;
+function loadTopojson(){
+  setStatus("D3 loaded ✓  Loading map data...","#3cb54a");
+  _loadTopoOrig();
+}
+const _bootOrig=boot;
+function boot(){
+  setStatus("Fetching world atlas...","#3cb54a");
+  _bootOrig();
+}
+const _renderOrig=renderAll;
+function renderAll(){
+  setStatus("","#3cb54a");
+  _renderOrig();
+}
 loadD3(0);
 </script>
+
+<div id="_status" style="position:fixed;bottom:16px;right:16px;background:rgba(0,0,0,.85);
+  color:#fff;padding:8px 14px;border-radius:6px;font-size:12px;font-family:monospace;
+  z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s">Loading...</div>
 </body>
 </html>
 
