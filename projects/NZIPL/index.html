@@ -20,35 +20,36 @@
   --muted:    #7a9b7d;
   --accent:   #3cb54a;
   --accent2:  #C17A2E;
-  --glow:     rgba(60,181,74,.12);
-  --glow2:    rgba(193,122,46,.1);
   --font:     'Archivo', -apple-system, "Segoe UI", sans-serif;
+
+  /* Tech palette */
+  --solar:        #eab308;
+  --nuclear:      #0ea5e9;
+  --batteries:    #f59e0b;
+  --transmission: #06b6d4;
+  --wind:         #3b82f6;
+  --biofuel:      #84cc16;
+  --electrolyzers:#a855f7;
+  --geothermal:   #ef4444;
+  --heatpumps:    #f97316;
+  --magnets:      #ec4899;
 }
 
 html { scroll-behavior: smooth; }
-
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
+  background: var(--bg); color: var(--text);
+  font-family: var(--font); font-size: 15px; line-height: 1.6;
+  min-height: 100vh; overflow-x: hidden;
 }
-
-/* Background mesh */
 body::before {
-  content: "";
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
     radial-gradient(ellipse 65% 50% at 8% 6%,  rgba(60,181,74,.07)  0%, transparent 60%),
     radial-gradient(ellipse 45% 40% at 90% 80%, rgba(193,122,46,.06) 0%, transparent 55%),
     radial-gradient(ellipse 35% 35% at 55% 38%, rgba(60,181,74,.03) 0%, transparent 50%);
 }
 body::after {
-  content: "";
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image:
     linear-gradient(rgba(255,255,255,.013) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,.013) 1px, transparent 1px);
@@ -57,31 +58,25 @@ body::after {
 
 .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 28px; }
 
-/* ── TOP BAR ──────────────────────────────────────────────── */
+/* ── TOP BAR ── */
 .topbar {
-  position: relative; z-index: 2;
-  border-bottom: 1px solid var(--border);
-  padding: 11px 28px;
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid var(--border); padding: 11px 28px;
   display: flex; align-items: center; gap: 14px;
-  background: rgba(6,13,8,.8);
-  backdrop-filter: blur(8px);
+  background: rgba(6,13,8,.92); backdrop-filter: blur(12px);
 }
-.topbar-brand {
-  font-size: 11px; font-weight: 800; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--accent); white-space: nowrap;
-}
+.topbar-brand { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
 .topbar-sep { width: 1px; height: 16px; background: var(--border-hi); flex-shrink: 0; }
 .topbar-nav { display: flex; gap: 2px; flex-wrap: wrap; }
 .topbar-nav a {
-  font-size: 11.5px; font-weight: 500; color: var(--muted);
-  text-decoration: none; padding: 4px 11px; border-radius: 4px;
+  font-size: 11px; font-weight: 500; color: var(--muted);
+  text-decoration: none; padding: 4px 10px; border-radius: 4px;
   transition: color .15s, background .15s; white-space: nowrap;
 }
 .topbar-nav a:hover { color: var(--text); background: rgba(255,255,255,.06); }
 
-/* ── HEADER ───────────────────────────────────────────────── */
-header { padding: 68px 0 52px; border-bottom: 1px solid var(--border); }
-
+/* ── HEADER ── */
+header { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; font-weight: 700; letter-spacing: .14em;
@@ -92,784 +87,956 @@ header { padding: 68px 0 52px; border-bottom: 1px solid var(--border); }
   background: rgba(60,181,74,.12); border: 1px solid rgba(60,181,74,.3);
   border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 800; letter-spacing: .12em;
 }
-
 header h1 {
-  font-size: clamp(1.9rem, 4.5vw, 3.1rem);
-  font-weight: 800; letter-spacing: -.03em; line-height: 1.08;
-  color: #fff; margin-bottom: 14px;
+  font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 800;
+  letter-spacing: -.03em; line-height: 1.08; color: #fff; margin-bottom: 12px;
 }
-header h1 span {
-  background: linear-gradient(135deg, var(--accent) 0%, #a8f5b1 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-
-.header-sub {
-  font-size: 15.5px; color: var(--muted); max-width: 580px;
-  line-height: 1.7; margin-bottom: 30px;
-}
-
-.stats-row { display: flex; flex-wrap: wrap; gap: 28px; margin-bottom: 30px; }
+header h1 span { background: linear-gradient(135deg, var(--accent) 0%, #a8f5b1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.header-sub { font-size: 15px; color: var(--muted); max-width: 580px; line-height: 1.7; margin-bottom: 28px; }
+.stats-row { display: flex; flex-wrap: wrap; gap: 28px; margin-bottom: 28px; }
 .stat-item { display: flex; flex-direction: column; gap: 2px; }
-.stat-val { font-size: 1.55rem; font-weight: 800; color: #fff; line-height: 1; }
+.stat-val { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1; }
 .stat-lbl { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
 .stat-item.orange .stat-val { color: var(--accent2); }
 
-.header-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 14px; border: 1px solid var(--border-hi); border-radius: 999px;
-  font-size: 12px; font-weight: 500; color: var(--muted);
-  text-decoration: none; transition: all .2s; background: rgba(255,255,255,.03);
-}
-.chip:hover { border-color: var(--accent); color: var(--accent); background: var(--glow); }
-
-/* ── SECTION PATTERN ──────────────────────────────────────── */
+/* ── SECTION ── */
 section { padding: 52px 0 0; }
-section:last-of-type { padding-bottom: 80px; }
-
+section:last-of-type { padding-bottom: 88px; }
 .section-label {
   font-size: 10px; font-weight: 700; letter-spacing: .16em;
   text-transform: uppercase; color: var(--muted);
-  margin-bottom: 24px;
-  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
 }
 .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-.section-label .sl-accent { color: var(--accent2); }
-
-/* ── ATLAS GRID ───────────────────────────────────────────── */
-.atlas-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 0;
+.sl-num { color: var(--accent2); }
+.rp-sub {
+  font-size: 9.5px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(255,255,255,.25); margin-bottom: 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
 }
 
-/* Large flagship card */
-.flagship-card {
-  background: var(--surface);
-  border: 1px solid var(--border-hi);
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  position: relative;
-}
-.flagship-card::before {
-  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-.atlas-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  position: relative;
+/* ── ATLAS CARDS ── */
+.atlas-3col { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.atlas-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.atlas-card, .flagship-card {
+  background: var(--surface); border: 1px solid var(--border-hi);
+  border-radius: 10px; overflow: hidden;
+  display: flex; flex-direction: column; position: relative;
   transition: border-color .2s, transform .2s;
 }
-.atlas-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
-
-.a-header { padding: 22px 22px 16px; border-bottom: 1px solid var(--border); }
+.atlas-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.2); }
+.flagship-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
+.a-header { padding: 20px 20px 14px; border-bottom: 1px solid var(--border); }
 .a-badge {
   display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; background: rgba(193,122,46,.12); color: var(--accent2);
-  border: 1px solid rgba(193,122,46,.3); border-radius: 3px; padding: 2px 7px; margin-bottom: 11px;
+  border: 1px solid rgba(193,122,46,.3); border-radius: 3px; padding: 2px 7px; margin-bottom: 10px;
 }
 .a-badge.green { background: rgba(60,181,74,.12); color: var(--accent); border-color: rgba(60,181,74,.3); }
-.a-flag { font-size: 22px; margin-bottom: 9px; line-height: 1; }
-.a-title { font-size: 14.5px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 7px; }
+.a-badge.wip { background: rgba(239,68,68,.10); color: #f87171; border-color: rgba(239,68,68,.3); }
+.a-title { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 6px; }
 .a-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
-
-.a-body { padding: 16px 22px; flex: 1; }
+.a-body { padding: 14px 20px; flex: 1; }
 .a-sub { font-size: 9px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-
-.a-footer { padding: 14px 22px; border-top: 1px solid var(--border); }
+.a-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; }
 .a-link {
-  display: inline-block; font-size: 11.5px; font-weight: 700;
-  color: var(--accent); text-decoration: none; letter-spacing: .03em;
-  padding: 7px 16px; border: 1px solid rgba(60,181,74,.3); border-radius: 5px;
-  background: rgba(60,181,74,.08); transition: background .15s, border-color .15s;
+  display: inline-block; font-size: 11px; font-weight: 700;
+  color: var(--accent); text-decoration: none; padding: 6px 14px;
+  border: 1px solid rgba(60,181,74,.3); border-radius: 5px; background: rgba(60,181,74,.08);
+  transition: background .15s, border-color .15s;
 }
 .a-link:hover { background: rgba(60,181,74,.16); border-color: var(--accent); }
-.a-link.orange {
-  color: var(--accent2); border-color: rgba(193,122,46,.3); background: rgba(193,122,46,.08);
-}
+.a-link.orange { color: var(--accent2); border-color: rgba(193,122,46,.3); background: rgba(193,122,46,.08); }
 .a-link.orange:hover { background: rgba(193,122,46,.16); border-color: var(--accent2); }
 
-/* Case chips inside Global Atlas card */
-.cases-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
-  gap: 5px;
-}
+/* ── CASE CHIPS (Global Atlas) ── */
+.cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .case-chip {
-  display: flex; align-items: center; gap: 7px;
-  background: rgba(255,255,255,.03); border: 1px solid var(--border);
-  border-radius: 5px; padding: 6px 9px; text-decoration: none;
-  transition: background .12s, border-color .12s;
+  display: flex; flex-direction: column; gap: 2px;
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 6px; padding: 7px 10px; text-decoration: none;
+  transition: all .15s;
 }
-.case-chip:hover { background: rgba(255,255,255,.07); border-color: var(--border-hi); }
-.case-flag { font-size: 13px; flex-shrink: 0; line-height: 1; }
-.case-country { font-size: 10px; font-weight: 600; color: var(--text); display: block; }
-.case-tech { font-size: 9px; color: var(--muted); display: block; }
+.case-chip:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.18); transform: translateY(-1px); }
+.chip-tech { font-size: 11px; font-weight: 800; letter-spacing: .02em; }
+.chip-country { font-size: 11px; font-weight: 500; color: rgba(255,255,255,.65); }
 
-.material-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.mtag {
-  font-size: 10.5px; color: var(--muted); background: rgba(255,255,255,.04);
-  border: 1px solid var(--border); border-radius: 4px; padding: 3px 9px;
-}
-
-/* ── REPORT CARDS ─────────────────────────────────────────── */
-.report-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
-}
-.r-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 22px 22px 18px;
-  display: flex; flex-direction: column; gap: 12px;
-  transition: border-color .2s, transform .2s;
-  position: relative;
-}
-.r-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
-.r-flag { font-size: 20px; line-height: 1; }
-.r-title { font-size: 14.5px; font-weight: 700; color: #fff; line-height: 1.3; }
-.r-sub { font-size: 12.5px; color: var(--muted); line-height: 1.6; flex: 1; }
-.r-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-.r-link {
-  font-size: 11px; font-weight: 600; color: var(--muted);
-  text-decoration: none; padding: 4px 11px;
-  border: 1px solid var(--border); border-radius: 4px;
-  background: rgba(255,255,255,.03); letter-spacing: .03em;
-  transition: color .12s, background .12s, border-color .12s;
-}
-.r-link:hover { color: var(--text); background: rgba(255,255,255,.08); border-color: var(--border-hi); }
-.r-link.primary {
-  color: var(--accent); border-color: rgba(60,181,74,.3); background: rgba(60,181,74,.08);
-}
-.r-link.primary:hover { background: rgba(60,181,74,.16); border-color: var(--accent); }
-
-/* ── RESEARCH PROJECTS TOOLS ──────────────────────────────── */
-.rp-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-}
-.rp-block { display: flex; flex-direction: column; gap: 14px; }
-.rp-sub { font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-bottom: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-
-/* pill rows (dendrites, sankeys) */
-.pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,.04); border: 1px solid var(--border);
-  border-radius: 999px; padding: 5px 13px; font-size: 11.5px;
-  color: var(--muted); text-decoration: none;
-  transition: background .12s, border-color .12s, color .12s;
-}
-.pill:hover { background: rgba(255,255,255,.09); border-color: var(--border-hi); color: var(--text); }
-.pill-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-
-/* tool tiles */
-.tools-grid-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-.t-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 14px 15px;
-  text-decoration: none; color: inherit;
-  display: flex; flex-direction: column; gap: 5px;
-  transition: border-color .15s, background .15s, transform .15s;
-}
-.t-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-1px); }
-.t-icon { font-size: 16px; line-height: 1; }
-.t-title { font-size: 12.5px; font-weight: 700; color: #fff; line-height: 1.25; }
-.t-sub { font-size: 11px; color: var(--muted); line-height: 1.5; }
-
-/* tech color dots */
-.dot-bat { background:#f59e0b } .dot-bio { background:#84cc16 }
-.dot-ele { background:#06b6d4 } .dot-geo { background:#f97316 }
-.dot-hp  { background:#ec4899 } .dot-mag { background:#8b5cf6 }
-.dot-nuc { background:#0ea5e9 } .dot-sol { background:#eab308 }
-.dot-trn { background:#22d3ee } .dot-wnd { background:#3b82f6 }
-
-/* ── FOOTER ───────────────────────────────────────────────── */
-.footer {
-  position: relative; z-index: 1;
-  max-width: 1100px; margin: 64px auto 0;
-  padding: 24px 28px;
-  border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 12px;
-}
-.footer-lab { font-size: 11.5px; color: var(--muted); }
-.footer-lab strong { color: rgba(255,255,255,.6); }
-.footer-links { display: flex; gap: 18px; }
-.footer-links a { font-size: 11.5px; color: var(--muted); text-decoration: none; }
-.footer-links a:hover { color: var(--accent); }
-
-@media (max-width: 860px) {
-  .atlas-grid { grid-template-columns: 1fr; }
-  .rp-grid { grid-template-columns: 1fr; }
-  .tools-grid-inner { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 580px) {
-  .stats-row { gap: 18px; }
-  .tools-grid-inner { grid-template-columns: 1fr; }
-}
-
-/* ── IR tab cards (Image #9 style — no flag, no emoji) ── */
-.ir-tabs-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+/* ── INTEL REPORT TABS ── */
+.ir-tabs-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
 .ir-tab-card {
-  background: #0d1117; border: 1px solid rgba(255,255,255,.06);
-  border-radius: 7px; padding: 13px 22px; cursor: pointer;
-  min-width: 100px; text-align: center;
-  transition: border-color .2s, background .2s; text-decoration: none;
-  display: flex; flex-direction: column; gap: 1px;
+  cursor: pointer; padding: 10px 18px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--surface);
+  display: flex; flex-direction: column; gap: 2px; transition: all .15s;
 }
-.ir-tab-card:hover { border-color: rgba(255,255,255,.18); background: #111820; }
-.ir-tab-card.active { border-color: var(--accent2); background: #0d1117; }
-.ir-tab-tech { font-size: 15px; font-weight: 800; color: var(--accent2); letter-spacing: -.01em; }
-.ir-tab-country { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -.01em; }
+.ir-tab-card:hover { border-color: var(--border-hi); }
+.ir-tab-card.active { border-color: var(--accent); background: rgba(60,181,74,.08); }
+.ir-tab-tech { font-size: 12px; font-weight: 700; color: #fff; }
+.ir-tab-country { font-size: 11px; color: var(--muted); }
+.ir-tab-card.active .ir-tab-tech { color: var(--accent); }
 .ir-tab-content { display: none; }
 .ir-tab-content.active { display: block; }
+.r-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+.r-sub { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+.r-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.r-link {
+  font-size: 11px; font-weight: 600; color: var(--muted); text-decoration: none;
+  padding: 5px 13px; border: 1px solid var(--border-hi); border-radius: 5px;
+  background: rgba(255,255,255,.03); transition: all .15s;
+}
+.r-link:hover { color: var(--text); border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.07); }
+.r-link.primary { color: var(--accent); border-color: rgba(60,181,74,.35); background: rgba(60,181,74,.08); }
+.r-link.primary:hover { background: rgba(60,181,74,.15); }
+.wip-note { font-size: 11px; color: #f87171; font-style: italic; margin-top: 8px; }
 
-/* ── Tech thumbnail cards ── */
-.tech-thumb-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 8px;
-  margin-bottom: 6px;
+/* ── PC / TOOL CARDS ── */
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.t-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px 18px; text-decoration: none;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: border-color .15s, transform .15s;
 }
+.t-card:hover { border-color: var(--border-hi); transform: translateY(-1px); }
+.t-icon { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.t-title { font-size: 13px; font-weight: 700; color: #fff; }
+.t-sub { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── TECH THUMBNAILS (Sankeys, Dendrites, Production) ── */
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; margin-bottom: 18px; }
 .tech-thumb {
-  display: flex; flex-direction: column;
-  background: var(--surface); border: 1px solid var(--border-hi);
-  border-radius: 7px; overflow: hidden;
-  text-decoration: none; transition: border-color .2s, transform .15s;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden; text-decoration: none;
+  display: flex; flex-direction: column; transition: transform .15s, border-color .15s;
 }
-.tech-thumb:hover { transform: translateY(-2px); }
+.tech-thumb:hover { transform: translateY(-2px); border-color: var(--border-hi); }
 .tech-thumb-banner {
-  height: 48px; display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(255,255,255,.6);
-  background-image: repeating-linear-gradient(
-    45deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px,
-    transparent 1px, transparent 8px
-  );
+  height: 44px; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
 }
 .tech-thumb-label {
-  padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--text);
-  border-top: 1px solid var(--border);
+  padding: 8px 10px; font-size: 12px; font-weight: 700; color: #fff;
+  display: flex; flex-direction: column; gap: 2px;
 }
-.tech-thumb-label span { font-size: 10px; color: var(--muted); font-weight: 400; display: block; margin-top: 1px; }
+.tech-thumb-label span { font-size: 10px; color: var(--muted); font-weight: 400; }
 
-/* ── Flagship two-column ── */
-.flagship-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 860px) { .flagship-2col { grid-template-columns: 1fr; } }
+/* ── MATERIAL SANKEYS ── */
+.mat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
 
-/* ── Pill rows ── */
-.section-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.section-pills .pill { font-size: 12px; padding: 4px 12px; }
+/* ── KIT SECTION ── */
+.kit-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.kit-card {
+  background: var(--surface); border: 1px solid var(--border-hi);
+  border-radius: 10px; padding: 20px; position: relative;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.kit-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #56a360, transparent); }
+.kit-title { font-size: 14px; font-weight: 700; color: #fff; }
+.kit-sub { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.kit-skill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; padding: 4px 10px;
+  border-radius: 4px; background: rgba(86,163,96,.12);
+  border: 1px solid rgba(86,163,96,.25); color: #7fc77f;
+  font-family: monospace; letter-spacing: .03em;
+}
+.kit-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.kit-gotcha { font-size: 11px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.kit-gotcha:last-child { border-bottom: none; }
+.kit-gotcha strong { color: rgba(255,255,255,.7); }
+.kit-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+/* ── PORTFOLIO ── */
+.portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+
+/* ── FOOTER ── */
+.footer {
+  position: relative; z-index: 1; margin-top: 60px;
+  border-top: 1px solid var(--border); padding: 24px 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--muted);
+}
+.footer-links { display: flex; gap: 16px; }
+.footer-links a { color: var(--muted); text-decoration: none; transition: color .15s; }
+.footer-links a:hover { color: var(--text); }
+
+/* ── Browser grid ── */
+#br-grid a:hover { transform: scale(1.03); }
+
+@media (max-width: 800px) {
+  .atlas-3col { grid-template-columns: 1fr; }
+  .atlas-2col { grid-template-columns: 1fr; }
+  .kit-grid   { grid-template-columns: 1fr; }
+  .cases-grid { grid-template-columns: repeat(2, 1fr); }
+  #br-grid    { grid-template-columns: 90px repeat(4,1fr); font-size:9px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ── Top bar ─────────────────────────────────────────────────────────────── -->
+<!-- ── Top bar ── -->
 <div class="topbar">
   <div class="topbar-brand">NZIPL · CVCE</div>
   <div class="topbar-sep"></div>
   <nav class="topbar-nav">
-    <a href="#flagship">Flagship Outputs</a>
-    <a href="#regional">Regional Atlases</a>
-    <a href="#reports">Intelligence Reports</a>
-    <a href="#pc">Competitiveness</a>
-    <a href="#production">Production</a>
-    <a href="#sankeys">Sankeys</a>
-    <a href="#dendrites">Dendrites</a>
-    <a href="#portfolio">Portfolio</a>
+    <a href="#atlases">01 Atlases</a>
+    <a href="#intel">02 Intelligence</a>
+    <a href="#pc">03 Predicted Competitiveness</a>
+    <a href="#browser">04 Module Browser</a>
+    <a href="#portfolio">05 Portfolio</a>
+    <a href="#kit">06 Claude Kit</a>
+    <a href="#archive">07 Archive</a>
   </nav>
 </div>
 
-<!-- ── Header ─────────────────────────────────────────────────────────────── -->
+<!-- ── Header ── -->
 <header>
   <div class="wrap">
     <div class="eyebrow">
-      <span class="eyebrow-badge">NZIPL</span>
-      Net Zero Industrial Policy Lab · Johns Hopkins SAIS
+      <span>Net Zero Industrial Policy Lab · Johns Hopkins SAIS</span>
+      <span class="eyebrow-badge">PHASE II · 2026</span>
     </div>
     <h1>Atlas of the Global<br><span>Clean Industrial Base</span></h1>
-    <p class="header-sub">Trade-based intelligence platform mapping global value chains of clean technologies — batteries, solar, wind, electrolyzers, magnets, nuclear, and more. Extraction through final assembly, 200 countries, 1995–2024.</p>
-
+    <p class="header-sub">Trade-based intelligence platform mapping global value chains of clean technologies. 10 technologies · 200+ countries · 1995–2024.</p>
     <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-val">10</div>
-        <div class="stat-lbl">Technologies</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">200+</div>
-        <div class="stat-lbl">Countries · 1995–2024</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">370+</div>
-        <div class="stat-lbl">HS6 Product Codes</div>
-      </div>
-      <div class="stat-item orange">
-        <div class="stat-val">13</div>
-        <div class="stat-lbl">Atlas Case Studies</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">3</div>
-        <div class="stat-lbl">Country Atlases</div>
-      </div>
-    </div>
-
-    <div class="header-chips">
-      <a class="chip" href="global_atlas.html">🌍 Global Atlas</a>
-      <a class="chip" href="Chile_Atlas_of_Raw_Materials.html">🇨🇱 Chile Atlas</a>
-      <a class="chip" href="Brazil_Atlas_of_Raw_Materials.html">🇧🇷 Brazil Atlas</a>
-      <a class="chip" href="workplan.html">📋 Work Plan</a>
-      <a class="chip" href="analysis/analysis_viewer.html">🗂 All Outputs</a>
+      <div class="stat-item"><div class="stat-val">10</div><div class="stat-lbl">Technologies</div></div>
+      <div class="stat-item"><div class="stat-val">605</div><div class="stat-lbl">HS6 products</div></div>
+      <div class="stat-item orange"><div class="stat-val">155</div><div class="stat-lbl">PC countries</div></div>
+      <div class="stat-item orange"><div class="stat-val">1995–2024</div><div class="stat-lbl">BACI coverage</div></div>
     </div>
   </div>
 </header>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     01 — FLAGSHIP OUTPUTS
+     01 — ATLASES OF THE CLEAN INDUSTRIAL BASE
      ═══════════════════════════════════════════════════════════════════════ -->
-<section id="flagship">
+<section id="atlases">
   <div class="wrap">
-    <div class="section-label"><span class="sl-accent">01 —</span> Flagship Outputs</div>
+    <div class="section-label"><span class="sl-num">01 —</span> Global and Country Atlases of the Clean Industrial Base</div>
 
-    <div class="flagship-2col">
+    <!-- Primary: Global + Brazil + India -->
+    <div class="atlas-3col">
 
       <!-- GLOBAL ATLAS -->
       <div class="flagship-card">
         <div class="a-header">
-          <div class="a-badge green">★ Flagship</div>
-          <div class="a-flag">🌍</div>
-          <div class="a-title">Global Atlas of the Clean Industrial Base</div>
-          <div class="a-desc">13 country × technology case studies. World map trade flows, value chain timeline, product dendrite, PC scatter, sankey decomposition, and ORBIS domestic firm locations — all in one panel view.</div>
+          <div class="a-badge green">★ Flagship · 13 case studies</div>
+          <div class="a-title" style="margin-top:8px;">Global Atlas of the Clean Industrial Base</div>
+          <div class="a-desc">World map trade flows, value chain timeline, product treemap, capability radar, sankey decomposition, PC scatter, and firm activity — all in one panel view across 13 country × technology cases.</div>
         </div>
-
         <div class="a-body">
           <div class="a-sub">Case Studies</div>
           <div class="cases-grid">
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇮🇳</span>
-              <span><span class="case-country">India</span><span class="case-tech">☀️ Solar</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇯🇵</span>
-              <span><span class="case-country">Japan</span><span class="case-tech">⚛️ Nuclear</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇰🇷</span>
-              <span><span class="case-country">Korea</span><span class="case-tech">⚛️ Nuclear</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇯🇵</span>
-              <span><span class="case-country">Japan</span><span class="case-tech">🔋 Batteries</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇰🇷</span>
-              <span><span class="case-country">Korea</span><span class="case-tech">🔋 Batteries</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇮🇳</span>
-              <span><span class="case-country">India</span><span class="case-tech">🔋 Batteries</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇧🇷</span>
-              <span><span class="case-country">Brazil</span><span class="case-tech">🔋 Batteries</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇯🇵</span>
-              <span><span class="case-country">Japan</span><span class="case-tech">⚡ Transmission</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇰🇷</span>
-              <span><span class="case-country">Korea</span><span class="case-tech">⚡ Transmission</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇻🇳</span>
-              <span><span class="case-country">Vietnam</span><span class="case-tech">⚡ Transmission</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇯🇵</span>
-              <span><span class="case-country">Japan</span><span class="case-tech">💨 Wind</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇻🇳</span>
-              <span><span class="case-country">Vietnam</span><span class="case-tech">💨 Wind</span></span>
-            </a>
-            <a class="case-chip" href="global_atlas.html">
-              <span class="case-flag">🇮🇳</span>
-              <span><span class="case-country">India</span><span class="case-tech">💨 Wind</span></span>
-            </a>
-          </div>
-        </div>
-
-        <div class="a-footer">
-          <a class="a-link" href="global_atlas.html">Open Global Atlas →</a>
-        </div>
-      </div>
-
-      <!-- SOLAR INDIA INTELLIGENCE REPORT (second flagship) -->
-      <div class="flagship-card">
-        <div class="a-header">
-          <div class="a-badge green">★ Flagship</div>
-          <div style="margin-top:8px;display:flex;align-items:baseline;gap:8px;">
-            <span style="font-size:22px;font-weight:800;color:var(--accent2);">Solar</span>
-            <span style="font-size:22px;font-weight:800;color:#fff;">India</span>
-          </div>
-          <div class="a-title" style="margin-top:6px;">Solar India Intelligence Report</div>
-          <div class="a-desc">Trade map, time series, benchmarking, treemaps, radars, and PC scores — all in one panel view with sidebar navigation. Country × technology intelligence pipeline.</div>
-        </div>
-        <div class="a-body">
-          <div class="a-sub">Panels</div>
-          <div style="font-size:11.5px;color:var(--muted);line-height:2;">
-            Trade Map · Investment · Trade Partners<br>
-            Time Series (Levels + Growth) · Key Products<br>
-            vs. World Benchmark · Treemaps<br>
-            Stage + SHAP Radars · PC Scores + Policy
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--solar)">Solar</span><span class="chip-country">India</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--nuclear)">Nuclear</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--nuclear)">Nuclear</span><span class="chip-country">Korea</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">Korea</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">India</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">Brazil</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--transmission)">Transmission</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--transmission)">Transmission</span><span class="chip-country">Korea</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--transmission)">Transmission</span><span class="chip-country">Vietnam</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--wind)">Wind</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--wind)">Wind</span><span class="chip-country">Vietnam</span></a>
+            <a class="case-chip" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html"><span class="chip-tech" style="color:var(--wind)">Wind</span><span class="chip-country">India</span></a>
           </div>
         </div>
         <div class="a-footer">
-          <a class="a-link" href="analysis/intelligence/solar_india_intelligence_report.html">Open Intelligence Report →</a>
+          <a class="a-link" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html">Open Global Atlas →</a>
         </div>
       </div>
 
-    </div><!-- /flagship-2col -->
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     02 — INTERACTIVE REGIONAL ATLASES
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="regional">
-  <div class="wrap">
-    <div class="section-label"><span class="sl-accent">02 —</span> Interactive Regional Atlases</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-
+      <!-- BRAZIL CIB ATLAS -->
       <div class="atlas-card">
         <div class="a-header">
-          <div class="a-badge">Raw Materials</div>
-          <div class="a-flag">🇨🇱</div>
-          <div class="a-title">Chile Atlas of Clean Raw Materials</div>
-          <div class="a-desc">Chile's strategic role as a critical materials supplier — copper, lithium, cobalt, molybdenum. Multi-tech, multi-product with raw/processed category filters.</div>
+          <div class="a-badge green">Full Value Chain · 10 techs</div>
+          <div style="margin-top:8px;display:flex;align-items:baseline;gap:7px;">
+            <span style="font-size:13px;font-weight:800;color:var(--accent2)">Clean Industrial Base</span>
+          </div>
+          <div class="a-title" style="margin-top:4px;">Brazil</div>
+          <div class="a-desc">All 10 technologies. Trade map, capability radar, SHAP gap analysis, firm activity layer, sankey, dendrite, and PC scatter for Brazil across the full clean energy value chain.</div>
         </div>
         <div class="a-body">
-          <div class="a-sub">Key Materials</div>
-          <div class="material-tags" style="margin-bottom:12px">
-            <span class="mtag">Lithium</span><span class="mtag">Copper</span>
-            <span class="mtag">Cobalt</span><span class="mtag">Molybdenum</span>
+          <div class="a-sub">Technologies Covered</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;">
+            <span style="font-size:10px;font-weight:700;color:var(--solar)">Solar</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--nuclear)">Nuclear</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--batteries)">Batteries</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--transmission)">Transmission</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--wind)">Wind</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--biofuel)">Biofuel</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--electrolyzers)">Electrolyzers</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--geothermal)">Geothermal</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--heatpumps)">Heat Pumps</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--magnets)">Magnets</span>
           </div>
         </div>
         <div class="a-footer">
-          <a class="a-link orange" href="Chile_Atlas_of_Raw_Materials.html">Open Chile Atlas →</a>
+          <a class="a-link" href="analysis/atlas/Brazil_Atlas_of_the_Clean_Industrial_Base.html">Open Brazil Atlas →</a>
         </div>
       </div>
 
+      <!-- INDIA CIB ATLAS -->
       <div class="atlas-card">
         <div class="a-header">
-          <div class="a-badge">Raw Materials</div>
-          <div class="a-flag">🇧🇷</div>
-          <div class="a-title">Brazil Atlas of Clean Raw Materials</div>
-          <div class="a-desc">Brazil's position as a major supplier of iron ore, nickel, lithium, graphite, manganese, and rare earths for clean energy value chains.</div>
+          <div class="a-badge green">Full Value Chain · 10 techs</div>
+          <div style="margin-top:8px;display:flex;align-items:baseline;gap:7px;">
+            <span style="font-size:13px;font-weight:800;color:var(--accent2)">Clean Industrial Base</span>
+          </div>
+          <div class="a-title" style="margin-top:4px;">India</div>
+          <div class="a-desc">All 10 technologies. Trade map, capability radar, SHAP gap analysis, firm activity layer, sankey, dendrite, and PC scatter for India across the full clean energy value chain.</div>
         </div>
         <div class="a-body">
-          <div class="a-sub">Key Materials</div>
-          <div class="material-tags" style="margin-bottom:12px">
-            <span class="mtag">Iron Ore</span><span class="mtag">Nickel</span>
-            <span class="mtag">Lithium</span><span class="mtag">Graphite</span>
+          <div class="a-sub">Technologies Covered</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;">
+            <span style="font-size:10px;font-weight:700;color:var(--solar)">Solar</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--nuclear)">Nuclear</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--batteries)">Batteries</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--transmission)">Transmission</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--wind)">Wind</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--biofuel)">Biofuel</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--electrolyzers)">Electrolyzers</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--geothermal)">Geothermal</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--heatpumps)">Heat Pumps</span>
+            <span style="font-size:10px;color:var(--border-hi)">·</span>
+            <span style="font-size:10px;font-weight:700;color:var(--magnets)">Magnets</span>
           </div>
         </div>
         <div class="a-footer">
-          <a class="a-link orange" href="Brazil_Atlas_of_Raw_Materials.html">Open Raw Materials Atlas →</a>
-          <a class="a-link orange" href="Brazil_Atlas_of_the_Clean_Industrial_Base.html">Open Clean Industrial Base Atlas →</a>
+          <a class="a-link" href="analysis/atlas/India_Atlas_of_the_Clean_Industrial_Base.html">Open India Atlas →</a>
         </div>
       </div>
+    </div>
 
+    <!-- Secondary: Raw Material Atlases + IO Structure -->
+    <div class="rp-sub" style="margin-top:8px;">Raw Material Atlases &amp; IO Structure</div>
+    <div class="atlas-2col">
+      <div class="atlas-card">
+        <div class="a-header">
+          <div class="a-badge">Raw Materials · Chile</div>
+          <div class="a-title" style="margin-top:8px;">Chile Atlas of Clean Raw Materials</div>
+          <div class="a-desc">Chile's role as a global critical materials supplier — copper, lithium, cobalt, molybdenum. Multi-tech, multi-product with upstream/processed category filters.</div>
+        </div>
+        <div class="a-footer">
+          <a class="a-link orange" href="analysis/atlas/Chile_Atlas_of_Raw_Materials.html">Chile Raw Materials →</a>
+          <a class="a-link orange" href="analysis/atlas/Brazil_Atlas_of_Raw_Materials.html">Brazil Raw Materials →</a>
+        </div>
+      </div>
+      <div class="atlas-card">
+        <div class="a-header">
+          <div class="a-badge">IO Structure · Leontief</div>
+          <div class="a-title" style="margin-top:8px;">Input-Output Supply Chain Structure</div>
+          <div class="a-desc">EXIOBASE-based Leontief network for Solar × India. 393 nodes, power-law sizing by gross output, upstream suppliers and downstream buyers. Role-based color palette.</div>
+        </div>
+        <div class="a-footer">
+          <a class="a-link" href="analysis/structure/solar_india_structure.html">Solar India IO Structure →</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     03 — INTELLIGENCE REPORTS
+     02 — INTELLIGENCE REPORTS
      ═══════════════════════════════════════════════════════════════════════ -->
-<section id="reports">
+<section id="intel">
   <div class="wrap">
-    <div class="section-label"><span class="sl-accent">03 —</span> Intelligence Reports</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Country × technology analytics reports — integrating trade data, PC scores, firm capabilities, and policy synthesis.</p>
+    <div class="section-label"><span class="sl-num">02 —</span> Intelligence Reports <span style="font-size:9px;font-weight:700;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">IN PROGRESS</span></div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:18px;">Country × technology analytics reports integrating trade data, PC scores, firm capabilities, and policy synthesis. Solar India is the pilot; additional country×tech reports in development.</p>
 
-    <!-- Tab selector -->
     <div class="ir-tabs-row" id="ir-tabs">
       <div class="ir-tab-card active" onclick="irTabSwitch('solar-india',this)">
-        <span class="ir-tab-tech">Solar</span>
+        <span class="ir-tab-tech" style="color:var(--solar)">Solar</span>
         <span class="ir-tab-country">India</span>
       </div>
       <div class="ir-tab-card" onclick="irTabSwitch('chile-raw',this)">
-        <span class="ir-tab-tech">Raw Materials</span>
+        <span class="ir-tab-tech" style="color:var(--accent2)">Raw Materials</span>
         <span class="ir-tab-country">Chile</span>
       </div>
     </div>
 
-    <!-- Solar India content -->
     <div id="ir-content-solar-india" class="ir-tab-content active">
-      <div class="r-card" style="max-width:680px;">
-        <div class="r-sub">India's emergence as a major solar manufacturer — supply chain dependencies, domestic capability gaps, SHAP feature drivers, and competitiveness trajectory 2003–2024.</div>
+      <div class="r-card" style="max-width:700px;">
+        <div class="r-sub">India's emergence as a major solar manufacturer — supply chain dependencies, domestic capability gaps, SHAP feature drivers, and competitiveness trajectory 2003–2024. Integrates trade map, investment data, benchmarking, treemaps, PC scores, and policy synthesis.</div>
         <div class="r-links" style="margin-top:14px;">
           <a class="r-link primary" href="analysis/intelligence/solar_india_intelligence_report.html">Intelligence Report</a>
-          <a class="r-link" href="docs/reports/solar_india_policy_synthesis.html">Policy Synthesis</a>
-          <a class="r-link" href="docs/reports/solar_india_highlights.html">Highlights</a>
-          <a class="r-link" href="docs/reports/solar_india_executive_summary.html">Executive Summary</a>
-          <a class="r-link" href="docs/reports/solar_india_report.html">Full Report</a>
+          <a class="r-link" href="analysis/intelligence/solar_india_deep_dive.html">Deep Dive</a>
         </div>
+        <p class="wip-note">Additional country × technology intelligence reports in development.</p>
       </div>
     </div>
 
-    <!-- Chile Raw Materials content -->
     <div id="ir-content-chile-raw" class="ir-tab-content">
-      <div class="r-card" style="max-width:680px;">
+      <div class="r-card" style="max-width:700px;">
         <div class="r-sub">Chile's critical role as a global supplier of raw and processed materials for clean energy — lithium, copper, cobalt. Trade flows, firm capabilities, and value-added opportunities.</div>
         <div class="r-links" style="margin-top:14px;">
-          <a class="r-link primary" href="docs/reports/chile_rawmaterials_highlights.html">Highlights</a>
-          <a class="r-link" href="docs/reports/chile_rawmaterials_executive_summary.html">Executive Summary</a>
-          <a class="r-link" href="docs/reports/chile_rawmaterials_visual_report.html">Visual Report</a>
-          <a class="r-link" href="docs/reports/chile_rawmaterials_report.html">Full Report</a>
+          <a class="r-link primary" href="analysis/intelligence/chile_rawmaterials_trade_network.html">Trade Network</a>
         </div>
+        <p class="wip-note">Full intelligence report in development.</p>
       </div>
     </div>
-
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     04 — PREDICTED COMPETITIVENESS
+     03 — PREDICTED COMPETITIVENESS
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="pc">
   <div class="wrap">
-    <div class="section-label"><span class="sl-accent">04 —</span> Predicted Competitiveness (PC)</div>
+    <div class="section-label"><span class="sl-num">03 —</span> Predicted Competitiveness</div>
 
-    <div class="rp-sub">PC Scores &amp; Reports</div>
-    <div class="tools-grid-inner" style="margin-bottom:20px;">
+    <div class="rp-sub">PC Scores &amp; Trade Validation</div>
+    <div class="tools-grid" style="margin-bottom:20px;">
       <a class="t-card" href="analysis/scatterplot/pc_scatter.html">
-        <div class="t-icon">📈</div>
-        <div class="t-title">PC Scatter</div>
-        <div class="t-sub">Competitiveness vs. trade flows across 10 technologies</div>
+        <div class="t-icon" style="color:var(--accent)">PC SCATTER</div>
+        <div class="t-title">Competitiveness Scatter</div>
+        <div class="t-sub">PC scores vs trade flows across 10 technologies and 155 countries</div>
       </a>
       <a class="t-card" href="analysis/scatterplot/scatterplot_report.html">
-        <div class="t-icon">📊</div>
-        <div class="t-title">PC Report</div>
-        <div class="t-sub">SHAP features vs. export intensity regression</div>
+        <div class="t-icon" style="color:var(--accent)">SHAP · TRADE</div>
+        <div class="t-title">SHAP–Trade Report</div>
+        <div class="t-sub">OLS regression: SHAP importance predicts export intensity across techs and value-chain stages</div>
       </a>
     </div>
 
     <div class="rp-sub">ML Competitiveness Model</div>
-    <div class="tools-grid-inner">
+    <div class="tools-grid" style="margin-bottom:20px;">
       <a class="t-card" href="analysis/ml_model/ml_pipeline_explainer.html">
-        <div class="t-icon">🤖</div>
+        <div class="t-icon" style="color:var(--accent)">EXPLAINER</div>
         <div class="t-title">ML Pipeline Explainer</div>
-        <div class="t-sub">RF on RCA · SHAP mean |z| · 155 countries × 10 techs</div>
+        <div class="t-sub">RF on RCA · SHAP mean |z| · 155 countries × 10 techs — non-technical walkthrough</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/ml_pipeline_review.html">
+        <div class="t-icon" style="color:var(--accent)">REVIEW</div>
+        <div class="t-title">ML Pipeline Review</div>
+        <div class="t-sub">Critical review of SHAP features, RCA coverage, SHAP↔trade correlation, and replication roadmap</div>
+      </a>
+    </div>
+
+    <div class="rp-sub">Methodology Notes</div>
+    <div class="tools-grid">
+      <a class="t-card" href="analysis/ml_model/capability_radar_methodology.html">
+        <div class="t-icon" style="color:var(--solar)">RADAR · WP-4</div>
+        <div class="t-title">Capability Gap Radar</div>
+        <div class="t-sub">WP-4 3×3 classification grid, SHAP weights, RCA computation, product-count heatmap, gap reasoning, scatterplot validation</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/hs_exiobase_use_shares_methodology.html">
+        <div class="t-icon" style="color:var(--accent2)">EXIOBASE · IO</div>
+        <div class="t-title">IO Use Shares Methodology</div>
+        <div class="t-sub">EXIOBASE Leontief use shares for HS products — Z-based aggregation, leontief vs direct share, supervisor review v2</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/ml_model_trade_variables.html">
+        <div class="t-icon" style="color:var(--accent)">TRADE VARS</div>
+        <div class="t-title">ML Trade Variables</div>
+        <div class="t-sub">Trade-based features used in the competitiveness model — HS6 export/import variables</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/nature_industrial_base_summary.html">
+        <div class="t-icon" style="color:var(--accent)">SUMMARY</div>
+        <div class="t-title">Industrial Base Summary</div>
+        <div class="t-sub">Nature-style summary of the clean industrial base methodology and findings</div>
       </a>
     </div>
   </div>
 </section>
 
+
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     05 — PRODUCTION — DOMESTIC FIRM CAPABILITIES
+     04 — MODULAR VISUALIZATION BROWSER
      ═══════════════════════════════════════════════════════════════════════ -->
-<section id="production">
+<section id="browser">
   <div class="wrap">
-    <div class="section-label"><span class="sl-accent">05 —</span> Production · Domestic Firm Capabilities</div>
-    <div class="tools-grid-inner">
-      <a class="t-card" href="analysis/orbis/orbis_viewer_solar.html"><div class="t-icon">☀️</div><div class="t-title">Solar</div><div class="t-sub">Firm locations by stage — ORBIS</div></a>
-      <a class="t-card" href="analysis/orbis/orbis_viewer_batteries.html"><div class="t-icon">🔋</div><div class="t-title">Batteries</div><div class="t-sub">Firm locations by stage — ORBIS</div></a>
-      <a class="t-card" href="analysis/orbis/orbis_viewer_wind.html"><div class="t-icon">💨</div><div class="t-title">Wind</div><div class="t-sub">Firm locations by stage — ORBIS</div></a>
-      <a class="t-card" href="analysis/orbis/orbis_viewer_nuclear.html"><div class="t-icon">⚛️</div><div class="t-title">Nuclear</div><div class="t-sub">Firm locations by stage — ORBIS</div></a>
-      <a class="t-card" href="analysis/orbis/orbis_viewer_transmission.html"><div class="t-icon">⚡</div><div class="t-title">Transmission</div><div class="t-sub">Firm locations by stage — ORBIS</div></a>
-      <a class="t-card" href="analysis/orbis/orbis_viewer_magnets.html"><div class="t-icon">🧲</div><div class="t-title">Magnets</div><div class="t-sub">Firm locations by stage — ORBIS</div></a>
-    </div>
-  </div>
-</section>
+    <div class="section-label"><span class="sl-num">04 —</span> Modular Visualization Browser</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Hover any selection to preview — 8 modules × 2 countries × 10 techs × 4 selections.</p>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     06 — SANKEY DIAGRAMS
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="sankeys">
-  <div class="wrap">
-    <div class="section-label"><span class="sl-accent">06 —</span> Sankey Diagrams</div>
-    <div class="rp-sub">Trade Flow Sankeys — By Technology</div>
-    <div class="tech-thumb-grid" style="margin-bottom:18px;">
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_batteries_2022.html" style="border-color:rgba(245,158,11,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid #f59e0b;">🔋</div>
-        <div class="tech-thumb-label">Batteries<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_biofuel_2022.html" style="border-color:rgba(132,204,22,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid #84cc16;">🌿</div>
-        <div class="tech-thumb-label">Biofuel<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_electrolyzers_2022.html" style="border-color:rgba(6,182,212,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid #06b6d4;">⚗️</div>
-        <div class="tech-thumb-label">Electrolyzers<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_geothermal_2022.html" style="border-color:rgba(249,115,22,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid #f97316;">🌋</div>
-        <div class="tech-thumb-label">Geothermal<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_magnets_2022.html" style="border-color:rgba(139,92,246,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.03));border-bottom:2px solid #8b5cf6;">🧲</div>
-        <div class="tech-thumb-label">Magnets<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_nuclear_2022.html" style="border-color:rgba(14,165,233,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid #0ea5e9;">⚛️</div>
-        <div class="tech-thumb-label">Nuclear<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_solar_2022.html" style="border-color:rgba(234,179,8,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid #eab308;">☀️</div>
-        <div class="tech-thumb-label">Solar<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_transmission_2022.html" style="border-color:rgba(34,211,238,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(34,211,238,.03));border-bottom:2px solid #22d3ee;">⚡</div>
-        <div class="tech-thumb-label">Transmission<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_wind_2022.html" style="border-color:rgba(59,130,246,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid #3b82f6;">💨</div>
-        <div class="tech-thumb-label">Wind<span>Trade flow Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_tech_heat_pumps_2022.html" style="border-color:rgba(236,72,153,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid #ec4899;">♨️</div>
-        <div class="tech-thumb-label">Heat Pumps<span>Trade flow Sankey · 2022</span></div>
-      </a>
+    <!-- Module + Country selectors -->
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+      <div id="br-mod-btns" style="display:flex;flex-wrap:wrap;gap:5px;flex:1;"></div>
+      <div id="br-country-btns" style="display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;">
+        <button class="ir-tab-card active" onclick="brSetCountry('India',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--accent)">India</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Brazil',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Japan',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--nuclear)">Japan</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('South_Korea',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--transmission)">S. Korea</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Vietnam',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--wind)">Vietnam</span>
+        </button>
+      </div>
     </div>
-    <div class="rp-sub">Material-Level Sankeys</div>
-    <div class="tech-thumb-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
-      <a class="tech-thumb" href="analysis/sankey/sankey_cobalt_ore_2022.html" style="border-color:rgba(139,92,246,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.03));border-bottom:2px solid #8b5cf6;">⬡</div>
-        <div class="tech-thumb-label">Cobalt Ore<span>Material Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_lithium_2022.html" style="border-color:rgba(6,182,212,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid #06b6d4;">Li</div>
-        <div class="tech-thumb-label">Lithium<span>Material Sankey · 2022</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/sankey/sankey_natural_graphite_2022.html" style="border-color:rgba(107,114,128,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(107,114,128,.12),rgba(107,114,128,.03));border-bottom:2px solid #6b7280;">C</div>
-        <div class="tech-thumb-label">Natural Graphite<span>Material Sankey · 2022</span></div>
+
+    <!-- Left bar + Preview pane -->
+    <div style="display:flex;gap:12px;align-items:stretch;">
+
+      <!-- Left: narrow tech × selection list -->
+      <div id="br-left" style="
+        width:188px;flex-shrink:0;
+        overflow-y:auto;max-height:560px;
+        padding-right:6px;
+        scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;
+      "></div>
+
+      <!-- Right: iframe preview -->
+      <div style="flex:1;position:relative;min-height:480px;
+                  background:#0a1218;border:1px solid rgba(255,255,255,.07);
+                  border-radius:8px;overflow:hidden;">
+        <div id="br-placeholder" style="
+          position:absolute;inset:0;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;gap:8px;
+          color:rgba(255,255,255,.18);pointer-events:none;">
+          <div style="font-size:28px;opacity:.4">&#9654;</div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:.06em;">Hover a selection to preview</div>
+          <div id="br-cur-label" style="font-size:10px;opacity:.6;margin-top:2px;"></div>
+        </div>
+        <iframe id="br-iframe"
+          src="about:blank"
+          style="width:100%;height:100%;border:none;opacity:0;transition:opacity .35s ease;position:absolute;inset:0;"
+          sandbox="allow-scripts allow-same-origin allow-popups">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Open-in-tab link -->
+    <div style="margin-top:8px;text-align:right;">
+      <a id="br-open-link" href="#" target="_blank"
+        style="font-size:11px;color:var(--accent);text-decoration:none;opacity:0;transition:opacity .2s;pointer-events:none;">
+        Open in new tab ↗
       </a>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     07 — DENDRITES
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="dendrites">
-  <div class="wrap">
-    <div class="section-label"><span class="sl-accent">07 —</span> Value Chain Dendrites</div>
-    <div class="tech-thumb-grid">
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Batteries.html" style="border-color:rgba(245,158,11,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.04));border-bottom:2px solid #f59e0b;">🔋</div>
-        <div class="tech-thumb-label">Batteries<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Biofuel.html" style="border-color:rgba(132,204,22,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.15),rgba(132,204,22,.04));border-bottom:2px solid #84cc16;">🌿</div>
-        <div class="tech-thumb-label">Biofuel<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Electrolyzers.html" style="border-color:rgba(6,182,212,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(6,182,212,.04));border-bottom:2px solid #06b6d4;">⚗️</div>
-        <div class="tech-thumb-label">Electrolyzers<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Geothermal.html" style="border-color:rgba(249,115,22,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(249,115,22,.04));border-bottom:2px solid #f97316;">🌋</div>
-        <div class="tech-thumb-label">Geothermal<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Heat_Pumps.html" style="border-color:rgba(236,72,153,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(236,72,153,.04));border-bottom:2px solid #ec4899;">♨️</div>
-        <div class="tech-thumb-label">Heat Pumps<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Magnets.html" style="border-color:rgba(139,92,246,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(139,92,246,.04));border-bottom:2px solid #8b5cf6;">🧲</div>
-        <div class="tech-thumb-label">Magnets<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Nuclear.html" style="border-color:rgba(14,165,233,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(14,165,233,.04));border-bottom:2px solid #0ea5e9;">⚛️</div>
-        <div class="tech-thumb-label">Nuclear<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Solar.html" style="border-color:rgba(234,179,8,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.15),rgba(234,179,8,.04));border-bottom:2px solid #eab308;">☀️</div>
-        <div class="tech-thumb-label">Solar<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Transmission.html" style="border-color:rgba(34,211,238,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(34,211,238,.15),rgba(34,211,238,.04));border-bottom:2px solid #22d3ee;">⚡</div>
-        <div class="tech-thumb-label">Transmission<span>HS6 value chain tree</span></div>
-      </a>
-      <a class="tech-thumb" href="analysis/dendrite/dendrite_Wind.html" style="border-color:rgba(59,130,246,.25)">
-        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.04));border-bottom:2px solid #3b82f6;">💨</div>
-        <div class="tech-thumb-label">Wind<span>HS6 value chain tree</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     08 — PORTFOLIO
+     05 — PORTFOLIO
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="portfolio">
   <div class="wrap">
-    <div class="section-label"><span class="sl-accent">08 —</span> Portfolio</div>
-    <div class="tools-grid-inner" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">
-      <a class="t-card" href="workplan.html">
-        <div class="t-icon">📋</div>
+    <div class="section-label"><span class="sl-num">05 —</span> Portfolio</div>
+    <div class="portfolio-grid">
+      <a class="t-card" href="docs/workplan.html">
+        <div class="t-icon" style="color:var(--accent)">WORK PLAN</div>
         <div class="t-title">Phase II Work Plan</div>
         <div class="t-sub">Methodology, architecture, deliverables, and six-month progress tracking</div>
       </a>
-      <a class="t-card" href="analysis/analysis_viewer.html">
-        <div class="t-icon">🗂</div>
+      <a class="t-card" href="docs/analysis_index.html">
+        <div class="t-icon" style="color:var(--accent)">ALL OUTPUTS</div>
         <div class="t-title">Analysis Viewer</div>
         <div class="t-sub">Catalogue of all HTML and PNG outputs across the full project</div>
       </a>
-      <a class="t-card" href="qmd/workplan/cvce_diagram.html">
-        <div class="t-icon">🏗</div>
+      <a class="t-card" href="docs/cvce_diagram.html">
+        <div class="t-icon" style="color:var(--accent)">ARCHITECTURE</div>
         <div class="t-title">Architecture Diagram</div>
         <div class="t-sub">CVCE data flow: CIB · BACI · PC · ORBIS · Macro pipeline</div>
-      </a>
-      <a class="t-card" href="docs/reports/solar_india_policy_synthesis.html">
-        <div class="t-icon">📝</div>
-        <div class="t-title">Solar India Policy Synthesis</div>
-        <div class="t-sub">RT evidence × trade analytics — integrated policy pathways</div>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     06 — NZIPL TEAM CLAUDE KIT
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="kit">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">06 —</span> NZIPL Team Claude Kit</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:20px;">Shared knowledge base maintained by Gilberto García-Vázquez. Loads automatically into Claude Code sessions — data source conventions, API patterns, design tokens, and hard-won gotchas so the team doesn't rediscover the same issues independently.</p>
+
+    <div class="kit-grid">
+
+      <!-- Main overview card -->
+      <div class="kit-card">
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#56a360;margin-bottom:8px;">github: Gilix/nzipl-claude-kit</div>
+          <div class="kit-title">NZIPL Claude Kit</div>
+          <div class="kit-sub" style="margin-top:6px;">Clone the repo and open with Claude Code — <code style="font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px">CLAUDE.md</code> loads automatically. Covers the full Lab toolkit: OEC and DataMexico API patterns, sprint structure, deliverable templates, design system, and running discoveries log.</div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:8px;">Skills (invoke via /skill-name)</div>
+          <div class="kit-skills">
+            <span class="kit-skill">/nzipl-design</span>
+            <span class="kit-skill">/naics-hs-matching</span>
+            <span class="kit-skill">/gather-cleantech-greenfield</span>
+            <span class="kit-skill">/gather-ev-greenfield</span>
+            <span class="kit-skill">/audit-naics-hs</span>
+            <span class="kit-skill">/enrich-fdi</span>
+          </div>
+        </div>
+        <div class="kit-links">
+          <a class="a-link" href="log/nzipl_claude_kit_presentation.html" style="font-size:11px;">Presentation →</a>
+          <a class="a-link" href="log/nzipl_claude_kit_CLAUDE.md" style="font-size:11px;">CLAUDE.md →</a>
+        </div>
+      </div>
+
+      <!-- Gotchas card -->
+      <div class="kit-card" style="border-color:rgba(239,68,68,.2);">
+        <div class="kit-card::before" style="background:linear-gradient(90deg,#ef4444,transparent)"></div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#f87171;margin-bottom:8px;">Known Gotchas</div>
+        <div class="kit-gotcha"><strong>OEC API:</strong> HS6 ID padding — strip leading digits: <code style="font-size:10px">str(id)[-6:]</code></div>
+        <div class="kit-gotcha"><strong>OEC Cloudflare:</strong> Requires browser User-Agent header or gets 403</div>
+        <div class="kit-gotcha"><strong>DataMexico /data:</strong> Silently drops manufacturing sectors 31-33 — use <code style="font-size:10px">/stats/rca</code></div>
+        <div class="kit-gotcha"><strong>BACI 2022:</strong> HS6 870839 (braking systems) missing — fall back to baci_a_02</div>
+        <div class="kit-gotcha"><strong>FDI Markets:</strong> Investment totals include multi-phase projects — press releases cite initial phase only</div>
+        <div class="kit-gotcha"><strong>Design system:</strong> Kit uses CICE theme (#56a360) — different from Atlas (#073309)</div>
+      </div>
+
+      <!-- Data sources card -->
+      <div class="kit-card">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;">Data Sources &amp; Auth</div>
+        <div class="kit-gotcha"><strong>OEC:</strong> Bearer token + X-API-KEY + token param + User-Agent</div>
+        <div class="kit-gotcha"><strong>DataMexico:</strong> economia.gob.mx/datamexico/api/ (legacy api.datamexico.org deprecated)</div>
+        <div class="kit-gotcha"><strong>BACI / CVCE:</strong> ~/Documents/R/data/BACI/ — outside repo</div>
+        <div class="kit-gotcha"><strong>BNEF:</strong> Pre-compiled JSON — no API</div>
+        <div class="kit-gotcha"><strong>OSM:</strong> earth-osm — transmission lines, substations, generators</div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin:10px 0 6px;">Glossary Highlights</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.8;">
+          <b style="color:rgba(255,255,255,.5)">Play</b> · <b style="color:rgba(255,255,255,.5)">Play Cards</b> · <b style="color:rgba(255,255,255,.5)">Constraint Maps</b><br>
+          <b style="color:rgba(255,255,255,.5)">Binding constraint</b> · <b style="color:rgba(255,255,255,.5)">Gating requirement</b><br>
+          <b style="color:rgba(255,255,255,.5)">Ubiquity</b> · <b style="color:rgba(255,255,255,.5)">Diversity</b> · <b style="color:rgba(255,255,255,.5)">ECI</b> · <b style="color:rgba(255,255,255,.5)">PCI</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
 <div class="footer">
-  <div class="footer-lab">
+  <div>
     <strong>Net Zero Industrial Policy Lab</strong> · Johns Hopkins University SAIS<br>
     Oriol Vallès Codina · PIs: Bentley Allan &amp; Tim Sahay
   </div>
   <div class="footer-links">
-    <a href="https://ecoclassical.github.io/projects/NZIPL/">GitHub Pages</a>
-    <a href="workplan.html">Work Plan</a>
-    <a href="analysis/analysis_viewer.html">All Outputs</a>
+    <a href="https://netzeropolicylab.com">netzeropolicylab.com</a>
+    <a href="docs/workplan.html">Work Plan</a>
+    <a href="docs/analysis_index.html">All Outputs</a>
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     07 — ARCHIVE
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="archive">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">07 —</span> Archive <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">STANDALONE VIEWERS</span></div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:24px;">Older standalone viewer formats — ORBIS firm maps, sankey diagrams, and value chain dendrites. Superseded by the Module Browser above for most use cases.</p>
+
+    <nav style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;">
+      <a href="#arch-production" style="font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:rgba(255,255,255,.03);transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">A1 Production · ORBIS</a>
+      <a href="#arch-sankeys" style="font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:rgba(255,255,255,.03);transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">A2 Sankeys</a>
+      <a href="#arch-dendrites" style="font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:rgba(255,255,255,.03);transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">A3 Dendrites</a>
+    </nav>
+  </div>
+
+<section id="arch-production">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">A1 —</span> Production · Domestic Firm Capabilities</div>
+    <div class="tech-grid">
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_solar.html" style="border-color:rgba(234,179,8,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.14),rgba(234,179,8,.04));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div>
+        <div class="tech-thumb-label">Solar<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_batteries.html" style="border-color:rgba(245,158,11,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.14),rgba(245,158,11,.04));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div>
+        <div class="tech-thumb-label">Batteries<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_wind.html" style="border-color:rgba(59,130,246,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.14),rgba(59,130,246,.04));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div>
+        <div class="tech-thumb-label">Wind<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_nuclear.html" style="border-color:rgba(14,165,233,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.14),rgba(14,165,233,.04));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div>
+        <div class="tech-thumb-label">Nuclear<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_transmission.html" style="border-color:rgba(6,182,212,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.14),rgba(6,182,212,.04));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANS</span></div>
+        <div class="tech-thumb-label">Transmission<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_magnets.html" style="border-color:rgba(236,72,153,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.14),rgba(236,72,153,.04));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div>
+        <div class="tech-thumb-label">Magnets<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_geothermal.html" style="border-color:rgba(239,68,68,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.14),rgba(239,68,68,.04));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEO</span></div>
+        <div class="tech-thumb-label">Geothermal<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_heat_pumps.html" style="border-color:rgba(249,115,22,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.14),rgba(249,115,22,.04));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div>
+        <div class="tech-thumb-label">Heat Pumps<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_electrolyzers.html" style="border-color:rgba(168,85,247,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.14),rgba(168,85,247,.04));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div>
+        <div class="tech-thumb-label">Electrolyzers<span>Firm locations · ORBIS</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/orbis/orbis_viewer_biofuel.html" style="border-color:rgba(132,204,22,.3)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.14),rgba(132,204,22,.04));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div>
+        <div class="tech-thumb-label">Biofuel<span>Firm locations · ORBIS</span></div>
+      </a>
+    </div>
+    <div class="rp-sub" style="margin-top:16px;">Combined View</div>
+    <div class="tools-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+      <a class="t-card" href="analysis/orbis/orbis_viewer_combined.html">
+        <div class="t-icon" style="color:var(--accent)">ALL TECHS</div>
+        <div class="t-title">Combined Firm Viewer</div>
+        <div class="t-sub">All 10 technologies on one map — firm locations by stage · ORBIS</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="arch-sankeys">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">A2 —</span> Sankey Diagrams</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">7-lane atlas-style Sankeys showing top country flows through the full value chain. Available for India and Brazil across all 10 technologies and 4 product selections.</p>
+
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="sk-country-btns">
+      <button class="ir-tab-card active" onclick="skCountry('India',this)" style="cursor:pointer">
+        <span class="ir-tab-tech" style="color:var(--accent)">India</span>
+        <span class="ir-tab-country">IND · 40 files</span>
+      </button>
+      <button class="ir-tab-card" onclick="skCountry('Brazil',this)" style="cursor:pointer">
+        <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
+        <span class="ir-tab-country">BRA · 40 files</span>
+      </button>
+    </div>
+
+    <div id="sk-India" class="sk-country">
+      <div class="rp-sub">India · All Selections</div>
+      <div class="tech-grid">
+        <a class="tech-thumb" href="analysis/sankey/India/Solar_India_All_sankey.html" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Batteries_India_All_sankey.html" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Wind_India_All_sankey.html" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Nuclear_India_All_sankey.html" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Transmission_India_All_sankey.html" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Biofuel_India_All_sankey.html" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Electrolyzers_India_All_sankey.html" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Geothermal_India_All_sankey.html" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Heat_Pumps_India_All_sankey.html" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/India/Magnets_India_All_sankey.html" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>India · All products</span></div></a>
+      </div>
+    </div>
+
+    <div id="sk-Brazil" class="sk-country" style="display:none">
+      <div class="rp-sub">Brazil · All Selections</div>
+      <div class="tech-grid">
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Solar_Brazil_All_sankey.html" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Batteries_Brazil_All_sankey.html" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Wind_Brazil_All_sankey.html" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Nuclear_Brazil_All_sankey.html" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Transmission_Brazil_All_sankey.html" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Biofuel_Brazil_All_sankey.html" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Electrolyzers_Brazil_All_sankey.html" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Geothermal_Brazil_All_sankey.html" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Heat_Pumps_Brazil_All_sankey.html" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/sankey/Brazil/Magnets_Brazil_All_sankey.html" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>Brazil · All products</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="arch-dendrites">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">A3 —</span> Value Chain Dendrites</div>
+    <div class="tech-grid">
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Solar.html" style="border-color:rgba(234,179,8,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.15),rgba(234,179,8,.04));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div>
+        <div class="tech-thumb-label">Solar<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Batteries.html" style="border-color:rgba(245,158,11,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.04));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div>
+        <div class="tech-thumb-label">Batteries<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Wind.html" style="border-color:rgba(59,130,246,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.04));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div>
+        <div class="tech-thumb-label">Wind<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Nuclear.html" style="border-color:rgba(14,165,233,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(14,165,233,.04));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div>
+        <div class="tech-thumb-label">Nuclear<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Transmission.html" style="border-color:rgba(6,182,212,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(6,182,212,.04));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div>
+        <div class="tech-thumb-label">Transmission<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Biofuel.html" style="border-color:rgba(132,204,22,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.15),rgba(132,204,22,.04));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div>
+        <div class="tech-thumb-label">Biofuel<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Electrolyzers.html" style="border-color:rgba(168,85,247,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(168,85,247,.04));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div>
+        <div class="tech-thumb-label">Electrolyzers<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Geothermal.html" style="border-color:rgba(239,68,68,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(239,68,68,.04));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div>
+        <div class="tech-thumb-label">Geothermal<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Heat_Pumps.html" style="border-color:rgba(249,115,22,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(249,115,22,.04));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div>
+        <div class="tech-thumb-label">Heat Pumps<span>HS6 value chain tree</span></div>
+      </a>
+      <a class="tech-thumb" href="analysis/dendrite/dendrite_Magnets.html" style="border-color:rgba(236,72,153,.25)">
+        <div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(236,72,153,.04));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div>
+        <div class="tech-thumb-label">Magnets<span>HS6 value chain tree</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+</section>
+
 <script>
+// ── Intelligence report tabs ──────────────────────────────────────────────────
 function irTabSwitch(id, el) {
   document.querySelectorAll('.ir-tab-card').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.ir-tab-content').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('ir-content-' + id).classList.add('active');
 }
-</script>
 
+// ── Sankey country toggle ─────────────────────────────────────────────────────
+function skCountry(name, el) {
+  document.querySelectorAll('#sk-country-btns .ir-tab-card').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.sk-country').forEach(d => d.style.display = 'none');
+  document.getElementById('sk-' + name).style.display = '';
+}
+
+// ── Modular Visualization Browser ────────────────────────────────────────────
+const BR_MODULES = [
+  {id:'radar',           label:'Capability Radar',    desc:'SHAP vs RCA'},
+  {id:'pc_scatterplot',  label:'PC Scatterplot',       desc:'155 countries'},
+  {id:'trade_timeline',  label:'Trade Timeline',       desc:'Exports/imports'},
+  {id:'trade_composition',label:'Trade Composition',  desc:'Treemap'},
+  {id:'tech_tree',       label:'Tech Tree',            desc:'Value chain dendrite'},
+  {id:'sankey',          label:'Sankey',               desc:'7-lane flows'},
+  {id:'trade_map',       label:'Trade Map',            desc:'World map'},
+  {id:'activity_map',    label:'Activity Map',         desc:'Firm locations'},
+];
+const BR_TECHS = [
+  {name:'Solar',         slug:'Solar',         col:'#eab308'},
+  {name:'Nuclear',       slug:'Nuclear',       col:'#0ea5e9'},
+  {name:'Batteries',     slug:'Batteries',     col:'#f59e0b'},
+  {name:'Transmission',  slug:'Transmission',  col:'#06b6d4'},
+  {name:'Wind',          slug:'Wind',          col:'#3b82f6'},
+  {name:'Biofuel',       slug:'Biofuel',       col:'#84cc16'},
+  {name:'Electrolyzers', slug:'Electrolyzers', col:'#a855f7'},
+  {name:'Geothermal',    slug:'Geothermal',    col:'#ef4444'},
+  {name:'Heat Pumps',    slug:'Heat_Pumps',    col:'#f97316'},
+  {name:'Magnets',       slug:'Magnets',       col:'#ec4899'},
+];
+const BR_SELS = [
+  {slug:'All',           label:'All'},
+  {slug:'Midstream',     label:'Midstream'},
+  {slug:'Final_Product', label:'Final Prod.'},
+  {slug:'Raw_Material',  label:'Raw Mat.'},
+];
+
+let brMod = 'radar', brCurCountry = 'India';
+let brFadeTimer = null;
+
+function hexToRgb(hex) {
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)].join(',');
+}
+
+function brBuildModBtns() {
+  document.getElementById('br-mod-btns').innerHTML = BR_MODULES.map(m => `
+    <button onclick="brSetMod('${m.id}',this)" style="
+      padding:5px 10px;border-radius:5px;cursor:pointer;font-family:inherit;
+      border:1px solid rgba(255,255,255,${m.id===brMod ? .18 : .08});
+      background:${m.id===brMod ? 'rgba(60,181,74,.14)' : 'rgba(255,255,255,.03)'};
+      color:${m.id===brMod ? '#3cb54a' : 'rgba(255,255,255,.5)'};
+      font-size:10.5px;font-weight:${m.id===brMod ? 700 : 500};transition:all .15s;white-space:nowrap">
+      ${m.label}
+    </button>`).join('');
+}
+
+function brSetMod(id) {
+  brMod = id;
+  brBuildModBtns();
+  brBuildLeft();
+}
+
+function brSetCountry(name, el) {
+  brCurCountry = name;
+  document.querySelectorAll('#br-country-btns .ir-tab-card').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  brBuildLeft();
+}
+
+function brPreview(path, label) {
+  const iframe  = document.getElementById('br-iframe');
+  const ph      = document.getElementById('br-placeholder');
+  const lbl     = document.getElementById('br-cur-label');
+  const openLnk = document.getElementById('br-open-link');
+
+  clearTimeout(brFadeTimer);
+
+  // Fade out → swap src → fade in
+  iframe.style.opacity = 0;
+  brFadeTimer = setTimeout(() => {
+    iframe.src = path;
+    lbl.textContent = label;
+    openLnk.href = path;
+    openLnk.style.opacity = 1;
+    openLnk.style.pointerEvents = 'auto';
+    ph.style.opacity = 0;
+    iframe.onload = () => { iframe.style.opacity = 1; };
+  }, 160);
+}
+
+function brBuildLeft() {
+  const left = document.getElementById('br-left');
+  left.innerHTML = BR_TECHS.map(t => {
+    const rgb = hexToRgb(t.col);
+    const btns = BR_SELS.map(s => {
+      const path  = `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${s.slug}_${brMod}.html`;
+      const label = `${t.name} · ${brCurCountry} · ${s.label} · ${brMod}`;
+      return `<button
+        onmouseenter="brPreview('${path}','${label}')"
+        onclick="window.open('${path}','_blank')"
+        style="
+          padding:3px 7px;border-radius:3px;cursor:pointer;font-family:inherit;
+          border:1px solid rgba(${rgb},.2);background:rgba(${rgb},.07);
+          color:rgba(255,255,255,.55);font-size:9.5px;font-weight:600;
+          transition:all .18s;white-space:nowrap;"
+        onmouseover="this.style.background='rgba(${rgb},.22)';this.style.color='${t.col}';this.style.borderColor='rgba(${rgb},.5)'"
+        onmouseout="this.style.background='rgba(${rgb},.07)';this.style.color='rgba(255,255,255,.55)';this.style.borderColor='rgba(${rgb},.2)'">
+        ${s.label}
+      </button>`;
+    }).join('');
+
+    return `<div style="padding:7px 0 5px;border-bottom:1px solid rgba(255,255,255,.05);">
+      <div style="font-size:10px;font-weight:800;color:${t.col};letter-spacing:.05em;
+                  text-transform:uppercase;margin-bottom:5px;">${t.name}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:3px;">${btns}</div>
+    </div>`;
+  }).join('');
+}
+
+// Boot
+document.addEventListener('DOMContentLoaded', () => {
+  brBuildModBtns();
+  brBuildLeft();
+});
+</script>
 </body>
 </html>
