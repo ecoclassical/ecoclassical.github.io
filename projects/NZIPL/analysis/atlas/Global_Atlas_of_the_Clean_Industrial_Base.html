@@ -600,6 +600,7 @@ function buildSRLegend(){}
 const MAP_W=960,MAP_H=500;
 function drawMap(){
   if(!worldTopo) return;
+  const c0=c();
   const pv=getPV();
   const w=document.getElementById("pane-map").clientWidth||800;
   const h=document.getElementById("pane-map").clientHeight-80||350;
@@ -628,7 +629,7 @@ function drawMap(){
     .attr("fill",d=>{
       const id=String(d.id).padStart(3,"0");
       const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
-      if(iso==="BRA") return "#073309";
+      if(iso===c0.focal) return "#073309";
       if(supMap[iso]) return `rgba(217,119,6,${0.15+0.55*(supMap[iso].value/maxSup)})`;
       if(buyMap[iso]) return `rgba(3,105,161,${0.15+0.55*(buyMap[iso].value/maxBuy)})`;
       return "#1a2535";
@@ -647,7 +648,7 @@ function drawMap(){
     .on("mouseleave",hideTip);
 
   // Brazil border: bright green outline rendered on top of all country fills
-  const braFeat=feat.find(d=>{const fid=String(d.id).padStart(3,"0");return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(fid))==="BRA";});
+  const braFeat=feat.find(d=>{const fid=String(d.id).padStart(3,"0");return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(fid))===c0.focal;});
   if(braFeat) g.append("path").attr("d",path(braFeat)).attr("fill","none").attr("stroke","#3cb54a").attr("stroke-width",1.8).attr("pointer-events","none");
 
   // Flow lines to top suppliers/buyers
@@ -657,7 +658,7 @@ function drawMap(){
   ];
   allLines.forEach(d=>{
     const ct=centroids[d.iso3];
-    const br=centroids["BRA"];
+    const br=centroids[c0.focal];
     if(!ct||!br) return;
     const [x1,y1]=proj(ct), [x2,y2]=proj(br);
     g.append("line").attr("x1",x1).attr("y1",y1).attr("x2",x2).attr("y2",y2)
