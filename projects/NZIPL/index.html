@@ -285,6 +285,7 @@ section:last-of-type { padding-bottom: 88px; }
     <a href="#portfolio">05 Portfolio</a>
     <a href="#kit">06 Claude Kit</a>
     <a href="#archive">07 Archive</a>
+    <a href="#commands">10 Commands</a>
   </nav>
 </div>
 
@@ -697,6 +698,150 @@ section:last-of-type { padding-bottom: 88px; }
           <b style="color:rgba(255,255,255,.5)">Binding constraint</b> · <b style="color:rgba(255,255,255,.5)">Gating requirement</b><br>
           <b style="color:rgba(255,255,255,.5)">Ubiquity</b> · <b style="color:rgba(255,255,255,.5)">Diversity</b> · <b style="color:rgba(255,255,255,.5)">ECI</b> · <b style="color:rgba(255,255,255,.5)">PCI</b>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     10 — PIPELINE COMMANDS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="commands">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">10 —</span> Pipeline Commands &amp; Data Scope</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:24px;">Reference for rebuilding atlases, rendering panels, and understanding the data cross-walk. All commands run from the project root.</p>
+
+    <style>
+      .cmd-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+      .cmd-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+      .cmd-h{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
+      .cmd-block{background:#060d08;border:1px solid rgba(255,255,255,.08);border-radius:5px;padding:10px 12px;font-family:monospace;font-size:11px;color:#a8f5b1;line-height:1.8;overflow-x:auto;white-space:pre;margin-bottom:8px}
+      .cmd-note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}
+      .cmd-kv{display:flex;gap:8px;align-items:baseline;font-size:11.5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+      .cmd-k{font-weight:700;color:rgba(255,255,255,.7);min-width:140px;flex-shrink:0;font-family:monospace;font-size:11px}
+      .cmd-v{color:var(--muted)}
+      @media(max-width:800px){.cmd-grid{grid-template-columns:1fr}}
+    </style>
+
+    <!-- Row 1: Atlases -->
+    <div class="rp-sub">Country &amp; Global Atlases</div>
+    <div class="cmd-grid" style="margin-bottom:20px">
+      <div class="cmd-card">
+        <div class="cmd-h">Full Country Atlas (10 techs)</div>
+        <div class="cmd-block">Rscript scripts/atlas/build_country_atlas.R \
+  --iso IND --name India
+Rscript scripts/atlas/build_country_atlas.R \
+  --iso BRA --name Brazil
+Rscript scripts/atlas/build_country_atlas.R \
+  --iso VNM --name Vietnam
+Rscript scripts/atlas/build_country_atlas.R \
+  --iso MEX --name Mexico</div>
+        <div class="cmd-block">python3 scripts/render/inline_libs.py \
+  analysis/atlas/India_Atlas_of_the_Clean_Industrial_Base.html</div>
+        <div class="cmd-note">Outputs to <code>analysis/atlas/{Country}_Atlas_of_the_Clean_Industrial_Base.html</code> · inline_libs.py embeds D3 + topojson + world atlas (offline-capable)</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-h">Single-Tech Sheet &amp; Global Atlas</div>
+        <div class="cmd-block"># Single tech × country sheet
+Rscript scripts/atlas/build_country_atlas.R \
+  --iso JPN --name Japan \
+  --tech Nuclear \
+  --outdir analysis/atlas/sheets
+python3 scripts/render/inline_libs.py \
+  analysis/atlas/sheets/Nuclear_Japan_*.html
+
+# Global Atlas (13 cases)
+Rscript scripts/atlas/build_global_atlas.R
+python3 scripts/render/inline_libs.py \
+  analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html</div>
+        <div class="cmd-note">Sheets: <code>analysis/atlas/sheets/{Tech}_{Country}_Atlas_*.html</code><br>Supported ISOs: IND BRA JPN KOR VNM MEX ESP (extend FLAG_MAP for others)</div>
+      </div>
+    </div>
+
+    <!-- Row 2: Module panels -->
+    <div class="rp-sub">Module Panel Rendering</div>
+    <div class="cmd-grid" style="margin-bottom:20px">
+      <div class="cmd-card">
+        <div class="cmd-h">All 8 panels for a case</div>
+        <div class="cmd-block"># 8 panels: radar, pc_scatterplot, trade_timeline,
+# trade_composition, tech_tree, sankey,
+# trade_map, activity_map, shap_rca_scatter
+Rscript scripts/render/render_case_panels.R \
+  --iso IND --tech Solar
+Rscript scripts/render/render_case_panels.R \
+  --iso BRA --tech Batteries
+Rscript scripts/render/render_case_panels.R \
+  --iso KOR --tech "Nuclear"</div>
+        <div class="cmd-note">Output: <code>analysis/{module}/{Country}/{Tech}_{Country}_{module}.html</code><br>tech_tree: <code>analysis/tech_tree/{Tech}_tech_tree.html</code> (country-independent, skip if exists)</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-h">Specific panel &amp; activity map refresh</div>
+        <div class="cmd-block"># Single panel type only
+Rscript scripts/render/render_case_panels.R \
+  --iso JPN --tech Wind \
+  --panels activity_map
+
+# After expanding S&P firm data:
+# Rebuild activity maps for all countries
+for iso in IND BRA JPN KOR VNM MEX ESP; do
+  for tech in Solar Nuclear Batteries ...; do
+    Rscript scripts/render/render_case_panels.R \
+      --iso $iso --tech "$tech" \
+      --panels activity_map
+  done
+done</div>
+        <div class="cmd-note">--panels accepts comma-separated list: <code>radar,sankey,trade_map</code></div>
+      </div>
+    </div>
+
+    <!-- Row 3: Data pipeline -->
+    <div class="rp-sub">Data Pipeline &amp; Cross-Product Concordance</div>
+    <div class="cmd-grid" style="margin-bottom:20px">
+      <div class="cmd-card">
+        <div class="cmd-h">Rebuild firm data (S&amp;P)</div>
+        <div class="cmd-block"># Expand to new countries in FOCAL list,
+# then rebuild activity maps
+Rscript scripts/build_data/08d_build_sp_firms.R
+
+# Current coverage: BRA IND JPN KOR VNM MEX ESP
+# 7 countries · 21,832 city-level rows
+# Geocoded via maps::world.cities</div>
+        <div class="cmd-note">Source: <code>data/sp/sp_company_naics_hs_cleaned.xlsx</code> (gitignored, 62MB)<br>Output: <code>data/sp/sp_firms_geocoded.parquet</code></div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-h">Dataset scope</div>
+        <div class="cmd-kv"><span class="cmd-k">BACI trade</span><span class="cmd-v">1995–2024 · ~200 countries · HS6 · KUSD</span></div>
+        <div class="cmd-kv"><span class="cmd-k">Green dictionary</span><span class="cmd-v">605 HS6 codes × 10 techs · stage/role/shap_category</span></div>
+        <div class="cmd-kv"><span class="cmd-k">PC scores</span><span class="cmd-v">155 countries × 10 techs × 2003–2024</span></div>
+        <div class="cmd-kv"><span class="cmd-k">SHAP features</span><span class="cmd-v">402 HS6 × tech entries · 5 categories · global avg</span></div>
+        <div class="cmd-kv"><span class="cmd-k">EXIOBASE IO</span><span class="cmd-v">9,800×9,800 A-matrix · leontief + direct use shares</span></div>
+        <div class="cmd-kv"><span class="cmd-k">S&amp;P firms</span><span class="cmd-v">21,832 rows · 7 countries · geocoded cities</span></div>
+        <div class="cmd-kv"><span class="cmd-k">Dendrite edges</span><span class="cmd-v">913 edges × 10 techs · HS6 value chain tree</span></div>
+        <div class="cmd-kv" style="border:none"><span class="cmd-k">HS revision window</span><span class="cmd-v">HS92(1995) · HS96–HS22 non-overlapping</span></div>
+      </div>
+    </div>
+
+    <!-- Row 4: Concordance -->
+    <div class="rp-sub">Cross-Product Concordance</div>
+    <div class="cmd-grid">
+      <div class="cmd-card">
+        <div class="cmd-h">HS6 classification hierarchy</div>
+        <div class="cmd-kv"><span class="cmd-k">HS6 → shap_category</span><span class="cmd-v">Chemicals / Electronics / Machinery / Metals / Ind.Materials</span></div>
+        <div class="cmd-kv"><span class="cmd-k">HS6 → stage</span><span class="cmd-v">Upstream / Midstream / Downstream / Final Product</span></div>
+        <div class="cmd-kv"><span class="cmd-k">HS6 → role</span><span class="cmd-v">Raw Mat. / Processed Mat. / Process Equip. / Product Comp. / Final Product</span></div>
+        <div class="cmd-kv"><span class="cmd-k">HS6 → NACE4</span><span class="cmd-v">via naics6_nace crosswalk (08c_build_naics_crosswalk.R)</span></div>
+        <div class="cmd-kv"><span class="cmd-k">HS6 → NAICS6</span><span class="cmd-v">S&amp;P firm matching · NZIPL naics-hs-matching skill</span></div>
+        <div class="cmd-kv" style="border:none"><span class="cmd-k">HS6 → EXIOBASE</span><span class="cmd-v">exiobase_product · leontief_use_share · direct_use_share</span></div>
+        <div class="cmd-note" style="margin-top:8px">Master file: <code>data/green_dict/green_dictionary.csv</code> (605 rows, 20 columns)</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-h">Capability radar pipeline</div>
+        <div class="cmd-kv"><span class="cmd-k">SHAP weights</span><span class="cmd-v">pc_features.csv → sum shap_mean_z by category → renorm (tech-specific, not country)</span></div>
+        <div class="cmd-kv"><span class="cmd-k">Country RCA</span><span class="cmd-v">pc_rca.parquet · Balassa formula · country × tech × category × year</span></div>
+        <div class="cmd-kv"><span class="cmd-k">Classification</span><span class="cmd-v">WP-4 3×3: CRIT GAP / GAP / BUILD / STRENGTH / LOW PRIORITY</span></div>
+        <div class="cmd-kv"><span class="cmd-k">SHAP-RCA scatter</span><span class="cmd-v">product-level RCA (focal/world share ratio) × SHAP mean|z| per HS code</span></div>
+        <div class="cmd-kv" style="border:none"><span class="cmd-k">Macro features</span><span class="cmd-v">fdi_z · trade_z · tariff_z · gdp_z · industry_gdp_z · mfg_z (excluded from radar)</span></div>
+        <div class="cmd-note" style="margin-top:8px">Full methodology: <a href="analysis/ml_model/capability_radar_methodology.html" style="color:var(--accent)">capability_radar_methodology.html</a></div>
       </div>
     </div>
   </div>
