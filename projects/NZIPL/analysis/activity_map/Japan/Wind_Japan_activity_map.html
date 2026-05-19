@@ -133,27 +133,27 @@ function srColor(sr){return SR_COLORS[sr]||"#9ca3af"}
 function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
 
 
+      <span class="pane-meta" id="tm-year" style="margin-left:auto"></span>
+    </div>
+    <div class="pane-body"><svg id="tm-svg"></svg></div>
+  </div>
+
+  <!-- DENDRITE (right-bottom) -->
+  <div class="pane" id="pane-den">
+    <div class="pane-header">
+      <span class="pane-title" id="den-title">Process of Production</span>
+      <span class="pane-meta" id="den-meta">Full value chain · selected products highlighted</span>
+    </div>
+    <div class="pane-body"><svg id="den-svg"></svg></div>
+  </div>
+
+</div>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const ALL_CASES = ', all_cases_js, ';
+
 const ISO3N={
-  AFG:4,ALB:8,DZA:12,AGO:24,ARG:32,ARM:51,AUS:36,AUT:40,AZE:31,
-  BGD:50,BLR:112,BEL:56,BFA:854,BDI:108,KHM:116,CMR:120,CAN:124,
-  TCD:148,CHL:152,CHN:156,COL:170,COD:180,COG:178,HRV:191,CUB:192,
-  CYP:196,CZE:203,DNK:208,DOM:214,ECU:218,EGY:818,ETH:231,
-  FJI:242,FIN:246,FRA:250,DEU:276,GHA:288,GRC:300,GTM:320,
-  HND:340,HKG:344,HUN:348,IND:356,IDN:360,IRN:364,IRQ:368,
-  IRL:372,ISR:376,ITA:380,JPN:392,JOR:400,KAZ:398,KEN:404,
-  PRK:408,KOR:410,KWT:414,LAO:418,LVA:428,LBN:422,LBY:434,
-  LTU:440,LUX:442,MDG:450,MWI:454,MYS:458,MLI:466,MLT:470,
-  MRT:478,MEX:484,MDA:498,MNG:496,MAR:504,MOZ:508,MMR:104,
-  NAM:516,NPL:524,NLD:528,NZL:554,NGA:566,NOR:578,OMN:512,
-  PAK:586,PAN:591,PER:604,PHL:608,POL:616,PRT:620,QAT:634,
-  ROU:642,RUS:643,SAU:682,SEN:686,SGP:702,SVK:703,ZAF:710,
-  ESP:724,LKA:144,SWE:752,CHE:756,SYR:760,TWN:158,TJK:762,
-  TZA:834,THA:764,TTO:780,TUN:788,TUR:792,TKM:795,UGA:800,
-  UKR:804,ARE:784,GBR:826,USA:840,URY:858,UZB:860,VNM:704,
-  YEM:887,ZMB:894,ZWE:716,BOL:68,BRA:76,BHR:48,DJI:262,
-  SWZ:748,GEO:268,SLV:222,GNQ:226,EST:233,GUY:328,HTI:332,
-  RWA:646,SLE:694,SDN:729,SUR:740,NER:562,CAF:140,ERI:232
-};
 function precomputeCentroids(topo){
   const proj=d3.geoNaturalEarth1().scale(153).translate([480,250]);
   topojson.feature(topo,topo.objects.countries).features.forEach(f=>{
