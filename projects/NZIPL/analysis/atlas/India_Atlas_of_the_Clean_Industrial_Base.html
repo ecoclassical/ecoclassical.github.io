@@ -162,7 +162,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   <div class="header-vsep"></div>
   <div class="header-brand">
     <span class="header-tech" id="map-tech" style="color:#eab308">Solar</span>
-    <span class="header-country">India</span>
+    <span class="header-country" id="header-country">India</span>
   </div>
   <div class="header-vsep"></div>
   <div class="nav-scroll">
@@ -247,7 +247,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       <div class="map-legend" id="trade-legend">
         <div class="leg-item"><div class="leg-circle" style="background:rgba(217,119,6,.5);border-color:#d97706"></div>Supplier</div>
         <div class="leg-item"><div class="leg-circle" style="background:rgba(3,105,161,.5);border-color:#0369a1"></div>Buyer</div>
-        <div class="leg-item"><div class="leg-circle" style="background:#073309;border-color:#3cb54a"></div>India</div>
+        <div class="leg-item"><div class="leg-circle" style="background:#073309;border-color:#3cb54a"></div><span id="leg-focal">Focal</span></div>
       </div>
       <div class="map-legend" id="firm-legend" style="display:none"></div>
       <div class="map-overlay" id="firm-overlay" style="display:none">
@@ -767,7 +767,7 @@ function drawMap(){
     .attr("fill",d=>{
       const id=String(d.id).padStart(3,"0");
       const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
-      if(iso==="IND") return "#073309";
+      if(iso===c0.focal) return "#073309";
       if(supMap[iso]) return `rgba(217,119,6,${0.15+0.55*(supMap[iso].value/maxSup)})`;
       if(buyMap[iso]) return `rgba(3,105,161,${0.15+0.55*(buyMap[iso].value/maxBuy)})`;
       return "#1a2535";
@@ -778,16 +778,16 @@ function drawMap(){
       const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
       if(!iso) return hideTip();
       const s=supMap[iso],b=buyMap[iso];
-      if(iso==="IND"){ showTip(`<b>India</b><br>🇮🇳 Focal Country`,ev); return; }
+      if(iso===c0.focal){ showTip(`<b>${c0.name}</b><br>Focal Country`,ev); return; }
       if(s) showTip(`<b>${s.name}</b><br>Supplier: ${fmtV(s.value)}`,ev);
       else if(b) showTip(`<b>${b.name}</b><br>Buyer: ${fmtV(b.value)}`,ev);
       else hideTip();
     })
     .on("mouseleave",hideTip);
 
-  // India border: bright green outline rendered on top of all country fills
-  const indFeat=feat.find(d=>{const fid=String(d.id).padStart(3,"0");return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(fid))==="IND";});
-  if(indFeat) g.append("path").attr("d",path(indFeat)).attr("fill","none").attr("stroke","#3cb54a").attr("stroke-width",1.8).attr("pointer-events","none");
+  // Focal country border — use c0.focal (generic for any country)
+  const braFeat=feat.find(d=>{const fid=String(d.id).padStart(3,"0");return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(fid))===c0.focal;});
+  if(braFeat) g.append("path").attr("d",path(braFeat)).attr("fill","none").attr("stroke","#3cb54a").attr("stroke-width",1.8).attr("pointer-events","none");
 
   // Flow lines to top suppliers/buyers
   const allLines=[
@@ -796,7 +796,7 @@ function drawMap(){
   ];
   allLines.forEach(d=>{
     const ct=centroids[d.iso3];
-    const br=centroids["IND"];
+    const br=centroids[c0.focal];
     if(!ct||!br) return;
     const [x1,y1]=proj(ct), [x2,y2]=proj(br);
     g.append("line").attr("x1",x1).attr("y1",y1).attr("x2",x2).attr("y2",y2)
@@ -1050,31 +1050,39 @@ function drawShapRadar(){
   const R=Math.min(W,H)/2-30;
   const ang=i=>(i/N)*2*Math.PI-Math.PI/2;
   const pt=(r,i)=>[cx+r*Math.cos(ang(i)), cy+r*Math.sin(ang(i))];
+  // RCA scale
   const maxRCA=Math.max(d3.max(focal.filter(v=>v!=null&&!isNaN(v)))||1.5,1.2);
   const scR=v=>R*Math.min(Math.max(v||0,0),maxRCA)/maxRCA;
+  // SHAP scale: 50% share → edge (R)
   const shR=s=>Math.min(R*s*2,R);
+  // Outer pentagon
   svg.append("polygon")
     .attr("points",cats.map((_,i)=>pt(R,i).join(",")).join(" "))
     .attr("fill","none").attr("stroke","rgba(255,255,255,.1)").attr("stroke-width",0.5);
+  // RCA=1 ring (dashed reference)
   svg.append("polygon")
     .attr("points",cats.map((_,i)=>pt(scR(1.0),i).join(",")).join(" "))
     .attr("fill","none").attr("stroke","rgba(255,255,255,.22)")
     .attr("stroke-width",0.8).attr("stroke-dasharray","4,3");
   svg.append("text").attr("x",cx+3).attr("y",cy-scR(1.0)-2)
     .attr("fill","rgba(255,255,255,.2)").attr("font-size",5.5).text("RCA=1");
+  // Spokes
   cats.forEach((_,i)=>{
     const [x2,y2]=pt(R,i);
     svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",x2).attr("y2",y2)
       .attr("stroke","rgba(255,255,255,.08)").attr("stroke-width",0.5);
   });
+  // SHAP polygon — amber, "what the model needs"
   svg.append("polygon")
     .attr("points",cats.map((_,i)=>pt(shR(shap[i]||1/N),i).join(",")).join(" "))
     .attr("fill","rgba(245,158,11,.14)").attr("stroke","#f59e0b")
     .attr("stroke-width",1.8).attr("stroke-linejoin","round");
+  // Focal RCA polygon — tech color dashed, "what the country has"
   svg.append("polygon")
     .attr("points",cats.map((_,i)=>pt(scR(focal[i]||0),i).join(",")).join(" "))
     .attr("fill",`${c0.color}18`).attr("stroke",c0.color)
     .attr("stroke-width",1.8).attr("stroke-dasharray","4,2").attr("stroke-linejoin","round");
+  // Classify
   const classify=(s,r)=>{
     if(s>=0.25&&r<0.5) return {tag:"CRIT GAP",   col:"#ef4444"};
     if(r<0.5&&s>=0.10)  return {tag:"GAP",        col:"#f97316"};
@@ -1082,10 +1090,12 @@ function drawShapRadar(){
     if(r>=0.5)           return {tag:"BUILD",      col:"#22d3ee"};
     return                {tag:"LOW PRIORITY", col:"#6b7280"};
   };
+  // Dots + tooltips
   cats.forEach((_,i)=>{
     const cls=classify(shap[i]||0,focal[i]||0);
     const [sx,sy]=pt(shR(shap[i]||1/N),i);
-    svg.append("circle").attr("cx",sx).attr("cy",sy).attr("r",2.6).attr("fill","#f59e0b");
+    svg.append("circle").attr("cx",sx).attr("cy",sy).attr("r",2.6)
+      .attr("fill","#f59e0b");
     const [rx,ry]=pt(scR(focal[i]||0),i);
     svg.append("circle").attr("cx",rx).attr("cy",ry).attr("r",3.2)
       .attr("fill",c0.color).attr("stroke","white").attr("stroke-width",0.8)
@@ -1094,6 +1104,7 @@ function drawShapRadar(){
         `SHAP: <b>${Math.round((shap[i]||0)*100)}%</b> &nbsp; RCA: <b>${(focal[i]||0).toFixed(2)}</b>`,ev))
       .on("mouseleave",hideTip);
   });
+  // Axis labels: name + classification tag + SHAP%·RCA
   cats.forEach((cat,i)=>{
     const [lx,ly]=pt(R+14,i);
     const anc=Math.cos(ang(i))>0.12?"start":Math.cos(ang(i))<-0.12?"end":"middle";
@@ -1109,11 +1120,12 @@ function drawShapRadar(){
       .attr("font-size",5).attr("fill","rgba(255,255,255,.32)")
       .text(`${Math.round((shap[i]||0)*100)}% · ${(focal[i]||0).toFixed(2)}`);
   });
+  // Legend
   const legY=H-16;
   [["#f59e0b","SHAP weight",false],[c0.color,"Country RCA",true],["rgba(255,255,255,.2)","RCA=1","dotted"]].forEach(([col,lbl,dash],i)=>{
     const lx=4+i*70;
     svg.append("line").attr("x1",lx).attr("y1",legY).attr("x2",lx+11).attr("y2",legY)
-      .attr("stroke",col).attr("stroke-width",dash==="dotted"?0.8:dash?1.2:2)
+      .attr("stroke",col).attr("stroke-width",dash?"dotted"===dash?0.8:1.2:2)
       .attr("stroke-dasharray",dash==="dotted"?"4,3":dash?"4,2":"");
     svg.append("text").attr("x",lx+13).attr("y",legY+3.5)
       .attr("fill","rgba(255,255,255,.38)").attr("font-size",5.5).text(lbl);
@@ -1357,7 +1369,7 @@ function drawFirms(){
   const focalFeat=feat.find(f=>+f.id===numId);
   const pad=28;
   const proj=d3.geoNaturalEarth1();
-  if(focalFeat) proj.fitExtent([[pad*3,pad],[W-pad,H-pad]], focalFeat);
+  if(focalFeat) proj.fitExtent([[pad,pad],[W-pad,H-pad]], focalFeat);
   const path=d3.geoPath().projection(proj);
 
   // Countries: focal very dark + semi-transparent, neighbours lighter
@@ -1461,7 +1473,7 @@ function renderAll(){
   const techEl=document.getElementById("map-tech");
   techEl.textContent=c().tech;
   techEl.style.color=c().color;
-  document.title=`India — ${c().tech} — Atlas of the Clean Industrial Base`;
+  document.title=c().name+" — "+c().tech+" — Atlas of the Clean Industrial Base"; const cEl=document.getElementById("header-country"); if(cEl) cEl.textContent=c().name; const legEl=document.getElementById("leg-focal"); if(legEl) legEl.textContent=c().name;
   buildFixedLegend();
   updateFixedLegend();
   populateDropdowns();
@@ -1524,7 +1536,7 @@ function drawAtlasSankey(){
       laneM[lane].set(id,(laneM[lane].get(id)||0)+(+f.w||0));
     });
   });
-  // Ensure focal country (India) appears in every lane, even if not in top flows
+  // Ensure focal country (Brazil) appears in every lane, even if not in top flows
   const braLabel=c0.focal;
   [0,1,2,3,4,5,6].forEach(lane=>{
     if(!laneM[lane]) laneM[lane]=new Map();
@@ -1563,7 +1575,7 @@ function drawAtlasSankey(){
     svg.append("line").attr("x1",x-NW).attr("x2",x+NW).attr("y1",yMid).attr("y2",yMid)
       .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",0.5);
   });
-  // Focus state: default to focal country (India), click node to switch
+  // Focus state: default to focal country (Brazil), click node to switch
   if(sankeyFocus===null) sankeyFocus=c0.focal;
   const foc=sankeyFocus;
   // Click on SVG background resets to focal country
@@ -1693,10 +1705,6 @@ window.addEventListener("resize",()=>{
   });
 })();
 </script>
-
-<div id="_status" style="position:fixed;bottom:16px;right:16px;background:rgba(0,0,0,.85);
-  color:#fff;padding:8px 14px;border-radius:6px;font-size:12px;font-family:monospace;
-  z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s">Loading...</div>
 </body>
 </html>
 
