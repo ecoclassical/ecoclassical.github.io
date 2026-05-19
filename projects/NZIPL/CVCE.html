@@ -573,46 +573,13 @@ section:last-of-type { padding-bottom: 88px; }
 <section id="browser">
   <div class="wrap">
     <div class="section-label"><span class="sl-num">04 —</span> Modular Visualization Browser</div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Hover any technology to preview — 8 modules × 7 countries × up to 10 techs. One panel per country × tech.</p>
-
-    <!-- Module + Country selectors -->
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
-      <div id="br-mod-btns" style="display:flex;flex-wrap:wrap;gap:5px;flex:1;"></div>
-      <div id="br-country-btns" style="display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;">
-        <button class="ir-tab-card active" onclick="brSetCountry('India',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--accent)">India</span>
-        </button>
-        <button class="ir-tab-card" onclick="brSetCountry('Brazil',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--accent2)">Brazil</span>
-        </button>
-        <button class="ir-tab-card" onclick="brSetCountry('Japan',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--nuclear)">Japan</span>
-        </button>
-        <button class="ir-tab-card" onclick="brSetCountry('South_Korea',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--transmission)">S. Korea</span>
-        </button>
-        <button class="ir-tab-card" onclick="brSetCountry('Vietnam',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--wind)">Vietnam</span>
-        </button>
-        <button class="ir-tab-card" onclick="brSetCountry('Mexico',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--biofuel)">Mexico</span>
-        </button>
-        <button class="ir-tab-card" onclick="brSetCountry('Spain',this)" style="cursor:pointer;padding:5px 12px;">
-          <span class="ir-tab-tech" style="color:var(--geothermal)">Spain</span>
-        </button>
-      </div>
-    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Three-column selector: hover any module, technology, or country to preview. Click to lock a selection.</p>
 
     <!-- Left bar + Preview pane -->
     <div style="display:flex;gap:12px;align-items:stretch;">
 
       <!-- Left: narrow tech × selection list -->
-      <div id="br-left" style="
-        width:188px;flex-shrink:0;
-        overflow-y:auto;max-height:560px;
-        padding-right:6px;
-        scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;
-      "></div>
+      <div id="br-left" style="width:380px;flex-shrink:0;overflow-y:auto;max-height:560px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;"></div>
 
       <!-- Right: iframe preview -->
       <div style="flex:1;position:relative;min-height:480px;
@@ -938,14 +905,14 @@ function skCountry(name, el) {
 
 // ── Modular Visualization Browser ────────────────────────────────────────────
 const BR_MODULES = [
-  {id:'radar',           label:'Capability Radar',    desc:'SHAP vs RCA'},
-  {id:'pc_scatterplot',  label:'PC Scatterplot',       desc:'155 countries'},
-  {id:'trade_timeline',  label:'Trade Timeline',       desc:'Exports/imports'},
-  {id:'trade_composition',label:'Trade Composition',  desc:'Treemap'},
-  {id:'tech_tree',       label:'Tech Tree',            desc:'Value chain dendrite'},
-  {id:'sankey',          label:'Sankey',               desc:'7-lane flows'},
-  {id:'trade_map',       label:'Trade Map',            desc:'World map'},
-  {id:'activity_map',    label:'Activity Map',         desc:'Firm locations'},
+  {id:'radar',           label:'Capability Radar'},
+  {id:'pc_scatterplot',  label:'PC Scatterplot'},
+  {id:'trade_timeline',  label:'Trade Timeline'},
+  {id:'trade_composition',label:'Trade Composition'},
+  {id:'tech_tree',       label:'Tech Tree'},
+  {id:'sankey',          label:'Sankey'},
+  {id:'trade_map',       label:'Trade Map'},
+  {id:'activity_map',    label:'Activity Map'},
 ];
 const BR_TECHS = [
   {name:'Solar',         slug:'Solar',         col:'#eab308'},
@@ -959,55 +926,27 @@ const BR_TECHS = [
   {name:'Heat Pumps',    slug:'Heat_Pumps',    col:'#f97316'},
   {name:'Magnets',       slug:'Magnets',       col:'#ec4899'},
 ];
-const BR_SELS = [
-  {slug:'All',           label:'All'},
-  {slug:'Midstream',     label:'Midstream'},
-  {slug:'Final_Product', label:'Final Prod.'},
-  {slug:'Raw_Material',  label:'Raw Mat.'},
+const BR_COUNTRIES = [
+  {name:'India',     slug:'India',       col:'#3cb54a'},
+  {name:'Brazil',    slug:'Brazil',      col:'#C17A2E'},
+  {name:'Japan',     slug:'Japan',       col:'#0ea5e9'},
+  {name:'S. Korea',  slug:'South_Korea', col:'#06b6d4'},
+  {name:'Vietnam',   slug:'Vietnam',     col:'#3b82f6'},
+  {name:'Mexico',    slug:'Mexico',      col:'#84cc16'},
+  {name:'Spain',     slug:'Spain',       col:'#ef4444'},
 ];
 
-// Country → available techs (others show as dimmed)
-const COUNTRY_TECHS = {
-  India:       null, // all 10
-  Brazil:      null, // all 10
-  Mexico:      null, // all 10
-  Spain:       null, // all 10
-  Japan:       ['Solar','Nuclear','Batteries','Transmission','Wind','Biofuel','Electrolyzers','Geothermal','Heat_Pumps','Magnets'],
-  South_Korea: ['Solar','Nuclear','Batteries','Transmission','Wind','Biofuel','Electrolyzers','Geothermal','Heat_Pumps','Magnets'],
-  Vietnam:     ['Solar','Nuclear','Batteries','Transmission','Wind','Biofuel','Electrolyzers','Geothermal','Heat_Pumps','Magnets']
-};
-
-let brMod = 'radar', brCurCountry = 'India';
+let brMod = 'radar', brCurTech = 'Solar', brCurCountry = 'India';
 let brFadeTimer = null;
 
 function hexToRgb(hex) {
   return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)].join(',');
 }
 
-function brBuildModBtns() {
-  document.getElementById('br-mod-btns').innerHTML = BR_MODULES.map(m => `
-    <button onclick="brSetMod('${m.id}',this)" style="
-      padding:5px 10px;border-radius:5px;cursor:pointer;font-family:inherit;
-      border:1px solid rgba(255,255,255,${m.id===brMod ? .18 : .08});
-      background:${m.id===brMod ? 'rgba(60,181,74,.14)' : 'rgba(255,255,255,.03)'};
-      color:${m.id===brMod ? '#3cb54a' : 'rgba(255,255,255,.5)'};
-      font-size:10.5px;font-weight:${m.id===brMod ? 700 : 500};transition:all .15s;white-space:nowrap">
-      ${m.label}
-    </button>`).join('');
-}
-
-function brSetMod(id) {
-  brMod = id;
-  brBuildModBtns();
-  brBuildLeft();
-  // Country buttons always visible — tech_tree path simply ignores country
-}
-
-function brSetCountry(name, el) {
-  brCurCountry = name;
-  document.querySelectorAll('#br-country-btns .ir-tab-card').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  brBuildLeft();
+function buildPath(mod, tech, country) {
+  return mod === 'tech_tree'
+    ? 'analysis/tech_tree/' + tech + '_tech_tree.html'
+    : 'analysis/' + mod + '/' + country + '/' + tech + '_' + country + '_' + mod + '.html';
 }
 
 function brPreview(path, label) {
@@ -1015,56 +954,96 @@ function brPreview(path, label) {
   const ph      = document.getElementById('br-placeholder');
   const lbl     = document.getElementById('br-cur-label');
   const openLnk = document.getElementById('br-open-link');
-
   clearTimeout(brFadeTimer);
-
-  // Fade out → swap src → fade in
   iframe.style.opacity = 0;
-  brFadeTimer = setTimeout(() => {
+  brFadeTimer = setTimeout(function() {
     iframe.src = path;
-    lbl.textContent = label;
-    openLnk.href = path;
-    openLnk.style.opacity = 1;
-    openLnk.style.pointerEvents = 'auto';
-    ph.style.opacity = 0;
-    iframe.onload = () => { iframe.style.opacity = 1; };
+    if(lbl) lbl.textContent = label;
+    if(openLnk) { openLnk.href = path; openLnk.style.opacity = 1; openLnk.style.pointerEvents = 'auto'; }
+    if(ph) ph.style.opacity = 0;
+    iframe.onload = function() { iframe.style.opacity = 1; };
   }, 160);
 }
 
-function brBuildLeft() {
-  const left = document.getElementById('br-left');
-  const isTechOnly = brMod === 'tech_tree';
-  const availSlugs = COUNTRY_TECHS[brCurCountry];  // null = all available
-  left.innerHTML = BR_TECHS.map(t => {
-    const rgb = hexToRgb(t.col);
-    // tech_tree: analysis/tech_tree/{slug}_tech_tree.html
-    // others:    analysis/{module}/{Country}/{Tech}_{Country}_{module}.html
-    const path  = isTechOnly
-      ? `analysis/tech_tree/${t.slug}_tech_tree.html`
-      : `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${brMod}.html`;
-    const label = isTechOnly
-      ? `${t.name} · Tech Tree`
-      : `${t.name} · ${brCurCountry} · ${brMod}`;
-    return `<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);">
-      <button
-        onmouseenter="brPreview('${path}','${label}')"
-        onclick="window.open('${path}','_blank')"
-        style="width:100%;padding:5px 8px;border-radius:4px;cursor:pointer;font-family:inherit;
-               border:1px solid rgba(${rgb},.25);background:rgba(${rgb},.08);
-               color:${t.col};font-size:10px;font-weight:800;text-align:left;
-               letter-spacing:.05em;text-transform:uppercase;transition:all .18s"
-        onmouseover="this.style.background='rgba(${rgb},.22)'"
-        onmouseout="this.style.background='rgba(${rgb},.08)'">
-        ${t.name}
-      </button>
-    </div>`;
-  }).join('');
+// Hover: preview with hovered dimension swapped in, others stay current
+function brHover(dim, val) {
+  var mod  = dim==='mod'     ? val : brMod;
+  var tech = dim==='tech'    ? val : brCurTech;
+  var ctry = dim==='country' ? val : brCurCountry;
+  brPreview(buildPath(mod, tech, ctry), tech + ' · ' + ctry + ' · ' + mod);
+}
+
+// Click: lock that dimension and preview
+function brClick(dim, val) {
+  if(dim==='mod')     brMod        = val;
+  if(dim==='tech')    brCurTech    = val;
+  if(dim==='country') brCurCountry = val;
+  brBuildAll();
+  brPreview(buildPath(brMod, brCurTech, brCurCountry),
+            brCurTech + ' · ' + brCurCountry + ' · ' + brMod);
+}
+
+function brMkBtn(label, col, active, dim, val) {
+  var rgb = hexToRgb(col || '#3cb54a');
+  var bg  = active ? 'rgba('+rgb+',.22)' : 'rgba('+rgb+',.07)';
+  var fc  = active ? (col || '#3cb54a')  : 'rgba(255,255,255,.55)';
+  var bc  = active ? 'rgba('+rgb+',.45)' : 'rgba('+rgb+',.18)';
+  var fw  = active ? 800 : 600;
+  // Use data attributes to avoid inline handler escaping issues
+  return '<button data-dim="' + dim + '" data-val="' + val + '"'
+    + ' style="width:100%;padding:4px 7px;border-radius:4px;cursor:pointer;font-family:inherit;'
+    + 'text-align:left;font-size:9.5px;font-weight:' + fw + ';letter-spacing:.03em;'
+    + 'border:1px solid ' + bc + ';background:' + bg + ';color:' + fc + ';'
+    + 'transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"'
+    + '>' + label + '</button>';
+}
+
+function brColHdr(label) {
+  return '<div style="font-size:.58rem;font-weight:700;color:rgba(255,255,255,.3);'
+    + 'text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;padding-bottom:3px;'
+    + 'border-bottom:1px solid rgba(255,255,255,.08)">' + label + '</div>';
+}
+
+function brBuildAll() {
+  var left = document.getElementById('br-left');
+  var cols = [];
+
+  // Module column
+  var mHtml = brColHdr('Module');
+  BR_MODULES.forEach(function(m) {
+    mHtml += brMkBtn(m.label, '#3cb54a', m.id===brMod, 'mod', m.id);
+  });
+  cols.push('<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">' + mHtml + '</div>');
+
+  // Tech column
+  var tHtml = brColHdr('Technology');
+  BR_TECHS.forEach(function(t) {
+    tHtml += brMkBtn(t.name, t.col, t.slug===brCurTech, 'tech', t.slug);
+  });
+  cols.push('<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">' + tHtml + '</div>');
+
+  // Country column (for tech_tree, show greyed note)
+  var cHtml = brColHdr('Country');
+  if(brMod === 'tech_tree') {
+    cHtml += '<div style="font-size:9px;color:rgba(255,255,255,.25);font-style:italic;margin-top:4px">Tech trees are country-independent</div>';
+  } else {
+    BR_COUNTRIES.forEach(function(c) {
+      cHtml += brMkBtn(c.name, c.col, c.slug===brCurCountry, 'country', c.slug);
+    });
+  }
+  cols.push('<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">' + cHtml + '</div>');
+
+  left.innerHTML = '<div style="display:flex;gap:8px;height:100%">' + cols.join('') + '</div>';
+  // Attach event listeners (avoids inline handler escaping)
+  left.querySelectorAll('button[data-dim]').forEach(function(btn) {
+    btn.addEventListener('mouseenter', function() { brHover(btn.dataset.dim, btn.dataset.val); });
+    btn.addEventListener('click',      function() { brClick(btn.dataset.dim, btn.dataset.val); });
+  });
 }
 
 // Boot
-document.addEventListener('DOMContentLoaded', () => {
-  brBuildModBtns();
-  brBuildLeft();
+document.addEventListener('DOMContentLoaded', function() {
+  brBuildAll();
 });
 </script>
 </body>
