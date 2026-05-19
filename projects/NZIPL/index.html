@@ -999,10 +999,8 @@ function brBuildModBtns() {
 function brSetMod(id) {
   brMod = id;
   brBuildModBtns();
-  // Hide only country buttons (not module buttons) when tech_tree selected
-  const ctryBtns = document.getElementById('br-country-btns');
-  ctryBtns.style.display = brMod === 'tech_tree' ? 'none' : 'flex';
   brBuildLeft();
+  // Country buttons always visible — tech_tree path simply ignores country
 }
 
 function brSetCountry(name, el) {
