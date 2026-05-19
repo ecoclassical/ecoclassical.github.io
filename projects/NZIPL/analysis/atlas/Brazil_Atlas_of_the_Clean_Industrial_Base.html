@@ -1692,17 +1692,14 @@ window.addEventListener("resize",()=>{
 
 // ── Boot: all libraries inlined — no CDN or fetch needed ─────────────────────
 (function(){
-  // topojson already loaded inline; world atlas already defined as __WORLD_TOPO__
-  var topo = window.__WORLD_TOPO__;
-  if(typeof worldTopo !== 'undefined'){
-    // worldTopo is a var declared elsewhere; set it
-    worldTopo = topo;
-    if(typeof precomputeCentroids === 'function') precomputeCentroids(topo);
+  // Set worldTopo from inline data immediately (before DOMContentLoaded)
+  if(window.__WORLD_TOPO__ && typeof worldTopo !== 'undefined') {
+    worldTopo = window.__WORLD_TOPO__;
   }
+  // On DOM ready: precompute centroids (functions now defined) then render
   document.addEventListener("DOMContentLoaded", function(){
-    if(typeof worldTopo !== 'undefined' && worldTopo === null && window.__WORLD_TOPO__){
-      worldTopo = window.__WORLD_TOPO__;
-      if(typeof precomputeCentroids === 'function') precomputeCentroids(worldTopo);
+    if(worldTopo && typeof precomputeCentroids === 'function') {
+      precomputeCentroids(worldTopo);
     }
     if(typeof renderAll === 'function') renderAll();
   });
