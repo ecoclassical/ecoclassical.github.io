@@ -999,8 +999,9 @@ function brBuildModBtns() {
 function brSetMod(id) {
   brMod = id;
   brBuildModBtns();
-  const ctryRow = document.getElementById('br-country-btns').parentElement;
-  ctryRow.style.display = brMod === 'tech_tree' ? 'none' : '';
+  // Hide only country buttons (not module buttons) when tech_tree selected
+  const ctryBtns = document.getElementById('br-country-btns');
+  ctryBtns.style.display = brMod === 'tech_tree' ? 'none' : 'flex';
   brBuildLeft();
 }
 
