@@ -563,7 +563,7 @@ section:last-of-type { padding-bottom: 88px; }
 <section id="browser">
   <div class="wrap">
     <div class="section-label"><span class="sl-num">04 —</span> Modular Visualization Browser</div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Hover any selection to preview — 8 modules × 2 countries × 10 techs × 4 selections.</p>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">Hover any technology to preview — 8 modules × 7 countries × up to 10 techs. One panel per country × tech.</p>
 
     <!-- Module + Country selectors -->
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
@@ -583,6 +583,12 @@ section:last-of-type { padding-bottom: 88px; }
         </button>
         <button class="ir-tab-card" onclick="brSetCountry('Vietnam',this)" style="cursor:pointer;padding:5px 12px;">
           <span class="ir-tab-tech" style="color:var(--wind)">Vietnam</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Mexico',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--biofuel)">Mexico</span>
+        </button>
+        <button class="ir-tab-card" onclick="brSetCountry('Spain',this)" style="cursor:pointer;padding:5px 12px;">
+          <span class="ir-tab-tech" style="color:var(--geothermal)">Spain</span>
         </button>
       </div>
     </div>
@@ -950,6 +956,17 @@ const BR_SELS = [
   {slug:'Raw_Material',  label:'Raw Mat.'},
 ];
 
+// Country → available techs (others show as dimmed)
+const COUNTRY_TECHS = {
+  India:       null, // all 10
+  Brazil:      null, // all 10
+  Mexico:      null, // all 10
+  Spain:       null, // all 10
+  Japan:       ['Solar','Nuclear','Batteries','Transmission','Wind','Biofuel','Electrolyzers','Geothermal','Heat_Pumps','Magnets'],
+  South_Korea: ['Solar','Nuclear','Batteries','Transmission','Wind','Biofuel','Electrolyzers','Geothermal','Heat_Pumps','Magnets'],
+  Vietnam:     ['Solar','Nuclear','Batteries','Transmission','Wind','Biofuel','Electrolyzers','Geothermal','Heat_Pumps','Magnets']
+};
+
 let brMod = 'radar', brCurCountry = 'India';
 let brFadeTimer = null;
 
@@ -972,7 +989,6 @@ function brBuildModBtns() {
 function brSetMod(id) {
   brMod = id;
   brBuildModBtns();
-  // Show/hide country selector — tech_tree has no country dimension
   const ctryRow = document.getElementById('br-country-btns').parentElement;
   ctryRow.style.display = brMod === 'tech_tree' ? 'none' : '';
   brBuildLeft();
@@ -1009,34 +1025,29 @@ function brPreview(path, label) {
 function brBuildLeft() {
   const left = document.getElementById('br-left');
   const isTechOnly = brMod === 'tech_tree';
+  const availSlugs = COUNTRY_TECHS[brCurCountry];  // null = all available
   left.innerHTML = BR_TECHS.map(t => {
     const rgb = hexToRgb(t.col);
-    const btns = BR_SELS.map(s => {
-      // tech_tree: no country in path or filename
-      const path  = isTechOnly
-        ? `analysis/tech_tree/${t.slug}/${t.slug}_${s.slug}_tech_tree.html`
-        : `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${s.slug}_${brMod}.html`;
-      const label = isTechOnly
-        ? `${t.name} · ${s.label} · Tech Tree`
-        : `${t.name} · ${brCurCountry} · ${s.label} · ${brMod}`;
-      return `<button
+    // tech_tree: analysis/tech_tree/{slug}_tech_tree.html
+    // others:    analysis/{module}/{Country}/{Tech}_{Country}_{module}.html
+    const path  = isTechOnly
+      ? `analysis/tech_tree/${t.slug}_tech_tree.html`
+      : `analysis/${brMod}/${brCurCountry}/${t.slug}_${brCurCountry}_${brMod}.html`;
+    const label = isTechOnly
+      ? `${t.name} · Tech Tree`
+      : `${t.name} · ${brCurCountry} · ${brMod}`;
+    return `<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+      <button
         onmouseenter="brPreview('${path}','${label}')"
         onclick="window.open('${path}','_blank')"
-        style="
-          padding:3px 7px;border-radius:3px;cursor:pointer;font-family:inherit;
-          border:1px solid rgba(${rgb},.2);background:rgba(${rgb},.07);
-          color:rgba(255,255,255,.55);font-size:9.5px;font-weight:600;
-          transition:all .18s;white-space:nowrap;"
-        onmouseover="this.style.background='rgba(${rgb},.22)';this.style.color='${t.col}';this.style.borderColor='rgba(${rgb},.5)'"
-        onmouseout="this.style.background='rgba(${rgb},.07)';this.style.color='rgba(255,255,255,.55)';this.style.borderColor='rgba(${rgb},.2)'">
-        ${s.label}
-      </button>`;
-    }).join('');
-
-    return `<div style="padding:7px 0 5px;border-bottom:1px solid rgba(255,255,255,.05);">
-      <div style="font-size:10px;font-weight:800;color:${t.col};letter-spacing:.05em;
-                  text-transform:uppercase;margin-bottom:5px;">${t.name}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:3px;">${btns}</div>
+        style="width:100%;padding:5px 8px;border-radius:4px;cursor:pointer;font-family:inherit;
+               border:1px solid rgba(${rgb},.25);background:rgba(${rgb},.08);
+               color:${t.col};font-size:10px;font-weight:800;text-align:left;
+               letter-spacing:.05em;text-transform:uppercase;transition:all .18s"
+        onmouseover="this.style.background='rgba(${rgb},.22)'"
+        onmouseout="this.style.background='rgba(${rgb},.08)'">
+        ${t.name}
+      </button>
     </div>`;
   }).join('');
 }
