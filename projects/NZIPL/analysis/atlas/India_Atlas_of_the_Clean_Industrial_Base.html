@@ -739,6 +739,7 @@ function buildSRLegend(){}
 const MAP_W=960,MAP_H=500;
 function drawMap(){
   if(!worldTopo) return;
+  const c0=c();
   const pv=getPV();
   const w=document.getElementById("pane-map").clientWidth||800;
   const h=document.getElementById("pane-map").clientHeight-80||350;
