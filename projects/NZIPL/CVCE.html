@@ -765,7 +765,7 @@ python3 scripts/render/inline_libs.py \
         <div class="cmd-h">All 8 panels for a case</div>
         <div class="cmd-block"># 8 panels: radar, pc_scatterplot, trade_timeline,
 # trade_composition, tech_tree, sankey,
-# trade_map, activity_map, shap_rca_scatter
+# trade_map, activity_map, pc_scatter
 Rscript scripts/render/render_case_panels.R \
   --iso IND --tech Solar
 Rscript scripts/render/render_case_panels.R \
@@ -1051,7 +1051,7 @@ function skCountry(name, el) {
 // ── Modular Visualization Browser ────────────────────────────────────────────
 const BR_MODULES = [
   {id:'radar',           label:'Capability Radar'},
-  {id:'pc_scatterplot',  label:'PC Scatterplot'},
+  {id:'pc_scatter',      label:'PC Scatter'},
   {id:'trade_timeline',  label:'Trade Timeline'},
   {id:'trade_composition',label:'Trade Composition'},
   {id:'tech_tree',       label:'Tech Tree'},

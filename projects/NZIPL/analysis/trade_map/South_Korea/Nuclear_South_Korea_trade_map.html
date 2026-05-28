@@ -42,8 +42,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0d1520;
 #hdr{position:absolute;top:0;left:0;right:0;height:36px;
   padding:0 14px;border-bottom:1px solid rgba(255,255,255,.06);
   display:flex;align-items:center;gap:10px;background:#0a1218;z-index:2}
-.ht{font-size:.82rem;font-weight:800}.hs{color:rgba(255,255,255,.25)}.htl{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.07em}
-.hm{font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto}
+.ht{font-size:1.13rem;font-weight:800}.hs{color:rgba(255,255,255,.25)}.htl{font-size:1.01rem;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.07em}
+.hm{font-size:.93rem;color:rgba(255,255,255,.3);margin-left:auto}
 /* Use viewport units so clientWidth/Height are never 0 */
 #body{position:absolute;top:36px;left:0;right:0;bottom:0;overflow:hidden}
 #pane-map{position:absolute;inset:0;width:100%;height:100%}
@@ -59,7 +59,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0d1520;
   <div id="hdr">
     <span class="ht" style="color:#0ea5e9">Nuclear</span>
     <span class="hs">·</span>
-    <span style="color:rgba(255,255,255,.55);font-size:.82rem;font-weight:600">South_Korea</span>
+    <span style="color:rgba(255,255,255,.55);font-size:1.13rem;font-weight:600">South_Korea</span>
     <span class="hs">·</span>
     <span class="htl">Trade Map</span>
     <span class="hm">Supplier & buyer flows</span>
@@ -343,11 +343,11 @@ document.addEventListener("DOMContentLoaded", function(){
     const b=document.createElement("button");
     b.id="tmv-"+m;
     b.textContent=lbl;
-    b.setAttribute("style", m==="both" ? "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.68rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(60,181,74,.4);background:rgba(60,181,74,.12);color:#3cb54a;transition:all .15s" : "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.68rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);transition:all .15s");
+    b.setAttribute("style", m==="both" ? "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.99rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(60,181,74,.4);background:rgba(60,181,74,.12);color:#3cb54a;transition:all .15s" : "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.99rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);transition:all .15s");
     b.onclick=()=>{
       mapViewMode=m;
       modes.forEach(([mm])=>{
-        document.getElementById("tmv-"+mm).setAttribute("style", mm===m ? "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.68rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(60,181,74,.4);background:rgba(60,181,74,.12);color:#3cb54a;transition:all .15s" : "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.68rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);transition:all .15s");
+        document.getElementById("tmv-"+mm).setAttribute("style", mm===m ? "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.99rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(60,181,74,.4);background:rgba(60,181,74,.12);color:#3cb54a;transition:all .15s" : "padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.99rem;font-weight:700;letter-spacing:.06em;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);transition:all .15s");
       });
       // Override getPV temporarily to filter suppliers/buyers by mode
       const origPV=window._basePV||getPV();
