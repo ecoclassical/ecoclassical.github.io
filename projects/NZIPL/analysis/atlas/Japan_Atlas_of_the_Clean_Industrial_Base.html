@@ -1531,8 +1531,14 @@ function drawFirms(){
 
   // Filter logic: which firms match the drum selection
   const hasFilter=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL"||selCat!=="ALL";
+  const catMap=colorMode==="cat"?srToCatMap():{};
+  const srCatCache={};
+  const srHasCat=srKey=>{
+    if(srCatCache[srKey]!==undefined) return srCatCache[srKey];
+    return srCatCache[srKey]=(c0.all_products||[]).some(p=>p.stage+"|"+p.role===srKey&&(p.cat||"Other")===selCat);
+  };
   const isActive=f=>{
-    if(selCat!=="ALL"&&(f.cat||"Other")!==selCat) return false;
+    if(selCat!=="ALL"&&!srHasCat(f.stage+"|"+f.role)) return false;
     if(selStage!=="ALL"&&f.stage!==selStage) return false;
     if(selRole!=="ALL"&&f.role!==selRole) return false;
     return true;
@@ -1583,7 +1589,7 @@ function drawFirms(){
       const [x,y]=px;
       if(x<-10||x>W+10||y<-10||y>H+10) return;
       const srKey=f.stage+"|"+f.role;
-      const col=nodeColor(srKey,f.cat);
+      const col=colorMode==="cat"?(CAT_COLORS[catMap[srKey]||"Other"]||"#6b7280"):(SR_COLORS[srKey]||"#9ca3af");
       const active=!hasFilter||isActive(f);
       const prodHit=isProdMatch(f);
       if(active) seenSR.add(srKey);
@@ -1622,7 +1628,7 @@ function drawFirms(){
     const topCities=[...dispFirms].sort((a,b)=>b.n-a.n).slice(0,6);
     const maxC=topCities[0]?.n||1;
     document.getElementById("ov-firm-cities").innerHTML=topCities.map(f=>{
-      const col=nodeColor(`${f.stage}|${f.role}`,f.cat);
+      const srK=`${f.stage}|${f.role}`;const col=colorMode==="cat"?(CAT_COLORS[catMap[srK]||"Other"]||"#6b7280"):(SR_COLORS[srK]||"#9ca3af");
       const barW=Math.round(60*(f.n/maxC));
       return `<div class="ov-partner"><span class="ov-flag" style="color:${col}">●</span><span class="ov-name">${f.city}</span><span class="ov-val" style="background:rgba(255,255,255,.06);border-radius:2px;padding:0 4px">${f.n}</span></div>`;
     }).join("");
