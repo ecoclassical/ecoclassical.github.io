@@ -616,6 +616,23 @@ let mapMode="trade", savedMapProj=null;
 const c=()=>ALL_CASES[currentIdx];
 
 // ── Product view lookup ───────────────────────────────────────────────────────
+function getCatPV(cat){
+  const c0=c();
+  const catCodes=new Set((c0.all_products||[]).filter(p=>(p.cat||"Other")===cat).map(p=>p.code));
+  const catPVs=(c0.product_views||[]).filter(pv=>catCodes.has(pv.code));
+  if(!catPVs.length) return (c0.product_views||[]).find(p=>p.code==="ALL")||c0.product_views[0];
+  const supAgg={}, buyAgg={};
+  catPVs.forEach(pv=>{
+    (pv.suppliers||[]).forEach(s=>{if(!supAgg[s.iso3])supAgg[s.iso3]={iso3:s.iso3,name:s.name,value:0};supAgg[s.iso3].value+=s.value;});
+    (pv.buyers||[]).forEach(b=>{if(!buyAgg[b.iso3])buyAgg[b.iso3]={iso3:b.iso3,name:b.name,value:0};buyAgg[b.iso3].value+=b.value;});
+  });
+  return {code:"CAT:"+cat,stage:"ALL",role:"ALL",
+    total_imp:catPVs.reduce((s,pv)=>s+(pv.total_imp||0),0),
+    total_exp:catPVs.reduce((s,pv)=>s+(pv.total_exp||0),0),
+    suppliers:Object.values(supAgg).sort((a,b)=>b.value-a.value),
+    buyers:Object.values(buyAgg).sort((a,b)=>b.value-a.value),
+    timeline:[]};
+}
 function getPV(){
   const pvs=c().product_views;
   if(selProduct!=="ALL"){
@@ -630,6 +647,7 @@ function getPV(){
     const found=pvs.find(p=>p.code==="STAGE:"+selStage);
     if(found) return found;
   }
+  if(selCat!=="ALL") return getCatPV(selCat);
   return pvs.find(p=>p.code==="ALL")||pvs[0];
 }
 
@@ -803,7 +821,7 @@ function buildCatLegend(){
   if(!el) return;
   const cats=["Chemicals","Electronics","Machinery","Metals","Industrial Materials"];
   el.innerHTML=`<div class="hleg-group"><div class="hleg-stage">HS CATEGORY</div>${
-    cats.map(ct=>`<div class="hleg-item hleg-cat-item" data-cat="${ct}"><div class="hleg-dot" style="background:${CAT_COLORS[ct]||"#6b7280"}"></div>${ct.replace(" Materials","Mat.")}</div>`).join("")
+    cats.map(ct=>`<div class="hleg-item hleg-cat-item" data-cat="${ct}"><div class="hleg-dot" style="background:${CAT_COLORS[ct]||"#6b7280"}"></div>${ct}</div>`).join("")
   }</div>`;
 }
 function updateCatLegend(){
