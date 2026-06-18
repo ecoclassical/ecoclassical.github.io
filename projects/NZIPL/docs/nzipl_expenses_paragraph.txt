@@ -1,0 +1,131 @@
+NZIPL RESEARCH EXPENSES
+Oriol Vallès Codina | Net Zero Industrial Policy Lab, Johns Hopkins University (SAIS)
+======================================================================================
+Exchange rates: Sep–Oct 2025 ~1.10–1.165; Jan 2026 ~1.17; May–Jun 2026 ~1.153 USD/EUR
+======================================================================================
+
+PARAGRAPH FOR CO-DIRECTORS
+---------------------------
+
+I've attached a usage report (Project_Usage.pdf) with supporting receipts documenting AI,
+software, flight, and accommodation expenses. The lab period (Aug 15, 2025 – Jun 1, 2026)
+totals approximately $2,389 confirmed: $925 in software subscriptions ($787 project —
+72% of Anthropic CVCE + ChatGPT/Windsurf/Posit as general research infrastructure;
+$138 personal covering LEEDS, conservation papers, and personal Claude Pro use),
+$1,365 in research flights to five conferences/engagements, and ~$99 in accommodation
+(Berlin, prorated rent — all other stays were with friends at no cost). Separately,
+the Bilbao JEC2026 conference trip (Jun 10–14, post-period) adds ~$1,187 in confirmed
+institutional expenses (RENFE EUR 133 + Airbnb EUR 897). One flight receipt (KLM
+Washington, $471.03 confirmed) is pending PDF download.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PERIOD 1: AUGUST 15, 2025 – JUNE 1, 2026
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. SOFTWARE SUBSCRIPTIONS
+   Receipts: docs/receipts/pdf/software/
+
+   Service               Period                  Months  /month    USD
+   ─────────────────────────────────────────────────────────────────────
+   Claude / Claude Code  Mar 6 – May 11, 2026    ~3      EUR var.  ~$494
+     (Anthropic, invoices 0001–0014, EUR 427.60 total @ 1.155)
+       ├─ CVCE / NZIPL  (project)  72%  EUR ~308             ~$356
+       └─ Personal (LEEDS+conserv+personal use) 28%  EUR ~120 ~$138
+            LEEDS_MODEL      15%  EUR ~64   ~$74
+            Conservation      8%  EUR ~34   ~$39
+            Personal use      5%  EUR ~22   ~$25
+   ChatGPT Plus          Aug 17 – Apr 17, 2026   9       $21.63    $194.67
+   Windsurf Pro          Sep 4 – Mar 4, 2026      7       $16.22    $113.54
+   Posit Connect Cloud   Sep 27 – Feb 27, 2026    6       $20.54    $123.24
+   ─────────────────────────────────────────────────────────────────────
+   SOFTWARE SUBTOTAL (all)                                           ~$925
+   SOFTWARE PERSONAL (28% of Anthropic)                             ~$138
+   SOFTWARE PROJECT SUBTOTAL (72% Anthropic + pre-Claude tools)     ~$787
+     72% of Anthropic (CVCE):        ~$356
+     ChatGPT + Windsurf + Posit:     ~$431
+
+2. RESEARCH FLIGHTS
+   Receipts: docs/receipts/pdf/flights/
+
+   Trip                       Route       Dates              Carrier          USD
+   ──────────────────────────────────────────────────────────────────────────────
+   NYC Climate Week           BCN→JFK     Sep 17, 2025       American AA67    $430.30
+                              JFK→BCN     Sep 29–30, 2025    American AA66
+     eDreams 23868096095 / SXHYLT; Economy; $550.30 − $120 Prime = $430.30
+   IMF/World Bank DC          BCN→IAD     Oct 14, 2025       KLM via AMS      $471.03
+                              IAD→BCN     Oct 19–20, 2025    KLM
+     KLM Flying Blue; Economy; PDF pending ⚠️
+   FMM Conference Berlin      BCN→MUC     Oct 22, 2025       Lufthansa        $255.00
+                              MUC→BER     Oct 22, 2025       Lufthansa City
+                              BER→BCN     Oct 26, 2025       Iberia/Vueling
+     Kiwi 686601960 / invoice 2025-46242179
+   Cassino SFC Workshop       BCN→FCO     Jan 14, 2026       Ryanair          $208.25
+                              FCO→BCN     Jan 16, 2026       Ryanair
+     Kiwi 715343926 / invoice 2025-47958348; incl. 8kg baggage + service fee
+   ──────────────────────────────────────────────────────────────────────────────
+   FLIGHTS SUBTOTAL                                                            $1,364.58
+
+3. ACCOMMODATION
+   Receipts: docs/receipts/pdf/accommodation/
+
+   Location       Dates              Cost     Notes
+   ──────────────────────────────────────────────────────────────────────────────
+   NYC            Sep 17–30, 2025    $0       Friend's place
+   Washington DC  Oct 14–19, 2025    $0       Friend's place
+   Berlin         Oct 22–27, 2025    ~$99     Friend's apt; EUR 90 prorated rent (@ 1.10)
+   Cassino/Rome   Jan 13–17, 2026    $0       Friend's place
+   ──────────────────────────────────────────────────────────────────────────────
+   ACCOMMODATION SUBTOTAL                     ~$99
+
+──────────────────────────────────────────────────────────────
+PERIOD 1 SUMMARY
+
+   Category                                      USD
+   ────────────────────────────────────────────────
+   Software — total                              ~$925
+   Software — personal (28% Anthropic)          ~$138
+   Software — project subtotal                  ~$787
+   Flights                                     $1,365
+   Accommodation                                  ~$99
+   ────────────────────────────────────────────────
+   GRAND TOTAL (Aug 15 – Jun 1)                ~$2,389
+   PROJECT TOTAL (software project + flights + accom.) ~$2,251
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PERIOD 2: AFTER JUNE 1, 2026
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EUR/USD @ 1.153 (Jun 2026)
+
+   Item                              EUR        USD       Receipt
+   ────────────────────────────────────────────────────────────────────────
+   RENFE BCN↔BIO (researcher share)  EUR 133    ~$153     RENFE-6D3DF8.pdf ✓
+     ALVIA 6D3DF8; outbound EUR 50.30 + return EUR 72.70 (1 ticket each leg)
+     Purpose: JEC2026 — XX Jornadas de Economía Crítica, Bilbao, Jun 10–12
+   Airbnb Bilbao Jun 10–14           EUR 897   ~$1,034    bilbao_accommodation_2026_06_10-14.pdf ✓
+     EUR 822 accommodation + EUR 75 cleaning; BIOHOME SL ARETXAGA; booking 123253
+   Anthropic NJJAFZLE-0015           EUR 21.78    ~$25    Anthropic_2026-06-06.pdf ✓
+     Claude Pro Jun 6–Jul 6, 2026 (personal — same nature as inv. 0012)
+   ────────────────────────────────────────────────────────────────────────
+   PERIOD 2 INSTITUTIONAL TOTAL      EUR 1,030  ~$1,187
+   PERIOD 2 FULL TOTAL (incl. pers.) EUR 1,052  ~$1,213
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMBINED TOTALS (both periods)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   Period 1 (Aug 15, 2025 – Jun 1, 2026)    ~$2,389
+   Period 2 (after Jun 1, institutional)     ~$1,187
+   ─────────────────────────────────────────────────
+   COMBINED INSTITUTIONAL TOTAL              ~$3,576
+
+──────────────────────────────────────────────────────────────
+PENDING
+  - KLM Washington DC flight PDF (price confirmed $471.03)
+
+RECEIPT FOLDERS
+  docs/receipts/pdf/software/       32 files (Anthropic 0001–0015, ChatGPT×9, Windsurf×7, Posit×6)
+  docs/receipts/pdf/flights/        4 of 5 PDFs on file (KLM pending)
+  docs/receipts/pdf/accommodation/  bilbao_accommodation_2026_06_10-14.pdf ✓
