@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vietnam — Atlas of the Clean Industrial Base</title>
+<!-- D3 loaded dynamically in boot() below -->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#060d08;color:#e2e8f0;overflow:hidden}
+.header{background:#060d08;border-bottom:1px solid rgba(255,255,255,.08);padding:0 16px;display:flex;align-items:center;gap:12px;height:64px;flex-shrink:0}
+.header-nzipl{display:flex;flex-direction:column;justify-content:center;flex-shrink:0}
+.header-nzipl-name{font-size:1.85rem;font-weight:900;color:#3cb54a;line-height:1}
+.header-nzipl-sub{font-size:.63rem;font-weight:600;color:rgba(255,255,255,.48);letter-spacing:.06em;margin-top:2px;white-space:nowrap}
+.header-brand{display:flex;flex-direction:column;justify-content:center;flex-shrink:0;min-width:72px}
+.header-tech{font-size:1.85rem;font-weight:900;line-height:1}
+.header-country{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.header-vsep{width:1px;height:40px;background:rgba(255,255,255,.1);flex-shrink:0}
+.nav-scroll{flex:1;overflow-x:auto;display:flex;gap:5px;padding:2px 0;scrollbar-width:none}
+.nav-btn{padding:4px 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:transparent;cursor:pointer;color:rgba(255,255,255,.55);font-size:.75rem;font-weight:500;white-space:nowrap;transition:all .15s}
+.nav-btn:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
+.nav-btn.active{background:#0f3318;border-color:#3cb54a;color:#3cb54a;font-weight:600}
+
+/* ── 2×2 grid layout ── */
+.dashboard{display:grid;grid-template-columns:67fr 33fr;grid-template-rows:36fr 24fr 40fr;gap:1px;height:calc(100vh - 64px);background:#1a2030}
+.pane{background:#0d1520;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.pane-header{padding:8px 14px 6px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:36px}
+.pane-title{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.07em}
+.pane-meta{font-size:.65rem;color:rgba(255,255,255,.35)}
+.pane-body{flex:1;min-height:0;position:relative}
+#pane-map{grid-row:span 2}
+#pane-tl{grid-column:2;grid-row:1}
+#pane-tm{grid-column:2;grid-row:2}
+#pane-comp{grid-column:1;grid-row:3;display:flex;flex-direction:row;gap:1px}
+
+#pane-den{grid-column:2;grid-row:3}
+
+/* ── Map header with dropdowns ── */
+.map-header-inner{display:flex;align-items:center;gap:10px;flex:1;min-width:0;overflow:hidden}
+.map-title-col{display:flex;flex-direction:column;line-height:1.1;flex-shrink:0}
+.filter-dropdowns{display:flex;gap:6px;align-items:center;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.filter-sel{background:#1a2030;border:1px solid rgba(255,255,255,.15);border-radius:14px;color:rgba(255,255,255,.8);font-size:.7rem;font-weight:500;padding:4px 10px;cursor:pointer;outline:none;transition:all .15s;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.filter-sel:hover{border-color:rgba(60,181,74,.5);background:#0f2518}
+.filter-sel:focus{border-color:#3cb54a}
+.filter-sel:disabled{opacity:.35;cursor:default}
+/* ── map pane header 3-column layout ── */
+#pane-map .pane-header{flex-direction:row;align-items:stretch;padding:0;gap:0;min-height:78px;flex-shrink:0}
+.mh-tech{display:flex;flex-direction:column;justify-content:center;gap:0;padding:6px 12px;flex-shrink:0;min-width:82px}
+.mh-sep{width:1px;background:rgba(255,255,255,.08);align-self:stretch;flex-shrink:0}
+.mh-filters{display:flex;flex-direction:row;gap:10px;padding:6px 12px;align-items:center;flex-shrink:0}
+.mh-filter-row{display:flex;flex-direction:column;align-items:center;gap:0}
+.mh-filter-label{font-size:.52rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:2px}
+/* ── Drum wheel picker ── */
+.drum-wrap{height:72px;overflow:hidden;position:relative;flex-shrink:0;width:96px;cursor:ns-resize}
+.drum-wrap.drum-product{width:220px}
+.drum-wrap::before,.drum-wrap::after{content:"";position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none}
+.drum-wrap::before{top:0;background:linear-gradient(#0d1520 40%,transparent)}
+.drum-wrap::after{bottom:0;background:linear-gradient(transparent,#0d1520 60%)}
+.drum-hl{position:absolute;top:50%;transform:translateY(-50%);left:4px;right:4px;height:24px;border-top:1px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(255,255,255,.15);border-radius:4px;background:rgba(255,255,255,.03);z-index:1;pointer-events:none}
+.drum-inner{overflow-y:scroll;scroll-snap-type:y mandatory;height:100%;scrollbar-width:none;-ms-overflow-style:none}
+.drum-inner::-webkit-scrollbar{display:none}
+.drum-opt{scroll-snap-align:center;height:22px;line-height:22px;padding:0 8px;font-size:.73rem;color:rgba(255,255,255,.3);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .1s}
+.drum-opt.drum-active{color:#3cb54a;font-weight:700;font-size:.78rem}
+.drum-spacer{height:22px;scroll-snap-align:none}
+.mh-legend{flex:1;display:flex;flex-direction:row;align-items:center;gap:0;padding:4px 14px 4px 16px;overflow-x:auto;scrollbar-width:none;min-width:0}
+#header-sr-legend{flex:0 0 250px;overflow:hidden}
+#header-cat-legend{flex:0 0 130px;overflow:hidden}
+.hleg-col{display:flex;flex-direction:column;gap:5px;padding-right:12px;border-right:1px solid rgba(255,255,255,.07);margin-right:10px;flex-shrink:0}
+.hleg-col:last-child{border-right:none;margin-right:0}
+.hleg-group{display:flex;flex-direction:column;gap:1px}
+.hleg-group:last-child{}
+.hleg-stage{font-size:.48rem;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1px}
+.hleg-item{display:flex;align-items:center;gap:4px;font-size:.58rem;color:rgba(255,255,255,.55);transition:opacity .15s,color .15s;white-space:nowrap;line-height:1.3}
+.hleg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.hleg-item.hleg-active{color:rgba(255,255,255,.95);font-weight:700}
+.hleg-item.hleg-dim{opacity:.52}
+.filter-sep{width:1px;height:16px;background:rgba(255,255,255,.1);flex-shrink:0}
+.filter-label{font-size:.6rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;flex-shrink:0}
+
+/* ── Map overlay ── */
+.map-svg{width:100%;height:100%;position:absolute;top:0;left:0}
+.map-overlay{position:absolute;top:10px;left:12px;background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);border-radius:8px;padding:10px 14px;min-width:275px;max-width:320px}
+.ov-cols{display:flex;gap:10px;align-items:flex-start;margin-bottom:5px}
+.ov-col{display:flex;flex-direction:column;min-width:75px}
+.ov-col-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch;margin:0 2px}
+.ov-col-label{font-size:.64rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;font-weight:600}
+.ov-col-val{font-size:1.3rem;font-weight:800;color:#e2e8f0;line-height:1.1;white-space:nowrap}
+.ov-col-gdp{font-size:.63rem;color:rgba(255,255,255,.45);margin-top:2px}
+.ov-net{font-size:.7rem;margin-top:3px;font-weight:600;display:flex;align-items:center;gap:6px}
+.ov-list{margin-top:4px}
+.ov-stat-block{margin-top:5px;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;flex-direction:column;gap:2px}
+.ov-stat-row{display:flex;justify-content:space-between;align-items:center;font-size:.62rem}
+.ov-stat-key{color:rgba(255,255,255,.4);font-size:.58rem;text-transform:uppercase;letter-spacing:.06em}
+.ov-stat-vals{display:flex;gap:8px;align-items:center}
+.ov-stat-pct{color:rgba(255,255,255,.8);font-weight:600}
+.ov-stat-rank{color:#3cb54a;font-size:.58rem;font-weight:700;background:rgba(60,181,74,.1);border-radius:5px;padding:1px 5px;white-space:nowrap}
+.ov-part-title{font-size:.55rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.09em;margin:6px 0 2px}
+.ov-row{display:flex;align-items:center;gap:6px;padding:2px 0;border-top:1px solid rgba(255,255,255,.06);font-size:.67rem}
+.ov-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ov-cname{color:rgba(255,255,255,.7);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ov-cval{color:#3cb54a;font-weight:600;white-space:nowrap}
+.map-legend{position:absolute;bottom:10px;right:12px;display:flex;gap:10px;font-size:.63rem;color:rgba(255,255,255,.45)}
+.leg-item{display:flex;align-items:center;gap:4px}
+.leg-circle{width:9px;height:9px;border-radius:50%;border:1.5px solid transparent}
+
+/* ── Competitiveness sub-panes ── */
+.comp-subpane{flex:1;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.05);min-width:0}
+.comp-subpane:last-child{border-right:none}
+#pane-tl .pane-body,#pane-den .pane-body{padding:6px 10px 4px}
+#den-svg,#tm-svg,#sc-svg,#tl-svg{width:100%;height:100%}
+.comp-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;color:rgba(255,255,255,.25)}
+.comp-ph-icon{font-size:2rem;opacity:.4}
+.comp-ph-label{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.comp-ph-sub{font-size:.6rem;opacity:.7}
+
+/* ── Trade composition tabs ── */
+.trade-tabs{display:flex;gap:2px}
+.trade-tab{padding:3px 10px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:transparent;cursor:pointer;color:rgba(255,255,255,.45);font-size:.67rem;font-weight:500;transition:all .15s}
+.trade-tab.active{background:#0f2518;border-color:#3cb54a;color:#3cb54a;font-weight:600}
+.tl-toggle{display:flex;gap:3px}
+.tl-btn{padding:2px 8px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:transparent;cursor:pointer;color:rgba(255,255,255,.4);font-size:.62rem;transition:all .12s}
+.tl-btn.active{background:rgba(60,181,74,.15);border-color:#3cb54a;color:#3cb54a}
+
+/* ── SR legend bar ── */
+.sr-legend{display:flex;gap:0;padding:4px 12px 5px;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;min-height:30px;align-items:center;flex-wrap:wrap;row-gap:2px}
+.sr-group{display:flex;flex-direction:column;gap:2px;padding-right:14px;border-right:1px solid rgba(255,255,255,.07);margin-right:12px}
+.sr-group:last-child{border-right:none;margin-right:0}
+.sr-group-label{font-size:.53rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.09em}
+.sr-item{display:flex;align-items:center;gap:5px;font-size:.63rem;color:rgba(255,255,255,.6)}
+.sr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sr-dot.sq{border-radius:2px}
+
+/* ── Scatter ── */
+.sc-toggle{display:flex;gap:3px}
+.sc-btn{padding:2px 8px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:transparent;cursor:pointer;color:rgba(255,255,255,.4);font-size:.62rem;transition:all .12s}
+.sc-btn.active{background:rgba(60,181,74,.15);border-color:#3cb54a;color:#3cb54a}
+
+.tooltip{position:fixed;background:rgba(10,18,15,.95);border:1px solid rgba(60,181,74,.3);border-radius:6px;padding:7px 10px;font-size:.72rem;color:#e2e8f0;pointer-events:none;opacity:0;transition:opacity .12s;max-width:260px;z-index:9999;line-height:1.5}
+.map-mode-toggle{position:absolute;top:8px;right:8px;z-index:10;display:flex;gap:2px;background:rgba(10,20,15,.8);padding:2px;border-radius:6px;border:1px solid rgba(255,255,255,.1)}
+.map-mode-btn{padding:3px 10px;border:none;border-radius:4px;background:transparent;cursor:pointer;font-size:.68rem;font-weight:600;color:rgba(255,255,255,.45);transition:all .15s}
+.map-mode-btn.active{background:rgba(60,181,74,.2);color:#3cb54a}
+
+@media(max-width:900px){
+  .dashboard{grid-template-columns:1fr;grid-template-rows:repeat(4,60vw);height:auto}
+  body{overflow:auto}
+  #pane-comp{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-nzipl">
+    <span class="header-nzipl-name">NZIPL</span>
+    <span class="header-nzipl-sub">Atlas of the Clean Industrial Base</span>
+  </div>
+  <div class="header-vsep"></div>
+  <div class="header-brand">
+    <span class="header-tech" id="map-tech" style="color:#eab308">Solar</span>
+    <span class="header-country" id="header-country">Vietnam</span>
+  </div>
+  <div class="header-vsep"></div>
+  <div class="nav-scroll">
+    <button class="nav-btn active" data-idx="0">EVs</button>
+  </div>
+</div>
+
+<div class="dashboard">
+
+  <!-- MAP (left-top) -->
+  <div class="pane" id="pane-map">
+    <div class="pane-header">
+      <!-- Vertical dropdowns -->
+      <div class="mh-filters">
+        <div class="mh-filter-row">
+          <span class="mh-filter-label">Stage</span>
+          <div class="drum-wrap" id="drum-stage">
+            <div class="drum-hl"></div>
+            <div class="drum-inner" id="drum-stage-inner"></div>
+          </div>
+        </div>
+        <div class="mh-filter-row">
+          <span class="mh-filter-label">Role</span>
+          <div class="drum-wrap" id="drum-role">
+            <div class="drum-hl"></div>
+            <div class="drum-inner" id="drum-role-inner"></div>
+          </div>
+        </div>
+        <div class="mh-filter-row">
+          <span class="mh-filter-label">Category</span>
+          <div class="drum-wrap" id="drum-cat">
+            <div class="drum-hl"></div>
+            <div class="drum-inner" id="drum-cat-inner"></div>
+          </div>
+        </div>
+        <div class="mh-filter-row">
+          <span class="mh-filter-label">Product</span>
+          <div class="drum-wrap drum-product" id="drum-product">
+            <div class="drum-hl"></div>
+            <div class="drum-inner" id="drum-product-inner"></div>
+          </div>
+        </div>
+        <!-- hidden select kept for JS compat -->
+        <select id="sel-product" style="display:none"></select>
+      </div>
+      <!-- hidden selects for backward compat with change handlers -->
+      <select id="sel-stage" style="display:none"></select>
+      <select id="sel-role" style="display:none"></select>
+      <div class="mh-sep"></div>
+      <!-- Fixed SR legend (always shown, highlighted on selection) -->
+      <div class="mh-legend" id="header-sr-legend"></div>
+      <div class="mh-sep"></div>
+      <!-- HS Category legend -->
+      <div class="mh-legend" id="header-cat-legend"></div>
+    </div>
+    <div class="pane-body">
+      <svg class="map-svg" id="map-svg"></svg>
+      <div class="map-overlay" id="map-overlay">
+        <div class="ov-cols">
+          <div class="ov-col">
+            <div class="ov-col-label">Imports</div>
+            <div class="ov-col-val" id="ov-imp">—</div>
+            <div class="ov-col-gdp" id="ov-imp-gdp"></div>
+          </div>
+          <div class="ov-col-sep"></div>
+          <div class="ov-col">
+            <div class="ov-col-label">Exports</div>
+            <div class="ov-col-val" id="ov-exp">—</div>
+            <div class="ov-col-gdp" id="ov-exp-gdp"></div>
+          </div>
+        </div>
+        <div class="ov-net" id="ov-net">—</div>
+        <div class="ov-stat-block" id="ov-stats"></div>
+        <div class="ov-part-title">Top Export Destinations</div>
+        <div id="ov-buyers"></div>
+        <div class="ov-part-title">Top Import Sources</div>
+        <div id="ov-suppliers"></div>
+      </div>
+      <div class="map-mode-toggle">
+        <button class="map-mode-btn active" id="map-trade">Trade</button>
+        <button class="map-mode-btn" id="map-activity">Activity</button>
+      </div>
+      <div class="map-legend" id="trade-legend">
+        <div class="leg-item"><div class="leg-circle" style="background:rgba(217,119,6,.5);border-color:#d97706"></div>Supplier</div>
+        <div class="leg-item"><div class="leg-circle" style="background:rgba(3,105,161,.5);border-color:#0369a1"></div>Buyer</div>
+        <div class="leg-item"><div class="leg-circle" style="background:#073309;border-color:#3cb54a"></div><span id="leg-focal">Focal</span></div>
+      </div>
+      <div class="map-legend" id="firm-legend" style="display:none"></div>
+      <div class="map-overlay" id="firm-overlay" style="display:none">
+        <div class="ov-cols">
+          <div class="ov-col">
+            <div class="ov-col-label">Firms</div>
+            <div class="ov-col-val" id="ov-firm-count" style="font-size:1.4rem">—</div>
+          </div>
+          <div class="ov-col-sep"></div>
+          <div class="ov-col">
+            <div class="ov-col-label">Cities</div>
+            <div class="ov-col-val" id="ov-firm-cities-n" style="font-size:1.4rem">—</div>
+          </div>
+        </div>
+        <div class="ov-part-title" id="ov-firm-filter" style="margin-top:6px;color:rgba(255,255,255,.35);font-style:italic"></div>
+        <div class="ov-part-title">Top Cities</div>
+        <div id="ov-firm-cities"></div>
+        <div class="ov-part-title" style="margin-top:8px">By Stage</div>
+        <div id="ov-firm-stages"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPETITIVENESS (left-bottom) — 3 sub-panes -->
+  <div class="pane" id="pane-comp">
+
+    <!-- Sub 1: SHAP Features Radar (placeholder) -->
+    <div class="comp-subpane" id="pane-shap">
+      <div class="pane-header">
+        <span class="pane-title" id="shap-title">Capability Radar · 2023</span>
+        <span class="pane-meta">SHAP weight vs Country RCA</span>
+      </div>
+      <div class="pane-body"><svg id="shap-svg" style="width:100%;height:100%"></svg></div>
+    </div>
+
+    <!-- Sub 2: Tech Sankey Trade Flows (native D3 atlas style) -->
+    <div class="comp-subpane" id="pane-sankey">
+      <div class="pane-header">
+        <span class="pane-title" id="sankey-title">SANKEY</span>
+        <span class="pane-meta">7-lane value chain · top countries · log-scaled</span>
+      </div>
+      <div class="pane-body" style="overflow:hidden;padding:0">
+        <svg id="sankey-svg" style="width:100%;height:100%"></svg>
+      </div>
+    </div>
+
+    <!-- Sub 3: Competitiveness Scatter -->
+    <div class="comp-subpane" id="pane-sc">
+      <div class="pane-header">
+        <span class="pane-title" id="sc-title">PC Scatter</span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:4px">
+          <div class="tl-toggle">
+            <button class="tl-btn active" id="xm-rca" onclick="scXMode='rca';updateXToggle();drawShapRcaScatter()">RCA</button>
+            <button class="tl-btn" id="xm-pct" onclick="scXMode='pct';updateXToggle();drawShapRcaScatter()">% GDP</button>
+          </div>
+        </div>
+      </div>
+      <div class="pane-body"><svg id="sc-svg"></svg></div>
+    </div>
+
+  </div>
+
+  <!-- TIMELINE (right-top) -->
+  <div class="pane" id="pane-tl">
+    <div class="pane-header">
+      <span class="pane-title">Trade Timeline</span>
+      <div class="tl-toggle" style="margin-left:auto;display:flex;align-items:center;gap:6px">
+        <div class="tl-toggle" id="cm-toggle">
+          <button class="tl-btn active" id="cm-sr">Stage/Role</button>
+          <button class="tl-btn" id="cm-cat">Category</button>
+        </div>
+        <span style="width:1px;height:14px;background:rgba(255,255,255,.12);display:inline-block;flex-shrink:0"></span>
+        <div class="tl-toggle">
+          <button class="tl-btn active" id="tl-exp">Exports</button>
+          <button class="tl-btn" id="tl-imp">Imports</button>
+          <button class="tl-btn" id="tl-bal">Balance</button>
+        </div>
+      </div>
+    </div>
+    <div class="pane-body"><svg id="tl-svg"></svg></div>
+  </div>
+
+  <!-- TRADE COMPOSITION (right-middle) -->
+  <div class="pane" id="pane-tm">
+    <div class="pane-header">
+      <span class="pane-title" id="tm-title">Trade Composition · Exports</span>
+      <span class="pane-meta" id="tm-year" style="margin-left:auto"></span>
+    </div>
+    <div class="pane-body"><svg id="tm-svg"></svg></div>
+  </div>
+
+  <!-- DENDRITE (right-bottom) -->
+  <div class="pane" id="pane-den">
+    <div class="pane-header">
+      <span class="pane-title" id="den-title">Process of Production</span>
+      <span class="pane-meta" id="den-meta">Full value chain · selected products highlighted</span>
+    </div>
+    <div class="pane-body"><svg id="den-svg"></svg></div>
+  </div>
+
+</div>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const ALL_CASES = [
+{
+  slug:"vietnam_evs",name:"Vietnam",flag:"🇻🇳",tech:"EVs",color:"#14b8a6",
+  focal:"VNM",ref_year:2024,
+  total_imp:8773908,total_exp:6734779,focal_gdp:685413,
+  suppliers:[{"iso3":"CHN","name":"China","value":3993231.4},{"iso3":"JPN","name":"Japan","value":1156045.1},{"iso3":"AUS","name":"Australia","value":1006335.5},{"iso3":"HKG","name":"Hong Kong SAR China","value":473008},{"iso3":"MYS","name":"Malaysia","value":434197},{"iso3":"KOR","name":"South Korea","value":420679.2},{"iso3":"THA","name":"Thailand","value":337607.1},{"iso3":"USA","name":"United States","value":236924.5},{"iso3":"S19","name":"Areas n.e.s.","value":144817.8},{"iso3":"SGP","name":"Singapore","value":133383},{"iso3":"IND","name":"India","value":131834.6},{"iso3":"DEU","name":"Germany","value":108539.2},{"iso3":"IDN","name":"Indonesia","value":95832.5},{"iso3":"ZAF","name":"South Africa","value":66600.3},{"iso3":"TUR","name":"Turkey","value":34872.7}],
+  buyers:[{"iso3":"USA","name":"United States","value":2452557.7},{"iso3":"CHN","name":"China","value":505148.8},{"iso3":"IDN","name":"Indonesia","value":501205.6},{"iso3":"THA","name":"Thailand","value":493007.6},{"iso3":"JPN","name":"Japan","value":475589.3},{"iso3":"KOR","name":"South Korea","value":465196.2},{"iso3":"IND","name":"India","value":372378.8},{"iso3":"MEX","name":"Mexico","value":289089.4},{"iso3":"DEU","name":"Germany","value":246180.8},{"iso3":"CAN","name":"Canada","value":234072.4},{"iso3":"MYS","name":"Malaysia","value":228875.6},{"iso3":"PHL","name":"Philippines","value":126914.3},{"iso3":"POL","name":"Poland","value":118935.9},{"iso3":"NLD","name":"Netherlands","value":116545.7},{"iso3":"CZE","name":"Czechia","value":109081}],
+  all_products:[{"code":"731815","name":"Plates bolts, nuts","stage":"Midstream","role":"Product Component","cat":"Other","exp":247885.5,"imp":391295.8},{"code":"848210","name":"Bearings","stage":"Midstream","role":"Product Component","cat":"Other","exp":98118.4,"imp":264091.5},{"code":"850152","name":"Permanent Magnet Synchronous Motor ","stage":"Downstream","role":"Product Component","cat":"Other","exp":320527.3,"imp":78375.6},{"code":"850440","name":"Traction Inverter","stage":"Downstream","role":"Product Component","cat":"Other","exp":3125436.8,"imp":1746242.9},{"code":"851220","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","exp":415365.6,"imp":213193.1},{"code":"851240","name":"Windsheilf Wipers","stage":"Midstream","role":"Product Component","cat":"Other","exp":44881.3,"imp":11472.7},{"code":"852721","name":"Radio Components","stage":"Midstream","role":"Product Component","cat":"Other","exp":121841.4,"imp":11056.5},{"code":"910400","name":"Dashboard instruments","stage":"Midstream","role":"Product Component","cat":"Other","exp":615.1,"imp":0},{"code":"390730","name":"PMSM; Resin","stage":"Midstream","role":"Processed Material","cat":"Other","exp":4348,"imp":96149.4},{"code":"732599","name":"Reduction Gear; Cast Iron","stage":"Midstream","role":"Processed Material","cat":"Other","exp":20475.9,"imp":34469.1},{"code":"830230","name":"Mountings/Fittings","stage":"Midstream","role":"Product Component","cat":"Other","exp":72074.8,"imp":26089.1},{"code":"845970","name":"PMSM Production; CNC Threading","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":1610,"imp":8704.5},{"code":"846229","name":"PMSM Production; Copper Lug Crimpin","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":12351.1,"imp":24292},{"code":"850511","name":"PMSM; Pre-Magnetized Nd(Dy) FeB Mag","stage":"Midstream","role":"Product Component","cat":"Other","exp":292660.3,"imp":382127.3},{"code":"870810","name":"Bumpers","stage":"Downstream","role":"Product Component","cat":"Other","exp":28409,"imp":34725.1},{"code":"870829","name":"Auto Body Accessories","stage":"Downstream","role":"Product Component","cat":"Other","exp":475142.9,"imp":528374},{"code":"853910","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","exp":525.1,"imp":1578.8},{"code":"854800","name":"Electrical Components","stage":"Midstream","role":"Product Component","cat":"Other","exp":83330.8,"imp":248960.6},{"code":"870870","name":"Wheels","stage":"Downstream","role":"Product Component","cat":"Other","exp":127430.2,"imp":73334.3},{"code":"260400","name":"Nickel","stage":"Upstream","role":"Raw Material","cat":"Other","exp":66070.7,"imp":636.3},{"code":"848340","name":"Reduction Gear","stage":"Downstream","role":"Product Component","cat":"Other","exp":61746.2,"imp":142710.6},{"code":"851230","name":"Horn","stage":"Midstream","role":"Product Component","cat":"Other","exp":47160.4,"imp":27098.5},{"code":"540110","name":"PMSM; Nylon Thread","stage":"Midstream","role":"Processed Material","cat":"Other","exp":28129.6,"imp":73842.7},{"code":"820730","name":"Reduction Gear Production; Stator S","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":27853.1,"imp":148124.2},{"code":"850153","name":"Permanent Magnet Synchronous Motor ","stage":"Downstream","role":"Product Component","cat":"Other","exp":8121,"imp":54939.3},{"code":"851440","name":"PMSM Production; Induction Heat Tre","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":3221.7,"imp":13236.6},{"code":"870380","name":"BEV","stage":"Final Product","role":"Final Product","cat":"Other","exp":316816.6,"imp":47003.9},{"code":"870821","name":"Seat Belt","stage":"Midstream","role":"Product Component","cat":"Other","exp":27865.4,"imp":13664},{"code":"260300","name":"Copper","stage":"Upstream","role":"Raw Material","cat":"Other","exp":10416.5,"imp":536.9},{"code":"281820","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":527375.4,"imp":14802.2},{"code":"282110","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":3858.2,"imp":17018.4},{"code":"381800","name":"Wafers; Traction Inverter","stage":"Midstream","role":"Product Component","cat":"Other","exp":517667.6,"imp":291996.1},{"code":"720421","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":155175.3,"imp":795.2},{"code":"720429","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":2409.7,"imp":17974.4},{"code":"720449","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":3581.5,"imp":1359604.8},{"code":"740400","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":95391,"imp":102079.3},{"code":"750220","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":2547.1,"imp":272.1},{"code":"845811","name":"Reduction Gear Production; Turning ","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":2900.8,"imp":89807.6},{"code":"847981","name":"PMSM Production; Wire Winding","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":1822.8,"imp":106601.7},{"code":"870893","name":"Clutches & Other Auto Parts","stage":"Downstream","role":"Product Component","cat":"Other","exp":103034,"imp":55830.3},{"code":"846150","name":"PMSM Production; Steel Rod Splining","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":3652.7,"imp":52225.2},{"code":"940120","name":"Seats","stage":"Midstream","role":"Product Component","cat":"Other","exp":3348.6,"imp":67704.3},{"code":"851120","name":"Magneto Generators","stage":"Downstream","role":"Product Component","cat":"Other","exp":691.2,"imp":10110.3},{"code":"851150","name":"Generator","stage":"Downstream","role":"Product Component","cat":"Other","exp":26620,"imp":11811.6},{"code":"380110","name":"Traction Inverter; Synthetic Graphi","stage":"Midstream","role":"Processed Material","cat":"Other","exp":212.5,"imp":20987.9},{"code":"281830","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":35233.9,"imp":12995.4},{"code":"845921","name":"PMSM Production; CNC Drilling","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":482,"imp":8580.3},{"code":"870710","name":"Bodies for automobiles","stage":"Downstream","role":"Product Component","cat":"Other","exp":1254.5,"imp":3282.7},{"code":"280300","name":"Carbon Black","stage":"Upstream","role":"Raw Material","cat":"Other","exp":2267.1,"imp":390063.7},{"code":"321290","name":"Traction Inverter; Nano Silver Past","stage":"Midstream","role":"Processed Material","cat":"Other","exp":784.5,"imp":23084.6},{"code":"760519","name":"Traction Inverter; Aluminum wire","stage":"Midstream","role":"Processed Material","cat":"Other","exp":157.2,"imp":6139.1},{"code":"750300","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":2617.1,"imp":0},{"code":"790200","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":270.5,"imp":723.9},{"code":"846090","name":"Reduction Gear Production; Grinding","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":182,"imp":26398},{"code":"283322","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":140.8,"imp":2054.3},{"code":"851210","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","exp":223.6,"imp":5774.9},{"code":"845961","name":"PMSM Production; CNC Millling","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":0,"imp":29252.9},{"code":"260200","name":"Manganese","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":23885.3},{"code":"260600","name":"Aluminum (bauxite)","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":421.2},{"code":"282540","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":931.2},{"code":"282735","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":1152.2},{"code":"283324","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":6030},{"code":"750210","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":32128.6},{"code":"750400","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":3057.5},{"code":"282732","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":2695},{"code":"851531","name":"PMSM Production; Stator Core Weldin","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":0,"imp":25642.3},{"code":"852729","name":"Radio Components","stage":"Midstream","role":"Product Component","cat":"Other","exp":0,"imp":1988.3},{"code":"260111","name":"Iron","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":1424821.2},{"code":"260112","name":"Iron","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":50855.8},{"code":"720430","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":10055.7},{"code":"250410","name":"Natural Graphite","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":1654.4},{"code":"282010","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":14419.7},{"code":"282090","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":1683.5},{"code":"846140","name":"Reduction Gear Production; Hobbing ","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":0,"imp":2761.3}],
+  den_products:[{"code":"731815","name":"Plates bolts, nuts","stage":"Midstream","role":"Product Component","cat":"Other","exp":247885.5,"imp":391295.8},{"code":"848210","name":"Bearings","stage":"Midstream","role":"Product Component","cat":"Other","exp":98118.4,"imp":264091.5},{"code":"850152","name":"Permanent Magnet Synchronous Mot","stage":"Downstream","role":"Product Component","cat":"Other","exp":320527.3,"imp":78375.6},{"code":"850440","name":"Traction Inverter","stage":"Downstream","role":"Product Component","cat":"Other","exp":3125436.8,"imp":1746242.9},{"code":"851220","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","exp":415365.6,"imp":213193.1},{"code":"851240","name":"Windsheilf Wipers","stage":"Midstream","role":"Product Component","cat":"Other","exp":44881.3,"imp":11472.7},{"code":"852721","name":"Radio Components","stage":"Midstream","role":"Product Component","cat":"Other","exp":121841.4,"imp":11056.5},{"code":"910400","name":"Dashboard instruments","stage":"Midstream","role":"Product Component","cat":"Other","exp":615.1,"imp":0},{"code":"390730","name":"PMSM; Resin","stage":"Midstream","role":"Processed Material","cat":"Other","exp":4348,"imp":96149.4},{"code":"732599","name":"Reduction Gear; Cast Iron","stage":"Midstream","role":"Processed Material","cat":"Other","exp":20475.9,"imp":34469.1},{"code":"830230","name":"Mountings/Fittings","stage":"Midstream","role":"Product Component","cat":"Other","exp":72074.8,"imp":26089.1},{"code":"845970","name":"PMSM Production; CNC Threading","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":1610,"imp":8704.5},{"code":"846229","name":"PMSM Production; Copper Lug Crim","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":12351.1,"imp":24292},{"code":"850511","name":"PMSM; Pre-Magnetized Nd(Dy) FeB ","stage":"Midstream","role":"Product Component","cat":"Other","exp":292660.3,"imp":382127.3},{"code":"870810","name":"Bumpers","stage":"Downstream","role":"Product Component","cat":"Other","exp":28409,"imp":34725.1},{"code":"870829","name":"Auto Body Accessories","stage":"Downstream","role":"Product Component","cat":"Other","exp":475142.9,"imp":528374},{"code":"853910","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","exp":525.1,"imp":1578.8},{"code":"854800","name":"Electrical Components","stage":"Midstream","role":"Product Component","cat":"Other","exp":83330.8,"imp":248960.6},{"code":"870870","name":"Wheels","stage":"Downstream","role":"Product Component","cat":"Other","exp":127430.2,"imp":73334.3},{"code":"260400","name":"Nickel","stage":"Upstream","role":"Raw Material","cat":"Other","exp":66070.7,"imp":636.3},{"code":"848340","name":"Reduction Gear","stage":"Downstream","role":"Product Component","cat":"Other","exp":61746.2,"imp":142710.6},{"code":"851230","name":"Horn","stage":"Midstream","role":"Product Component","cat":"Other","exp":47160.4,"imp":27098.5},{"code":"540110","name":"PMSM; Nylon Thread","stage":"Midstream","role":"Processed Material","cat":"Other","exp":28129.6,"imp":73842.7},{"code":"820730","name":"Reduction Gear Production; Stato","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":27853.1,"imp":148124.2},{"code":"850153","name":"Permanent Magnet Synchronous Mot","stage":"Downstream","role":"Product Component","cat":"Other","exp":8121,"imp":54939.3},{"code":"851440","name":"PMSM Production; Induction Heat ","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":3221.7,"imp":13236.6},{"code":"870380","name":"BEV","stage":"Final Product","role":"Final Product","cat":"Other","exp":316816.6,"imp":47003.9},{"code":"870821","name":"Seat Belt","stage":"Midstream","role":"Product Component","cat":"Other","exp":27865.4,"imp":13664},{"code":"260300","name":"Copper","stage":"Upstream","role":"Raw Material","cat":"Other","exp":10416.5,"imp":536.9},{"code":"281820","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":527375.4,"imp":14802.2},{"code":"282110","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":3858.2,"imp":17018.4},{"code":"381800","name":"Wafers; Traction Inverter","stage":"Midstream","role":"Product Component","cat":"Other","exp":517667.6,"imp":291996.1},{"code":"720421","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":155175.3,"imp":795.2},{"code":"720429","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":2409.7,"imp":17974.4},{"code":"720449","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":3581.5,"imp":1359604.8},{"code":"740400","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":95391,"imp":102079.3},{"code":"750220","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":2547.1,"imp":272.1},{"code":"845811","name":"Reduction Gear Production; Turni","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":2900.8,"imp":89807.6},{"code":"847981","name":"PMSM Production; Wire Winding","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":1822.8,"imp":106601.7},{"code":"870893","name":"Clutches & Other Auto Parts","stage":"Downstream","role":"Product Component","cat":"Other","exp":103034,"imp":55830.3},{"code":"846150","name":"PMSM Production; Steel Rod Splin","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":3652.7,"imp":52225.2},{"code":"940120","name":"Seats","stage":"Midstream","role":"Product Component","cat":"Other","exp":3348.6,"imp":67704.3},{"code":"851120","name":"Magneto Generators","stage":"Downstream","role":"Product Component","cat":"Other","exp":691.2,"imp":10110.3},{"code":"851150","name":"Generator","stage":"Downstream","role":"Product Component","cat":"Other","exp":26620,"imp":11811.6},{"code":"380110","name":"Traction Inverter; Synthetic Gra","stage":"Midstream","role":"Processed Material","cat":"Other","exp":212.5,"imp":20987.9},{"code":"281830","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":35233.9,"imp":12995.4},{"code":"845921","name":"PMSM Production; CNC Drilling","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":482,"imp":8580.3},{"code":"870710","name":"Bodies for automobiles","stage":"Downstream","role":"Product Component","cat":"Other","exp":1254.5,"imp":3282.7},{"code":"280300","name":"Carbon Black","stage":"Upstream","role":"Raw Material","cat":"Other","exp":2267.1,"imp":390063.7},{"code":"321290","name":"Traction Inverter; Nano Silver P","stage":"Midstream","role":"Processed Material","cat":"Other","exp":784.5,"imp":23084.6},{"code":"760519","name":"Traction Inverter; Aluminum wire","stage":"Midstream","role":"Processed Material","cat":"Other","exp":157.2,"imp":6139.1},{"code":"750300","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":2617.1,"imp":0},{"code":"790200","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":270.5,"imp":723.9},{"code":"846090","name":"Reduction Gear Production; Grind","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":182,"imp":26398},{"code":"283322","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":140.8,"imp":2054.3},{"code":"851210","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","exp":223.6,"imp":5774.9},{"code":"845961","name":"PMSM Production; CNC Millling","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":0,"imp":29252.9},{"code":"260200","name":"Manganese","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":23885.3},{"code":"260600","name":"Aluminum (bauxite)","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":421.2},{"code":"282540","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":931.2},{"code":"282735","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":1152.2},{"code":"283324","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":6030},{"code":"750210","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":32128.6},{"code":"750400","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":3057.5},{"code":"282732","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":2695},{"code":"851531","name":"PMSM Production; Stator Core Wel","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":0,"imp":25642.3},{"code":"852729","name":"Radio Components","stage":"Midstream","role":"Product Component","cat":"Other","exp":0,"imp":1988.3},{"code":"260111","name":"Iron","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":1424821.2},{"code":"260112","name":"Iron","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":50855.8},{"code":"720430","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":10055.7},{"code":"250410","name":"Natural Graphite","stage":"Upstream","role":"Raw Material","cat":"Other","exp":0,"imp":1654.4},{"code":"282010","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":14419.7},{"code":"282090","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","exp":0,"imp":1683.5},{"code":"846140","name":"Reduction Gear Production; Hobbi","stage":"Downstream","role":"Process Equipment","cat":"Other","exp":0,"imp":2761.3}],
+  den_edges:[],
+  timeline:[{year:2003,sr:"Downstream|Process Equipment",exp:  10.5,imp:  69.2},{year:2003,sr:"Downstream|Product Component",exp:  23.9,imp: 174.9},{year:2003,sr:"Midstream|Processed Material",exp:   2.5,imp:  59.8},{year:2003,sr:"Midstream|Product Component",exp:   6.5,imp:  51.5},{year:2003,sr:"Upstream|Raw Material",exp:  15.5,imp:  11.0},{year:2004,sr:"Downstream|Process Equipment",exp:  11.6,imp: 133.0},{year:2004,sr:"Downstream|Product Component",exp:  57.0,imp: 227.3},{year:2004,sr:"Midstream|Processed Material",exp:  18.1,imp: 151.6},{year:2004,sr:"Midstream|Product Component",exp:  18.7,imp: 105.5},{year:2004,sr:"Upstream|Raw Material",exp:  52.6,imp:  17.5},{year:2005,sr:"Downstream|Process Equipment",exp:  11.7,imp: 139.7},{year:2005,sr:"Downstream|Product Component",exp: 100.1,imp: 330.8},{year:2005,sr:"Midstream|Processed Material",exp:  18.2,imp: 189.3},{year:2005,sr:"Midstream|Product Component",exp:  26.0,imp: 120.7},{year:2005,sr:"Upstream|Raw Material",exp:  48.7,imp:  20.2},{year:2006,sr:"Downstream|Process Equipment",exp:  18.8,imp: 216.3},{year:2006,sr:"Downstream|Product Component",exp: 139.1,imp: 455.6},{year:2006,sr:"Midstream|Processed Material",exp:  48.1,imp: 273.4},{year:2006,sr:"Midstream|Product Component",exp:  41.7,imp: 142.9},{year:2006,sr:"Upstream|Raw Material",exp:  84.6,imp:  29.3},{year:2007,sr:"Downstream|Process Equipment",exp:  38.5,imp: 363.1},{year:2007,sr:"Downstream|Product Component",exp: 126.0,imp: 883.3},{year:2007,sr:"Midstream|Processed Material",exp:  34.3,imp: 270.3},{year:2007,sr:"Midstream|Product Component",exp:  45.1,imp: 119.9},{year:2007,sr:"Upstream|Raw Material",exp: 130.0,imp:  18.1},{year:2008,sr:"Downstream|Process Equipment",exp:  37.6,imp: 743.5},{year:2008,sr:"Downstream|Product Component",exp: 253.0,imp:1634.6},{year:2008,sr:"Midstream|Processed Material",exp:  34.9,imp: 980.7},{year:2008,sr:"Midstream|Product Component",exp:  56.9,imp: 262.7},{year:2008,sr:"Upstream|Raw Material",exp: 150.5,imp:  57.9},{year:2009,sr:"Downstream|Process Equipment",exp:  54.2,imp: 573.9},{year:2009,sr:"Downstream|Product Component",exp: 245.1,imp:1507.5},{year:2009,sr:"Midstream|Processed Material",exp:  36.8,imp: 818.5},{year:2009,sr:"Midstream|Product Component",exp:  52.5,imp: 270.5},{year:2009,sr:"Upstream|Raw Material",exp: 112.4,imp:  54.6},{year:2010,sr:"Downstream|Process Equipment",exp:  36.6,imp: 670.8},{year:2010,sr:"Downstream|Product Component",exp: 474.1,imp:1584.4},{year:2010,sr:"Midstream|Processed Material",exp:  91.6,imp:1263.8},{year:2010,sr:"Midstream|Product Component",exp:  99.0,imp: 359.7},{year:2010,sr:"Upstream|Raw Material",exp: 196.3,imp:  87.6},{year:2011,sr:"Downstream|Process Equipment",exp:  43.9,imp: 911.4},{year:2011,sr:"Downstream|Product Component",exp: 509.9,imp:2012.0},{year:2011,sr:"Midstream|Processed Material",exp:  97.8,imp:1412.7},{year:2011,sr:"Midstream|Product Component",exp: 155.1,imp: 445.3},{year:2011,sr:"Upstream|Raw Material",exp: 313.2,imp: 110.4},{year:2012,sr:"Downstream|Process Equipment",exp:  28.7,imp: 580.1},{year:2012,sr:"Downstream|Product Component",exp: 664.8,imp:1221.3},{year:2012,sr:"Midstream|Processed Material",exp:  75.8,imp:1577.9},{year:2012,sr:"Midstream|Product Component",exp: 157.0,imp: 414.4},{year:2012,sr:"Upstream|Raw Material",exp: 170.1,imp: 112.6},{year:2013,sr:"Downstream|Process Equipment",exp:  30.9,imp: 586.5},{year:2013,sr:"Downstream|Product Component",exp: 847.5,imp:1442.3},{year:2013,sr:"Midstream|Processed Material",exp: 148.0,imp:1486.2},{year:2013,sr:"Midstream|Product Component",exp: 214.8,imp: 418.5},{year:2013,sr:"Upstream|Raw Material",exp: 436.3,imp: 152.1},{year:2014,sr:"Downstream|Process Equipment",exp:  47.8,imp: 616.7},{year:2014,sr:"Downstream|Product Component",exp:1083.7,imp:1849.2},{year:2014,sr:"Midstream|Processed Material",exp: 315.0,imp:1560.7},{year:2014,sr:"Midstream|Product Component",exp: 266.2,imp: 477.0},{year:2014,sr:"Upstream|Raw Material",exp: 235.4,imp: 178.9},{year:2015,sr:"Downstream|Process Equipment",exp:  43.2,imp: 637.6},{year:2015,sr:"Downstream|Product Component",exp:1269.5,imp:2209.0},{year:2015,sr:"Midstream|Processed Material",exp: 281.4,imp:1180.3},{year:2015,sr:"Midstream|Product Component",exp: 308.9,imp: 608.6},{year:2015,sr:"Upstream|Raw Material",exp: 140.0,imp: 146.8},{year:2016,sr:"Downstream|Process Equipment",exp:  55.6,imp: 816.2},{year:2016,sr:"Downstream|Product Component",exp:1424.1,imp:2658.4},{year:2016,sr:"Midstream|Processed Material",exp: 337.8,imp:1289.9},{year:2016,sr:"Midstream|Product Component",exp: 436.6,imp: 740.9},{year:2016,sr:"Upstream|Raw Material",exp:  69.4,imp: 341.4},{year:2017,sr:"Downstream|Process Equipment",exp:  41.8,imp: 464.5},{year:2017,sr:"Downstream|Product Component",exp: 920.0,imp:1182.3},{year:2017,sr:"Final Product|Final Product",exp:   0.4,imp:   0.3},{year:2017,sr:"Midstream|Processed Material",exp: 519.9,imp:1270.8},{year:2017,sr:"Midstream|Product Component",exp: 558.0,imp:1758.1},{year:2017,sr:"Upstream|Raw Material",exp: 202.2,imp: 376.8},{year:2018,sr:"Downstream|Process Equipment",exp:  51.2,imp: 589.0},{year:2018,sr:"Downstream|Product Component",exp:1125.8,imp:1400.8},{year:2018,sr:"Final Product|Final Product",exp:   0.0,imp:   0.4},{year:2018,sr:"Midstream|Processed Material",exp: 795.7,imp:2069.3},{year:2018,sr:"Midstream|Product Component",exp: 785.8,imp:1025.4},{year:2018,sr:"Upstream|Raw Material",exp:  72.6,imp: 844.3},{year:2019,sr:"Downstream|Process Equipment",exp:  67.4,imp: 684.6},{year:2019,sr:"Downstream|Product Component",exp:1357.4,imp:1788.1},{year:2019,sr:"Final Product|Final Product",exp:   0.0,imp:   1.1},{year:2019,sr:"Midstream|Processed Material",exp: 724.5,imp:1882.0},{year:2019,sr:"Midstream|Product Component",exp: 792.8,imp:1136.2},{year:2019,sr:"Upstream|Raw Material",exp: 101.5,imp:1043.4},{year:2020,sr:"Downstream|Process Equipment",exp:  42.6,imp: 559.7},{year:2020,sr:"Downstream|Product Component",exp:1751.9,imp:2190.2},{year:2020,sr:"Final Product|Final Product",exp:   4.2,imp:   1.6},{year:2020,sr:"Midstream|Processed Material",exp: 590.2,imp:1947.1},{year:2020,sr:"Midstream|Product Component",exp: 892.9,imp:1448.3},{year:2020,sr:"Upstream|Raw Material",exp: 144.3,imp:1788.4},{year:2021,sr:"Downstream|Process Equipment",exp:  58.6,imp: 561.7},{year:2021,sr:"Downstream|Product Component",exp:3212.0,imp:2256.8},{year:2021,sr:"Final Product|Final Product",exp:   4.6,imp:   4.3},{year:2021,sr:"Midstream|Processed Material",exp: 847.3,imp:2912.3},{year:2021,sr:"Midstream|Product Component",exp:1313.9,imp:1928.0},{year:2021,sr:"Upstream|Raw Material",exp:  35.9,imp:3930.1},{year:2022,sr:"Downstream|Process Equipment",exp:  45.7,imp: 532.3},{year:2022,sr:"Downstream|Product Component",exp:3678.2,imp:2576.7},{year:2022,sr:"Final Product|Final Product",exp:  79.6,imp:   9.3},{year:2022,sr:"Midstream|Processed Material",exp: 908.2,imp:2119.0},{year:2022,sr:"Midstream|Product Component",exp:1897.1,imp:2879.6},{year:2022,sr:"Upstream|Raw Material",exp:   7.7,imp:2847.3},{year:2023,sr:"Downstream|Process Equipment",exp:  60.5,imp: 465.2},{year:2023,sr:"Downstream|Product Component",exp:3856.2,imp:2231.9},{year:2023,sr:"Final Product|Final Product",exp: 154.6,imp:  23.2},{year:2023,sr:"Midstream|Processed Material",exp: 880.7,imp:1908.0},{year:2023,sr:"Midstream|Product Component",exp:1996.6,imp:2586.6},{year:2023,sr:"Upstream|Raw Material",exp: 171.5,imp:1954.0},{year:2024,sr:"Downstream|Process Equipment",exp:  54.1,imp: 535.6},{year:2024,sr:"Downstream|Product Component",exp:4278.4,imp:2739.7},{year:2024,sr:"Final Product|Final Product",exp: 316.8,imp:  47.0},{year:2024,sr:"Midstream|Processed Material",exp: 882.7,imp:1855.1},{year:2024,sr:"Midstream|Product Component",exp:1973.6,imp:1958.1},{year:2024,sr:"Upstream|Raw Material",exp:  78.8,imp:1892.9}],
+  scatter:[],
+  product_views:[{"code":"ALL","label":"All Products","stage":"ALL","role":"ALL","total_imp":8773908,"total_exp":6734779,"suppliers":[{"iso3":"CHN","name":"China","value":3993231.4},{"iso3":"JPN","name":"Japan","value":1156045.1},{"iso3":"AUS","name":"Australia","value":1006335.5},{"iso3":"HKG","name":"Hong Kong SAR China","value":473008},{"iso3":"MYS","name":"Malaysia","value":434197},{"iso3":"KOR","name":"South Korea","value":420679.2},{"iso3":"THA","name":"Thailand","value":337607.1},{"iso3":"USA","name":"United States","value":236924.5},{"iso3":"S19","name":"Areas n.e.s.","value":144817.8},{"iso3":"SGP","name":"Singapore","value":133383}],"buyers":[{"iso3":"USA","name":"United States","value":2452557.7},{"iso3":"CHN","name":"China","value":505148.8},{"iso3":"IDN","name":"Indonesia","value":501205.6},{"iso3":"THA","name":"Thailand","value":493007.6},{"iso3":"JPN","name":"Japan","value":475589.3},{"iso3":"KOR","name":"South Korea","value":465196.2},{"iso3":"IND","name":"India","value":372378.8},{"iso3":"MEX","name":"Mexico","value":289089.4},{"iso3":"DEU","name":"Germany","value":246180.8},{"iso3":"CAN","name":"Canada","value":234072.4}],"timeline":[]},{"code":"STAGE:Downstream","label":"Downstream products","stage":"Downstream","role":"ALL","total_imp":3116161,"total_exp":3550476,"suppliers":[{"iso3":"CHN","name":"China","value":1995872.9},{"iso3":"JPN","name":"Japan","value":257206.4},{"iso3":"HKG","name":"Hong Kong SAR China","value":210119.9},{"iso3":"KOR","name":"South Korea","value":187804.2},{"iso3":"THA","name":"Thailand","value":171248.9},{"iso3":"DEU","name":"Germany","value":69560.5},{"iso3":"SGP","name":"Singapore","value":61061},{"iso3":"IDN","name":"Indonesia","value":60097.8},{"iso3":"IND","name":"India","value":56781.3},{"iso3":"S19","name":"Areas n.e.s.","value":46408.4}],"buyers":[{"iso3":"USA","name":"United States","value":2025498},{"iso3":"KOR","name":"South Korea","value":267288.7},{"iso3":"MEX","name":"Mexico","value":253837.4},{"iso3":"JPN","name":"Japan","value":240621.6},{"iso3":"CHN","name":"China","value":185278.3},{"iso3":"THA","name":"Thailand","value":145037.8},{"iso3":"CAN","name":"Canada","value":138507.5},{"iso3":"DEU","name":"Germany","value":108155.1},{"iso3":"NLD","name":"Netherlands","value":102819.1},{"iso3":"SVK","name":"Slovakia","value":83432}],"timeline":[{year:2003,exp:34.4,imp:244.1,we:0},{year:2004,exp:68.6,imp:360.4,we:0},{year:2005,exp:111.8,imp:470.5,we:0},{year:2006,exp:157.8,imp:671.9,we:0},{year:2007,exp:164.5,imp:1246.5,we:0},{year:2008,exp:290.6,imp:2378.1,we:0},{year:2009,exp:299.3,imp:2081.4,we:0},{year:2010,exp:510.7,imp:2255.2,we:0},{year:2011,exp:553.8,imp:2923.3,we:0},{year:2012,exp:693.4,imp:1801.5,we:0},{year:2013,exp:878.4,imp:2028.8,we:0},{year:2014,exp:1131.5,imp:2465.9,we:0},{year:2015,exp:1312.7,imp:2846.6,we:0},{year:2016,exp:1479.7,imp:3474.7,we:0},{year:2017,exp:961.7,imp:1646.8,we:0},{year:2018,exp:1177.1,imp:1989.8,we:0},{year:2019,exp:1424.7,imp:2472.6,we:0},{year:2020,exp:1794.5,imp:2749.9,we:0},{year:2021,exp:3270.6,imp:2818.4,we:0},{year:2022,exp:3723.9,imp:3109,we:0},{year:2023,exp:3916.6,imp:2697.1,we:0},{year:2024,exp:4332.5,imp:3275.4,we:0}]},{"code":"STAGE:Final Product","label":"Final Product products","stage":"Final Product","role":"ALL","total_imp":46307,"total_exp":315901,"suppliers":[{"iso3":"CHN","name":"China","value":32156.3},{"iso3":"DEU","name":"Germany","value":4498.9},{"iso3":"USA","name":"United States","value":3055.6},{"iso3":"MYS","name":"Malaysia","value":2428},{"iso3":"GBR","name":"United Kingdom","value":1391.6},{"iso3":"THA","name":"Thailand","value":928.4},{"iso3":"IND","name":"India","value":726.9},{"iso3":"KOR","name":"South Korea","value":612.5},{"iso3":"ITA","name":"Italy","value":254.4},{"iso3":"IDN","name":"Indonesia","value":254.3}],"buyers":[{"iso3":"USA","name":"United States","value":128863.9},{"iso3":"IDN","name":"Indonesia","value":92494.7},{"iso3":"CAN","name":"Canada","value":73154.2},{"iso3":"PHL","name":"Philippines","value":12417.8},{"iso3":"ESP","name":"Spain","value":4667.5},{"iso3":"CHN","name":"China","value":1951},{"iso3":"DEU","name":"Germany","value":768},{"iso3":"THA","name":"Thailand","value":678.8},{"iso3":"IND","name":"India","value":498.2},{"iso3":"PAN","name":"Panama","value":407.5}],"timeline":[{year:2017,exp:0.4,imp:0.3,we:0},{year:2018,exp:0,imp:0.4,we:0},{year:2019,exp:0,imp:1.1,we:0},{year:2020,exp:4.2,imp:1.6,we:0},{year:2021,exp:4.6,imp:4.3,we:0},{year:2022,exp:79.6,imp:9.3,we:0},{year:2023,exp:154.6,imp:23.2,we:0},{year:2024,exp:316.8,imp:47,we:0}]},{"code":"STAGE:Midstream","label":"Midstream products","stage":"Midstream","role":"ALL","total_imp":3572566,"total_exp":2405330,"suppliers":[{"iso3":"CHN","name":"China","value":1531171.9},{"iso3":"JPN","name":"Japan","value":894820.1},{"iso3":"HKG","name":"Hong Kong SAR China","value":262888.2},{"iso3":"KOR","name":"South Korea","value":205997.7},{"iso3":"USA","name":"United States","value":197091.9},{"iso3":"AUS","name":"Australia","value":144161.3},{"iso3":"THA","name":"Thailand","value":129899.9},{"iso3":"S19","name":"Areas n.e.s.","value":83544},{"iso3":"SGP","name":"Singapore","value":72154.1},{"iso3":"MYS","name":"Malaysia","value":50837.3}],"buyers":[{"iso3":"THA","name":"Thailand","value":347291},{"iso3":"IDN","name":"Indonesia","value":338169.3},{"iso3":"IND","name":"India","value":303176},{"iso3":"USA","name":"United States","value":298195.8},{"iso3":"CHN","name":"China","value":244209.6},{"iso3":"JPN","name":"Japan","value":234967.7},{"iso3":"MYS","name":"Malaysia","value":207147.2},{"iso3":"KOR","name":"South Korea","value":197755},{"iso3":"DEU","name":"Germany","value":137257.6},{"iso3":"PHL","name":"Philippines","value":97161.1}],"timeline":[{year:2003,exp:9,imp:111.3,we:0},{year:2004,exp:36.8,imp:257.1,we:0},{year:2005,exp:44.2,imp:310.1,we:0},{year:2006,exp:89.8,imp:416.3,we:0},{year:2007,exp:79.3,imp:390.2,we:0},{year:2008,exp:91.8,imp:1243.4,we:0},{year:2009,exp:89.4,imp:1089,we:0},{year:2010,exp:190.6,imp:1623.4,we:0},{year:2011,exp:252.9,imp:1858,we:0},{year:2012,exp:232.7,imp:1992.3,we:0},{year:2013,exp:362.9,imp:1904.7,we:0},{year:2014,exp:581.1,imp:2037.7,we:0},{year:2015,exp:590.2,imp:1788.9,we:0},{year:2016,exp:774.4,imp:2030.8,we:0},{year:2017,exp:1077.9,imp:3028.9,we:0},{year:2018,exp:1581.5,imp:3094.7,we:0},{year:2019,exp:1517.3,imp:3018.2,we:0},{year:2020,exp:1483.1,imp:3395.4,we:0},{year:2021,exp:2161.2,imp:4840.3,we:0},{year:2022,exp:2805.3,imp:4998.6,we:0},{year:2023,exp:2877.3,imp:4494.6,we:0},{year:2024,exp:2856.3,imp:3813.2,we:0}]},{"code":"STAGE:Upstream","label":"Upstream products","stage":"Upstream","role":"ALL","total_imp":1871872,"total_exp":78754,"suppliers":[{"iso3":"AUS","name":"Australia","value":860826.7},{"iso3":"CHN","name":"China","value":434030.3},{"iso3":"MYS","name":"Malaysia","value":360052.7},{"iso3":"ZAF","name":"South Africa","value":66270.2},{"iso3":"THA","name":"Thailand","value":35529.9},{"iso3":"IND","name":"India","value":34111.5},{"iso3":"KOR","name":"South Korea","value":26264.8},{"iso3":"KHM","name":"Cambodia","value":23267},{"iso3":"TUR","name":"Turkey","value":16653.7},{"iso3":"S19","name":"Areas n.e.s.","value":14865.3}],"buyers":[{"iso3":"CHN","name":"China","value":73709.9},{"iso3":"KHM","name":"Cambodia","value":3348.1},{"iso3":"BRA","name":"Brazil","value":1186.6},{"iso3":"MYS","name":"Malaysia","value":357.1},{"iso3":"KOR","name":"South Korea","value":152.5}],"timeline":[{year:2003,exp:15.5,imp:11,we:0},{year:2004,exp:52.6,imp:17.5,we:0},{year:2005,exp:48.7,imp:20.2,we:0},{year:2006,exp:84.6,imp:29.3,we:0},{year:2007,exp:130,imp:18.1,we:0},{year:2008,exp:150.5,imp:57.9,we:0},{year:2009,exp:112.4,imp:54.6,we:0},{year:2010,exp:196.3,imp:87.6,we:0},{year:2011,exp:313.2,imp:110.4,we:0},{year:2012,exp:170.1,imp:112.6,we:0},{year:2013,exp:436.3,imp:152.1,we:0},{year:2014,exp:235.4,imp:178.9,we:0},{year:2015,exp:140,imp:146.8,we:0},{year:2016,exp:69.4,imp:341.4,we:0},{year:2017,exp:202.2,imp:376.8,we:0},{year:2018,exp:72.6,imp:844.3,we:0},{year:2019,exp:101.5,imp:1043.4,we:0},{year:2020,exp:144.3,imp:1788.4,we:0},{year:2021,exp:35.9,imp:3930.1,we:0},{year:2022,exp:7.7,imp:2847.3,we:0},{year:2023,exp:171.5,imp:1954,we:0},{year:2024,exp:78.8,imp:1892.9,we:0}]},{"code":"ROLE:Final Product","label":"Final Product","stage":"Final Product","role":"Final Product","total_imp":46307,"total_exp":315901,"suppliers":[{"iso3":"CHN","name":"China","value":32156.3},{"iso3":"DEU","name":"Germany","value":4498.9},{"iso3":"USA","name":"United States","value":3055.6},{"iso3":"MYS","name":"Malaysia","value":2428},{"iso3":"GBR","name":"United Kingdom","value":1391.6},{"iso3":"THA","name":"Thailand","value":928.4},{"iso3":"IND","name":"India","value":726.9},{"iso3":"KOR","name":"South Korea","value":612.5},{"iso3":"ITA","name":"Italy","value":254.4},{"iso3":"IDN","name":"Indonesia","value":254.3}],"buyers":[{"iso3":"USA","name":"United States","value":128863.9},{"iso3":"IDN","name":"Indonesia","value":92494.7},{"iso3":"CAN","name":"Canada","value":73154.2},{"iso3":"PHL","name":"Philippines","value":12417.8},{"iso3":"ESP","name":"Spain","value":4667.5},{"iso3":"CHN","name":"China","value":1951},{"iso3":"DEU","name":"Germany","value":768},{"iso3":"THA","name":"Thailand","value":678.8},{"iso3":"IND","name":"India","value":498.2},{"iso3":"PAN","name":"Panama","value":407.5}],"timeline":[{year:2017,exp:0.4,imp:0.3,we:0},{year:2018,exp:0,imp:0.4,we:0},{year:2019,exp:0,imp:1.1,we:0},{year:2020,exp:4.2,imp:1.6,we:0},{year:2021,exp:4.6,imp:4.3,we:0},{year:2022,exp:79.6,imp:9.3,we:0},{year:2023,exp:154.6,imp:23.2,we:0},{year:2024,exp:316.8,imp:47,we:0}]},{"code":"ROLE:Process Equipment","label":"Process Equipment","stage":"Midstream","role":"Process Equipment","total_imp":524999,"total_exp":47315,"suppliers":[{"iso3":"CHN","name":"China","value":352857.1},{"iso3":"JPN","name":"Japan","value":71656},{"iso3":"KOR","name":"South Korea","value":53387.7},{"iso3":"S19","name":"Areas n.e.s.","value":21112.5},{"iso3":"USA","name":"United States","value":8250.2},{"iso3":"DEU","name":"Germany","value":6101.8},{"iso3":"THA","name":"Thailand","value":5181.1},{"iso3":"NLD","name":"Netherlands","value":2268.9},{"iso3":"ITA","name":"Italy","value":2264.4},{"iso3":"ESP","name":"Spain","value":1919.8}],"buyers":[{"iso3":"JPN","name":"Japan","value":16821},{"iso3":"USA","name":"United States","value":7480.3},{"iso3":"CHN","name":"China","value":6054},{"iso3":"CAN","name":"Canada","value":3747.6},{"iso3":"THA","name":"Thailand","value":2944.1},{"iso3":"IND","name":"India","value":2365.9},{"iso3":"KOR","name":"South Korea","value":2299},{"iso3":"KHM","name":"Cambodia","value":2156.9},{"iso3":"IDN","name":"Indonesia","value":1771.7},{"iso3":"MEX","name":"Mexico","value":1674}],"timeline":[{year:2003,exp:10.5,imp:69.2,we:0},{year:2004,exp:11.6,imp:133,we:0},{year:2005,exp:11.7,imp:139.7,we:0},{year:2006,exp:18.8,imp:216.3,we:0},{year:2007,exp:38.5,imp:363.1,we:0},{year:2008,exp:37.6,imp:743.5,we:0},{year:2009,exp:54.2,imp:573.9,we:0},{year:2010,exp:36.6,imp:670.8,we:0},{year:2011,exp:43.9,imp:911.4,we:0},{year:2012,exp:28.7,imp:580.1,we:0},{year:2013,exp:30.9,imp:586.5,we:0},{year:2014,exp:47.8,imp:616.7,we:0},{year:2015,exp:43.2,imp:637.6,we:0},{year:2016,exp:55.6,imp:816.2,we:0},{year:2017,exp:41.8,imp:464.5,we:0},{year:2018,exp:51.2,imp:589,we:0},{year:2019,exp:67.4,imp:684.6,we:0},{year:2020,exp:42.6,imp:559.7,we:0},{year:2021,exp:58.6,imp:561.7,we:0},{year:2022,exp:45.7,imp:532.3,we:0},{year:2023,exp:60.5,imp:465.2,we:0},{year:2024,exp:54.1,imp:535.6,we:0}]},{"code":"ROLE:Processed Material","label":"Processed Material","stage":"Midstream","role":"Processed Material","total_imp":1736266,"total_exp":855726,"suppliers":[{"iso3":"JPN","name":"Japan","value":783095.8},{"iso3":"HKG","name":"Hong Kong SAR China","value":201165},{"iso3":"USA","name":"United States","value":190262.6},{"iso3":"CHN","name":"China","value":159586.3},{"iso3":"AUS","name":"Australia","value":143843.7},{"iso3":"KOR","name":"South Korea","value":89523.6},{"iso3":"S19","name":"Areas n.e.s.","value":59813.6},{"iso3":"THA","name":"Thailand","value":41585.1},{"iso3":"CHL","name":"Chile","value":34576.7},{"iso3":"CAN","name":"Canada","value":32813.1}],"buyers":[{"iso3":"IDN","name":"Indonesia","value":292951.5},{"iso3":"IND","name":"India","value":253500},{"iso3":"CHN","name":"China","value":131546},{"iso3":"KOR","name":"South Korea","value":63478.9},{"iso3":"JPN","name":"Japan","value":30768.1},{"iso3":"MYS","name":"Malaysia","value":22241.8},{"iso3":"S19","name":"Areas n.e.s.","value":21027.6},{"iso3":"SGP","name":"Singapore","value":18222},{"iso3":"THA","name":"Thailand","value":13086.7},{"iso3":"KHM","name":"Cambodia","value":8903}],"timeline":[{year:2003,exp:2.5,imp:59.8,we:0},{year:2004,exp:18.1,imp:151.6,we:0},{year:2005,exp:18.2,imp:189.3,we:0},{year:2006,exp:48.1,imp:273.4,we:0},{year:2007,exp:34.3,imp:270.3,we:0},{year:2008,exp:34.9,imp:980.7,we:0},{year:2009,exp:36.8,imp:818.5,we:0},{year:2010,exp:91.6,imp:1263.8,we:0},{year:2011,exp:97.8,imp:1412.7,we:0},{year:2012,exp:75.8,imp:1577.9,we:0},{year:2013,exp:148,imp:1486.2,we:0},{year:2014,exp:315,imp:1560.7,we:0},{year:2015,exp:281.4,imp:1180.3,we:0},{year:2016,exp:337.8,imp:1289.9,we:0},{year:2017,exp:519.9,imp:1270.8,we:0},{year:2018,exp:795.7,imp:2069.3,we:0},{year:2019,exp:724.5,imp:1882,we:0},{year:2020,exp:590.2,imp:1947.1,we:0},{year:2021,exp:847.3,imp:2912.3,we:0},{year:2022,exp:908.2,imp:2119,we:0},{year:2023,exp:880.7,imp:1908,we:0},{year:2024,exp:882.7,imp:1855.1,we:0}]},{"code":"ROLE:Product Component","label":"Product Component","stage":"Midstream","role":"Product Component","total_imp":4499635,"total_exp":4913977,"suppliers":[{"iso3":"CHN","name":"China","value":3014601.4},{"iso3":"JPN","name":"Japan","value":297274.7},{"iso3":"HKG","name":"Hong Kong SAR China","value":270022.8},{"iso3":"THA","name":"Thailand","value":254382.6},{"iso3":"KOR","name":"South Korea","value":250890.5},{"iso3":"SGP","name":"Singapore","value":101710.6},{"iso3":"IDN","name":"Indonesia","value":90057.7},{"iso3":"IND","name":"India","value":88198},{"iso3":"DEU","name":"Germany","value":75015.7},{"iso3":"MYS","name":"Malaysia","value":57480.6}],"buyers":[{"iso3":"USA","name":"United States","value":2310828.5},{"iso3":"THA","name":"Thailand","value":476297.9},{"iso3":"JPN","name":"Japan","value":428000.1},{"iso3":"KOR","name":"South Korea","value":399265.8},{"iso3":"CHN","name":"China","value":291887.9},{"iso3":"MEX","name":"Mexico","value":284269.9},{"iso3":"DEU","name":"Germany","value":242415.6},{"iso3":"MYS","name":"Malaysia","value":205667.9},{"iso3":"CAN","name":"Canada","value":156533.7},{"iso3":"POL","name":"Poland","value":118809.5}],"timeline":[{year:2003,exp:30.4,imp:226.4,we:0},{year:2004,exp:75.8,imp:332.8,we:0},{year:2005,exp:126.1,imp:451.6,we:0},{year:2006,exp:180.8,imp:598.5,we:0},{year:2007,exp:171.1,imp:1003.3,we:0},{year:2008,exp:309.9,imp:1897.3,we:0},{year:2009,exp:297.6,imp:1778,we:0},{year:2010,exp:573.1,imp:1944.1,we:0},{year:2011,exp:665,imp:2457.2,we:0},{year:2012,exp:821.7,imp:1635.8,we:0},{year:2013,exp:1062.3,imp:1860.7,we:0},{year:2014,exp:1349.9,imp:2326.2,we:0},{year:2015,exp:1578.4,imp:2817.6,we:0},{year:2016,exp:1860.7,imp:3399.4,we:0},{year:2017,exp:1478,imp:2940.4,we:0},{year:2018,exp:1911.7,imp:2426.2,we:0},{year:2019,exp:2150.2,imp:2924.3,we:0},{year:2020,exp:2644.8,imp:3638.4,we:0},{year:2021,exp:4525.9,imp:4184.7,we:0},{year:2022,exp:5575.3,imp:5456.3,we:0},{year:2023,exp:5852.7,imp:4818.5,we:0},{year:2024,exp:6252,imp:4697.8,we:0}]},{"code":"ROLE:Raw Material","label":"Raw Material","stage":"Upstream","role":"Raw Material","total_imp":1871872,"total_exp":78754,"suppliers":[{"iso3":"AUS","name":"Australia","value":860826.7},{"iso3":"CHN","name":"China","value":434030.3},{"iso3":"MYS","name":"Malaysia","value":360052.7},{"iso3":"ZAF","name":"South Africa","value":66270.2},{"iso3":"THA","name":"Thailand","value":35529.9},{"iso3":"IND","name":"India","value":34111.5},{"iso3":"KOR","name":"South Korea","value":26264.8},{"iso3":"KHM","name":"Cambodia","value":23267},{"iso3":"TUR","name":"Turkey","value":16653.7},{"iso3":"S19","name":"Areas n.e.s.","value":14865.3}],"buyers":[{"iso3":"CHN","name":"China","value":73709.9},{"iso3":"KHM","name":"Cambodia","value":3348.1},{"iso3":"BRA","name":"Brazil","value":1186.6},{"iso3":"MYS","name":"Malaysia","value":357.1},{"iso3":"KOR","name":"South Korea","value":152.5}],"timeline":[{year:2003,exp:15.5,imp:11,we:0},{year:2004,exp:52.6,imp:17.5,we:0},{year:2005,exp:48.7,imp:20.2,we:0},{year:2006,exp:84.6,imp:29.3,we:0},{year:2007,exp:130,imp:18.1,we:0},{year:2008,exp:150.5,imp:57.9,we:0},{year:2009,exp:112.4,imp:54.6,we:0},{year:2010,exp:196.3,imp:87.6,we:0},{year:2011,exp:313.2,imp:110.4,we:0},{year:2012,exp:170.1,imp:112.6,we:0},{year:2013,exp:436.3,imp:152.1,we:0},{year:2014,exp:235.4,imp:178.9,we:0},{year:2015,exp:140,imp:146.8,we:0},{year:2016,exp:69.4,imp:341.4,we:0},{year:2017,exp:202.2,imp:376.8,we:0},{year:2018,exp:72.6,imp:844.3,we:0},{year:2019,exp:101.5,imp:1043.4,we:0},{year:2020,exp:144.3,imp:1788.4,we:0},{year:2021,exp:35.9,imp:3930.1,we:0},{year:2022,exp:7.7,imp:2847.3,we:0},{year:2023,exp:171.5,imp:1954,we:0},{year:2024,exp:78.8,imp:1892.9,we:0}]},{"code":"850440","label":"Traction Inverter","stage":"Downstream","role":"Product Component","total_imp":1693749,"total_exp":2517790,"suppliers":[{"iso3":"CHN","name":"China","value":1253029.6},{"iso3":"HKG","name":"Hong Kong SAR China","value":207852.6},{"iso3":"THA","name":"Thailand","value":56451.2},{"iso3":"KOR","name":"South Korea","value":47292.2},{"iso3":"SGP","name":"Singapore","value":45026.3},{"iso3":"DEU","name":"Germany","value":27958.3},{"iso3":"IND","name":"India","value":16975.5},{"iso3":"JPN","name":"Japan","value":15889.1},{"iso3":"S19","name":"Areas n.e.s.","value":13614.3},{"iso3":"MYS","name":"Malaysia","value":9659.8}],"buyers":[{"iso3":"USA","name":"United States","value":1521464.1},{"iso3":"MEX","name":"Mexico","value":179254.2},{"iso3":"KOR","name":"South Korea","value":168554.4},{"iso3":"CHN","name":"China","value":128486.3},{"iso3":"CAN","name":"Canada","value":111060.6},{"iso3":"NLD","name":"Netherlands","value":97198.3},{"iso3":"THA","name":"Thailand","value":95638.1},{"iso3":"DEU","name":"Germany","value":83221.4},{"iso3":"SVK","name":"Slovakia","value":78385},{"iso3":"IDN","name":"Indonesia","value":54527.8}],"timeline":[{year:2003,exp:4.7,imp:25.4,we:18706.5},{year:2004,exp:6,imp:36.3,we:22439.5},{year:2005,exp:8.2,imp:43.2,we:24894.4},{year:2006,exp:8.8,imp:61.4,we:29180.5},{year:2007,exp:11.4,imp:94,we:34706.2},{year:2008,exp:17.8,imp:135.9,we:39515.3},{year:2009,exp:14.4,imp:140.3,we:32953.6},{year:2010,exp:45.3,imp:170.5,we:44538},{year:2011,exp:82.7,imp:216.7,we:50007.2},{year:2012,exp:133.3,imp:262,we:47774.5},{year:2013,exp:160.7,imp:381.8,we:49062.6},{year:2014,exp:212,imp:507.4,we:51457.4},{year:2015,exp:399.6,imp:508.2,we:49885.5},{year:2016,exp:519.9,imp:481.2,we:48790.9},{year:2017,exp:557,imp:604.6,we:52427.1},{year:2018,exp:686.6,imp:571.3,we:57414.1},{year:2019,exp:880.7,imp:850,we:59242.1},{year:2020,exp:1252.2,imp:1315.2,we:62305.9},{year:2021,exp:2475.9,imp:1090.5,we:77788.7},{year:2022,exp:2702.4,imp:1242.8,we:93341.9},{year:2023,exp:2847.1,imp:1215.6,we:102868.7},{year:2024,exp:3125.4,imp:1746.2,we:96274.4}]},{"code":"260111","label":"Iron","stage":"Upstream","role":"Raw Material","total_imp":1424821,"total_exp":0,"suppliers":[{"iso3":"AUS","name":"Australia","value":855288.7},{"iso3":"MYS","name":"Malaysia","value":355939.6},{"iso3":"CHN","name":"China","value":133976.6},{"iso3":"ZAF","name":"South Africa","value":60299.6},{"iso3":"TUR","name":"Turkey","value":16551.9},{"iso3":"BRA","name":"Brazil","value":2764.8}],"buyers":[],"timeline":[{year:2003,exp:12.1,imp:0,we:10596.5},{year:2004,exp:44.2,imp:0,we:18794.9},{year:2005,exp:40.1,imp:0.1,we:26708.1},{year:2006,exp:52,imp:0,we:31311.4},{year:2007,exp:66.4,imp:0,we:48161.5},{year:2008,exp:109.7,imp:0.7,we:83963.8},{year:2009,exp:77.8,imp:0,we:57590.2},{year:2010,exp:158.3,imp:0.6,we:98302.9},{year:2011,exp:306.4,imp:2.3,we:139458.1},{year:2012,exp:160.2,imp:2.3,we:115899.3},{year:2013,exp:379.7,imp:2.2,we:129176.8},{year:2014,exp:119.7,imp:5.5,we:112868.4},{year:2015,exp:7.5,imp:7.2,we:68946.3},{year:2016,exp:31.7,imp:148.5,we:67250.2},{year:2017,exp:177.9,imp:180.1,we:85876.4},{year:2018,exp:55,imp:475.1,we:84645.2},{year:2019,exp:74.7,imp:704.8,we:115316.7},{year:2020,exp:10.3,imp:1393.3,we:133415.9},{year:2021,exp:30,imp:3100.5,we:199826.4},{year:2022,exp:0.3,imp:2002.2,we:146655.7},{year:2023,exp:0,imp:1362.3,we:147266.9},{year:2024,exp:0,imp:1424.8,we:143083.3}]},{"code":"720449","label":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","total_imp":1357900,"total_exp":3581,"suppliers":[{"iso3":"JPN","name":"Japan","value":745907.4},{"iso3":"HKG","name":"Hong Kong SAR China","value":190191.4},{"iso3":"USA","name":"United States","value":174565},{"iso3":"AUS","name":"Australia","value":139876.1},{"iso3":"CAN","name":"Canada","value":30221.1},{"iso3":"SGP","name":"Singapore","value":23454.1},{"iso3":"KOR","name":"South Korea","value":20225.2},{"iso3":"NZL","name":"New Zealand","value":17171.1},{"iso3":"CHL","name":"Chile","value":14604.6},{"iso3":"MAC","name":"MAC","value":1684.4}],"buyers":[{"iso3":"PHL","name":"Philippines","value":2445.3},{"iso3":"IND","name":"India","value":417.4},{"iso3":"KOR","name":"South Korea","value":258.7},{"iso3":"CHN","name":"China","value":168.2},{"iso3":"S19","name":"Areas n.e.s.","value":150.9},{"iso3":"THA","name":"Thailand","value":140.9}],"timeline":[{year:2003,exp:0.1,imp:19.2,we:9342},{year:2004,exp:1,imp:52.7,we:17082.7},{year:2005,exp:0.3,imp:63.7,we:17324.8},{year:2006,exp:0.4,imp:115.5,we:18490},{year:2007,exp:1.4,imp:106.9,we:20944.8},{year:2008,exp:8.6,imp:705.4,we:34273.5},{year:2009,exp:1.1,imp:596.5,we:21293.4},{year:2010,exp:0.7,imp:834.2,we:29120.8},{year:2011,exp:2.3,imp:972.9,we:38054.6},{year:2012,exp:2.4,imp:1194,we:33701.5},{year:2013,exp:1.8,imp:1061.4,we:30164.5},{year:2014,exp:1.9,imp:1088,we:27816.2},{year:2015,exp:2.3,imp:744.6,we:18237.1},{year:2016,exp:1.3,imp:834,we:16087},{year:2017,exp:2.4,imp:964.5,we:22720.8},{year:2018,exp:0.6,imp:1682.2,we:27603.1},{year:2019,exp:0.4,imp:1456.3,we:22947.1},{year:2020,exp:0.5,imp:1441.8,we:21372.2},{year:2021,exp:0.6,imp:2366.2,we:37134.8},{year:2022,exp:0.7,imp:1602.1,we:34526},{year:2023,exp:0.6,imp:1405.7,we:30765.5},{year:2024,exp:3.6,imp:1359.6,we:29146.7}]},{"code":"870829","label":"Auto Body Accessories","stage":"Downstream","role":"Product Component","total_imp":520117,"total_exp":448178,"suppliers":[{"iso3":"CHN","name":"China","value":146503.7},{"iso3":"JPN","name":"Japan","value":109284.2},{"iso3":"THA","name":"Thailand","value":90106.8},{"iso3":"KOR","name":"South Korea","value":60602.2},{"iso3":"IDN","name":"Indonesia","value":52251.2},{"iso3":"IND","name":"India","value":21944.3},{"iso3":"TUR","name":"Turkey","value":15699.4},{"iso3":"USA","name":"United States","value":13489.6},{"iso3":"DEU","name":"Germany","value":7636.6},{"iso3":"MYS","name":"Malaysia","value":2599.2}],"buyers":[{"iso3":"USA","name":"United States","value":221741.9},{"iso3":"MEX","name":"Mexico","value":58537.4},{"iso3":"CZE","name":"Czechia","value":32226.5},{"iso3":"KOR","name":"South Korea","value":31466.9},{"iso3":"JPN","name":"Japan","value":31050.4},{"iso3":"CHN","name":"China","value":27780.2},{"iso3":"THA","name":"Thailand","value":18312.8},{"iso3":"AUS","name":"Australia","value":10430.1},{"iso3":"DEU","name":"Germany","value":9925},{"iso3":"IDN","name":"Indonesia","value":6707.1}],"timeline":[{year:2003,exp:3.3,imp:21.5,we:36053.6},{year:2004,exp:4.3,imp:13.6,we:41664.6},{year:2005,exp:8.2,imp:21.4,we:44834.3},{year:2006,exp:24.4,imp:58.9,we:47794.4},{year:2007,exp:6.6,imp:34.4,we:51977.4},{year:2008,exp:8.8,imp:212.4,we:53453.5},{year:2009,exp:8.2,imp:210.5,we:39651.5},{year:2010,exp:12.4,imp:220.2,we:50365.8},{year:2011,exp:19.5,imp:213.8,we:60060.3},{year:2012,exp:39.2,imp:103.5,we:61298.4},{year:2013,exp:63.5,imp:176.5,we:64982.8},{year:2014,exp:62.5,imp:242.4,we:68842.9},{year:2015,exp:76.3,imp:375.7,we:65888.9},{year:2016,exp:92.1,imp:531.3,we:68269.4},{year:2017,exp:61.7,imp:234.1,we:69757.7},{year:2018,exp:97,imp:466.5,we:77265.5},{year:2019,exp:125.4,imp:549.1,we:74587.5},{year:2020,exp:147,imp:472.8,we:64333.9},{year:2021,exp:252.8,imp:638.7,we:75534.4},{year:2022,exp:341.6,imp:823.8,we:76183.1},{year:2023,exp:400.3,imp:593.1,we:82901.7},{year:2024,exp:475.1,imp:528.4,we:81554.9}]},{"code":"381800","label":"Wafers; Traction Inverter","stage":"Midstream","role":"Product Component","total_imp":291996,"total_exp":517668,"suppliers":[{"iso3":"CHN","name":"China","value":271870.2},{"iso3":"MYS","name":"Malaysia","value":18252.3},{"iso3":"USA","name":"United States","value":843.3},{"iso3":"HKG","name":"Hong Kong SAR China","value":526},{"iso3":"KOR","name":"South Korea","value":388.3},{"iso3":"FRA","name":"France","value":116}],"buyers":[{"iso3":"THA","name":"Thailand","value":309170.7},{"iso3":"MYS","name":"Malaysia","value":166274.6},{"iso3":"CHN","name":"China","value":24157.2},{"iso3":"IDN","name":"Indonesia","value":12897},{"iso3":"HKG","name":"Hong Kong SAR China","value":2306.4},{"iso3":"KHM","name":"Cambodia","value":2230.9},{"iso3":"JPN","name":"Japan","value":371.6},{"iso3":"KOR","name":"South Korea","value":259.1}],"timeline":[{year:2003,exp:0,imp:0.2,we:6729.8},{year:2004,exp:0,imp:0.5,we:7364.7},{year:2005,exp:0,imp:0.3,we:8032.2},{year:2006,exp:0,imp:1.6,we:10638.7},{year:2007,exp:0,imp:0.8,we:13252.8},{year:2009,exp:0.2,imp:2.2,we:10564.9},{year:2010,exp:0.2,imp:2.5,we:15709.5},{year:2011,exp:0.6,imp:8.6,we:15677.2},{year:2012,exp:0.7,imp:22.3,we:12793.3},{year:2013,exp:0.5,imp:3.3,we:11294.6},{year:2014,exp:0.5,imp:18.2,we:11720.4},{year:2015,exp:0.2,imp:47.5,we:11601.2},{year:2016,exp:0.1,imp:108.7,we:11938.9},{year:2017,exp:0.7,imp:452.2,we:13013.6},{year:2018,exp:4.4,imp:230.9,we:16407.4},{year:2019,exp:98.9,imp:216.4,we:15300.4},{year:2020,exp:116,imp:357.1,we:15122.7},{year:2021,exp:240.3,imp:672.6,we:18216.5},{year:2022,exp:321.3,imp:1309.1,we:21785.2},{year:2023,exp:594.7,imp:1242.9,we:20979.1},{year:2024,exp:517.7,imp:292,we:17819.4}]},{"code":"850511","label":"PMSM; Pre-Magnetized Nd(Dy) FeB Magnets","stage":"Midstream","role":"Product Component","total_imp":381523,"total_exp":290076,"suppliers":[{"iso3":"CHN","name":"China","value":341305.9},{"iso3":"JPN","name":"Japan","value":21675.7},{"iso3":"KOR","name":"South Korea","value":6760.9},{"iso3":"PHL","name":"Philippines","value":3086.6},{"iso3":"HKG","name":"Hong Kong SAR China","value":2556.9},{"iso3":"IDN","name":"Indonesia","value":2520.9},{"iso3":"MYS","name":"Malaysia","value":1677.5},{"iso3":"THA","name":"Thailand","value":899.7},{"iso3":"S19","name":"Areas n.e.s.","value":766.4},{"iso3":"USA","name":"United States","value":272.2}],"buyers":[{"iso3":"JPN","name":"Japan","value":158723.6},{"iso3":"PHL","name":"Philippines","value":83435.9},{"iso3":"CHN","name":"China","value":21741},{"iso3":"DEU","name":"Germany","value":7881.5},{"iso3":"MYS","name":"Malaysia","value":6590},{"iso3":"THA","name":"Thailand","value":5978.2},{"iso3":"MEX","name":"Mexico","value":1803.6},{"iso3":"IND","name":"India","value":1671.1},{"iso3":"USA","name":"United States","value":1158.2},{"iso3":"MMR","name":"Myanmar (Burma)","value":1092.8}],"timeline":[{year:2003,exp:0,imp:5.2,we:1153},{year:2004,exp:0.2,imp:5.9,we:1172.4},{year:2005,exp:0.3,imp:7,we:1324.6},{year:2006,exp:0,imp:8,we:1535.1},{year:2007,exp:0.2,imp:13.5,we:1892.7},{year:2008,exp:0.8,imp:14.6,we:2058.5},{year:2009,exp:0.8,imp:15,we:1468.7},{year:2010,exp:2.1,imp:42.4,we:2295.8},{year:2011,exp:5.2,imp:78.3,we:4730.7},{year:2012,exp:3.3,imp:63.3,we:5164.6},{year:2013,exp:1.6,imp:60.9,we:3584.5},{year:2014,exp:1.9,imp:67.2,we:3635},{year:2015,exp:1.3,imp:76,we:3050.4},{year:2016,exp:14.6,imp:89,we:3076.2},{year:2017,exp:8.1,imp:146.2,we:3394.4},{year:2018,exp:95.1,imp:121.3,we:3827.5},{year:2019,exp:109.8,imp:139.6,we:3564.2},{year:2020,exp:110.2,imp:222.6,we:3467.7},{year:2021,exp:240.4,imp:316.7,we:5185.2},{year:2022,exp:437.4,imp:379.4,we:7017.2},{year:2023,exp:342.8,imp:302.7,we:5850.3},{year:2024,exp:292.7,imp:382.1,we:4951.1}]},{"code":"731815","label":"Plates bolts, nuts","stage":"Midstream","role":"Product Component","total_imp":381076,"total_exp":178077,"suppliers":[{"iso3":"CHN","name":"China","value":271238.8},{"iso3":"KOR","name":"South Korea","value":45774},{"iso3":"JPN","name":"Japan","value":19540.4},{"iso3":"S19","name":"Areas n.e.s.","value":12211.5},{"iso3":"THA","name":"Thailand","value":11008.5},{"iso3":"HKG","name":"Hong Kong SAR China","value":10107.6},{"iso3":"SGP","name":"Singapore","value":3255.5},{"iso3":"DEU","name":"Germany","value":3173.8},{"iso3":"HUN","name":"Hungary","value":2427.8},{"iso3":"IND","name":"India","value":2338.2}],"buyers":[{"iso3":"USA","name":"United States","value":50232.5},{"iso3":"DEU","name":"Germany","value":45753},{"iso3":"NLD","name":"Netherlands","value":12947.5},{"iso3":"POL","name":"Poland","value":12041.6},{"iso3":"JPN","name":"Japan","value":10587.8},{"iso3":"CAN","name":"Canada","value":10284.5},{"iso3":"ITA","name":"Italy","value":9628.1},{"iso3":"S19","name":"Areas n.e.s.","value":9403.3},{"iso3":"FRA","name":"France","value":8914.6},{"iso3":"PHL","name":"Philippines","value":8284.2}],"timeline":[{year:2003,exp:4.9,imp:9.1,we:6690.3},{year:2004,exp:13.2,imp:26.9,we:8548.4},{year:2005,exp:20,imp:28.7,we:9683.4},{year:2006,exp:26.9,imp:34.7,we:11254.7},{year:2007,exp:37.9,imp:28.7,we:13075.1},{year:2008,exp:41,imp:67.7,we:15175.9},{year:2009,exp:33.9,imp:67.6,we:10976.6},{year:2010,exp:65.2,imp:78.4,we:14509.7},{year:2011,exp:111.7,imp:101.1,we:17476.4},{year:2012,exp:96.1,imp:79.3,we:16819.3},{year:2013,exp:136.2,imp:86.1,we:17341.3},{year:2014,exp:164.8,imp:102.6,we:18180.1},{year:2015,exp:171.5,imp:144.1,we:17244.9},{year:2016,exp:145.7,imp:138.4,we:16691.4},{year:2017,exp:142.9,imp:153.1,we:17790.8},{year:2018,exp:272.8,imp:160.1,we:19983.9},{year:2019,exp:230.1,imp:241.1,we:19089},{year:2020,exp:244.8,imp:332.6,we:17010.8},{year:2021,exp:289.4,imp:287.4,we:20811.5},{year:2022,exp:386.5,imp:295,we:23157.1},{year:2023,exp:312.9,imp:277.4,we:22098.5},{year:2024,exp:247.9,imp:391.3,we:21881.8}]},{"code":"851220","label":"Headlights","stage":"Midstream","role":"Product Component","total_imp":209304,"total_exp":375466,"suppliers":[{"iso3":"CHN","name":"China","value":135290.4},{"iso3":"IND","name":"India","value":20833},{"iso3":"THA","name":"Thailand","value":15652.1},{"iso3":"IDN","name":"Indonesia","value":10990.9},{"iso3":"JPN","name":"Japan","value":9989.3},{"iso3":"MYS","name":"Malaysia","value":6610.9},{"iso3":"KOR","name":"South Korea","value":3706.9},{"iso3":"DEU","name":"Germany","value":2195.5},{"iso3":"USA","name":"United States","value":2194.5},{"iso3":"S19","name":"Areas n.e.s.","value":1840.1}],"buyers":[{"iso3":"USA","name":"United States","value":63938.9},{"iso3":"DEU","name":"Germany","value":63428.7},{"iso3":"KOR","name":"South Korea","value":61547.7},{"iso3":"POL","name":"Poland","value":61538.8},{"iso3":"IND","name":"India","value":34404.9},{"iso3":"CHN","name":"China","value":20576.7},{"iso3":"ITA","name":"Italy","value":20433.7},{"iso3":"IDN","name":"Indonesia","value":19801.6},{"iso3":"GBR","name":"United Kingdom","value":15948.7},{"iso3":"CZE","name":"Czechia","value":13846.1}],"timeline":[{year:2003,exp:0.8,imp:1.1,we:4922.3},{year:2004,exp:0.6,imp:2.9,we:5907},{year:2005,exp:0.9,imp:5.2,we:6405.2},{year:2006,exp:0.6,imp:5.9,we:7024.4},{year:2007,exp:0.2,imp:7.3,we:8401.8},{year:2008,exp:1,imp:20.2,we:9240.2},{year:2009,exp:0.5,imp:24.3,we:7569},{year:2010,exp:0.9,imp:37.4,we:9993.8},{year:2011,exp:2.6,imp:41.6,we:12245.7},{year:2012,exp:6.4,imp:38.8,we:13080.1},{year:2013,exp:6.2,imp:42.5,we:14970.8},{year:2014,exp:15.5,imp:51.2,we:16922.4},{year:2015,exp:19.2,imp:64,we:16506.9},{year:2016,exp:35.2,imp:87.7,we:18384.4},{year:2017,exp:60.4,imp:97.6,we:21310.2},{year:2018,exp:74.4,imp:125,we:22324.1},{year:2019,exp:80.1,imp:146.5,we:21833.4},{year:2020,exp:117.3,imp:170.5,we:18605.3},{year:2021,exp:174.9,imp:212.4,we:22764.7},{year:2022,exp:231.2,imp:251.8,we:22661.6},{year:2023,exp:289,imp:151.7,we:23750.9},{year:2024,exp:415.4,imp:213.2,we:24528.5}]},{"code":"281820","label":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","total_imp":14802,"total_exp":527375,"suppliers":[{"iso3":"CHN","name":"China","value":3996.8},{"iso3":"KOR","name":"South Korea","value":3637.8},{"iso3":"DEU","name":"Germany","value":2200.9},{"iso3":"JPN","name":"Japan","value":1776.7},{"iso3":"IND","name":"India","value":1125.1},{"iso3":"S19","name":"Areas n.e.s.","value":1043.6},{"iso3":"FRA","name":"France","value":661.5},{"iso3":"IDN","name":"Indonesia","value":220.9},{"iso3":"BEL","name":"Belgium","value":139}],"buyers":[{"iso3":"IDN","name":"Indonesia","value":286960},{"iso3":"IND","name":"India","value":134715},{"iso3":"CHN","name":"China","value":82645},{"iso3":"MYS","name":"Malaysia","value":19210.5},{"iso3":"KOR","name":"South Korea","value":3532.5},{"iso3":"JPN","name":"Japan","value":312.3}],"timeline":[{year:2003,exp:0.2,imp:2.3,we:5953.6},{year:2004,exp:0.4,imp:3.7,we:7578.2},{year:2005,exp:0.2,imp:5.5,we:10140.9},{year:2006,exp:0.2,imp:4.5,we:12359.6},{year:2007,exp:0.2,imp:3.8,we:11721.7},{year:2008,exp:0,imp:6.7,we:13831.9},{year:2009,exp:0,imp:7.1,we:8382.3},{year:2010,exp:0,imp:7.6,we:11200.8},{year:2011,exp:0.2,imp:9.2,we:11408.8},{year:2012,exp:0,imp:8.8,we:11522.2},{year:2013,exp:38.5,imp:11.1,we:12498.2},{year:2014,exp:158.3,imp:14.7,we:13435.8},{year:2015,exp:156.6,imp:11,we:12841.6},{year:2016,exp:162.4,imp:13.7,we:11220.2},{year:2017,exp:321,imp:10.8,we:12753.1},{year:2018,exp:558.4,imp:13.4,we:17659.2},{year:2019,exp:514,imp:13.3,we:15933.8},{year:2020,exp:390.5,imp:12.8,we:12089.4},{year:2021,exp:514.4,imp:16.3,we:13986.8},{year:2022,exp:552,imp:15.2,we:16591.3},{year:2023,exp:499.6,imp:13.7,we:14409},{year:2024,exp:527.4,imp:14.8,we:17777.7}]},{"code":"850152","label":"Permanent Magnet Synchronous Motor (PMSM)","stage":"Downstream","role":"Product Component","total_imp":75906,"total_exp":304025,"suppliers":[{"iso3":"CHN","name":"China","value":50864.1},{"iso3":"DEU","name":"Germany","value":9333.8},{"iso3":"JPN","name":"Japan","value":4939.2},{"iso3":"SGP","name":"Singapore","value":3474.2},{"iso3":"KOR","name":"South Korea","value":2320.2},{"iso3":"S19","name":"Areas n.e.s.","value":1441.6},{"iso3":"IND","name":"India","value":956.3},{"iso3":"NLD","name":"Netherlands","value":949.8},{"iso3":"AUT","name":"Austria","value":884.5},{"iso3":"ITA","name":"Italy","value":742.9}],"buyers":[{"iso3":"USA","name":"United States","value":91825},{"iso3":"JPN","name":"Japan","value":84517.3},{"iso3":"KOR","name":"South Korea","value":54840.6},{"iso3":"ITA","name":"Italy","value":17144.1},{"iso3":"CAN","name":"Canada","value":14880.5},{"iso3":"CHN","name":"China","value":10647.6},{"iso3":"IND","name":"India","value":9834.4},{"iso3":"MEX","name":"Mexico","value":8227.8},{"iso3":"DEU","name":"Germany","value":7873.5},{"iso3":"IDN","name":"Indonesia","value":4234.1}],"timeline":[{year:2003,exp:0,imp:2.3,we:2537.9},{year:2004,exp:0,imp:5.6,we:3026.4},{year:2005,exp:0,imp:5.8,we:3491.4},{year:2006,exp:0,imp:7.2,we:4304.1},{year:2007,exp:0.3,imp:10.1,we:5205.9},{year:2008,exp:1.8,imp:24.4,we:6329.4},{year:2009,exp:4.1,imp:21.7,we:4249.3},{year:2010,exp:11.2,imp:24.9,we:5403.3},{year:2011,exp:36.6,imp:27.4,we:7062.8},{year:2012,exp:64.2,imp:22.8,we:6876.8},{year:2013,exp:74.2,imp:26.3,we:6993.5},{year:2014,exp:96.8,imp:40.7,we:7582.6},{year:2015,exp:119.3,imp:38.8,we:6860.9},{year:2016,exp:119.4,imp:43.1,we:6692.7},{year:2017,exp:152,imp:50.4,we:7487.9},{year:2018,exp:141.1,imp:52.2,we:8233.8},{year:2019,exp:153.8,imp:51.4,we:7635.8},{year:2020,exp:165.5,imp:48.2,we:7284.8},{year:2021,exp:221.6,imp:49.9,we:9589.9},{year:2022,exp:334.5,imp:54.2,we:10853.6},{year:2023,exp:271.9,imp:45.2,we:10711},{year:2024,exp:320.5,imp:78.4,we:10249.5}]}],
+  radar_data:{"categories":["Chemicals","Electronics","Industrial Materials","Machinery","Metals"],"focal":[0,0,0,0,0],"shap":[0,0,0,0,0],"region":[0,0,0,0,0],"world":[0,0,0,0,0],"region_name":"East Asia & Pacific"},
+  sankey_flows:[{"fl":"AUS | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"AUS","tc":"CHN","fl7":0,"tl7":1,"w":77687685.9},{"fl":"BRA | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"BRA","tc":"CHN","fl7":0,"tl7":1,"w":18779382},{"fl":"CHL | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"CHL","tc":"CHN","fl7":0,"tl7":1,"w":16758541.9},{"fl":"MEX | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"MEX","tc":"USA","fl7":4,"tl7":6,"w":12650321.6},{"fl":"PER | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"PER","tc":"CHN","fl7":0,"tl7":1,"w":11752768.6},{"fl":"AUS | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"AUS","tc":"JPN","fl7":0,"tl7":1,"w":9432743.8},{"fl":"CHN | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"CHN","tc":"USA","fl7":4,"tl7":6,"w":9149700.4},{"fl":"ZAF | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"ZAF","tc":"CHN","fl7":0,"tl7":1,"w":6838900.5},{"fl":"AUS | Raw Material · Upstream","tl":"KOR | Processed Material · Midstream","fc":"AUS","tc":"KOR","fl7":0,"tl7":1,"w":6823290.7},{"fl":"CAN | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"CAN","tc":"USA","fl7":4,"tl7":6,"w":6089727.5},{"fl":"USA | Product Component · Downstream","tl":"CAN | Final Product · Final Product","fc":"USA","tc":"CAN","fl7":4,"tl7":6,"w":5669214.8},{"fl":"USA | Product Component · Downstream","tl":"MEX | Final Product · Final Product","fc":"USA","tc":"MEX","fl7":4,"tl7":6,"w":5509886.1},{"fl":"MEX | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"MEX","tc":"USA","fl7":3,"tl7":4,"w":4697406.1},{"fl":"GIN | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"GIN","tc":"CHN","fl7":0,"tl7":1,"w":4524868.9},{"fl":"DEU | Product Component · Downstream","tl":"CHN | Final Product · Final Product","fc":"DEU","tc":"CHN","fl7":4,"tl7":6,"w":4382318.2},{"fl":"CHN | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"CHN","tc":"DEU","fl7":4,"tl7":6,"w":4196577.2},{"fl":"CHL | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"CHL","tc":"JPN","fl7":0,"tl7":1,"w":4015357.1},{"fl":"CHN | Product Component · Downstream","tl":"JPN | Final Product · Final Product","fc":"CHN","tc":"JPN","fl7":4,"tl7":6,"w":3910988.9},{"fl":"CZE | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"CZE","tc":"DEU","fl7":4,"tl7":6,"w":3704875.5},{"fl":"CHN | Product Component · Downstream","tl":"MEX | Final Product · Final Product","fc":"CHN","tc":"MEX","fl7":4,"tl7":6,"w":3483362.6},{"fl":"CHN | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"CHN","tc":"USA","fl7":3,"tl7":4,"w":3311828.4},{"fl":"JPN | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"JPN","tc":"USA","fl7":4,"tl7":6,"w":3169059.6},{"fl":"MNG | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"MNG","tc":"CHN","fl7":0,"tl7":1,"w":3121309.9},{"fl":"CAN | Processed Material · Midstream","tl":"USA | Product Component · Midstream","fc":"CAN","tc":"USA","fl7":1,"tl7":3,"w":3052215},{"fl":"PHL | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"PHL","tc":"CHN","fl7":0,"tl7":1,"w":2909305.3},{"fl":"AUS | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"AUS","tc":"CHN","fl7":1,"tl7":3,"w":2907379.7},{"fl":"DEU | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"DEU","tc":"USA","fl7":4,"tl7":6,"w":2903087},{"fl":"CHN | Product Component · Downstream","tl":"HKG | Final Product · Final Product","fc":"CHN","tc":"HKG","fl7":4,"tl7":6,"w":2789508.4},{"fl":"CAN | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"CAN","tc":"CHN","fl7":0,"tl7":1,"w":2742890.1},{"fl":"IDN | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"IDN","tc":"CHN","fl7":0,"tl7":1,"w":2714191.8},{"fl":"MEX | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"MEX","tc":"CHN","fl7":0,"tl7":1,"w":2626809.2},{"fl":"CHN | Product Component · Downstream","tl":"NLD | Final Product · Final Product","fc":"CHN","tc":"NLD","fl7":4,"tl7":6,"w":2585445.5},{"fl":"JPN | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"JPN","tc":"CHN","fl7":1,"tl7":3,"w":2573043.6},{"fl":"USA | Product Component · Midstream","tl":"MEX | Product Component · Downstream","fc":"USA","tc":"MEX","fl7":3,"tl7":4,"w":2558880.9},{"fl":"S19 | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"S19","tc":"USA","fl7":3,"tl7":4,"w":2510771},{"fl":"S19 | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"S19","tc":"USA","fl7":4,"tl7":6,"w":2506169.6},{"fl":"RUS | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"RUS","tc":"CHN","fl7":0,"tl7":1,"w":2484339.5},{"fl":"USA | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"USA","tc":"CHN","fl7":1,"tl7":3,"w":2440926.1},{"fl":"KAZ | Raw Material · Upstream","tl":"CHN | Processed Material · Midstream","fc":"KAZ","tc":"CHN","fl7":0,"tl7":1,"w":2421575.3},{"fl":"POL | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"POL","tc":"DEU","fl7":4,"tl7":6,"w":2418949.3},{"fl":"KOR | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"KOR","tc":"USA","fl7":4,"tl7":6,"w":2369449.9},{"fl":"JPN | Product Component · Midstream","tl":"CHN | Product Component · Downstream","fc":"JPN","tc":"CHN","fl7":3,"tl7":4,"w":2285242.3},{"fl":"IDN | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"IDN","tc":"JPN","fl7":0,"tl7":1,"w":2167782.6},{"fl":"CHN | Product Component · Midstream","tl":"VNM | Product Component · Downstream","fc":"CHN","tc":"VNM","fl7":3,"tl7":4,"w":2164000.2},{"fl":"JPN | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"JPN","tc":"USA","fl7":3,"tl7":4,"w":2115621},{"fl":"CHN | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"CHN","tc":"JPN","fl7":0,"tl7":1,"w":2106035.6},{"fl":"HUN | Product Component · Downstream","tl":"DEU | Final Product · Final Product","fc":"HUN","tc":"DEU","fl7":4,"tl7":6,"w":2083250.3},{"fl":"CHN | Product Component · Downstream","tl":"BRA | Final Product · Final Product","fc":"CHN","tc":"BRA","fl7":4,"tl7":6,"w":2016890.1},{"fl":"CHN | Product Component · Midstream","tl":"DEU | Product Component · Downstream","fc":"CHN","tc":"DEU","fl7":3,"tl7":4,"w":1973122.6},{"fl":"JPN | Processed Material · Midstream","tl":"KOR | Product Component · Midstream","fc":"JPN","tc":"KOR","fl7":1,"tl7":3,"w":1965522.9},{"fl":"CAN | Raw Material · Upstream","tl":"JPN | Processed Material · Midstream","fc":"CAN","tc":"JPN","fl7":0,"tl7":1,"w":1887576.1},{"fl":"VNM | Product Component · Downstream","tl":"USA | Final Product · Final Product","fc":"VNM","tc":"USA","fl7":4,"tl7":6,"w":1879904.1},{"fl":"CHN | Product Component · Midstream","tl":"KOR | Product Component · Downstream","fc":"CHN","tc":"KOR","fl7":3,"tl7":4,"w":1849103.1},{"fl":"USA | Product Component · Midstream","tl":"CAN | Product Component · Downstream","fc":"USA","tc":"CAN","fl7":3,"tl7":4,"w":1824128.2},{"fl":"USA | Processed Material · Midstream","tl":"TUR | Product Component · Midstream","fc":"USA","tc":"TUR","fl7":1,"tl7":3,"w":1774855},{"fl":"JPN | Product Component · Midstream","tl":"S19 | Product Component · Downstream","fc":"JPN","tc":"S19","fl7":3,"tl7":4,"w":1759480.4},{"fl":"USA | Processed Material · Midstream","tl":"MEX | Product Component · Midstream","fc":"USA","tc":"MEX","fl7":1,"tl7":3,"w":1744510.5},{"fl":"CHN | Product Component · Midstream","tl":"MYS | Product Component · Downstream","fc":"CHN","tc":"MYS","fl7":3,"tl7":4,"w":1729896},{"fl":"USA | Raw Material · Upstream","tl":"CAN | Processed Material · Midstream","fc":"USA","tc":"CAN","fl7":0,"tl7":1,"w":1664915.6},{"fl":"NLD | Processed Material · Midstream","tl":"DEU | Product Component · Midstream","fc":"NLD","tc":"DEU","fl7":1,"tl7":3,"w":1635821.6},{"fl":"FRA | Processed Material · Midstream","tl":"BEL | Product Component · Midstream","fc":"FRA","tc":"BEL","fl7":1,"tl7":3,"w":1531557},{"fl":"CHN | Product Component · Midstream","tl":"THA | Product Component · Downstream","fc":"CHN","tc":"THA","fl7":3,"tl7":4,"w":1527111.8},{"fl":"KOR | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"KOR","tc":"USA","fl7":3,"tl7":4,"w":1523917.7},{"fl":"DEU | Product Component · Midstream","tl":"CHN | Product Component · Downstream","fc":"DEU","tc":"CHN","fl7":3,"tl7":4,"w":1474256.6},{"fl":"CZE | Product Component · Midstream","tl":"DEU | Product Component · Downstream","fc":"CZE","tc":"DEU","fl7":3,"tl7":4,"w":1473491.8},{"fl":"DEU | Processed Material · Midstream","tl":"BEL | Product Component · Midstream","fc":"DEU","tc":"BEL","fl7":1,"tl7":3,"w":1446836.9},{"fl":"BRA | Processed Material · Midstream","tl":"CAN | Product Component · Midstream","fc":"BRA","tc":"CAN","fl7":1,"tl7":3,"w":1427306.1},{"fl":"DEU | Processed Material · Midstream","tl":"ITA | Product Component · Midstream","fc":"DEU","tc":"ITA","fl7":1,"tl7":3,"w":1370797.7},{"fl":"CHN | Product Component · Midstream","tl":"JPN | Product Component · Downstream","fc":"CHN","tc":"JPN","fl7":3,"tl7":4,"w":1317591.3},{"fl":"USA | Processed Material · Midstream","tl":"IND | Product Component · Midstream","fc":"USA","tc":"IND","fl7":1,"tl7":3,"w":1244657.5},{"fl":"AUS | Processed Material · Midstream","tl":"BHR | Product Component · Midstream","fc":"AUS","tc":"BHR","fl7":1,"tl7":3,"w":1222365},{"fl":"CHN | Product Component · Midstream","tl":"S19 | Product Component · Downstream","fc":"CHN","tc":"S19","fl7":3,"tl7":4,"w":1195919.3},{"fl":"USA | Processed Material · Midstream","tl":"CAN | Product Component · Midstream","fc":"USA","tc":"CAN","fl7":1,"tl7":3,"w":1180379.7},{"fl":"RUS | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"RUS","tc":"CHN","fl7":1,"tl7":3,"w":1165773.9},{"fl":"CAN | Product Component · Midstream","tl":"USA | Product Component · Downstream","fc":"CAN","tc":"USA","fl7":3,"tl7":4,"w":1157925},{"fl":"ARE | Processed Material · Midstream","tl":"IND | Product Component · Midstream","fc":"ARE","tc":"IND","fl7":1,"tl7":3,"w":1120470.6},{"fl":"DEU | Processed Material · Midstream","tl":"NLD | Product Component · Midstream","fc":"DEU","tc":"NLD","fl7":1,"tl7":3,"w":1114408.2},{"fl":"KOR | Processed Material · Midstream","tl":"CHN | Product Component · Midstream","fc":"KOR","tc":"CHN","fl7":1,"tl7":3,"w":1078411.7},{"fl":"CHN | Product Component · Midstream","tl":"MEX | Product Component · Downstream","fc":"CHN","tc":"MEX","fl7":3,"tl7":4,"w":1074377.2},{"fl":"NLD | Processed Material · Midstream","tl":"BEL | Product Component · Midstream","fc":"NLD","tc":"BEL","fl7":1,"tl7":3,"w":1067830.8},{"fl":"JPN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"JPN","tc":"USA","fl7":5,"tl7":6,"w":953970.3},{"fl":"DEU | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"DEU","tc":"CHN","fl7":5,"tl7":6,"w":672098.7},{"fl":"JPN | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"JPN","tc":"CHN","fl7":5,"tl7":6,"w":629314.2},{"fl":"USA | Process Equipment · Downstream","tl":"MEX | Final Product · Final Product","fc":"USA","tc":"MEX","fl7":5,"tl7":6,"w":415496.6},{"fl":"KOR | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"KOR","tc":"USA","fl7":5,"tl7":6,"w":388724},{"fl":"DEU | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"DEU","tc":"USA","fl7":5,"tl7":6,"w":327755.6},{"fl":"CHN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"CHN","tc":"USA","fl7":5,"tl7":6,"w":317421.1},{"fl":"CAN | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"CAN","tc":"USA","fl7":5,"tl7":6,"w":305976.5},{"fl":"S19 | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"S19","tc":"CHN","fl7":5,"tl7":6,"w":273380.5},{"fl":"USA | Process Equipment · Downstream","tl":"CAN | Final Product · Final Product","fc":"USA","tc":"CAN","fl7":5,"tl7":6,"w":268571.8},{"fl":"ITA | Process Equipment · Downstream","tl":"DEU | Final Product · Final Product","fc":"ITA","tc":"DEU","fl7":5,"tl7":6,"w":266273.3},{"fl":"CHN | Process Equipment · Downstream","tl":"JPN | Final Product · Final Product","fc":"CHN","tc":"JPN","fl7":5,"tl7":6,"w":253227.6},{"fl":"CHN | Process Equipment · Downstream","tl":"VNM | Final Product · Final Product","fc":"CHN","tc":"VNM","fl7":5,"tl7":6,"w":250440.7},{"fl":"CHN | Process Equipment · Downstream","tl":"MEX | Final Product · Final Product","fc":"CHN","tc":"MEX","fl7":5,"tl7":6,"w":233067.4},{"fl":"KOR | Process Equipment · Downstream","tl":"CHN | Final Product · Final Product","fc":"KOR","tc":"CHN","fl7":5,"tl7":6,"w":228173.8},{"fl":"CHN | Process Equipment · Downstream","tl":"RUS | Final Product · Final Product","fc":"CHN","tc":"RUS","fl7":5,"tl7":6,"w":221245.8},{"fl":"KOR | Process Equipment · Downstream","tl":"MEX | Final Product · Final Product","fc":"KOR","tc":"MEX","fl7":5,"tl7":6,"w":203089.9},{"fl":"CHN | Process Equipment · Downstream","tl":"DEU | Final Product · Final Product","fc":"CHN","tc":"DEU","fl7":5,"tl7":6,"w":194246.8},{"fl":"DEU | Process Equipment · Downstream","tl":"ITA | Final Product · Final Product","fc":"DEU","tc":"ITA","fl7":5,"tl7":6,"w":189562.3},{"fl":"ITA | Process Equipment · Downstream","tl":"USA | Final Product · Final Product","fc":"ITA","tc":"USA","fl7":5,"tl7":6,"w":188629.3}],
+  firms:[],
+  shap_rca:[{"code":"731815","name":"Plates bolts, nuts","stage":"Midstream","role":"Product Component","cat":"Other","rca":1.4563,"shap":0,"exp":247885,"imp":391296},{"code":"848210","name":"Bearings","stage":"Midstream","role":"Product Component","cat":"Other","rca":0.9156,"shap":0,"exp":98118,"imp":264091},{"code":"850152","name":"Permanent Magnet Synchronous Motor (PMSM","stage":"Downstream","role":"Product Component","cat":"Other","rca":4.0201,"shap":0,"exp":320527,"imp":78376},{"code":"850440","name":"Traction Inverter","stage":"Downstream","role":"Product Component","cat":"Other","rca":4.1732,"shap":0,"exp":3125437,"imp":1746243},{"code":"851220","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","rca":2.1769,"shap":0,"exp":415366,"imp":213193},{"code":"851240","name":"Windsheilf Wipers","stage":"Midstream","role":"Product Component","cat":"Other","rca":5.3836,"shap":0,"exp":44881,"imp":11473},{"code":"852721","name":"Radio Components","stage":"Midstream","role":"Product Component","cat":"Other","rca":2.8333,"shap":0,"exp":121841,"imp":11057},{"code":"910400","name":"Dashboard instruments","stage":"Midstream","role":"Product Component","cat":"Other","rca":1.5712,"shap":0,"exp":615,"imp":0},{"code":"390730","name":"PMSM; Resin","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.0855,"shap":0,"exp":4348,"imp":96149},{"code":"732599","name":"Reduction Gear; Cast Iron","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.6654,"shap":0,"exp":20476,"imp":34469},{"code":"830230","name":"Mountings/Fittings","stage":"Midstream","role":"Product Component","cat":"Other","rca":1.1584,"shap":0,"exp":72075,"imp":26089},{"code":"845970","name":"PMSM Production; CNC Threading","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":1.2667,"shap":0,"exp":1610,"imp":8704},{"code":"846229","name":"PMSM Production; Copper Lug Crimping","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":1.4277,"shap":0,"exp":12351,"imp":24292},{"code":"850511","name":"PMSM; Pre-Magnetized Nd(Dy) FeB Magnets","stage":"Midstream","role":"Product Component","cat":"Other","rca":7.5986,"shap":0,"exp":292660,"imp":382127},{"code":"870810","name":"Bumpers","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.3831,"shap":0,"exp":28409,"imp":34725},{"code":"870829","name":"Auto Body Accessories","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.7489,"shap":0,"exp":475143,"imp":528374},{"code":"853910","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","rca":0.1863,"shap":0,"exp":525,"imp":1579},{"code":"854800","name":"Electrical Components","stage":"Midstream","role":"Product Component","cat":"Other","rca":2.9486,"shap":0,"exp":83331,"imp":248961},{"code":"870870","name":"Wheels","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.7701,"shap":0,"exp":127430,"imp":73334},{"code":"260400","name":"Nickel","stage":"Upstream","role":"Raw Material","cat":"Other","rca":1.6956,"shap":0,"exp":66071,"imp":636},{"code":"848340","name":"Reduction Gear","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.3801,"shap":0,"exp":61746,"imp":142711},{"code":"851230","name":"Horn","stage":"Midstream","role":"Product Component","cat":"Other","rca":4.7284,"shap":0,"exp":47160,"imp":27098},{"code":"540110","name":"PMSM; Nylon Thread","stage":"Midstream","role":"Processed Material","cat":"Other","rca":3.4977,"shap":0,"exp":28130,"imp":73843},{"code":"820730","name":"Reduction Gear Production; Stator Stampi","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.6295,"shap":0,"exp":27853,"imp":148124},{"code":"850153","name":"Permanent Magnet Synchronous Motor (PMSM","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.1086,"shap":0,"exp":8121,"imp":54939},{"code":"851440","name":"PMSM Production; Induction Heat Treatmen","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.548,"shap":0,"exp":3222,"imp":13237},{"code":"870380","name":"BEV","stage":"Final Product","role":"Final Product","cat":"Other","rca":0.2918,"shap":0,"exp":316817,"imp":47004},{"code":"870821","name":"Seat Belt","stage":"Midstream","role":"Product Component","cat":"Other","rca":1.0206,"shap":0,"exp":27865,"imp":13664},{"code":"260300","name":"Copper","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0.0126,"shap":0,"exp":10417,"imp":537},{"code":"281820","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":3.8134,"shap":0,"exp":527375,"imp":14802},{"code":"282110","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.4925,"shap":0,"exp":3858,"imp":17018},{"code":"381800","name":"Wafers; Traction Inverter","stage":"Midstream","role":"Product Component","cat":"Other","rca":3.7345,"shap":0,"exp":517668,"imp":291996},{"code":"720421","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":2.5399,"shap":0,"exp":155175,"imp":795},{"code":"720429","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.1229,"shap":0,"exp":2410,"imp":17974},{"code":"720449","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.0158,"shap":0,"exp":3581,"imp":1359605},{"code":"740400","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.3199,"shap":0,"exp":95391,"imp":102079},{"code":"750220","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.2346,"shap":0,"exp":2547,"imp":272},{"code":"845811","name":"Reduction Gear Production; Turning Lathe","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.076,"shap":0,"exp":2901,"imp":89808},{"code":"847981","name":"PMSM Production; Wire Winding","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.0916,"shap":0,"exp":1823,"imp":106602},{"code":"870893","name":"Clutches & Other Auto Parts","stage":"Downstream","role":"Product Component","cat":"Other","rca":1.0684,"shap":0,"exp":103034,"imp":55830},{"code":"846150","name":"PMSM Production; Steel Rod Splining","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.4231,"shap":0,"exp":3653,"imp":52225},{"code":"940120","name":"Seats","stage":"Midstream","role":"Product Component","cat":"Other","rca":0.1334,"shap":0,"exp":3349,"imp":67704},{"code":"851120","name":"Magneto Generators","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.4914,"shap":0,"exp":691,"imp":10110},{"code":"851150","name":"Generator","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.5602,"shap":0,"exp":26620,"imp":11812},{"code":"380110","name":"Traction Inverter; Synthetic Graphite","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.0119,"shap":0,"exp":213,"imp":20988},{"code":"281830","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":2.3947,"shap":0,"exp":35234,"imp":12995},{"code":"845921","name":"PMSM Production; CNC Drilling","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.1836,"shap":0,"exp":482,"imp":8580},{"code":"870710","name":"Bodies for automobiles","stage":"Downstream","role":"Product Component","cat":"Other","rca":0.0475,"shap":0,"exp":1255,"imp":3283},{"code":"280300","name":"Carbon Black","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0.0425,"shap":0,"exp":2267,"imp":390064},{"code":"321290","name":"Traction Inverter; Nano Silver Paste","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.0684,"shap":0,"exp":784,"imp":23085},{"code":"760519","name":"Traction Inverter; Aluminum wire","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.0765,"shap":0,"exp":157,"imp":6139},{"code":"750300","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.2536,"shap":0,"exp":2617,"imp":0},{"code":"790200","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.0554,"shap":0,"exp":271,"imp":724},{"code":"846090","name":"Reduction Gear Production; Grinding","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0.0467,"shap":0,"exp":182,"imp":26398},{"code":"283322","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0.1331,"shap":0,"exp":141,"imp":2054},{"code":"851210","name":"Headlights","stage":"Midstream","role":"Product Component","cat":"Other","rca":0.0813,"shap":0,"exp":224,"imp":5775},{"code":"845961","name":"PMSM Production; CNC Millling","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0,"shap":0,"exp":0,"imp":29253},{"code":"260200","name":"Manganese","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":23885},{"code":"260600","name":"Aluminum (bauxite)","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":421},{"code":"282540","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":931},{"code":"282735","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":1152},{"code":"283324","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":6030},{"code":"750210","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":32129},{"code":"750400","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":3058},{"code":"282732","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":2695},{"code":"851531","name":"PMSM Production; Stator Core Welding","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0,"shap":0,"exp":0,"imp":25642},{"code":"852729","name":"Radio Components","stage":"Midstream","role":"Product Component","cat":"Other","rca":0,"shap":0,"exp":0,"imp":1988},{"code":"260111","name":"Iron","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":1424821},{"code":"260112","name":"Iron","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":50856},{"code":"720430","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":10056},{"code":"250410","name":"Natural Graphite","stage":"Upstream","role":"Raw Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":1654},{"code":"282010","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":14420},{"code":"282090","name":"Auto-Body Materials","stage":"Midstream","role":"Processed Material","cat":"Other","rca":0,"shap":0,"exp":0,"imp":1684},{"code":"846140","name":"Reduction Gear Production; Hobbing Machi","stage":"Downstream","role":"Process Equipment","cat":"Other","rca":0,"shap":0,"exp":0,"imp":2761}]
+}
+];
+
+const ISO3N={
+  AFG:4,ALB:8,DZA:12,AGO:24,ARG:32,ARM:51,AUS:36,AUT:40,AZE:31,
+  BGD:50,BLR:112,BEL:56,BFA:854,BDI:108,KHM:116,CMR:120,CAN:124,
+  TCD:148,CHL:152,CHN:156,COL:170,COD:180,COG:178,HRV:191,CUB:192,
+  CYP:196,CZE:203,DNK:208,DOM:214,ECU:218,EGY:818,ETH:231,
+  FJI:242,FIN:246,FRA:250,DEU:276,GHA:288,GRC:300,GTM:320,
+  HND:340,HKG:344,HUN:348,IND:356,IDN:360,IRN:364,IRQ:368,
+  IRL:372,ISR:376,ITA:380,JPN:392,JOR:400,KAZ:398,KEN:404,
+  PRK:408,KOR:410,KWT:414,LAO:418,LVA:428,LBN:422,LBY:434,
+  LTU:440,LUX:442,MDG:450,MWI:454,MYS:458,MLI:466,MLT:470,
+  MRT:478,MEX:484,MDA:498,MNG:496,MAR:504,MOZ:508,MMR:104,
+  NAM:516,NPL:524,NLD:528,NZL:554,NGA:566,NOR:578,OMN:512,
+  PAK:586,PAN:591,PER:604,PHL:608,POL:616,PRT:620,QAT:634,
+  ROU:642,RUS:643,SAU:682,SEN:686,SGP:702,SVK:703,ZAF:710,
+  ESP:724,LKA:144,SWE:752,CHE:756,SYR:760,TWN:158,TJK:762,
+  TZA:834,THA:764,TTO:780,TUN:788,TUR:792,TKM:795,UGA:800,
+  UKR:804,ARE:784,GBR:826,USA:840,URY:858,UZB:860,VNM:704,
+  YEM:887,ZMB:894,ZWE:716,BOL:68,BRA:76,BHR:48,DJI:262,
+  SWZ:748,GEO:268,SLV:222,GNQ:226,EST:233,GUY:328,HTI:332,
+  RWA:646,SLE:694,SDN:729,SUR:740,NER:562,CAF:140,ERI:232
+};
+
+// SR color palette (matches the image reference)
+const SR_COLORS={
+  "Upstream|Raw Material":"#b45309",
+  "Upstream|Processed Material":"#c17a2e",
+  "Midstream|Processed Material":"#22c55e",
+  "Midstream|Process Equipment":"#65a30d",
+  "Midstream|Product Component":"#16a34a",
+  "Downstream|Product Component":"#4ade80",
+  "Downstream|Process Equipment":"#6b7280",
+  "Downstream|Final Product":"#f97316",
+  "Final Product|Final Product":"#f97316",
+  "Other|Product Component":"#9ca3af",
+  "Other|Process Equipment":"#9ca3af"
+};
+const SR_ORDER=[
+  "Upstream|Raw Material","Upstream|Processed Material",
+  "Midstream|Processed Material","Midstream|Process Equipment","Midstream|Product Component",
+  "Downstream|Product Component","Downstream|Process Equipment","Downstream|Final Product",
+  "Final Product|Final Product"
+];
+const STAGE_COLORS={"Upstream":"#b45309","Midstream":"#22c55e","Downstream":"#4ade80","Final Product":"#f97316"};
+const STAGES_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+const REGION_COLOR={EAP:"#0369a1",ECA:"#6366f1",SAS:"#10b981",NAC:"#f59e0b",LCN:"#ef4444",MEA:"#8b5cf6",SSF:"#84cc16"};
+const PROD_COLORS=["#f59e0b","#38bdf8","#4ade80","#f87171","#c084fc","#fb923c","#a78bfa","#34d399","#f472b6","#60a5fa"];
+
+const tip={_el:null,_get(){return this._el||(this._el=document.getElementById("tooltip"));},style(k,v){const e=this._get();if(e)e.style[k]=v;return this;},html(h){const e=this._get();if(e)e.innerHTML=h;return this;}};
+function showTip(html,ev){const vw=window.innerWidth;const tx=ev.clientX+14;const offset=tx+260>vw?ev.clientX-270:tx;tip.style("opacity","1").html(html).style("left",offset+"px").style("top",(ev.clientY-10)+"px")}
+function hideTip(){tip.style("opacity","0")}
+const fmtV=v=>v>=1e6?`$${(v/1e6).toFixed(1)}B`:v>=1e3?`$${(v/1e3).toFixed(1)}M`:`$${v.toFixed(0)}K`;
+function srColor(sr){return SR_COLORS[sr]||"#9ca3af"}
+function srColorSR(stage,role){return SR_COLORS[stage+"|"+role]||"#9ca3af"}
+function srToCatMap(){
+  const m={};
+  (c().all_products||[]).forEach(p=>{
+    const sr=(p.stage||"Downstream")+"|"+(p.role||"Product Component");
+    const ct=p.cat||"Other";
+    if(!m[sr])m[sr]={};
+    m[sr][ct]=(m[sr][ct]||0)+1;
+  });
+  const r={};
+  Object.keys(m).forEach(sr=>{r[sr]=Object.keys(m[sr]).sort((a,b)=>m[sr][b]-m[sr][a])[0];});
+  return r;
+}
+function nodeColor(sr,cat){
+  if(colorMode==="cat") return CAT_COLORS[cat||"Other"]||"#6b7280";
+  return SR_COLORS[sr]||"#9ca3af";
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let currentIdx=0, worldTopo=null, centroids={};
+let selStage="ALL", selRole="ALL", selCat="ALL", selProduct="ALL";
+let tlMode="exports", scMode="pct", colorMode="sr", scXMode="rca";
+function updateXToggle(){
+  const rb=document.getElementById("xm-rca"),pb=document.getElementById("xm-pct");
+  if(!rb||!pb) return;
+  rb.classList.toggle("active",scXMode==="rca"); pb.classList.toggle("active",scXMode==="pct");
+}
+const CAT_COLORS={"Chemicals":"#2563eb","Electronics":"#7c3aed","Metals":"#ef4444","Machinery":"#10b981","Industrial Materials":"#f59e0b","Other":"#6b7280"};
+let sankeyFocus=null;
+let mapMode="trade", savedMapProj=null;
+
+const c=()=>ALL_CASES[currentIdx];
+
+// ── Product view lookup ───────────────────────────────────────────────────────
+function getCatPV(cat){
+  const c0=c();
+  const catCodes=new Set((c0.all_products||[]).filter(p=>(p.cat||"Other")===cat).map(p=>p.code));
+  const catPVs=(c0.product_views||[]).filter(pv=>catCodes.has(pv.code));
+  if(!catPVs.length) return (c0.product_views||[]).find(p=>p.code==="ALL")||c0.product_views[0];
+  const supAgg={}, buyAgg={};
+  catPVs.forEach(pv=>{
+    (pv.suppliers||[]).forEach(s=>{if(!supAgg[s.iso3])supAgg[s.iso3]={iso3:s.iso3,name:s.name,value:0};supAgg[s.iso3].value+=s.value;});
+    (pv.buyers||[]).forEach(b=>{if(!buyAgg[b.iso3])buyAgg[b.iso3]={iso3:b.iso3,name:b.name,value:0};buyAgg[b.iso3].value+=b.value;});
+  });
+  return {code:"CAT:"+cat,stage:"ALL",role:"ALL",
+    total_imp:catPVs.reduce((s,pv)=>s+(pv.total_imp||0),0),
+    total_exp:catPVs.reduce((s,pv)=>s+(pv.total_exp||0),0),
+    suppliers:Object.values(supAgg).sort((a,b)=>b.value-a.value),
+    buyers:Object.values(buyAgg).sort((a,b)=>b.value-a.value),
+    timeline:[]};
+}
+function getPV(){
+  const pvs=c().product_views;
+  if(selProduct!=="ALL"){
+    const found=pvs.find(p=>p.code===selProduct);
+    if(found) return found;
+  }
+  if(selRole!=="ALL"){
+    const found=pvs.find(p=>p.code==="ROLE:"+selRole);
+    if(found) return found;
+  }
+  if(selStage!=="ALL"){
+    const found=pvs.find(p=>p.code==="STAGE:"+selStage);
+    if(found) return found;
+  }
+  if(selCat!=="ALL") return getCatPV(selCat);
+  return pvs.find(p=>p.code==="ALL")||pvs[0];
+}
+
+
+// ── Drum wheel pickers ────────────────────────────────────────────────────────
+function fillDrum(innerId, options, currentVal, onChange){
+  const inner=document.getElementById(innerId);
+  if(!inner) return;
+  inner.innerHTML=
+    `<div class=drum-spacer></div><div class=drum-spacer></div>`+
+    options.map(o=>`<div class="drum-opt${o.value===currentVal?" drum-active":""}" data-val="${o.value}">${o.label}</div>`).join("")+
+    `<div class=drum-spacer></div><div class=drum-spacer></div>`;
+  const idx=options.findIndex(o=>o.value===currentVal);
+  inner.scrollTop=19+idx*22;
+  inner._onChange=onChange;
+  inner._opts=options;
+  let t;
+  inner.onscroll=()=>{
+    clearTimeout(t);
+    t=setTimeout(()=>{
+      const rawIdx=Math.round((inner.scrollTop-19)/22);
+      const cIdx=Math.max(0,Math.min(options.length-1,rawIdx));
+      const nv=options[cIdx].value;
+      inner.querySelectorAll(".drum-opt").forEach((el,i)=>el.classList.toggle("drum-active",i===cIdx));
+      if(nv!==inner._cur){ inner._cur=nv; onChange(nv); }
+    },80);
+  };
+  inner._cur=currentVal;
+}
+
+function initDrums(){
+  const prods=c().all_products||[];
+  const stageOpts=[
+    {value:"ALL",label:"All"},
+    {value:"Upstream",label:"Upstream"},
+    {value:"Midstream",label:"Midstream"},
+    {value:"Downstream",label:"Downstream"},
+    {value:"Final Product",label:"Final"}
+  ];
+  fillDrum("drum-stage-inner",stageOpts,selStage,(v)=>{
+    selStage=v; selRole="ALL"; selCat="ALL"; selProduct="ALL";
+    updateDrumRole(); updateDrumCat(); updateProdSelect();
+    updateFixedLegend(); updateCatLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+  });
+  updateDrumRole();
+  updateDrumCat();
+  updateProdSelect();
+}
+
+function updateDrumRole(){
+  const prods=c().all_products||[];
+  const roles=["ALL",...new Set(prods.filter(p=>selStage==="ALL"||p.stage===selStage).map(p=>p.role).filter(Boolean))];
+  const roleOpts=roles.map(r=>({value:r,label:r==="ALL"?"All":r.replace(" Material","").replace(" Product","Prod.")}));
+  fillDrum("drum-role-inner",roleOpts,selRole,(v)=>{
+    selRole=v; selCat="ALL"; selProduct="ALL";
+    updateDrumCat(); updateProdSelect();
+    updateFixedLegend(); updateCatLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+  });
+}
+
+function updateDrumCat(){
+  const prods=c().all_products||[];
+  const base=prods.filter(p=>(selStage==="ALL"||p.stage===selStage)&&(selRole==="ALL"||p.role===selRole));
+  const cats=["ALL",...[...new Set(base.map(p=>p.cat||"Other").filter(Boolean))].sort()];
+  const catOpts=cats.map(ct=>({value:ct,label:ct==="ALL"?"All":ct.replace(" Materials","Mat.")}));
+  fillDrum("drum-cat-inner",catOpts,selCat,(v)=>{
+    selCat=v; selProduct="ALL";
+    updateProdSelect();
+    updateCatLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+  });
+}
+
+function updateProdSelect(){
+  const prods=c().all_products||[];
+  const filtered=prods
+    .filter(p=>(selStage==="ALL"||p.stage===selStage)&&(selRole==="ALL"||p.role===selRole)&&(selCat==="ALL"||p.cat===selCat))
+    .sort((a,b)=>(b.exp+b.imp)-(a.exp+a.imp));
+  const prodOpts=[
+    {value:"ALL",label:"All"},
+    ...filtered.map(p=>({value:p.code,label:`${p.code} — ${p.name.substring(0,26)}`}))
+  ];
+  fillDrum("drum-product-inner",prodOpts,selProduct,(v)=>{
+    selProduct=v;
+    updateFixedLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+  });
+  const sel=document.getElementById("sel-product");
+  if(sel){
+    sel.innerHTML=prodOpts.map(o=>`<option value="${o.value}"${o.value===selProduct?" selected":""}>${o.label}</option>`).join("");
+    sel.onchange=e=>{selProduct=e.target.value;updateFixedLegend();drawMapOrFirms();drawTimeline();drawTreemap();drawScatter();drawDendrite();};
+  }
+}
+
+// ── Dropdown population ───────────────────────────────────────────────────────
+function populateDropdowns(){
+  const prods=c().all_products;
+
+  // Stage dropdown: derive from product list
+  const stages=[...new Set(prods.map(p=>p.stage))].filter(Boolean)
+    .sort((a,b)=>STAGES_ORDER.indexOf(a)-STAGES_ORDER.indexOf(b));
+
+  // Role dropdown: filter by selStage
+  const roleSet=prods
+    .filter(p=>selStage==="ALL"||p.stage===selStage)
+    .map(p=>p.role).filter(Boolean);
+  const roles=[...new Set(roleSet)];
+
+  // Product dropdown: filter by selStage and selRole
+  const filteredProds=prods.filter(p=>
+    (selStage==="ALL"||p.stage===selStage) &&
+    (selRole ==="ALL"||p.role ===selRole));
+
+  const roleSel=document.getElementById("sel-role");
+  roleSel.innerHTML='<option value="ALL">All Roles</option>'+
+    roles.map(r=>`<option value="${r}"${r===selRole?" selected":""}>${r}</option>`).join("");
+
+  const prodSel=document.getElementById("sel-product");
+  prodSel.innerHTML='<option value="ALL">All Products</option>'+
+    filteredProds
+      .sort((a,b)=>(b.exp+b.imp)-(a.exp+a.imp))
+      .map(p=>`<option value="${p.code}"${p.code===selProduct?" selected":""}>${p.code} — ${p.name.substring(0,32)}</option>`)
+      .join("");
+
+  document.getElementById("sel-stage").value=selStage;
+}
+
+// ── Fixed header SR legend ────────────────────────────────────────────────────
+function buildFixedLegend(){
+  const el=document.getElementById("header-sr-legend");
+  if(!el) return;
+  const mkItem=([srKey,rn])=>
+    `<div class="hleg-item" data-sr="${srKey}"><div class="hleg-dot" style="background:${SR_COLORS[srKey]||"#9ca3af"}"></div>${rn}</div>`;
+  const mkGrp=(stage,items)=>
+    `<div class="hleg-group"><div class="hleg-stage">${stage}</div>${items.map(mkItem).join("")}</div>`;
+  const mkCol=(groups)=>
+    `<div class="hleg-col">${groups}</div>`;
+  // 2-column layout: col1 = Upstream+Midstream, col2 = Downstream+Final
+  el.innerHTML=
+    mkCol(
+      mkGrp("UPSTREAM",[["Upstream|Raw Material","Raw Material"]])+
+      mkGrp("MIDSTREAM",[["Midstream|Processed Material","Processed Material"],["Midstream|Process Equipment","Process Equipment"],["Midstream|Product Component","Product Component"]])
+    )+
+    mkCol(
+      mkGrp("DOWNSTREAM",[["Downstream|Product Component","Product Component"],["Downstream|Process Equipment","Process Equipment"]])+
+      mkGrp("FINAL",[["Final Product|Final Product","Final Product"]])
+    );
+}
+function updateFixedLegend(){
+  const el=document.getElementById("header-sr-legend");
+  if(!el) return;
+  const hasFilter=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL"||selCat!=="ALL";
+  el.querySelectorAll(".hleg-item").forEach(item=>{
+    const srKey=item.dataset.sr;
+    const[st,ro]=srKey.split("|");
+    if(!hasFilter){item.classList.remove("hleg-active","hleg-dim");return;}
+    let isActive=false;
+    if(selProduct!=="ALL"){
+      const pd=(c().den_products||[]).find(p=>p.code===selProduct);
+      isActive=pd?pd.stage===st&&pd.role===ro:false;
+    } else if(selCat!=="ALL"&&selStage==="ALL"&&selRole==="ALL"){
+      isActive=(c().all_products||[]).some(p=>(p.cat||"Other")===selCat&&p.stage===st&&p.role===ro);
+    } else {
+      isActive=(selStage==="ALL"||st===selStage)&&(selRole==="ALL"||ro===selRole)&&
+               (selCat==="ALL"||(c().all_products||[]).some(p=>(p.cat||"Other")===selCat&&p.stage===st&&p.role===ro));
+    }
+    item.classList.toggle("hleg-active",isActive);
+    item.classList.toggle("hleg-dim",!isActive);
+  });
+}
+function buildCatLegend(){
+  const el=document.getElementById("header-cat-legend");
+  if(!el) return;
+  const cats=["Chemicals","Electronics","Machinery","Metals","Industrial Materials"];
+  el.innerHTML=`<div class="hleg-group"><div class="hleg-stage">HS CATEGORY</div>${
+    cats.map(ct=>`<div class="hleg-item hleg-cat-item" data-cat="${ct}"><div class="hleg-dot" style="background:${CAT_COLORS[ct]||"#6b7280"}"></div>${ct}</div>`).join("")
+  }</div>`;
+}
+function updateCatLegend(){
+  const el=document.getElementById("header-cat-legend");
+  if(!el) return;
+  const hasFilter=selCat!=="ALL";
+  el.querySelectorAll(".hleg-cat-item").forEach(item=>{
+    const ct=item.dataset.cat;
+    if(!hasFilter){item.classList.remove("hleg-active","hleg-dim");return;}
+    item.classList.toggle("hleg-active",ct===selCat);
+    item.classList.toggle("hleg-dim",ct!==selCat);
+  });
+}
+function buildSRLegend(){}
+
+
+// ── Map ───────────────────────────────────────────────────────────────────────
+const MAP_W=960,MAP_H=500;
+function drawMap(){
+  if(!worldTopo) return;
+  const c0=c();
+  const pv=getPV();
+  const w=document.getElementById("pane-map").clientWidth||800;
+  const h=document.getElementById("pane-map").clientHeight-80||350;
+  const sc=Math.min(w/MAP_W, h/MAP_H);
+  const tx=(w-MAP_W*sc)/2, ty=(h-MAP_H*sc)/2;
+
+  const svg=d3.select("#map-svg");
+  svg.selectAll("*").remove();
+  svg.attr("viewBox",`0 0 ${w} ${h}`);
+
+  const proj=d3.geoNaturalEarth1().rotate([30,0,0]).scale(153*sc).translate([w*0.57,h/2+12*sc]);
+  savedMapProj=proj;
+  const path=d3.geoPath().projection(proj);
+  const feat=topojson.feature(worldTopo, worldTopo.objects.countries).features;
+
+  // build supplier/buyer lookup
+  const supMap={}, buyMap={};
+  const maxSup=pv.suppliers.length>0?d3.max(pv.suppliers,d=>d.value):1;
+  const maxBuy=pv.buyers.length>0?d3.max(pv.buyers,d=>d.value):1;
+  pv.suppliers.forEach(s=>supMap[s.iso3]=s);
+  pv.buyers.forEach(b=>buyMap[b.iso3]=b);
+
+  const g=svg.append("g");
+  g.selectAll("path").data(feat).join("path")
+    .attr("d",path)
+    .attr("fill",d=>{
+      const id=String(d.id).padStart(3,"0");
+      const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+      if(iso===c0.focal) return "#073309";
+      if(supMap[iso]) return `rgba(217,119,6,${0.15+0.55*(supMap[iso].value/maxSup)})`;
+      if(buyMap[iso]) return `rgba(3,105,161,${0.15+0.55*(buyMap[iso].value/maxBuy)})`;
+      return "#1a2535";
+    })
+    .attr("stroke","#0d1520").attr("stroke-width",0.3)
+    .on("mousemove",(ev,d)=>{
+      const id=String(d.id).padStart(3,"0");
+      const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+      if(!iso) return hideTip();
+      const s=supMap[iso],b=buyMap[iso];
+      if(iso===c0.focal){ showTip(`<b>${c0.name}</b><br>Focal Country`,ev); return; }
+      if(s) showTip(`<b>${s.name}</b><br>Supplier: ${fmtV(s.value)}`,ev);
+      else if(b) showTip(`<b>${b.name}</b><br>Buyer: ${fmtV(b.value)}`,ev);
+      else hideTip();
+    })
+    .on("mouseleave",hideTip);
+
+  // Focal country border — use c0.focal (generic for any country)
+  const braFeat=feat.find(d=>{const fid=String(d.id).padStart(3,"0");return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(fid))===c0.focal;});
+  if(braFeat) g.append("path").attr("d",path(braFeat)).attr("fill","none").attr("stroke","#3cb54a").attr("stroke-width",1.8).attr("pointer-events","none");
+
+  // Flow lines to top suppliers/buyers
+  const allLines=[
+    ...pv.suppliers.slice(0,8).map(s=>({...s,type:"sup"})),
+    ...pv.buyers.slice(0,8).map(b=>({...b,type:"buy"}))
+  ];
+  allLines.forEach(d=>{
+    const ct=centroids[d.iso3];
+    const br=centroids[c0.focal];
+    if(!ct||!br) return;
+    const [x1,y1]=proj(ct), [x2,y2]=proj(br);
+    g.append("line").attr("x1",x1).attr("y1",y1).attr("x2",x2).attr("y2",y2)
+      .attr("stroke",d.type==="sup"?"rgba(217,119,6,.4)":"rgba(3,105,161,.4)")
+      .attr("stroke-width",0.8);
+    g.append("circle").attr("cx",x1).attr("cy",y1).attr("r",3.5+3*d.value/((d.type==="sup"?maxSup:maxBuy)||1))
+      .attr("fill",d.type==="sup"?"rgba(217,119,6,.6)":"rgba(3,105,161,.6)")
+      .attr("stroke","none");
+  });
+
+  // Overlay stats
+  const imp=pv.total_imp, exp=pv.total_exp, net=exp-imp;
+  document.getElementById("ov-imp").textContent=fmtV(imp);
+  document.getElementById("ov-exp").textContent=fmtV(exp);
+  const netEl=document.getElementById("ov-net");
+  netEl.textContent=(net>=0?"+":"")+fmtV(Math.abs(net))+" net";
+  netEl.style.color=net>=0?"#4ade80":"#f87171";
+  const gdp=c().focal_gdp;
+  const impGDPpct=imp>0&&gdp?(imp/gdp/10):0;
+  const expGDPpct=exp>0&&gdp?(exp/gdp/10):0;
+  document.getElementById("ov-imp-gdp").textContent=impGDPpct>0?impGDPpct.toFixed(2)+"% GDP":"";
+  document.getElementById("ov-exp-gdp").textContent=expGDPpct>0?expGDPpct.toFixed(2)+"% GDP":"";
+  // ── Dynamic ranking stats ──────────────────────────────────────────────────
+  const scat=c().scatter||[];
+  const bra=scat.find(d=>d.iso3===c().focal)||null;
+  const RABB={"East Asia & Pacific":"EAP","Europe & Central Asia":"ECA","South Asia":"SAS","North America":"NAC","Latin America & Caribbean":"LCN","Middle East & North Africa":"MEA","Sub-Saharan Africa":"SSA"};
+  const braReg=bra?bra.region:"";
+  const regAbbr=RABB[braReg]||braReg||"Reg";
+  // GDP share rank (use current pv absolute values scaled against scatter)
+  const impPct=impGDPpct, expPct=expGDPpct;
+  const expGDPranked=[...scat].filter(d=>d.ep>0).sort((a,b)=>b.ep-a.ep);
+  const impGDPranked=[...scat].filter(d=>d.ip>0).sort((a,b)=>b.ip-a.ip);
+  const braExpGDPrank=expPct>0?expGDPranked.filter(d=>+d.ep>expPct).length+1:null;
+  const braImpGDPrank=impPct>0?impGDPranked.filter(d=>+d.ip>impPct).length+1:null;
+  // World market share (from scatter totals — tech-level context)
+  const worldExpB=d3.sum(scat,d=>+d.eb||0)||1;
+  const worldImpB=d3.sum(scat,d=>+d.ib||0)||1;
+  const braEB=bra?+bra.eb||0:0; const braIB=bra?+bra.ib||0:0;
+  const wldExpSh=(braEB/worldExpB*100), wldImpSh=(braIB/worldImpB*100);
+  const expEBranked=[...scat].filter(d=>d.eb>0).sort((a,b)=>b.eb-a.eb);
+  const impIBranked=[...scat].filter(d=>d.ib>0).sort((a,b)=>b.ib-a.ib);
+  const braEBrank=braEB>0?expEBranked.findIndex(d=>d.iso3===c().focal)+1:null;
+  const braIBrank=braIB>0?impIBranked.findIndex(d=>d.iso3===c().focal)+1:null;
+  // Regional share
+  const regExp=scat.filter(d=>d.region===braReg&&d.eb>0).sort((a,b)=>b.eb-a.eb);
+  const regImp=scat.filter(d=>d.region===braReg&&d.ib>0).sort((a,b)=>b.ib-a.ib);
+  const regExpB=d3.sum(regExp,d=>+d.eb||0)||1;
+  const regImpB=d3.sum(regImp,d=>+d.ib||0)||1;
+  const regExpSh=(braEB/regExpB*100), regImpSh=(braIB/regImpB*100);
+  const braRegExpRank=braEB>0?regExp.findIndex(d=>d.iso3===c().focal)+1:null;
+  const braRegImpRank=braIB>0?regImp.findIndex(d=>d.iso3===c().focal)+1:null;
+  const fmt1=(v,pfx="")=>v>0?pfx+v.toFixed(v<1?2:1)+"%":"—";
+  const rk=(r)=>r&&r>0?`#${r}`:"—";
+  const statsEl=document.getElementById("ov-stats");
+  if(statsEl){statsEl.innerHTML=
+    `<div class="ov-stat-row"><span class="ov-stat-key">% of GDP</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(impPct)} / ${fmt1(expPct)}</span><span class="ov-stat-rank">${rk(braImpGDPrank)} / ${rk(braExpGDPrank)}</span></span></div>`+
+    `<div class="ov-stat-row"><span class="ov-stat-key">World share</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(wldImpSh)} / ${fmt1(wldExpSh)}</span><span class="ov-stat-rank">${rk(braIBrank)} / ${rk(braEBrank)}</span></span></div>`+
+    `<div class="ov-stat-row"><span class="ov-stat-key">${regAbbr} share</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(regImpSh)} / ${fmt1(regExpSh)}</span><span class="ov-stat-rank">${rk(braRegImpRank)} / ${rk(braRegExpRank)}</span></span></div>`;
+  }
+
+  // Supplier list (top 5)
+  const buyersEl=document.getElementById("ov-buyers");
+  const suppliersEl=document.getElementById("ov-suppliers");
+  if(buyersEl) buyersEl.innerHTML=pv.buyers.slice(0,5).map(b=>
+    `<div class="ov-row"><div class="ov-dot" style="background:rgba(3,105,161,.75)"></div><span class="ov-cname">${b.name}</span><span class="ov-cval">${fmtV(b.value)}</span></div>`
+  ).join("");
+  if(suppliersEl) suppliersEl.innerHTML=pv.suppliers.slice(0,4).map(s=>
+    `<div class="ov-row"><div class="ov-dot" style="background:rgba(217,119,6,.75)"></div><span class="ov-cname">${s.name}</span><span class="ov-cval">${fmtV(s.value)}</span></div>`
+  ).join("");
+}
+
+// ── Trade Composition Treemap ─────────────────────────────────────────────────
+function drawTreemap(){
+  const W=document.getElementById("pane-tm").clientWidth||400;
+  const H=document.getElementById("pane-tm").clientHeight-36||200;
+  const svg=d3.select("#tm-svg").attr("viewBox",`0 0 ${W} ${H}`);
+  svg.selectAll("*").remove();
+
+  const isImp=tlMode==="imports",isBal=tlMode==="balance";
+  const dir=isImp?"Imports":isBal?"Balance":"Exports";
+  document.getElementById("tm-title").textContent="Trade Composition · "+dir;
+  const tmy2=document.getElementById("tm-year"); if(tmy2) tmy2.textContent=`${dir} ${c().ref_year}`;
+
+  // Value function follows tlMode
+  const valFn=p=>isImp?(p.imp||0):isBal?Math.abs((p.exp||0)-(p.imp||0)):(p.exp||0);
+
+  // Show ALL products with opacity highlighting (no filtering)
+  const show=(c().all_products||[]).filter(p=>p.exp+p.imp>0);
+  if(!show.length){ svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle").attr("fill","rgba(255,255,255,.3)").attr("font-size",12).text("No data"); return; }
+
+  const hasFilter=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL"||selCat!=="ALL";
+  function tmSelected(p){
+    if(!hasFilter) return true;
+    if(selProduct!=="ALL") return p.code===selProduct;
+    if(selCat!=="ALL"&&(p.cat||"Other")!==selCat) return false;
+    if(selStage!=="ALL"&&selRole!=="ALL") return p.stage===selStage&&p.role===selRole;
+    if(selRole!=="ALL") return p.role===selRole;
+    if(selStage!=="ALL") return p.stage===selStage;
+    return true;
+  }
+
+  const total=d3.sum(show,valFn)||1;
+
+  // SR group background overlays
+  const byGroup=d3.group(show,d=>{let sr=d.stage+"|"+d.role;if(sr==="Upstream|Processed Material")sr="Midstream|Processed Material";return sr;});
+  const rootGrp=d3.hierarchy({name:"root",children:[...byGroup.entries()].map(([sr,prods])=>({name:sr,children:prods}))}).sum(p=>Math.max(valFn(p),1)).sort((a,b)=>b.value-a.value);
+  d3.treemap().size([W,H]).paddingOuter(1).paddingInner(0.5).tile(d3.treemapSquarify.ratio(1.6))(rootGrp);
+  rootGrp.children.forEach(grp=>{
+    const gx=grp.x0,gy=grp.y0,gw=grp.x1-grp.x0,gh=grp.y1-grp.y0;
+    const[_gst,_gro]=grp.data.name.split("|");const col=nodeColor(grp.data.name,grp.data.children?.[0]?.cat);
+    const role=grp.data.name.split("|")[1]||grp.data.name;
+    svg.append("rect").attr("x",gx).attr("y",gy).attr("width",gw).attr("height",gh).attr("fill",col).attr("opacity",0.08);
+    const ghostSz=Math.min(gw/Math.max(role.length,4)*1.8,gh*0.46,40);
+    if(ghostSz>9) svg.append("text").attr("x",gx+gw/2).attr("y",gy+gh/2).attr("dominant-baseline","middle").attr("text-anchor","middle").attr("font-size",ghostSz).attr("font-weight","900").attr("fill","rgba(0,0,0,.2)").attr("pointer-events","none").text(role);
+  });
+  // Leaf cells
+  rootGrp.leaves().forEach(d=>{
+    const col=nodeColor(d.parent.data.name,d.data.cat);
+    const w=d.x1-d.x0,h=d.y1-d.y0;
+    const v=valFn(d.data),share=v/total;
+    const isSel=tmSelected(d.data);
+    const op=!hasFilter?0.82:isSel?0.92:0.18;
+    if(isSel&&hasFilter){svg.append("rect").attr("x",d.x0-1).attr("y",d.y0-1).attr("width",w+2).attr("height",h+2).attr("fill","none").attr("stroke","rgba(255,255,255,.5)").attr("stroke-width",1.5).attr("rx",1).attr("pointer-events","none");}
+    svg.append("rect").attr("x",d.x0).attr("y",d.y0).attr("width",w).attr("height",h)
+      .attr("fill",col).attr("opacity",op)
+      .attr("stroke","#0d1520").attr("stroke-width",0.4)
+      .on("mousemove",ev=>showTip(`<b>${d.data.name}</b><br>HS ${d.data.code}<br>${d.parent.data.name}<br>${dir}: ${fmtV(v)} (${(share*100).toFixed(1)}%)`,ev))
+      .on("mouseleave",hideTip);
+    if(w>28&&h>14){
+      const textAlpha=isSel||!hasFilter?"rgba(255,255,255,.95)":"rgba(255,255,255,.45)";
+      const subAlpha=isSel||!hasFilter?"rgba(255,255,255,.65)":"rgba(255,255,255,.3)";
+      const fs=Math.min(15,Math.max(8,Math.sqrt(w*h)/9));
+      const nfs=Math.max(6.5,fs*0.80);
+      const maxCh=Math.max(5,Math.floor(w/(fs*0.62)));
+      const nm=d.data.name.length>maxCh?d.data.name.substring(0,maxCh-2)+"...":d.data.name;
+      svg.append("text").attr("x",d.x0+4).attr("y",d.y0+fs+2).attr("font-size",fs).attr("font-weight","700").attr("fill",textAlpha).attr("pointer-events","none").text(nm);
+      let ny=d.y0+fs*2+3;
+      if(h>fs*2.8&&w>36){svg.append("text").attr("x",d.x0+4).attr("y",ny).attr("font-size",nfs).attr("fill",subAlpha).attr("pointer-events","none").text("HS "+d.data.code);ny+=nfs+3;}
+      if(h>ny-d.y0+4&&share>=0.01){svg.append("text").attr("x",d.x0+4).attr("y",ny).attr("font-size",nfs).attr("fill",subAlpha).attr("pointer-events","none").text((share*100).toFixed(1)+"%");}
+    }
+  });
+}
+
+// ── Value Chain Timeline ──────────────────────────────────────────────────────
+function buildSRLegendTL(){
+  const tl=c().timeline;
+  const srs=[...new Set(tl.map(d=>d.sr))].filter(Boolean)
+    .sort((a,b)=>SR_ORDER.indexOf(a)-SR_ORDER.indexOf(b));
+  const el=document.getElementById("tl-sr-legend");
+  el.innerHTML=srs.map(sr=>{
+    const[st,ro]=sr.split("|");
+    return `<div class="sr-item" style="margin-right:12px"><div class="sr-dot" style="background:${SR_COLORS[sr]||"#9ca3af"}"></div>${ro}</div>`;
+  }).join("");
+}
+
+function drawTimeline(){
+  const c0=c();
+  const w=document.getElementById("pane-tl").clientWidth||400;
+  const h=document.getElementById("pane-tl").clientHeight-66||160;
+  const tl=c0.timeline;
+  if(!tl||tl.length===0) return;
+
+  const svg=d3.select("#tl-svg").attr("viewBox",`0 0 ${w} ${h}`);
+  svg.selectAll("*").remove();
+
+  const M={t:8,r:12,b:28,l:44};
+  const iw=w-M.l-M.r, ih=h-M.t-M.b;
+  const tlg=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+
+  const key=tlMode==="imports"?"imp":"exp";
+  const years=[...new Set(tl.map(d=>+d.year))].sort();
+  const xSc=d3.scaleLinear().domain(d3.extent(years)).range([0,iw]);
+  const hasFilterTL=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL"||selCat!=="ALL";
+  function srActiveTL(srKey){
+    const[st,ro]=srKey.split("|");
+    if(selProduct!=="ALL"){const pd=(c0.den_products||[]).find(p=>p.code===selProduct);return pd?pd.stage===st&&pd.role===ro:false;}
+    if(selCat!=="ALL"){
+      const hasCat=(c0.all_products||[]).some(p=>p.stage+"|"+p.role===srKey&&(p.cat||"Other")===selCat);
+      if(!hasCat) return false;
+    }
+    if(selStage!=="ALL"&&selRole!=="ALL") return st===selStage&&ro===selRole;
+    if(selRole!=="ALL") return ro===selRole;
+    if(selStage!=="ALL") return st===selStage;
+    return true;
+  }
+
+  let stackKeys, stackValFn, colorFn, activeKeyFn;
+  if(colorMode==="cat"){
+    const catMap=srToCatMap();
+    stackKeys=[...new Set(tl.map(d=>catMap[d.sr]||"Other"))].sort();
+    stackValFn=(yr,k)=>tl.filter(r=>+r.year===yr&&(catMap[r.sr]||"Other")===k).reduce((s,r)=>s+(r[key]||0),0);
+    colorFn=k=>CAT_COLORS[k]||"#6b7280";
+    activeKeyFn=k=>{if(selCat!=="ALL")return k===selCat;if(!hasFilterTL)return true;
+      return tl.filter(r=>+r.year===years[0]&&(catMap[r.sr]||"Other")===k).map(r=>r.sr).some(sr=>srActiveTL(sr));};
+  } else {
+    stackKeys=[...new Set(tl.map(d=>d.sr))];
+    stackValFn=(yr,k)=>(tl.find(r=>+r.year===yr&&r.sr===k)||{})[key]||0;
+    colorFn=k=>SR_COLORS[k]||"#4b5563";
+    activeKeyFn=k=>srActiveTL(k);
+  }
+  const stacked=d3.stack().keys(stackKeys).value((d,k)=>stackValFn(d,k))(years);
+  const maxV=d3.max(stacked[stacked.length-1],d=>d[1])||1;
+  const ySc=d3.scaleLinear().domain([0,maxV]).range([ih,0]);
+  const area=d3.area().x(d=>xSc(d.data)).y0(d=>ySc(d[0])).y1(d=>ySc(d[1])).curve(d3.curveMonotoneX);
+
+  stacked.forEach(stk=>{
+    const alpha=hasFilterTL?(activeKeyFn(stk.key)?0.85:0.12):0.52;
+    tlg.append("path").datum(stk).attr("fill",colorFn(stk.key)).attr("opacity",alpha).attr("d",area);
+  });
+
+  tlg.append("g").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(xSc).ticks(6).tickFormat(d3.format("d")))
+    .selectAll("text").attr("fill","rgba(255,255,255,.4)").attr("font-size",9);
+  tlg.append("g").call(d3.axisLeft(ySc).ticks(4).tickFormat(d=>`${d.toFixed(0)}`))
+    .selectAll("text").attr("fill","rgba(255,255,255,.4)").attr("font-size",9);
+
+  // ── Bold product line when a specific product is selected ──────────────────
+  if(selProduct!=="ALL"){
+    const pvs=c0.product_views||[];
+    const pv=pvs.find(p=>p.code===selProduct);
+    if(pv&&pv.timeline&&pv.timeline.length>0){
+      const lineKey=tlMode==="imports"?"imp":"exp";
+      const prod=(c0.den_products||[]).find(p=>p.code===selProduct);
+      const srKey=prod?`${prod.stage}|${prod.role}`:"";
+      const lineCol=nodeColor(srKey,prod?.cat)||c0.color||"#3cb54a";
+      const pvYears=new Map(pv.timeline.map(d=>[+d.year,+d[lineKey]||0]));
+      const lineData=years.map(yr=>[yr,pvYears.get(yr)||0]);
+      const boldLine=d3.line().x(d=>xSc(d[0])).y(d=>ySc(d[1])).curve(d3.curveMonotoneX);
+      // Glow/halo
+      tlg.append("path").datum(lineData).attr("fill","none")
+        .attr("stroke",lineCol).attr("stroke-width",5).attr("opacity",0.25).attr("d",boldLine);
+      // Main line
+      tlg.append("path").datum(lineData).attr("fill","none")
+        .attr("stroke",lineCol).attr("stroke-width",2.5).attr("opacity",0.95).attr("d",boldLine);
+      // End dot
+      const lastVal=lineData[lineData.length-1];
+      if(lastVal[1]>0){
+        tlg.append("circle").attr("cx",xSc(lastVal[0])).attr("cy",ySc(lastVal[1])).attr("r",4)
+          .attr("fill",lineCol).attr("stroke","white").attr("stroke-width",1.5);
+        tlg.append("text").attr("x",xSc(lastVal[0])+6).attr("y",ySc(lastVal[1])+3)
+          .attr("fill",lineCol).attr("font-size",8).attr("font-weight",700)
+          .text(prod?prod.name.substring(0,18):selProduct);
+      }
+    }
+  }
+}
+
+
+// ── Capability Radar: SHAP weight (model needs) vs Country RCA (what we have) ─
+function drawShapRadar(){
+  const c0=c();
+  const rd=c0.radar_data;
+  const svg=d3.select("#shap-svg"); svg.selectAll("*").remove();
+  const W=document.getElementById("pane-shap").clientWidth||240;
+  const H=document.getElementById("pane-shap").clientHeight-36||200;
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+  if(!rd||!rd.categories||!rd.focal){
+    svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.25)").attr("font-size",10).text("No radar data");
+    return;
+  }
+  const cats=rd.categories;
+  const N=cats.length;
+  const shap=rd.shap||cats.map(()=>1/N);
+  const focal=rd.focal;
+  const cx=W/2, cy=H/2+4;
+  const R=Math.min(W,H)/2-30;
+  const ang=i=>(i/N)*2*Math.PI-Math.PI/2;
+  const pt=(r,i)=>[cx+r*Math.cos(ang(i)), cy+r*Math.sin(ang(i))];
+  // RCA scale
+  const maxRCA=Math.max(d3.max(focal.filter(v=>v!=null&&!isNaN(v)))||1.5,1.2);
+  const scR=v=>R*Math.min(Math.max(v||0,0),maxRCA)/maxRCA;
+  // SHAP scale: 50% share → edge (R)
+  const shR=s=>Math.min(R*s*2,R);
+  // Outer pentagon
+  svg.append("polygon")
+    .attr("points",cats.map((_,i)=>pt(R,i).join(",")).join(" "))
+    .attr("fill","none").attr("stroke","rgba(255,255,255,.1)").attr("stroke-width",0.5);
+  // RCA=1 ring (dashed reference)
+  svg.append("polygon")
+    .attr("points",cats.map((_,i)=>pt(scR(1.0),i).join(",")).join(" "))
+    .attr("fill","none").attr("stroke","rgba(255,255,255,.22)")
+    .attr("stroke-width",0.8).attr("stroke-dasharray","4,3");
+  svg.append("text").attr("x",cx+3).attr("y",cy-scR(1.0)-2)
+    .attr("fill","rgba(255,255,255,.2)").attr("font-size",5.5).text("RCA=1");
+  // Spokes
+  cats.forEach((_,i)=>{
+    const [x2,y2]=pt(R,i);
+    svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",x2).attr("y2",y2)
+      .attr("stroke","rgba(255,255,255,.08)").attr("stroke-width",0.5);
+  });
+  // SHAP polygon — amber, "what the model needs"
+  svg.append("polygon")
+    .attr("points",cats.map((_,i)=>pt(shR(shap[i]||1/N),i).join(",")).join(" "))
+    .attr("fill","rgba(245,158,11,.14)").attr("stroke","#f59e0b")
+    .attr("stroke-width",1.8).attr("stroke-linejoin","round");
+  // Focal RCA polygon — tech color dashed, "what the country has"
+  svg.append("polygon")
+    .attr("points",cats.map((_,i)=>pt(scR(focal[i]||0),i).join(",")).join(" "))
+    .attr("fill",`${c0.color}18`).attr("stroke",c0.color)
+    .attr("stroke-width",1.8).attr("stroke-dasharray","4,2").attr("stroke-linejoin","round");
+  // Classify
+  const classify=(s,r)=>{
+    if(s>=0.25&&r<0.5) return {tag:"CRIT GAP",   col:"#ef4444"};
+    if(r<0.5&&s>=0.10)  return {tag:"GAP",        col:"#f97316"};
+    if(r>=1.0)           return {tag:"STRENGTH",   col:"#22c55e"};
+    if(r>=0.5)           return {tag:"BUILD",      col:"#22d3ee"};
+    return                {tag:"LOW PRIORITY", col:"#6b7280"};
+  };
+  // Dots + tooltips
+  cats.forEach((_,i)=>{
+    const cls=classify(shap[i]||0,focal[i]||0);
+    const [sx,sy]=pt(shR(shap[i]||1/N),i);
+    svg.append("circle").attr("cx",sx).attr("cy",sy).attr("r",2.6)
+      .attr("fill","#f59e0b");
+    const [rx,ry]=pt(scR(focal[i]||0),i);
+    svg.append("circle").attr("cx",rx).attr("cy",ry).attr("r",3.2)
+      .attr("fill",c0.color).attr("stroke","white").attr("stroke-width",0.8)
+      .on("mousemove",ev=>showTip(
+        `<b>${cats[i]}</b><br><span style="color:${cls.col}">${cls.tag}</span><br>`+
+        `SHAP: <b>${Math.round((shap[i]||0)*100)}%</b> &nbsp; RCA: <b>${(focal[i]||0).toFixed(2)}</b>`,ev))
+      .on("mouseleave",hideTip);
+  });
+  // Axis labels: name + classification tag + SHAP%·RCA
+  cats.forEach((cat,i)=>{
+    const [lx,ly]=pt(R+14,i);
+    const anc=Math.cos(ang(i))>0.12?"start":Math.cos(ang(i))<-0.12?"end":"middle";
+    const cls=classify(shap[i]||0,focal[i]||0);
+    const shortCat=cat==="Industrial Materials"?"Ind. Materials":cat;
+    const tEl=svg.append("text").attr("text-anchor",anc).attr("pointer-events","none");
+    tEl.append("tspan").attr("x",lx).attr("y",ly)
+      .attr("font-size",7).attr("font-weight",700).attr("fill","rgba(255,255,255,.85)").text(shortCat);
+    tEl.append("tspan").attr("x",lx).attr("dy","8")
+      .attr("font-size",5.5).attr("font-weight",700).attr("letter-spacing","0.04em")
+      .attr("fill",cls.col).text(cls.tag);
+    tEl.append("tspan").attr("x",lx).attr("dy","7")
+      .attr("font-size",5).attr("fill","rgba(255,255,255,.32)")
+      .text(`${Math.round((shap[i]||0)*100)}% · ${(focal[i]||0).toFixed(2)}`);
+  });
+  // Legend
+  const legY=H-16;
+  [["#f59e0b","SHAP weight",false],[c0.color,"Country RCA",true],["rgba(255,255,255,.2)","RCA=1","dotted"]].forEach(([col,lbl,dash],i)=>{
+    const lx=4+i*70;
+    svg.append("line").attr("x1",lx).attr("y1",legY).attr("x2",lx+11).attr("y2",legY)
+      .attr("stroke",col).attr("stroke-width",dash?"dotted"===dash?0.8:1.2:2)
+      .attr("stroke-dasharray",dash==="dotted"?"4,3":dash?"4,2":"");
+    svg.append("text").attr("x",lx+13).attr("y",legY+3.5)
+      .attr("fill","rgba(255,255,255,.38)").attr("font-size",5.5).text(lbl);
+  });
+}
+
+// ── PC Scatter: product RCA vs SHAP importance ────────────────────────────────
+function drawScatter(){ drawShapRcaScatter(); }
+function drawShapRcaScatter(){
+  const c0=c();
+  const gdp=c0.focal_gdp||0;
+  const raw=(c0.shap_rca||[]).map(d=>({...d,pct:gdp>0?d.exp/(gdp*10):0}));
+  const data=raw.filter(d=>d.rca>0||d.shap>0);
+  const w=document.getElementById("pane-sc").clientWidth||300;
+  const h=Math.max(document.getElementById("pane-sc").clientHeight-36,120)||200;
+  const svg=d3.select("#sc-svg").attr("viewBox",`0 0 ${w} ${h}`);
+  svg.selectAll("*").remove();
+  if(!data.length){
+    svg.append("text").attr("x",w/2).attr("y",h/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.25)").attr("font-size",10).text("No PC scatter data");
+    return;
+  }
+  const M={t:20,r:14,b:36,l:46};
+  const iw=w-M.l-M.r, ih=h-M.t-M.b;
+  const sizeFn=d=>tlMode==="imports"?(d.imp||0):tlMode==="balance"?Math.abs((d.exp||0)-(d.imp||0)):(d.exp||0);
+  const maxSize=d3.max(data,sizeFn)||1;
+  const rScale=d3.scaleSqrt().domain([0,maxSize]).range([4,22]);
+  // X scale
+  let xSc,xFn,xLabel,xRefVal,xRefLabel;
+  if(scXMode==="pct"){
+    const pctsPos=data.filter(d=>d.pct>0).map(d=>d.pct);
+    const minPct=pctsPos.length?d3.min(pctsPos)*0.5:0.001;
+    const maxPct=Math.max(d3.max(pctsPos)||0.01,0.01);
+    xSc=d3.scaleLog().domain([Math.max(minPct,1e-4),maxPct*1.2]).range([0,iw]).clamp(true);
+    xFn=d=>xSc(Math.max(d.pct,Math.max(minPct,1e-4)));
+    xLabel="Exp % GDP (log)";
+    xRefVal=d3.median(pctsPos)||maxPct*0.5; xRefLabel="median";
+  } else {
+    const maxRCA=Math.max(d3.max(data,d=>d.rca)||2,2);
+    xSc=d3.scaleLog().domain([0.02,maxRCA]).range([0,iw]).clamp(true);
+    xFn=d=>xSc(Math.max(d.rca,0.02));
+    xLabel="RCA (log)"; xRefVal=1; xRefLabel="RCA=1";
+  }
+  const maxShap=d3.max(data,d=>d.shap)||1;
+  const ySc=d3.scaleLinear().domain([0,maxShap*1.05]).range([ih,0]);
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const qLabels=[];
+  // 3×3 classification grid (RCA mode) or 4-quadrant (% GDP mode)
+  // SHAP thresholds: % of total SHAP weight (High≥25%, Medium 10-25%, Low<10%)
+  const totalShap=d3.sum(data,d=>d.shap)||1;
+  const shapHiThr=totalShap*0.25, shapLoThr=totalShap*0.10;
+  const yHi=ySc(Math.min(shapHiThr,maxShap)), yLo=ySc(Math.min(shapLoThr,maxShap));
+  if(scXMode==="rca"){
+    // X zones: Weak RCA<0.5 | Partial 0.5≤RCA<1 | Strength RCA≥1
+    const xW=xSc(0.5), xP=xSc(1);
+    // 9-cell grid matching the methodology 3×3 table
+    [
+      // High SHAP row (top, y < yHi)
+      {x:0,  y:0,   w:xW,    h:yHi,    f:"rgba(220,38,38,0.12)",  lbl:"critical gap"},
+      {x:xW, y:0,   w:xP-xW, h:yHi,    f:"rgba(249,115,22,0.11)", lbl:"build up"},
+      {x:xP, y:0,   w:iw-xP, h:yHi,    f:"rgba(34,197,94,0.12)",  lbl:"leverage"},
+      // Medium SHAP row (middle, yHi < y < yLo)
+      {x:0,  y:yHi, w:xW,    h:yLo-yHi,f:"rgba(220,38,38,0.08)",  lbl:"gap"},
+      {x:xW, y:yHi, w:xP-xW, h:yLo-yHi,f:"rgba(249,115,22,0.09)", lbl:"build up"},
+      {x:xP, y:yHi, w:iw-xP, h:yLo-yHi,f:"rgba(234,179,8,0.11)",  lbl:"mature strength"},
+      // Low SHAP row (bottom, y > yLo)
+      {x:0,  y:yLo, w:xW,    h:ih-yLo, f:"rgba(107,114,128,0.04)", lbl:"not priority"},
+      {x:xW, y:yLo, w:xP-xW, h:ih-yLo, f:"rgba(107,114,128,0.04)", lbl:"not priority"},
+      {x:xP, y:yLo, w:iw-xP, h:ih-yLo, f:"rgba(59,130,246,0.10)",  lbl:"bonus strength"}
+    ].forEach(q=>{
+      if(q.w<=0||q.h<=0) return;
+      g.append("rect").attr("x",q.x).attr("y",q.y).attr("width",q.w).attr("height",q.h).attr("fill",q.f);
+      qLabels.push(q);
+    });
+    // Grid lines + labels
+    [[xW,"0.5"],[xP,"RCA=1"]].forEach(([x,lbl])=>{
+      g.append("line").attr("x1",x).attr("y1",0).attr("x2",x).attr("y2",ih)
+        .attr("stroke","rgba(255,255,255,.18)").attr("stroke-dasharray","4,3").attr("stroke-width",1);
+      g.append("text").attr("x",x+2).attr("y",9).attr("fill","rgba(255,255,255,.22)").attr("font-size",8).text(lbl);
+    });
+    [yHi,yLo].forEach((y,i)=>{
+      g.append("line").attr("x1",0).attr("y1",y).attr("x2",iw).attr("y2",y)
+        .attr("stroke","rgba(255,255,255,.13)").attr("stroke-dasharray","3,4").attr("stroke-width",1);
+      g.append("text").attr("x",2).attr("y",y-3).attr("fill","rgba(255,255,255,.2)").attr("font-size",8)
+        .text(i===0?"SHAP≥25%":"SHAP≥10%");
+    });
+  } else {
+    // % GDP mode: 4-quadrant (median split)
+    const xDiv=xSc(xRefVal), yMed=(yHi+yLo)/2;
+    [{x:0,y:0,w:xDiv,h:yMed,f:"rgba(239,68,68,0.09)"},{x:xDiv,y:0,w:iw-xDiv,h:yMed,f:"rgba(34,197,94,0.09)"},
+     {x:0,y:yMed,w:xDiv,h:ih-yMed,f:"rgba(107,114,128,0.04)"},{x:xDiv,y:yMed,w:iw-xDiv,h:ih-yMed,f:"rgba(59,130,246,0.07)"}
+    ].forEach(q=>{if(q.w>0&&q.h>0)g.append("rect").attr("x",q.x).attr("y",q.y).attr("width",q.w).attr("height",q.h).attr("fill",q.f);});
+    g.append("line").attr("x1",0).attr("y1",yMed).attr("x2",iw).attr("y2",yMed)
+      .attr("stroke","rgba(255,255,255,.1)").attr("stroke-dasharray","3,4").attr("stroke-width",1);
+    g.append("line").attr("x1",xDiv).attr("y1",0).attr("x2",xDiv).attr("y2",ih)
+      .attr("stroke","rgba(255,255,255,.2)").attr("stroke-dasharray","4,3").attr("stroke-width",1);
+    g.append("text").attr("x",xDiv+3).attr("y",8).attr("fill","rgba(255,255,255,.2)").attr("font-size",8).text(xRefLabel);
+  }
+  // Axes
+  g.append("g").attr("transform",`translate(0,${ih})`)
+    .call(d3.axisBottom(xSc).ticks(4,"~g").tickSize(2))
+    .call(gg=>gg.select(".domain").attr("stroke","rgba(255,255,255,.15)"))
+    .call(gg=>gg.selectAll("text").attr("fill","rgba(255,255,255,.35)").attr("font-size",9));
+  g.append("g").call(d3.axisLeft(ySc).ticks(4).tickSize(2))
+    .call(gg=>gg.select(".domain").attr("stroke","rgba(255,255,255,.15)"))
+    .call(gg=>gg.selectAll("text").attr("fill","rgba(255,255,255,.35)").attr("font-size",9));
+  g.append("text").attr("x",iw/2).attr("y",ih+28).attr("text-anchor","middle")
+    .attr("fill","rgba(255,255,255,.3)").attr("font-size",9).text(xLabel);
+  g.append("text").attr("transform","rotate(-90)").attr("x",-ih/2).attr("y",-34)
+    .attr("text-anchor","middle").attr("fill","rgba(255,255,255,.3)").attr("font-size",9).text("SHAP |z|");
+  // Bubbles
+  const hasFilt=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL"||selCat!=="ALL";
+  const selPV=selProduct!=="ALL"?(data.find(d=>d.code===selProduct)||null):null;
+  [...data].sort((a,b)=>sizeFn(b)-sizeFn(a)).forEach(d=>{
+    const col=nodeColor(d.stage+"|"+d.role,d.cat);
+    const r=Math.max(rScale(sizeFn(d)),3);
+    const active=!hasFilt||(selPV?d.stage===selPV.stage&&d.role===selPV.role:
+      (selStage==="ALL"||d.stage===selStage)&&(selRole==="ALL"||d.role===selRole)&&
+      (selCat==="ALL"||(d.cat||"Other")===selCat));
+    const isSel=selProduct!=="ALL"&&d.code===selProduct;
+    const op=!hasFilt?0.75:isSel?1:active?0.85:0.12;
+    g.append("circle").attr("cx",xFn(d)).attr("cy",ySc(d.shap)).attr("r",r)
+      .attr("fill",col).attr("fill-opacity",op)
+      .attr("stroke",isSel?"#fff":col).attr("stroke-width",isSel?2:0.4).attr("stroke-opacity",isSel?1:0.7)
+      .on("mousemove",ev=>showTip(
+        `<b>${d.name}</b><br>HS ${d.code}<br>${d.stage} · ${d.role}<br>`+
+        (scXMode==="pct"?`Exp % GDP: <b>${d.pct>0?d.pct.toFixed(4)+"%":"0"}</b>`:
+                          `RCA: <b>${d.rca.toFixed(2)}</b>`)+
+        ` | SHAP: <b>${d.shap.toFixed(3)}</b><br>Exp: ${fmtV(d.exp)} · Imp: ${fmtV(d.imp)}`,ev))
+      .on("mouseleave",hideTip);
+    if(isSel) g.append("circle").attr("cx",xFn(d)).attr("cy",ySc(d.shap)).attr("r",r+4)
+      .attr("fill","none").attr("stroke","#fff").attr("stroke-width",1.8).attr("pointer-events","none");
+  });
+  // Quadrant labels above bubbles
+  qLabels.forEach(q=>{
+    g.append("text").attr("x",q.x+q.w/2).attr("y",q.y+q.h/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.4)").attr("font-size",9).attr("font-weight",700).text(q.lbl);
+  });
+}
+
+
+// ── Dendrite (full original with den_edges step-based layout) ────────────────
+function drawDendrite(){
+  const c0=c();
+  document.getElementById("den-title").textContent=c0.tech+" Process of Production";
+  const denMeta=document.getElementById("den-meta"); if(denMeta) denMeta.textContent=`Node size ∝ ${tlMode} · SR palette`;
+  const svg=d3.select("#den-svg");svg.selectAll("*").remove();
+  const W=document.getElementById("pane-den").clientWidth||460;
+  const H=document.getElementById("pane-den").clientHeight-36||250;
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","transparent");
+
+  const edges=c0.den_edges||[];
+  const keyPvs=(c0.product_views||[]).filter(pv=>!pv.code.startsWith("STAGE:")&&!pv.code.startsWith("ROLE:")&&pv.code!=="ALL");
+  const keyCodes=new Set(keyPvs.map(pv=>pv.code));
+  const selCode=selProduct!=="ALL"?selProduct:null;
+
+  if(!edges.length){svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle").attr("fill","rgba(255,255,255,.25)").attr("font-size","11").text("No dendrite data");return;}
+
+  const pad={top:30,bottom:30};
+  const prodCatMap=new Map([...(c0.den_products||[]),...(c0.all_products||[])].map(p=>[p.code,p.cat||"Other"]));
+  const nodeMap=new Map();
+  edges.forEach(e=>{
+    if(!nodeMap.has(e.fcn)) nodeMap.set(e.fcn,{cn:e.fcn,code:e.fc,name:e.fn,stage:e.fs,role:e.fr,cat:prodCatMap.get(e.fc)||"Other"});
+    if(!nodeMap.has(e.tcn)) nodeMap.set(e.tcn,{cn:e.tcn,code:e.tc,name:e.tn,stage:e.ts,role:e.tr,cat:prodCatMap.get(e.tc)||"Other"});
+  });
+  const allNodes=[...nodeMap.values()];
+  const stepMap=new Map();
+  allNodes.forEach(n=>stepMap.set(n.cn,0));
+  let changed=true;
+  for(let i=0;i<25&&changed;i++){
+    changed=false;
+    edges.forEach(e=>{
+      const ts=stepMap.get(e.tcn)||0,fs=stepMap.get(e.fcn)||0;
+      if(fs<ts+1){stepMap.set(e.fcn,ts+1);changed=true;}
+    });
+  }
+  const maxStep=Math.max(...stepMap.values());
+  const displayLv=s=>maxStep-s;
+  const stepToX=s=>W*0.08+(W*0.84)*displayLv(s)/(maxStep||1);
+  const stepBuckets={};
+  allNodes.forEach(n=>{
+    const s=stepMap.get(n.cn)||0;
+    if(!stepBuckets[s]) stepBuckets[s]=[];
+    stepBuckets[s].push(n);
+  });
+  Object.values(stepBuckets).forEach(ns=>{
+    ns.sort((a,b)=>{
+      const ak=(selCode&&a.code===selCode)?-2:(keyCodes.has(a.code)?-1:0);
+      const bk=(selCode&&b.code===selCode)?-2:(keyCodes.has(b.code)?-1:0);
+      return ak-bk||a.name.localeCompare(b.name);
+    });
+  });
+  const nodeY=new Map();
+  Object.entries(stepBuckets).forEach(([s,ns])=>{
+    const avail=H-pad.top-pad.bottom;
+    const step=avail/ns.length;
+    ns.forEach((n,i)=>nodeY.set(n.cn,pad.top+step*(i+0.5)));
+  });
+  for(let s=0;s<=maxStep;s++){
+    const lv=displayLv(s);
+    svg.append("text").attr("x",stepToX(s)).attr("y",H-3).attr("text-anchor","middle")
+      .attr("font-size","6").attr("fill","rgba(255,255,255,.18)").attr("font-weight","600")
+      .text(lv===maxStep?`${maxStep}`:lv===0?"0":`${lv}`);
+  }
+  const edgeG=svg.append("g");
+  edges.forEach(e=>{
+    const fn=nodeMap.get(e.fcn),tn=nodeMap.get(e.tcn);
+    if(!fn||!tn) return;
+    const x1=stepToX(stepMap.get(fn.cn)||0),y1=nodeY.get(fn.cn)||H/2;
+    const x2=stepToX(stepMap.get(tn.cn)||0),y2=nodeY.get(tn.cn)||H/2;
+    const isSelE=selCode&&(e.fc===selCode||e.tc===selCode);
+    const isKeyE=!isSelE&&(keyCodes.has(e.fc)||keyCodes.has(e.tc));
+    const col=isSelE?"rgba(255,255,255,.8)":isKeyE?"rgba(255,255,255,.45)":"rgba(255,255,255,.18)";
+    const sw=isSelE?1.6:isKeyE?1.0:0.5;
+    edgeG.append("line").attr("x1",x1).attr("y1",y1).attr("x2",x2).attr("y2",y2)
+      .attr("stroke",col).attr("stroke-width",sw);
+  });
+  const tvFn=p=>tlMode==="imports"?(p.imp||0):tlMode==="balance"?Math.abs((p.exp||0)-(p.imp||0)):(p.exp||0);
+  const tradeMap=new Map((c0.den_products||[]).map(p=>[p.code,tvFn(p)]));
+  const maxTV=d3.max([...tradeMap.values()])||1;
+  const rBase=d3.scaleSqrt().domain([0,maxTV]).range([5,14]);
+  const hasDenFilter=selStage!=="ALL"||selRole!=="ALL"||!!selCode||selCat!=="ALL";
+  const selCodeNode=selCode?allNodes.find(n=>n.code===selCode):null;
+  const isDenGroupActive=n=>{
+    if(!hasDenFilter) return true;
+    if(selCat!=="ALL"&&(n.cat||"Other")!==selCat) return false;
+    if(selCodeNode) return n.stage===selCodeNode.stage&&n.role===selCodeNode.role;
+    if(selStage!=="ALL"&&selRole!=="ALL") return n.stage===selStage&&n.role===selRole;
+    if(selRole!=="ALL") return n.role===selRole;
+    if(selStage!=="ALL") return n.stage===selStage;
+    return true;
+  };
+  const nodeG=svg.append("g");
+  const labelItems=[];
+  allNodes.forEach(n=>{
+    const x=stepToX(stepMap.get(n.cn)||0),y=nodeY.get(n.cn)||H/2;
+    const isSel=selCode&&n.code===selCode;
+    const isKey=keyCodes.has(n.code);
+    const active=isDenGroupActive(n);
+    const tv=tradeMap.get(n.code)||0;
+    const srCol=nodeColor(n.stage+"|"+n.role,n.cat);
+    // Brighten for stage/role selection; keep SR color for product group; brighter still for selected node
+    const col=isSel?d3.color(srCol).brighter(0.7).formatHex():
+              (hasDenFilter&&!selCodeNode&&active)?d3.color(srCol).brighter(0.5).formatHex():srCol;
+    const r=isSel?Math.max(rBase(tv),10):(isKey?Math.max(rBase(tv),8):Math.max(rBase(tv)*0.65,3));
+    const op=!hasDenFilter?(isKey?0.9:0.7):isSel?1:active?0.88:0.15;
+    const pv=(c0.den_products||[]).find(p=>p.code===n.code);
+    nodeG.append("circle").attr("cx",x).attr("cy",y).attr("r",r)
+      .attr("fill",col).attr("stroke",active?"rgba(0,0,0,.35)":"rgba(0,0,0,.2)")
+      .attr("stroke-width",isKey?1.2:0.5).attr("opacity",op)
+      .on("mousemove",ev=>showTip(
+        `<strong>${n.name}</strong><br>HS ${n.code}<br>${n.stage} · ${n.role}`+
+        (pv?`<br>Imp: ${fmtV(pv.imp)} | Exp: ${fmtV(pv.exp)}`:""),ev))
+      .on("mouseleave",hideTip);
+    if(isSel){
+      nodeG.append("circle").attr("cx",x).attr("cy",y).attr("r",r+4)
+        .attr("fill","none").attr("stroke","#fff").attr("stroke-width",2.2).attr("opacity",1)
+        .attr("pointer-events","none");
+    }
+  }); // no text labels or dashed lines — nodes speak for themselves
+}
+
+// ── Firm activity map (country-centered, selection-aware) ────────────────────
+function drawFirms(){
+  if(!worldTopo) return;
+  const c0=c(), allFirms=c0.firms||[];
+  const svg=d3.select("#map-svg");
+  const W=document.getElementById("pane-map").clientWidth||800;
+  const H=document.getElementById("pane-map").clientHeight-80||350;
+  svg.selectAll("*").remove();
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+
+  // Swap overlays
+  document.getElementById("map-overlay").style.display="none";
+  document.getElementById("firm-overlay").style.display="";
+  document.getElementById("trade-legend").style.display="none";
+  document.getElementById("firm-legend").style.display="";
+
+  // Determine which stage|role the selected product belongs to (for white-ring highlight)
+  const selProd=c0.all_products||[];
+  const prodMeta=selProduct!=="ALL"?selProd.find(p=>p.code===selProduct):null;
+  const prodSR=prodMeta?`${prodMeta.stage}|${prodMeta.role}`:null;
+
+  // Filter logic: which firms match the drum selection
+  const hasFilter=selStage!=="ALL"||selRole!=="ALL"||selProduct!=="ALL"||selCat!=="ALL";
+  const catMap=colorMode==="cat"?srToCatMap():{};
+  const srCatCache={};
+  const srHasCat=srKey=>{
+    if(srCatCache[srKey]!==undefined) return srCatCache[srKey];
+    return srCatCache[srKey]=(c0.all_products||[]).some(p=>p.stage+"|"+p.role===srKey&&(p.cat||"Other")===selCat);
+  };
+  const isActive=f=>{
+    if(selCat!=="ALL"&&!srHasCat(f.stage+"|"+f.role)) return false;
+    if(selStage!=="ALL"&&f.stage!==selStage) return false;
+    if(selRole!=="ALL"&&f.role!==selRole) return false;
+    return true;
+  };
+  const isProdMatch=f=>prodSR&&`${f.stage}|${f.role}`===prodSR;
+
+  // Country-centered projection
+  const feat=topojson.feature(worldTopo, worldTopo.objects.countries).features;
+  const numId=ISO3N[c0.focal];
+  const focalFeat=feat.find(f=>+f.id===numId);
+  const pad=28;
+  const proj=d3.geoNaturalEarth1();
+  if(focalFeat) proj.fitExtent([[pad,pad],[W-pad,H-pad]], focalFeat);
+  const path=d3.geoPath().projection(proj);
+
+  // Countries: focal very dark + semi-transparent, neighbours lighter
+  const g=svg.append("g");
+  g.selectAll("path").data(feat).join("path")
+    .attr("d",path)
+    .attr("fill",d=>{
+      const id=String(d.id).padStart(3,"0");
+      const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+      return iso===c0.focal?"#071a0c":"#141e2a";
+    })
+    .attr("opacity",d=>{
+      const id=String(d.id).padStart(3,"0");
+      const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+      return iso===c0.focal?0.55:0.35;
+    })
+    .attr("stroke","#0d1520").attr("stroke-width",0.3);
+
+  if(focalFeat) g.append("path").attr("d",path(focalFeat))
+    .attr("fill","none").attr("stroke","#3cb54a").attr("stroke-width",1.5)
+    .attr("pointer-events","none");
+
+  if(!allFirms.length){
+    svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.3)").attr("font-size",12).text("No S&P firm data for this tech");
+  } else {
+    const activeFirms=hasFilter?allFirms.filter(isActive):allFirms;
+    const maxN=d3.max(allFirms,f=>f.n)||1;
+    const rScale=d3.scaleSqrt().domain([0,maxN]).range([3,16]);
+    const seenSR=new Set();
+
+    [...allFirms].sort((a,b)=>b.n-a.n).forEach(f=>{
+      const px=proj([+f.lon,+f.lat]);
+      if(!px) return;
+      const [x,y]=px;
+      if(x<-10||x>W+10||y<-10||y>H+10) return;
+      const srKey=f.stage+"|"+f.role;
+      const col=colorMode==="cat"?(CAT_COLORS[catMap[srKey]||"Other"]||"#6b7280"):(SR_COLORS[srKey]||"#9ca3af");
+      const active=!hasFilter||isActive(f);
+      const prodHit=isProdMatch(f);
+      if(active) seenSR.add(srKey);
+      const op=!hasFilter?0.8:active?(prodHit?1:0.75):0.12;
+      const r=rScale(f.n);
+      g.append("circle").attr("cx",x).attr("cy",y).attr("r",r)
+        .attr("fill",col+(active?"cc":"30")).attr("stroke",active?col:"rgba(255,255,255,.1)")
+        .attr("stroke-width",active?0.8:0.3).attr("opacity",op)
+        .attr("cursor","pointer")
+        .on("mousemove",ev=>showTip(`<b>${f.city}</b><br>${f.stage} · ${f.role}<br><b>${f.n}</b> firms`,ev))
+        .on("mouseleave",hideTip);
+      if(prodHit){
+        g.append("circle").attr("cx",x).attr("cy",y).attr("r",r+4)
+          .attr("fill","none").attr("stroke","#fff").attr("stroke-width",2).attr("opacity",1)
+          .attr("pointer-events","none");
+      }
+    });
+
+    // Legend: only show SR keys present in active firms
+    const legEl=document.getElementById("firm-legend");
+    legEl.innerHTML=SR_ORDER.filter(k=>seenSR.has(k)).map(k=>{
+      const col=nodeColor(k);
+      return `<div class="leg-item"><div class="leg-circle" style="background:${col}cc;border-color:${col}"></div>${k.split("|")[1]}</div>`;
+    }).join("");
+
+    // Firm stats overlay
+    const dispFirms=hasFilter?activeFirms:allFirms;
+    const totalN=dispFirms.reduce((s,f)=>s+f.n,0);
+    const nCities=new Set(dispFirms.map(f=>f.city)).size;
+    document.getElementById("ov-firm-count").textContent=totalN.toLocaleString();
+    document.getElementById("ov-firm-cities-n").textContent=nCities;
+    const filterLbl=selProduct!=="ALL"?(prodMeta?`${prodMeta.stage} · ${prodMeta.role}`:selProduct):
+                    selRole!=="ALL"?`${selStage!=="ALL"?selStage+" · ":""}${selRole}`:
+                    selStage!=="ALL"?selStage:"All products";
+    document.getElementById("ov-firm-filter").textContent=filterLbl;
+    const topCities=[...dispFirms].sort((a,b)=>b.n-a.n).slice(0,6);
+    const maxC=topCities[0]?.n||1;
+    document.getElementById("ov-firm-cities").innerHTML=topCities.map(f=>{
+      const srK=`${f.stage}|${f.role}`;const col=colorMode==="cat"?(CAT_COLORS[catMap[srK]||"Other"]||"#6b7280"):(SR_COLORS[srK]||"#9ca3af");
+      const barW=Math.round(60*(f.n/maxC));
+      return `<div class="ov-partner"><span class="ov-flag" style="color:${col}">●</span><span class="ov-name">${f.city}</span><span class="ov-val" style="background:rgba(255,255,255,.06);border-radius:2px;padding:0 4px">${f.n}</span></div>`;
+    }).join("");
+    const stageMap={};
+    dispFirms.forEach(f=>{stageMap[f.stage]=(stageMap[f.stage]||0)+f.n;});
+    const STAGE_ORDER=["Upstream","Midstream","Downstream","Final Product"];
+    document.getElementById("ov-firm-stages").innerHTML=STAGE_ORDER.filter(s=>stageMap[s]).map(s=>{
+      const col=STAGE_COLORS[s]||"#9ca3af";
+      return `<div class="ov-partner"><span class="ov-flag" style="color:${col}">▪</span><span class="ov-name">${s}</span><span class="ov-val">${stageMap[s]}</span></div>`;
+    }).join("");
+  }
+}
+
+function restoreTradeMap(){
+  document.getElementById("map-overlay").style.display="";
+  document.getElementById("firm-overlay").style.display="none";
+  document.getElementById("trade-legend").style.display="";
+  document.getElementById("firm-legend").style.display="none";
+  drawMap();
+}
+
+// ── Render all panes ──────────────────────────────────────────────────────────
+function renderAll(){
+  const techEl=document.getElementById("map-tech");
+  techEl.textContent=c().tech;
+  techEl.style.color=c().color;
+  document.title=c().name+" — "+c().tech+" — Atlas of the Clean Industrial Base"; const cEl=document.getElementById("header-country"); if(cEl) cEl.textContent=c().name; const legEl=document.getElementById("leg-focal"); if(legEl) legEl.textContent=c().name;
+  buildFixedLegend();
+  updateFixedLegend();
+  buildCatLegend();
+  updateCatLegend();
+  updateXToggle();
+  populateDropdowns();
+  initDrums();
+  drawMapOrFirms();
+  drawTimeline();
+  drawTreemap();
+  drawShapRadar();
+  drawScatter();
+  drawDendrite();
+  updateSankey();
+}
+
+// ── Atlas-style native D3 Sankey ──────────────────────────────────────────────
+function updateSankey(){ drawAtlasSankey(); }
+function drawAtlasSankey(){
+  const c0=c();
+  const flows=c0.sankey_flows||[];
+  const titleEl=document.getElementById("sankey-title");
+  if(titleEl) titleEl.textContent="SANKEY";
+  const svg=d3.select("#sankey-svg");svg.selectAll("*").remove();
+  const W=document.getElementById("pane-sankey").clientWidth||380;
+  const H=document.getElementById("pane-sankey").clientHeight-36||250;
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","transparent");
+  if(!flows.length){
+    svg.append("text").attr("x",W/2).attr("y",H/2).attr("text-anchor","middle")
+      .attr("fill","rgba(255,255,255,.25)").attr("font-size",10).text("No sankey data");
+    return;
+  }
+  const CNAMES={CHN:"China",USA:"USA",DEU:"Germany",JPN:"Japan",KOR:"S.Korea",IND:"India",VNM:"Vietnam",MYS:"Malaysia",FRA:"France",GBR:"UK",ITA:"Italy",ESP:"Spain",AUS:"Australia",CAN:"Canada",NLD:"Neth.",BRA:"Brazil",TWN:"Taiwan",SGP:"Singapore",THA:"Thailand",IDN:"Indonesia",NOR:"Norway",POL:"Poland",SWE:"Sweden",ZAF:"S.Africa",ARE:"UAE",BHR:"Bahrain",AUT:"Austria",KHM:"Cambodia",MEX:"Mexico",HUN:"Hungary",TUR:"Turkey",HKG:"HK",S19:"Other"};
+  const cn=iso=>CNAMES[iso]||iso;
+  // 5-column layout: lane0 | lane1 | lanes2+3(stacked) | lanes5+4(stacked) | lane6
+  const laneCol={0:0,1:1,2:2,3:2,4:3,5:3,6:4};
+  const COL_X=[0.062,0.238,0.46,0.695,0.932];
+  const LC={0:"#b45309",1:"#22c55e",2:"#65a30d",3:"#16a34a",4:"#4ade80",5:"#6b7280",6:"#f97316"};
+  const P={t:18,b:6,l:4,r:4};
+  const iw=W-P.l-P.r, ih=H-P.t-P.b;
+  // Dashed vertical boundary lines between sections (UPSTREAM|MIDSTREAM and MIDSTREAM|DOWNSTREAM)
+  [0.150,0.578].forEach(xf=>{
+    svg.append("line")
+      .attr("x1",P.l+xf*iw).attr("x2",P.l+xf*iw)
+      .attr("y1",P.t).attr("y2",P.t+ih)
+      .attr("stroke","rgba(255,255,255,.12)").attr("stroke-width",0.8)
+      .attr("stroke-dasharray","4,4");
+  });
+  // Column role labels
+  [[0,"Raw Material",LC[0]],[1,"Proc. Material",LC[1]],
+   [2,"Proc. Equip. / Prod. Comp.",LC[2]],
+   [3,"Proc. Equip. / Prod. Comp.",LC[5]],
+   [4,"Final Product",LC[6]]].forEach(([ci,lbl,col])=>{
+    svg.append("text").attr("x",P.l+COL_X[ci]*iw).attr("y",12).attr("text-anchor","middle")
+      .attr("fill",col).attr("font-size",5).attr("opacity",0.65).text(lbl);
+  });
+  // Build node weight maps per lane
+  const laneM={};
+  flows.forEach(f=>{
+    [[f.fl,+f.fl7],[f.tl,+f.tl7]].forEach(([id,lane])=>{
+      if(!laneM[lane]) laneM[lane]=new Map();
+      laneM[lane].set(id,(laneM[lane].get(id)||0)+(+f.w||0));
+    });
+  });
+  // Ensure focal country (Brazil) appears in every lane, even if not in top flows
+  const braLabel=c0.focal;
+  [0,1,2,3,4,5,6].forEach(lane=>{
+    if(!laneM[lane]) laneM[lane]=new Map();
+    const hasBra=[...laneM[lane].keys()].some(k=>k.split(" | ")[0]===braLabel);
+    if(!hasBra) laneM[lane].set(braLabel,d3.min([...laneM[lane].values()])||1);
+  });
+  // Log-proportional node height layout within a vertical band
+  const NW=10, GAP_NODE=2, GAP_ROLE=10;
+  const nPos=new Map();
+  function layoutLane(lane,yStart,yEnd){
+    const nm=laneM[lane]; if(!nm||!nm.size) return;
+    const ci=laneCol[lane];
+    const sorted=[...nm.entries()].sort((a,b)=>b[1]-a[1]);
+    const n=sorted.length;
+    const logWts=sorted.map(([,wt])=>Math.log1p(wt));
+    const sumLog=logWts.reduce((s,v)=>s+v,0)||1;
+    const availH=yEnd-yStart-GAP_NODE;
+    let y=yStart+GAP_NODE/2;
+    sorted.forEach(([id,wt],i)=>{
+      const h=Math.max(3,(availH-n*GAP_NODE)*(logWts[i]/sumLog));
+      nPos.set(id,{x:P.l+COL_X[ci]*iw-NW/2,y,h,w:NW,lane,ci,name:cn(id.split(" | ")[0]),wt});
+      y+=h+GAP_NODE;
+    });
+  }
+  const yT=P.t+4, yB=P.t+4+ih-8, yMid=(yT+yB)/2;
+  layoutLane(0,yT,yB);
+  layoutLane(1,yT,yB);
+  layoutLane(2,yT,yMid-GAP_ROLE/2);
+  layoutLane(3,yMid+GAP_ROLE/2,yB);
+  layoutLane(5,yT,yMid-GAP_ROLE/2);
+  layoutLane(4,yMid+GAP_ROLE/2,yB);
+  layoutLane(6,yT,yB);
+  // Role divider tick in shared columns (col 2 and col 3)
+  [2,3].forEach(ci=>{
+    const x=P.l+COL_X[ci]*iw;
+    svg.append("line").attr("x1",x-NW).attr("x2",x+NW).attr("y1",yMid).attr("y2",yMid)
+      .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",0.5);
+  });
+  // Focus state: default to focal country (Brazil), click node to switch
+  if(sankeyFocus===null) sankeyFocus=c0.focal;
+  const foc=sankeyFocus;
+  // Click on SVG background resets to focal country
+  svg.on("click",()=>{ sankeyFocus=c0.focal; drawAtlasSankey(); });
+  // Links — log-scaled widths, dimmed unless involving focused country
+  const wVals=flows.map(f=>+f.w).filter(v=>v>0);
+  const minW=d3.min(wVals)||1, maxW=d3.max(wVals)||1;
+  const swSc=d3.scaleLog().domain([minW,maxW]).range([0.3,3.5]).clamp(true);
+  flows.forEach(f=>{
+    const src=nPos.get(f.fl),tgt=nPos.get(f.tl); if(!src||!tgt) return;
+    const active=f.fc===foc||f.tc===foc;
+    const col=LC[+f.fl7]||"#9ca3af";
+    const x1=src.x+src.w,y1=src.y+src.h/2,x2=tgt.x,y2=tgt.y+tgt.h/2,cx=(x1+x2)/2;
+    svg.append("path").attr("d",`M${x1},${y1}C${cx},${y1} ${cx},${y2} ${x2},${y2}`)
+      .attr("fill","none").attr("stroke",col).attr("stroke-width",active?swSc(+f.w||minW)*1.4:swSc(+f.w||minW))
+      .attr("opacity",active?0.75:0.25)
+      .on("mousemove",ev=>showTip(`${cn(f.fc)} → ${cn(f.tc)}<br><b>${fmtV(+f.w)}</b>`,ev))
+      .on("mouseleave",hideTip);
+  });
+  // Nodes + labels — highlight focused country, dim others
+  nPos.forEach((n,id)=>{
+    const iso=id.split(" | ")[0];
+    const active=iso===foc;
+    const col=LC[n.lane]||"#9ca3af";
+    svg.append("rect").attr("x",n.x).attr("y",n.y).attr("width",n.w).attr("height",n.h)
+      .attr("fill",col).attr("rx",1.5).attr("opacity",active?0.96:0.45)
+      .style("cursor","pointer")
+      .on("click",(ev)=>{ ev.stopPropagation(); sankeyFocus=iso; drawAtlasSankey(); })
+      .on("mousemove",ev=>showTip(`<b>${n.name}</b><br>${fmtV(n.wt)}`,ev))
+      .on("mouseleave",hideTip);
+    // Active node (Brazil default): bold white border
+    if(active) svg.append("rect").attr("x",n.x-1).attr("y",n.y-1).attr("width",n.w+2).attr("height",n.h+2)
+      .attr("fill","none").attr("stroke","#fff").attr("stroke-width",1.5).attr("rx",2).attr("opacity",0.9);
+    if(n.h>=6){
+      const iso3=id.split(" | ")[0];
+      svg.append("text").attr("x",n.x+n.w/2).attr("y",n.y+n.h/2+1.8).attr("text-anchor","middle")
+        .attr("font-size",4.5).attr("fill",active?"#fff":"rgba(255,255,255,.8)")
+        .attr("font-weight",active?"700":"400")
+        .text(iso3);
+    }
+  });
+}
+
+
+// ── Centroid pre-computation ──────────────────────────────────────────────────
+function precomputeCentroids(topo){
+  const proj=d3.geoNaturalEarth1().scale(153).translate([480,250]);
+  topojson.feature(topo,topo.objects.countries).features.forEach(f=>{
+    const id=String(f.id).padStart(3,"0");
+    const iso=Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(id));
+    if(iso){
+      try{const c=d3.geoCentroid(f); centroids[iso]=c;}catch(e){}
+    }
+  });
+}
+
+// ── Event handlers ────────────────────────────────────────────────────────────
+document.querySelectorAll(".nav-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentIdx=+btn.dataset.idx;
+    selStage="ALL"; selRole="ALL"; selProduct="ALL";
+    document.getElementById("sel-stage").value="ALL";
+    sankeyFocus=null;
+    // Preserve mapMode — Activity stays active when switching tech
+    ["map-trade","map-activity"].forEach(bid=>document.getElementById(bid)?.classList.remove("active"));
+    document.getElementById(mapMode==="activity"?"map-activity":"map-trade").classList.add("active");
+    renderAll();
+  });
+});
+
+const drawMapOrFirms=()=>mapMode==="activity"?drawFirms():drawMap();
+document.getElementById("sel-stage").addEventListener("change",e=>{
+  selStage=e.target.value; selRole="ALL"; selProduct="ALL";
+  populateDropdowns(); updateFixedLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+});
+document.getElementById("sel-role").addEventListener("change",e=>{
+  selRole=e.target.value; selProduct="ALL";
+  populateDropdowns(); updateFixedLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+});
+document.getElementById("sel-product").addEventListener("change",e=>{
+  selProduct=e.target.value;
+  updateFixedLegend(); drawMapOrFirms(); drawTimeline(); drawTreemap(); drawScatter(); drawDendrite();
+});
+
+// Trade/Activity map mode toggle
+["map-trade","map-activity"].forEach((id,k)=>{
+  document.getElementById(id)?.addEventListener("click",()=>{
+    mapMode=k===0?"trade":"activity";
+    ["map-trade","map-activity"].forEach(bid=>document.getElementById(bid)?.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    if(mapMode==="trade") restoreTradeMap(); else drawFirms();
+  });
+});
+
+// Trade tabs removed — timeline and treemap are now separate panes
+// Timeline mode buttons
+document.getElementById("cm-sr")?.addEventListener("click",()=>{colorMode="sr";document.getElementById("cm-sr").classList.add("active");document.getElementById("cm-cat").classList.remove("active");drawTimeline();drawTreemap();drawScatter();drawDendrite();drawMapOrFirms();drawAtlasSankey();});
+document.getElementById("cm-cat")?.addEventListener("click",()=>{colorMode="cat";document.getElementById("cm-cat").classList.add("active");document.getElementById("cm-sr").classList.remove("active");drawTimeline();drawTreemap();drawScatter();drawDendrite();drawMapOrFirms();drawAtlasSankey();});
+document.getElementById("tl-exp")?.addEventListener("click",()=>{tlMode="exports";document.querySelectorAll(".tl-btn").forEach(b=>b.classList.remove("active"));document.getElementById("tl-exp").classList.add("active");drawTimeline();drawTreemap();drawDendrite();});
+document.getElementById("tl-imp")?.addEventListener("click",()=>{tlMode="imports";document.querySelectorAll(".tl-btn").forEach(b=>b.classList.remove("active"));document.getElementById("tl-imp").classList.add("active");drawTimeline();drawTreemap();drawDendrite();});
+document.getElementById("tl-bal")?.addEventListener("click",()=>{tlMode="balance";document.querySelectorAll(".tl-btn").forEach(b=>b.classList.remove("active"));document.getElementById("tl-bal").classList.add("active");drawTimeline();drawTreemap();drawDendrite();});
+["sc-pct","sc-b"].forEach(id=>{
+  document.getElementById(id)?.addEventListener("click",()=>{
+    scMode=id==="sc-pct"?"pct":"b";
+    document.querySelectorAll(".sc-btn").forEach(b=>b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    drawScatter();
+  });
+});
+
+window.addEventListener("resize",()=>{
+  drawMapOrFirms(); drawTimeline(); drawTreemap(); drawShapRadar(); drawScatter(); drawDendrite();
+});
+
+// ── Boot: load topojson then render ──────────────────────────────────────────
+const WORLD_TOPO_URL="https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const TOPOJSON_CDN="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js";
+const D3_CDNS=["https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js",
+                "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+                "https://d3js.org/d3.v7.min.js"];
+
+function boot(){
+  fetch(WORLD_TOPO_URL).then(r=>r.json()).then(topo=>{
+    worldTopo=topo;
+    precomputeCentroids(topo);
+    renderAll();
+  }).catch(()=>renderAll());
+}
+
+function loadTopojson(){
+  const s=document.createElement("script");
+  s.src=TOPOJSON_CDN;
+  s.onload=boot;
+  s.onerror=()=>renderAll();
+  document.head.appendChild(s);
+}
+
+function loadD3(idx){
+  if(idx>=D3_CDNS.length){ console.error("All D3 CDNs failed"); return; }
+  const s=document.createElement("script");
+  s.src=D3_CDNS[idx];
+  s.onload=loadTopojson;
+  s.onerror=()=>loadD3(idx+1);
+  document.head.appendChild(s);
+}
+
+loadD3(0);
+</script>
+</body>
+</html>
+
