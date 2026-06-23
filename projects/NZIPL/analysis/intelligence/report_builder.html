@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Intelligence Report Builder · NZIPL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#060d08; --surface:#0b1a0d; --surface2:#0f2312;
+  --border:rgba(255,255,255,.07); --border-hi:rgba(255,255,255,.13);
+  --text:#dde8dd; --muted:#7a9b7d; --accent:#3cb54a;
+  --font:"Archivo",-apple-system,"Segoe UI",sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.6;}
+
+/* ══ SELECTOR SCREEN ══ */
+#screen-selector{max-width:1080px;margin:0 auto;padding:40px 28px 80px;}
+.sel-eyebrow{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.sel-title{font-size:30px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:8px;}
+.sel-sub{font-size:13.5px;color:var(--muted);max-width:680px;margin-bottom:30px;}
+.sel-cols{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px;align-items:start;}
+.sel-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.sel-col-hd{font-size:.62rem;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.sel-col-hd .cnt{color:var(--accent);font-weight:700;}
+.opt{display:flex;align-items:center;gap:9px;width:100%;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.6);background:transparent;border:1px solid transparent;text-align:left;font-family:inherit;transition:all .14s;margin-bottom:3px;}
+.opt:hover{background:rgba(255,255,255,.05);color:#fff;}
+.opt.on{background:rgba(60,181,74,.12);border-color:rgba(60,181,74,.4);color:#fff;}
+.opt.disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through;}
+.opt .swatch{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.opt .box{width:15px;height:15px;border-radius:4px;border:1.5px solid rgba(255,255,255,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#060d08;}
+.opt.on .box{background:var(--accent);border-color:var(--accent);}
+.opt .fam{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.opt .radio{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);flex-shrink:0;}
+.opt.on .radio{border-color:var(--accent);box-shadow:inset 0 0 0 3px var(--accent);}
+.sel-actions{display:flex;align-items:center;gap:14px;margin-top:26px;}
+.btn-build{padding:11px 26px;border:none;border-radius:8px;background:var(--accent);color:#06210b;font-family:inherit;font-size:14px;font-weight:800;letter-spacing:.02em;cursor:pointer;transition:filter .15s;}
+.btn-build:hover{filter:brightness(1.1);}
+.btn-build:disabled{opacity:.4;cursor:not-allowed;}
+.sel-summary{font-size:12px;color:var(--muted);}
+.sel-summary b{color:var(--text);font-weight:700;}
+
+/* ══ REPORT SCREEN (intelligence-report layout) ══ */
+#screen-report{display:none;}
+body.report-mode{height:100vh;overflow:hidden;}
+body.report-mode #screen-selector{display:none;}
+body.report-mode #screen-report{display:flex;flex-direction:column;height:100vh;}
+#ir-top{display:flex;height:66.66vh;min-height:0;}
+#ir-analysis{height:33.34vh;border-top:1px solid var(--border);background:var(--bg);overflow-y:auto;padding:18px 24px;}
+.ir-analysis-ph{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.18);}
+#ir-sidebar{width:230px;min-width:230px;background:var(--bg);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;height:100%;flex-shrink:0;}
+.ir-topbar{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
+.ir-tb-btn{font-size:11px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.55);background:rgba(255,255,255,.05);border:1px solid var(--border-hi);border-radius:5px;padding:5px 10px;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;transition:all .15s;}
+.ir-tb-btn:hover{color:#fff;border-color:var(--accent);}
+.ir-brand{padding:16px 14px 12px;border-bottom:1px solid var(--border);}
+.ir-brand-eyebrow{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.ir-brand-country{font-size:20px;font-weight:800;color:#fff;line-height:1.1;}
+.ir-brand-tech{font-size:10px;font-weight:600;color:rgba(255,255,255,.35);letter-spacing:.07em;text-transform:uppercase;margin-top:3px;}
+.ir-nav{padding:8px 7px 20px;}
+.ir-nav-link{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:5px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.5);cursor:pointer;text-decoration:none;transition:color .15s,background .15s;margin-bottom:2px;border:none;background:transparent;text-align:left;font-family:inherit;}
+.ir-nav-link:hover{color:#fff;background:rgba(255,255,255,.06);}
+.ir-nav-link.active{color:var(--accent)!important;background:rgba(60,181,74,.1);font-weight:600;}
+.ir-nav-link .ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:currentColor;opacity:.7;}
+.ir-nav-num{font-size:9px;color:rgba(255,255,255,.25);margin-left:auto;font-weight:700;}
+#ir-main{flex:1;min-height:0;height:100%;overflow:hidden;padding:0;background:#0a0f14;}
+#rep-main{height:100%;}
+.ir-pane{display:none;height:100%;flex-direction:column;}
+.ir-pane.active{display:flex;}
+.ir-pane-head{padding:16px 24px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.ir-pane-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.ir-pane-title .accent{color:var(--accent);}
+.ir-pane-sub{font-size:11.5px;color:rgba(255,255,255,.3);margin-top:4px;}
+.ir-frame-wrap{flex:1;position:relative;background:#0a1218;}
+.ir-pane iframe{width:100%;height:100%;border:none;display:block;background:#0a1218;}
+.ir-pane .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.2);font-size:12px;font-weight:600;}
+
+@media print{
+  body.report-mode{height:auto;overflow:visible;}
+  #ir-sidebar,.ir-topbar{display:none!important;}
+  body.report-mode #screen-report{display:block;height:auto;}
+  #ir-top{display:block;height:auto;}
+  #ir-main{height:auto;overflow:visible;}
+  #ir-analysis{height:auto;}
+  .ir-pane{display:block!important;height:auto;page-break-after:always;border-bottom:2px solid #000;}
+  .ir-frame-wrap{height:620px;}
+  .ir-pane iframe{height:620px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SELECTOR ══ -->
+<section id="screen-selector">
+  <div class="sel-eyebrow">NZIPL · Atlas of the Global Clean Industrial Base</div>
+  <div class="sel-title">Intelligence Report Builder</div>
+  <div class="sel-sub">Select one technology, one country, and the visuals to include. The builder assembles them into an intelligence-report sheet — interactive on screen, printable to PDF for the phone. The atlas keeps its fixed layout; here the selection is yours.</div>
+  <div class="sel-cols">
+    <div class="sel-col">
+      <div class="sel-col-hd">Visuals <span class="cnt" id="hd-vis"></span></div>
+      <div id="col-modules"></div>
+    </div>
+    <div class="sel-col">
+      <div class="sel-col-hd">Technology</div>
+      <div id="col-techs"></div>
+    </div>
+    <div class="sel-col">
+      <div class="sel-col-hd">Country</div>
+      <div id="col-countries"></div>
+    </div>
+  </div>
+  <div class="sel-actions">
+    <button class="btn-build" id="btn-build">Build Sheet &rarr;</button>
+    <div class="sel-summary" id="sel-summary"></div>
+  </div>
+</section>
+
+<!-- ══ REPORT ══ -->
+<section id="screen-report">
+  <div id="ir-top">
+    <nav id="ir-sidebar">
+      <div class="ir-topbar">
+        <button class="ir-tb-btn" id="tb-back">&larr; Builder</button>
+        <button class="ir-tb-btn" id="tb-print">Print / PDF</button>
+      </div>
+      <div class="ir-brand">
+        <div class="ir-brand-eyebrow">NZIPL · Intelligence Report</div>
+        <div class="ir-brand-country" id="rep-country">—</div>
+        <div class="ir-brand-tech" id="rep-tech">—</div>
+      </div>
+      <div class="ir-nav" id="rep-nav"></div>
+    </nav>
+    <main id="ir-main"><div id="rep-main"></div></main>
+  </div>
+  <div id="ir-analysis"><div class="ir-analysis-ph">Analysis · coming with the intelligence report</div></div>
+</section>
+
+<script>
+const MODULES = [{"id":"radar","label":"Capability Radar","family":"Capability","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"pc_scatter","label":"PC Scatter","family":"Competitiveness","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"trade_timeline","label":"Trade Timeline","family":"Trade","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"trade_composition","label":"Trade Composition","family":"Trade","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"tech_tree","label":"Tech Tree","family":"Structure","country_dependent":false,"tpl":"../tech_tree/{tech}_tech_tree.html"},{"id":"sankey","label":"Sankey","family":"Structure","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"trade_map","label":"Trade Map","family":"Trade","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"activity_map","label":"Activity Map","family":"Firms","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"}];
+const TECHS = [{"name":"Solar","slug":"Solar","color":"#eab308"},{"name":"Nuclear","slug":"Nuclear","color":"#0ea5e9"},{"name":"Batteries","slug":"Batteries","color":"#f59e0b"},{"name":"Transmission","slug":"Transmission","color":"#06b6d4"},{"name":"Wind","slug":"Wind","color":"#3b82f6"},{"name":"Biofuel","slug":"Biofuel","color":"#84cc16"},{"name":"Electrolyzers","slug":"Electrolyzers","color":"#a855f7"},{"name":"Geothermal","slug":"Geothermal","color":"#ef4444"},{"name":"Heat Pumps","slug":"Heat_Pumps","color":"#f97316"},{"name":"Magnets","slug":"Magnets","color":"#ec4899"},{"name":"EVs","slug":"EVs","color":"#14b8a6"}];
+const COUNTRIES = [{"name":"India","slug":"India","iso3":"IND","color":"#3cb54a"},{"name":"Brazil","slug":"Brazil","iso3":"BRA","color":"#C17A2E"},{"name":"Japan","slug":"Japan","iso3":"JPN","color":"#0ea5e9"},{"name":"S. Korea","slug":"South_Korea","iso3":"KOR","color":"#06b6d4"},{"name":"Vietnam","slug":"Vietnam","iso3":"VNM","color":"#3b82f6"},{"name":"Mexico","slug":"Mexico","iso3":"MEX","color":"#84cc16"},{"name":"Spain","slug":"Spain","iso3":"ESP","color":"#ef4444"}];
+const PATHS = new Set(["../activity_map/Brazil/Batteries_Brazil_activity_map.html","../activity_map/Brazil/Biofuel_Brazil_activity_map.html","../activity_map/Brazil/EVs_Brazil_activity_map.html","../activity_map/Brazil/Electrolyzers_Brazil_activity_map.html","../activity_map/Brazil/Geothermal_Brazil_activity_map.html","../activity_map/Brazil/Heat_Pumps_Brazil_activity_map.html","../activity_map/Brazil/Magnets_Brazil_activity_map.html","../activity_map/Brazil/Nuclear_Brazil_activity_map.html","../activity_map/Brazil/Solar_Brazil_activity_map.html","../activity_map/Brazil/Transmission_Brazil_activity_map.html","../activity_map/Brazil/Wind_Brazil_activity_map.html","../activity_map/India/Batteries_India_activity_map.html","../activity_map/India/Biofuel_India_activity_map.html","../activity_map/India/EVs_India_activity_map.html","../activity_map/India/Electrolyzers_India_activity_map.html","../activity_map/India/Geothermal_India_activity_map.html","../activity_map/India/Heat_Pumps_India_activity_map.html","../activity_map/India/Magnets_India_activity_map.html","../activity_map/India/Nuclear_India_activity_map.html","../activity_map/India/Solar_India_activity_map.html","../activity_map/India/Transmission_India_activity_map.html","../activity_map/India/Wind_India_activity_map.html","../activity_map/Japan/Batteries_Japan_activity_map.html","../activity_map/Japan/Biofuel_Japan_activity_map.html","../activity_map/Japan/EVs_Japan_activity_map.html","../activity_map/Japan/Electrolyzers_Japan_activity_map.html","../activity_map/Japan/Geothermal_Japan_activity_map.html","../activity_map/Japan/Heat_Pumps_Japan_activity_map.html","../activity_map/Japan/Magnets_Japan_activity_map.html","../activity_map/Japan/Nuclear_Japan_activity_map.html","../activity_map/Japan/Solar_Japan_activity_map.html","../activity_map/Japan/Transmission_Japan_activity_map.html","../activity_map/Japan/Wind_Japan_activity_map.html","../activity_map/Mexico/Batteries_Mexico_activity_map.html","../activity_map/Mexico/Biofuel_Mexico_activity_map.html","../activity_map/Mexico/EVs_Mexico_activity_map.html","../activity_map/Mexico/Electrolyzers_Mexico_activity_map.html","../activity_map/Mexico/Geothermal_Mexico_activity_map.html","../activity_map/Mexico/Heat_Pumps_Mexico_activity_map.html","../activity_map/Mexico/Magnets_Mexico_activity_map.html","../activity_map/Mexico/Nuclear_Mexico_activity_map.html","../activity_map/Mexico/Solar_Mexico_activity_map.html","../activity_map/Mexico/Transmission_Mexico_activity_map.html","../activity_map/Mexico/Wind_Mexico_activity_map.html","../activity_map/South_Korea/Batteries_South_Korea_activity_map.html","../activity_map/South_Korea/Biofuel_South_Korea_activity_map.html","../activity_map/South_Korea/EVs_South_Korea_activity_map.html","../activity_map/South_Korea/Electrolyzers_South_Korea_activity_map.html","../activity_map/South_Korea/Geothermal_South_Korea_activity_map.html","../activity_map/South_Korea/Heat_Pumps_South_Korea_activity_map.html","../activity_map/South_Korea/Magnets_South_Korea_activity_map.html","../activity_map/South_Korea/Nuclear_South_Korea_activity_map.html","../activity_map/South_Korea/Solar_South_Korea_activity_map.html","../activity_map/South_Korea/Transmission_South_Korea_activity_map.html","../activity_map/South_Korea/Wind_South_Korea_activity_map.html","../activity_map/Spain/Batteries_Spain_activity_map.html","../activity_map/Spain/Biofuel_Spain_activity_map.html","../activity_map/Spain/EVs_Spain_activity_map.html","../activity_map/Spain/Electrolyzers_Spain_activity_map.html","../activity_map/Spain/Geothermal_Spain_activity_map.html","../activity_map/Spain/Heat_Pumps_Spain_activity_map.html","../activity_map/Spain/Magnets_Spain_activity_map.html","../activity_map/Spain/Nuclear_Spain_activity_map.html","../activity_map/Spain/Solar_Spain_activity_map.html","../activity_map/Spain/Transmission_Spain_activity_map.html","../activity_map/Spain/Wind_Spain_activity_map.html","../activity_map/Vietnam/Batteries_Vietnam_activity_map.html","../activity_map/Vietnam/Biofuel_Vietnam_activity_map.html","../activity_map/Vietnam/EVs_Vietnam_activity_map.html","../activity_map/Vietnam/Electrolyzers_Vietnam_activity_map.html","../activity_map/Vietnam/Geothermal_Vietnam_activity_map.html","../activity_map/Vietnam/Heat_Pumps_Vietnam_activity_map.html","../activity_map/Vietnam/Magnets_Vietnam_activity_map.html","../activity_map/Vietnam/Nuclear_Vietnam_activity_map.html","../activity_map/Vietnam/Solar_Vietnam_activity_map.html","../activity_map/Vietnam/Transmission_Vietnam_activity_map.html","../activity_map/Vietnam/Wind_Vietnam_activity_map.html","../pc_scatter/Brazil/Batteries_Brazil_pc_scatter.html","../pc_scatter/Brazil/Biofuel_Brazil_pc_scatter.html","../pc_scatter/Brazil/EVs_Brazil_pc_scatter.html","../pc_scatter/Brazil/Electrolyzers_Brazil_pc_scatter.html","../pc_scatter/Brazil/Geothermal_Brazil_pc_scatter.html","../pc_scatter/Brazil/Heat_Pumps_Brazil_pc_scatter.html","../pc_scatter/Brazil/Magnets_Brazil_pc_scatter.html","../pc_scatter/Brazil/Nuclear_Brazil_pc_scatter.html","../pc_scatter/Brazil/Solar_Brazil_pc_scatter.html","../pc_scatter/Brazil/Transmission_Brazil_pc_scatter.html","../pc_scatter/Brazil/Wind_Brazil_pc_scatter.html","../pc_scatter/India/Batteries_India_pc_scatter.html","../pc_scatter/India/Biofuel_India_pc_scatter.html","../pc_scatter/India/EVs_India_pc_scatter.html","../pc_scatter/India/Electrolyzers_India_pc_scatter.html","../pc_scatter/India/Geothermal_India_pc_scatter.html","../pc_scatter/India/Heat_Pumps_India_pc_scatter.html","../pc_scatter/India/Magnets_India_pc_scatter.html","../pc_scatter/India/Nuclear_India_pc_scatter.html","../pc_scatter/India/Solar_India_pc_scatter.html","../pc_scatter/India/Transmission_India_pc_scatter.html","../pc_scatter/India/Wind_India_pc_scatter.html","../pc_scatter/Japan/Batteries_Japan_pc_scatter.html","../pc_scatter/Japan/Biofuel_Japan_pc_scatter.html","../pc_scatter/Japan/EVs_Japan_pc_scatter.html","../pc_scatter/Japan/Electrolyzers_Japan_pc_scatter.html","../pc_scatter/Japan/Geothermal_Japan_pc_scatter.html","../pc_scatter/Japan/Heat_Pumps_Japan_pc_scatter.html","../pc_scatter/Japan/Magnets_Japan_pc_scatter.html","../pc_scatter/Japan/Nuclear_Japan_pc_scatter.html","../pc_scatter/Japan/Solar_Japan_pc_scatter.html","../pc_scatter/Japan/Transmission_Japan_pc_scatter.html","../pc_scatter/Japan/Wind_Japan_pc_scatter.html","../pc_scatter/Mexico/Batteries_Mexico_pc_scatter.html","../pc_scatter/Mexico/Biofuel_Mexico_pc_scatter.html","../pc_scatter/Mexico/EVs_Mexico_pc_scatter.html","../pc_scatter/Mexico/Electrolyzers_Mexico_pc_scatter.html","../pc_scatter/Mexico/Geothermal_Mexico_pc_scatter.html","../pc_scatter/Mexico/Heat_Pumps_Mexico_pc_scatter.html","../pc_scatter/Mexico/Magnets_Mexico_pc_scatter.html","../pc_scatter/Mexico/Nuclear_Mexico_pc_scatter.html","../pc_scatter/Mexico/Solar_Mexico_pc_scatter.html","../pc_scatter/Mexico/Transmission_Mexico_pc_scatter.html","../pc_scatter/Mexico/Wind_Mexico_pc_scatter.html","../pc_scatter/South_Korea/Batteries_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Biofuel_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/EVs_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Electrolyzers_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Geothermal_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Heat_Pumps_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Magnets_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Nuclear_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Solar_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Transmission_South_Korea_pc_scatter.html","../pc_scatter/South_Korea/Wind_South_Korea_pc_scatter.html","../pc_scatter/Spain/Batteries_Spain_pc_scatter.html","../pc_scatter/Spain/Biofuel_Spain_pc_scatter.html","../pc_scatter/Spain/EVs_Spain_pc_scatter.html","../pc_scatter/Spain/Electrolyzers_Spain_pc_scatter.html","../pc_scatter/Spain/Geothermal_Spain_pc_scatter.html","../pc_scatter/Spain/Heat_Pumps_Spain_pc_scatter.html","../pc_scatter/Spain/Magnets_Spain_pc_scatter.html","../pc_scatter/Spain/Nuclear_Spain_pc_scatter.html","../pc_scatter/Spain/Solar_Spain_pc_scatter.html","../pc_scatter/Spain/Transmission_Spain_pc_scatter.html","../pc_scatter/Spain/Wind_Spain_pc_scatter.html","../pc_scatter/Vietnam/Batteries_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Biofuel_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/EVs_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Electrolyzers_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Geothermal_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Heat_Pumps_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Magnets_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Nuclear_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Solar_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Transmission_Vietnam_pc_scatter.html","../pc_scatter/Vietnam/Wind_Vietnam_pc_scatter.html","../radar/Brazil/Batteries_Brazil_radar.html","../radar/Brazil/Biofuel_Brazil_radar.html","../radar/Brazil/EVs_Brazil_radar.html","../radar/Brazil/Electrolyzers_Brazil_radar.html","../radar/Brazil/Geothermal_Brazil_radar.html","../radar/Brazil/Heat_Pumps_Brazil_radar.html","../radar/Brazil/Magnets_Brazil_radar.html","../radar/Brazil/Nuclear_Brazil_radar.html","../radar/Brazil/Solar_Brazil_radar.html","../radar/Brazil/Transmission_Brazil_radar.html","../radar/Brazil/Wind_Brazil_radar.html","../radar/India/Batteries_India_radar.html","../radar/India/Biofuel_India_radar.html","../radar/India/EVs_India_radar.html","../radar/India/Electrolyzers_India_radar.html","../radar/India/Geothermal_India_radar.html","../radar/India/Heat_Pumps_India_radar.html","../radar/India/Magnets_India_radar.html","../radar/India/Nuclear_India_radar.html","../radar/India/Solar_India_radar.html","../radar/India/Transmission_India_radar.html","../radar/India/Wind_India_radar.html","../radar/Japan/Batteries_Japan_radar.html","../radar/Japan/Biofuel_Japan_radar.html","../radar/Japan/EVs_Japan_radar.html","../radar/Japan/Electrolyzers_Japan_radar.html","../radar/Japan/Geothermal_Japan_radar.html","../radar/Japan/Heat_Pumps_Japan_radar.html","../radar/Japan/Magnets_Japan_radar.html","../radar/Japan/Nuclear_Japan_radar.html","../radar/Japan/Solar_Japan_radar.html","../radar/Japan/Transmission_Japan_radar.html","../radar/Japan/Wind_Japan_radar.html","../radar/Mexico/Batteries_Mexico_radar.html","../radar/Mexico/Biofuel_Mexico_radar.html","../radar/Mexico/EVs_Mexico_radar.html","../radar/Mexico/Electrolyzers_Mexico_radar.html","../radar/Mexico/Geothermal_Mexico_radar.html","../radar/Mexico/Heat_Pumps_Mexico_radar.html","../radar/Mexico/Magnets_Mexico_radar.html","../radar/Mexico/Nuclear_Mexico_radar.html","../radar/Mexico/Solar_Mexico_radar.html","../radar/Mexico/Transmission_Mexico_radar.html","../radar/Mexico/Wind_Mexico_radar.html","../radar/South_Korea/Batteries_South_Korea_radar.html","../radar/South_Korea/Biofuel_South_Korea_radar.html","../radar/South_Korea/EVs_South_Korea_radar.html","../radar/South_Korea/Electrolyzers_South_Korea_radar.html","../radar/South_Korea/Geothermal_South_Korea_radar.html","../radar/South_Korea/Heat_Pumps_South_Korea_radar.html","../radar/South_Korea/Magnets_South_Korea_radar.html","../radar/South_Korea/Nuclear_South_Korea_radar.html","../radar/South_Korea/Solar_South_Korea_radar.html","../radar/South_Korea/Transmission_South_Korea_radar.html","../radar/South_Korea/Wind_South_Korea_radar.html","../radar/Spain/Batteries_Spain_radar.html","../radar/Spain/Biofuel_Spain_radar.html","../radar/Spain/EVs_Spain_radar.html","../radar/Spain/Electrolyzers_Spain_radar.html","../radar/Spain/Geothermal_Spain_radar.html","../radar/Spain/Heat_Pumps_Spain_radar.html","../radar/Spain/Magnets_Spain_radar.html","../radar/Spain/Nuclear_Spain_radar.html","../radar/Spain/Solar_Spain_radar.html","../radar/Spain/Transmission_Spain_radar.html","../radar/Spain/Wind_Spain_radar.html","../radar/Vietnam/Batteries_Vietnam_radar.html","../radar/Vietnam/Biofuel_Vietnam_radar.html","../radar/Vietnam/EVs_Vietnam_radar.html","../radar/Vietnam/Electrolyzers_Vietnam_radar.html","../radar/Vietnam/Geothermal_Vietnam_radar.html","../radar/Vietnam/Heat_Pumps_Vietnam_radar.html","../radar/Vietnam/Magnets_Vietnam_radar.html","../radar/Vietnam/Nuclear_Vietnam_radar.html","../radar/Vietnam/Solar_Vietnam_radar.html","../radar/Vietnam/Transmission_Vietnam_radar.html","../radar/Vietnam/Wind_Vietnam_radar.html","../sankey/Brazil/Batteries_Brazil_sankey.html","../sankey/Brazil/Biofuel_Brazil_sankey.html","../sankey/Brazil/EVs_Brazil_sankey.html","../sankey/Brazil/Electrolyzers_Brazil_sankey.html","../sankey/Brazil/Geothermal_Brazil_sankey.html","../sankey/Brazil/Heat_Pumps_Brazil_sankey.html","../sankey/Brazil/Magnets_Brazil_sankey.html","../sankey/Brazil/Nuclear_Brazil_sankey.html","../sankey/Brazil/Solar_Brazil_sankey.html","../sankey/Brazil/Transmission_Brazil_sankey.html","../sankey/Brazil/Wind_Brazil_sankey.html","../sankey/India/Batteries_India_sankey.html","../sankey/India/Biofuel_India_sankey.html","../sankey/India/EVs_India_sankey.html","../sankey/India/Electrolyzers_India_sankey.html","../sankey/India/Geothermal_India_sankey.html","../sankey/India/Heat_Pumps_India_sankey.html","../sankey/India/Magnets_India_sankey.html","../sankey/India/Nuclear_India_sankey.html","../sankey/India/Solar_India_sankey.html","../sankey/India/Transmission_India_sankey.html","../sankey/India/Wind_India_sankey.html","../sankey/Japan/Batteries_Japan_sankey.html","../sankey/Japan/Biofuel_Japan_sankey.html","../sankey/Japan/EVs_Japan_sankey.html","../sankey/Japan/Electrolyzers_Japan_sankey.html","../sankey/Japan/Geothermal_Japan_sankey.html","../sankey/Japan/Heat_Pumps_Japan_sankey.html","../sankey/Japan/Magnets_Japan_sankey.html","../sankey/Japan/Nuclear_Japan_sankey.html","../sankey/Japan/Solar_Japan_sankey.html","../sankey/Japan/Transmission_Japan_sankey.html","../sankey/Japan/Wind_Japan_sankey.html","../sankey/Mexico/Batteries_Mexico_sankey.html","../sankey/Mexico/Biofuel_Mexico_sankey.html","../sankey/Mexico/EVs_Mexico_sankey.html","../sankey/Mexico/Electrolyzers_Mexico_sankey.html","../sankey/Mexico/Geothermal_Mexico_sankey.html","../sankey/Mexico/Heat_Pumps_Mexico_sankey.html","../sankey/Mexico/Magnets_Mexico_sankey.html","../sankey/Mexico/Nuclear_Mexico_sankey.html","../sankey/Mexico/Solar_Mexico_sankey.html","../sankey/Mexico/Transmission_Mexico_sankey.html","../sankey/Mexico/Wind_Mexico_sankey.html","../sankey/South_Korea/Batteries_South_Korea_sankey.html","../sankey/South_Korea/Biofuel_South_Korea_sankey.html","../sankey/South_Korea/EVs_South_Korea_sankey.html","../sankey/South_Korea/Electrolyzers_South_Korea_sankey.html","../sankey/South_Korea/Geothermal_South_Korea_sankey.html","../sankey/South_Korea/Heat_Pumps_South_Korea_sankey.html","../sankey/South_Korea/Magnets_South_Korea_sankey.html","../sankey/South_Korea/Nuclear_South_Korea_sankey.html","../sankey/South_Korea/Solar_South_Korea_sankey.html","../sankey/South_Korea/Transmission_South_Korea_sankey.html","../sankey/South_Korea/Wind_South_Korea_sankey.html","../sankey/Spain/Batteries_Spain_sankey.html","../sankey/Spain/Biofuel_Spain_sankey.html","../sankey/Spain/EVs_Spain_sankey.html","../sankey/Spain/Electrolyzers_Spain_sankey.html","../sankey/Spain/Geothermal_Spain_sankey.html","../sankey/Spain/Heat_Pumps_Spain_sankey.html","../sankey/Spain/Magnets_Spain_sankey.html","../sankey/Spain/Nuclear_Spain_sankey.html","../sankey/Spain/Solar_Spain_sankey.html","../sankey/Spain/Transmission_Spain_sankey.html","../sankey/Spain/Wind_Spain_sankey.html","../sankey/Vietnam/Batteries_Vietnam_sankey.html","../sankey/Vietnam/Biofuel_Vietnam_sankey.html","../sankey/Vietnam/EVs_Vietnam_sankey.html","../sankey/Vietnam/Electrolyzers_Vietnam_sankey.html","../sankey/Vietnam/Geothermal_Vietnam_sankey.html","../sankey/Vietnam/Heat_Pumps_Vietnam_sankey.html","../sankey/Vietnam/Magnets_Vietnam_sankey.html","../sankey/Vietnam/Nuclear_Vietnam_sankey.html","../sankey/Vietnam/Solar_Vietnam_sankey.html","../sankey/Vietnam/Transmission_Vietnam_sankey.html","../sankey/Vietnam/Wind_Vietnam_sankey.html","../sankey/old/sankey_atlas_style_test.html","../sankey/old/sankey_cobalt_ore_2022.html","../sankey/old/sankey_lithium_2022.html","../sankey/old/sankey_natural_graphite_2022.html","../sankey/old/sankey_tech_batteries_2022.html","../sankey/old/sankey_tech_biofuel_2022.html","../sankey/old/sankey_tech_electrolyzers_2022.html","../sankey/old/sankey_tech_geothermal_2022.html","../sankey/old/sankey_tech_heat_pumps_2022.html","../sankey/old/sankey_tech_magnets_2022.html","../sankey/old/sankey_tech_nuclear_2022.html","../sankey/old/sankey_tech_solar_2022.html","../sankey/old/sankey_tech_transmission_2022.html","../sankey/old/sankey_tech_wind_2022.html","../tech_tree/Batteries_tech_tree.html","../tech_tree/Biofuel_tech_tree.html","../tech_tree/EVs_tech_tree.html","../tech_tree/Electrolyzers_tech_tree.html","../tech_tree/Geothermal_tech_tree.html","../tech_tree/Heat_Pumps_tech_tree.html","../tech_tree/Magnets_tech_tree.html","../tech_tree/Nuclear_tech_tree.html","../tech_tree/Solar_tech_tree.html","../tech_tree/Transmission_tech_tree.html","../tech_tree/Wind_tech_tree.html","../trade_composition/Brazil/Batteries_Brazil_trade_composition.html","../trade_composition/Brazil/Biofuel_Brazil_trade_composition.html","../trade_composition/Brazil/EVs_Brazil_trade_composition.html","../trade_composition/Brazil/Electrolyzers_Brazil_trade_composition.html","../trade_composition/Brazil/Geothermal_Brazil_trade_composition.html","../trade_composition/Brazil/Heat_Pumps_Brazil_trade_composition.html","../trade_composition/Brazil/Magnets_Brazil_trade_composition.html","../trade_composition/Brazil/Nuclear_Brazil_trade_composition.html","../trade_composition/Brazil/Solar_Brazil_trade_composition.html","../trade_composition/Brazil/Transmission_Brazil_trade_composition.html","../trade_composition/Brazil/Wind_Brazil_trade_composition.html","../trade_composition/India/Batteries_India_trade_composition.html","../trade_composition/India/Biofuel_India_trade_composition.html","../trade_composition/India/EVs_India_trade_composition.html","../trade_composition/India/Electrolyzers_India_trade_composition.html","../trade_composition/India/Geothermal_India_trade_composition.html","../trade_composition/India/Heat_Pumps_India_trade_composition.html","../trade_composition/India/Magnets_India_trade_composition.html","../trade_composition/India/Nuclear_India_trade_composition.html","../trade_composition/India/Solar_India_trade_composition.html","../trade_composition/India/Transmission_India_trade_composition.html","../trade_composition/India/Wind_India_trade_composition.html","../trade_composition/Japan/Batteries_Japan_trade_composition.html","../trade_composition/Japan/Biofuel_Japan_trade_composition.html","../trade_composition/Japan/EVs_Japan_trade_composition.html","../trade_composition/Japan/Electrolyzers_Japan_trade_composition.html","../trade_composition/Japan/Geothermal_Japan_trade_composition.html","../trade_composition/Japan/Heat_Pumps_Japan_trade_composition.html","../trade_composition/Japan/Magnets_Japan_trade_composition.html","../trade_composition/Japan/Nuclear_Japan_trade_composition.html","../trade_composition/Japan/Solar_Japan_trade_composition.html","../trade_composition/Japan/Transmission_Japan_trade_composition.html","../trade_composition/Japan/Wind_Japan_trade_composition.html","../trade_composition/Mexico/Batteries_Mexico_trade_composition.html","../trade_composition/Mexico/Biofuel_Mexico_trade_composition.html","../trade_composition/Mexico/EVs_Mexico_trade_composition.html","../trade_composition/Mexico/Electrolyzers_Mexico_trade_composition.html","../trade_composition/Mexico/Geothermal_Mexico_trade_composition.html","../trade_composition/Mexico/Heat_Pumps_Mexico_trade_composition.html","../trade_composition/Mexico/Magnets_Mexico_trade_composition.html","../trade_composition/Mexico/Nuclear_Mexico_trade_composition.html","../trade_composition/Mexico/Solar_Mexico_trade_composition.html","../trade_composition/Mexico/Transmission_Mexico_trade_composition.html","../trade_composition/Mexico/Wind_Mexico_trade_composition.html","../trade_composition/South_Korea/Batteries_South_Korea_trade_composition.html","../trade_composition/South_Korea/Biofuel_South_Korea_trade_composition.html","../trade_composition/South_Korea/EVs_South_Korea_trade_composition.html","../trade_composition/South_Korea/Electrolyzers_South_Korea_trade_composition.html","../trade_composition/South_Korea/Geothermal_South_Korea_trade_composition.html","../trade_composition/South_Korea/Heat_Pumps_South_Korea_trade_composition.html","../trade_composition/South_Korea/Magnets_South_Korea_trade_composition.html","../trade_composition/South_Korea/Nuclear_South_Korea_trade_composition.html","../trade_composition/South_Korea/Solar_South_Korea_trade_composition.html","../trade_composition/South_Korea/Transmission_South_Korea_trade_composition.html","../trade_composition/South_Korea/Wind_South_Korea_trade_composition.html","../trade_composition/Spain/Batteries_Spain_trade_composition.html","../trade_composition/Spain/Biofuel_Spain_trade_composition.html","../trade_composition/Spain/EVs_Spain_trade_composition.html","../trade_composition/Spain/Electrolyzers_Spain_trade_composition.html","../trade_composition/Spain/Geothermal_Spain_trade_composition.html","../trade_composition/Spain/Heat_Pumps_Spain_trade_composition.html","../trade_composition/Spain/Magnets_Spain_trade_composition.html","../trade_composition/Spain/Nuclear_Spain_trade_composition.html","../trade_composition/Spain/Solar_Spain_trade_composition.html","../trade_composition/Spain/Transmission_Spain_trade_composition.html","../trade_composition/Spain/Wind_Spain_trade_composition.html","../trade_composition/Vietnam/Batteries_Vietnam_trade_composition.html","../trade_composition/Vietnam/Biofuel_Vietnam_trade_composition.html","../trade_composition/Vietnam/EVs_Vietnam_trade_composition.html","../trade_composition/Vietnam/Electrolyzers_Vietnam_trade_composition.html","../trade_composition/Vietnam/Geothermal_Vietnam_trade_composition.html","../trade_composition/Vietnam/Heat_Pumps_Vietnam_trade_composition.html","../trade_composition/Vietnam/Magnets_Vietnam_trade_composition.html","../trade_composition/Vietnam/Nuclear_Vietnam_trade_composition.html","../trade_composition/Vietnam/Solar_Vietnam_trade_composition.html","../trade_composition/Vietnam/Transmission_Vietnam_trade_composition.html","../trade_composition/Vietnam/Wind_Vietnam_trade_composition.html","../trade_map/Brazil/Batteries_Brazil_trade_map.html","../trade_map/Brazil/Biofuel_Brazil_trade_map.html","../trade_map/Brazil/EVs_Brazil_trade_map.html","../trade_map/Brazil/Electrolyzers_Brazil_trade_map.html","../trade_map/Brazil/Geothermal_Brazil_trade_map.html","../trade_map/Brazil/Heat_Pumps_Brazil_trade_map.html","../trade_map/Brazil/Magnets_Brazil_trade_map.html","../trade_map/Brazil/Nuclear_Brazil_trade_map.html","../trade_map/Brazil/Solar_Brazil_trade_map.html","../trade_map/Brazil/Transmission_Brazil_trade_map.html","../trade_map/Brazil/Wind_Brazil_trade_map.html","../trade_map/India/Batteries_India_trade_map.html","../trade_map/India/Biofuel_India_trade_map.html","../trade_map/India/EVs_India_trade_map.html","../trade_map/India/Electrolyzers_India_trade_map.html","../trade_map/India/Geothermal_India_trade_map.html","../trade_map/India/Heat_Pumps_India_trade_map.html","../trade_map/India/Magnets_India_trade_map.html","../trade_map/India/Nuclear_India_trade_map.html","../trade_map/India/Solar_India_trade_map.html","../trade_map/India/Transmission_India_trade_map.html","../trade_map/India/Wind_India_trade_map.html","../trade_map/Japan/Batteries_Japan_trade_map.html","../trade_map/Japan/Biofuel_Japan_trade_map.html","../trade_map/Japan/EVs_Japan_trade_map.html","../trade_map/Japan/Electrolyzers_Japan_trade_map.html","../trade_map/Japan/Geothermal_Japan_trade_map.html","../trade_map/Japan/Heat_Pumps_Japan_trade_map.html","../trade_map/Japan/Magnets_Japan_trade_map.html","../trade_map/Japan/Nuclear_Japan_trade_map.html","../trade_map/Japan/Solar_Japan_trade_map.html","../trade_map/Japan/Transmission_Japan_trade_map.html","../trade_map/Japan/Wind_Japan_trade_map.html","../trade_map/Mexico/Batteries_Mexico_trade_map.html","../trade_map/Mexico/Biofuel_Mexico_trade_map.html","../trade_map/Mexico/EVs_Mexico_trade_map.html","../trade_map/Mexico/Electrolyzers_Mexico_trade_map.html","../trade_map/Mexico/Geothermal_Mexico_trade_map.html","../trade_map/Mexico/Heat_Pumps_Mexico_trade_map.html","../trade_map/Mexico/Magnets_Mexico_trade_map.html","../trade_map/Mexico/Nuclear_Mexico_trade_map.html","../trade_map/Mexico/Solar_Mexico_trade_map.html","../trade_map/Mexico/Transmission_Mexico_trade_map.html","../trade_map/Mexico/Wind_Mexico_trade_map.html","../trade_map/South_Korea/Batteries_South_Korea_trade_map.html","../trade_map/South_Korea/Biofuel_South_Korea_trade_map.html","../trade_map/South_Korea/EVs_South_Korea_trade_map.html","../trade_map/South_Korea/Electrolyzers_South_Korea_trade_map.html","../trade_map/South_Korea/Geothermal_South_Korea_trade_map.html","../trade_map/South_Korea/Heat_Pumps_South_Korea_trade_map.html","../trade_map/South_Korea/Magnets_South_Korea_trade_map.html","../trade_map/South_Korea/Nuclear_South_Korea_trade_map.html","../trade_map/South_Korea/Solar_South_Korea_trade_map.html","../trade_map/South_Korea/Transmission_South_Korea_trade_map.html","../trade_map/South_Korea/Wind_South_Korea_trade_map.html","../trade_map/Spain/Batteries_Spain_trade_map.html","../trade_map/Spain/Biofuel_Spain_trade_map.html","../trade_map/Spain/EVs_Spain_trade_map.html","../trade_map/Spain/Electrolyzers_Spain_trade_map.html","../trade_map/Spain/Geothermal_Spain_trade_map.html","../trade_map/Spain/Heat_Pumps_Spain_trade_map.html","../trade_map/Spain/Magnets_Spain_trade_map.html","../trade_map/Spain/Nuclear_Spain_trade_map.html","../trade_map/Spain/Solar_Spain_trade_map.html","../trade_map/Spain/Transmission_Spain_trade_map.html","../trade_map/Spain/Wind_Spain_trade_map.html","../trade_map/Vietnam/Batteries_Vietnam_trade_map.html","../trade_map/Vietnam/Biofuel_Vietnam_trade_map.html","../trade_map/Vietnam/EVs_Vietnam_trade_map.html","../trade_map/Vietnam/Electrolyzers_Vietnam_trade_map.html","../trade_map/Vietnam/Geothermal_Vietnam_trade_map.html","../trade_map/Vietnam/Heat_Pumps_Vietnam_trade_map.html","../trade_map/Vietnam/Magnets_Vietnam_trade_map.html","../trade_map/Vietnam/Nuclear_Vietnam_trade_map.html","../trade_map/Vietnam/Solar_Vietnam_trade_map.html","../trade_map/Vietnam/Transmission_Vietnam_trade_map.html","../trade_map/Vietnam/Wind_Vietnam_trade_map.html","../trade_timeline/Brazil/Batteries_Brazil_trade_timeline.html","../trade_timeline/Brazil/Biofuel_Brazil_trade_timeline.html","../trade_timeline/Brazil/EVs_Brazil_trade_timeline.html","../trade_timeline/Brazil/Electrolyzers_Brazil_trade_timeline.html","../trade_timeline/Brazil/Geothermal_Brazil_trade_timeline.html","../trade_timeline/Brazil/Heat_Pumps_Brazil_trade_timeline.html","../trade_timeline/Brazil/Magnets_Brazil_trade_timeline.html","../trade_timeline/Brazil/Nuclear_Brazil_trade_timeline.html","../trade_timeline/Brazil/Solar_Brazil_trade_timeline.html","../trade_timeline/Brazil/Transmission_Brazil_trade_timeline.html","../trade_timeline/Brazil/Wind_Brazil_trade_timeline.html","../trade_timeline/India/Batteries_India_trade_timeline.html","../trade_timeline/India/Biofuel_India_trade_timeline.html","../trade_timeline/India/EVs_India_trade_timeline.html","../trade_timeline/India/Electrolyzers_India_trade_timeline.html","../trade_timeline/India/Geothermal_India_trade_timeline.html","../trade_timeline/India/Heat_Pumps_India_trade_timeline.html","../trade_timeline/India/Magnets_India_trade_timeline.html","../trade_timeline/India/Nuclear_India_trade_timeline.html","../trade_timeline/India/Solar_India_trade_timeline.html","../trade_timeline/India/Transmission_India_trade_timeline.html","../trade_timeline/India/Wind_India_trade_timeline.html","../trade_timeline/Japan/Batteries_Japan_trade_timeline.html","../trade_timeline/Japan/Biofuel_Japan_trade_timeline.html","../trade_timeline/Japan/EVs_Japan_trade_timeline.html","../trade_timeline/Japan/Electrolyzers_Japan_trade_timeline.html","../trade_timeline/Japan/Geothermal_Japan_trade_timeline.html","../trade_timeline/Japan/Heat_Pumps_Japan_trade_timeline.html","../trade_timeline/Japan/Magnets_Japan_trade_timeline.html","../trade_timeline/Japan/Nuclear_Japan_trade_timeline.html","../trade_timeline/Japan/Solar_Japan_trade_timeline.html","../trade_timeline/Japan/Transmission_Japan_trade_timeline.html","../trade_timeline/Japan/Wind_Japan_trade_timeline.html","../trade_timeline/Mexico/Batteries_Mexico_trade_timeline.html","../trade_timeline/Mexico/Biofuel_Mexico_trade_timeline.html","../trade_timeline/Mexico/EVs_Mexico_trade_timeline.html","../trade_timeline/Mexico/Electrolyzers_Mexico_trade_timeline.html","../trade_timeline/Mexico/Geothermal_Mexico_trade_timeline.html","../trade_timeline/Mexico/Heat_Pumps_Mexico_trade_timeline.html","../trade_timeline/Mexico/Magnets_Mexico_trade_timeline.html","../trade_timeline/Mexico/Nuclear_Mexico_trade_timeline.html","../trade_timeline/Mexico/Solar_Mexico_trade_timeline.html","../trade_timeline/Mexico/Transmission_Mexico_trade_timeline.html","../trade_timeline/Mexico/Wind_Mexico_trade_timeline.html","../trade_timeline/South_Korea/Batteries_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Biofuel_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/EVs_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Electrolyzers_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Geothermal_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Heat_Pumps_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Magnets_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Nuclear_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Solar_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Transmission_South_Korea_trade_timeline.html","../trade_timeline/South_Korea/Wind_South_Korea_trade_timeline.html","../trade_timeline/Spain/Batteries_Spain_trade_timeline.html","../trade_timeline/Spain/Biofuel_Spain_trade_timeline.html","../trade_timeline/Spain/EVs_Spain_trade_timeline.html","../trade_timeline/Spain/Electrolyzers_Spain_trade_timeline.html","../trade_timeline/Spain/Geothermal_Spain_trade_timeline.html","../trade_timeline/Spain/Heat_Pumps_Spain_trade_timeline.html","../trade_timeline/Spain/Magnets_Spain_trade_timeline.html","../trade_timeline/Spain/Nuclear_Spain_trade_timeline.html","../trade_timeline/Spain/Solar_Spain_trade_timeline.html","../trade_timeline/Spain/Transmission_Spain_trade_timeline.html","../trade_timeline/Spain/Wind_Spain_trade_timeline.html","../trade_timeline/Vietnam/Batteries_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Biofuel_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/EVs_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Electrolyzers_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Geothermal_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Heat_Pumps_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Magnets_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Nuclear_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Solar_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Transmission_Vietnam_trade_timeline.html","../trade_timeline/Vietnam/Wind_Vietnam_trade_timeline.html"]);
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+function bySlugTech(s){ return TECHS.find(t=>t.slug===s); }
+function bySlugCountry(s){ return COUNTRIES.find(c=>c.slug===s); }
+function modById(id){ return MODULES.find(m=>m.id===id); }
+
+function resolvePath(mod, techSlug, countrySlug){
+  return mod.tpl.replace(/\{module\}/g, mod.id)
+               .replace(/\{tech\}/g, techSlug)
+               .replace(/\{country\}/g, countrySlug);
+}
+function available(mod, techSlug, countrySlug){
+  return PATHS.has(resolvePath(mod, techSlug, countrySlug));
+}
+
+// ── selector state ───────────────────────────────────────────────────────────
+let selVis = [];                       // module ids (multi)
+let selTech = TECHS[0] ? TECHS[0].slug : null;
+let selCountry = COUNTRIES[0] ? COUNTRIES[0].slug : null;
+
+function renderSelector(){
+  // Modules (multi-select, live only). Disable when no panel for current tech x country.
+  const cm = document.getElementById('col-modules');
+  cm.innerHTML = '';
+  MODULES.forEach(m=>{
+    const ok = available(m, selTech, selCountry);
+    const on = selVis.includes(m.id);
+    const b = document.createElement('button');
+    b.className = 'opt' + (on?' on':'') + (ok?'':' disabled');
+    b.innerHTML = '<span class="box">'+(on?'✓':'')+'</span>'
+                + '<span>'+m.label+'</span>'
+                + '<span class="fam">'+m.family+'</span>';
+    if(ok){ b.onclick = ()=>{ toggleVis(m.id); }; }
+    cm.appendChild(b);
+  });
+  document.getElementById('hd-vis').textContent = selVis.length ? '('+selVis.length+' selected)' : '';
+
+  // Techs (single)
+  const ct = document.getElementById('col-techs');
+  ct.innerHTML = '';
+  TECHS.forEach(t=>{
+    const on = t.slug===selTech;
+    const b = document.createElement('button');
+    b.className = 'opt' + (on?' on':'');
+    b.innerHTML = '<span class="swatch" style="background:'+t.color+'"></span>'
+                + '<span>'+t.name+'</span>'
+                + '<span class="radio" style="'+(on?'border-color:'+t.color+';box-shadow:inset 0 0 0 3px '+t.color:'')+'"></span>';
+    b.onclick = ()=>{ selTech = t.slug; pruneVis(); renderSelector(); };
+    ct.appendChild(b);
+  });
+
+  // Countries (single)
+  const cc = document.getElementById('col-countries');
+  cc.innerHTML = '';
+  COUNTRIES.forEach(c=>{
+    const on = c.slug===selCountry;
+    const b = document.createElement('button');
+    b.className = 'opt' + (on?' on':'');
+    b.innerHTML = '<span class="swatch" style="background:'+c.color+'"></span>'
+                + '<span>'+c.name+'</span>'
+                + '<span class="radio" style="'+(on?'border-color:'+c.color+';box-shadow:inset 0 0 0 3px '+c.color:'')+'"></span>';
+    b.onclick = ()=>{ selCountry = c.slug; pruneVis(); renderSelector(); };
+    cc.appendChild(b);
+  });
+
+  // Summary + build button state
+  const tn = bySlugTech(selTech), cn = bySlugCountry(selCountry);
+  document.getElementById('sel-summary').innerHTML = selVis.length
+    ? '<b>'+(tn?tn.name:'?')+'</b> · <b>'+(cn?cn.name:'?')+'</b> · '+selVis.length+' visual'+(selVis.length>1?'s':'')
+    : 'Pick at least one visual to build a sheet.';
+  document.getElementById('btn-build').disabled = selVis.length===0;
+}
+
+function toggleVis(id){
+  const i = selVis.indexOf(id);
+  if(i>=0) selVis.splice(i,1); else selVis.push(id);
+  renderSelector();
+}
+// Drop selected visuals that became unavailable after a tech/country change
+function pruneVis(){
+  selVis = selVis.filter(id=>available(modById(id), selTech, selCountry));
+}
+
+// ── build → URL hash → report ────────────────────────────────────────────────
+function buildSheet(){
+  if(!selVis.length) return;
+  location.hash = 'tech='+selTech+'&country='+selCountry+'&vis='+selVis.join(',');
+}
+
+function parseHash(){
+  const h = location.hash.replace(/^#/, '');
+  if(!h) return null;
+  const p = {};
+  h.split('&').forEach(kv=>{ const [k,v]=kv.split('='); p[k]=decodeURIComponent(v||''); });
+  if(!p.tech || !p.country || !p.vis) return null;
+  return { tech:p.tech, country:p.country, vis:p.vis.split(',').filter(Boolean) };
+}
+
+let repPanes = [];   // [{id,label,family,path}]
+function renderReport(sheet){
+  const t = bySlugTech(sheet.tech), c = bySlugCountry(sheet.country);
+  if(!t || !c) { showSelector(); return; }
+  const accent = t.color || '#3cb54a';
+  document.documentElement.style.setProperty('--accent', accent);
+
+  // Keep only available visuals, in registry order
+  repPanes = MODULES.filter(m=>sheet.vis.includes(m.id) && available(m, sheet.tech, sheet.country))
+                    .map(m=>({ id:m.id, label:m.label, family:m.family,
+                               path:resolvePath(m, sheet.tech, sheet.country) }));
+  if(!repPanes.length){ showSelector(); return; }
+
+  document.getElementById('rep-country').textContent = c.name;
+  document.getElementById('rep-tech').textContent = t.name + ' Value Chain';
+
+  // Sidebar nav
+  const nav = document.getElementById('rep-nav');
+  nav.innerHTML = '';
+  repPanes.forEach((p,i)=>{
+    const b = document.createElement('button');
+    b.className = 'ir-nav-link' + (i===0?' active':'');
+    b.dataset.idx = i;
+    b.innerHTML = '<span class="ndot"></span><span>'+p.label+'</span><span class="ir-nav-num">'+String(i+1).padStart(2,'0')+'</span>';
+    b.onclick = ()=>showPane(i);
+    nav.appendChild(b);
+  });
+
+  // Panes (iframes lazy-loaded on first show). Reset load flags — panes are
+  // rebuilt here, so any prior "loaded" markers no longer apply.
+  FRAME_LOADED = {};
+  const main = document.getElementById('rep-main');
+  main.innerHTML = '';
+  repPanes.forEach((p,i)=>{
+    const pane = document.createElement('div');
+    pane.className = 'ir-pane' + (i===0?' active':'');
+    pane.id = 'rep-pane-'+i;
+    pane.innerHTML =
+      '<div class="ir-pane-head"><div class="ir-pane-title"><span class="accent">'
+        + String(i+1).padStart(2,'0') + ' —</span> ' + p.label
+        + '</div><div class="ir-pane-sub">' + t.name + ' · ' + c.name + ' · ' + p.family + '</div></div>'
+      + '<div class="ir-frame-wrap"><div class="ph">Loading…</div>'
+        + '<iframe data-src="' + p.path + '" '
+        + 'sandbox="allow-scripts allow-same-origin allow-popups allow-downloads"></iframe></div>';
+    main.appendChild(pane);
+  });
+
+  document.body.classList.add('report-mode');
+  loadPaneFrame(0);
+}
+
+let FRAME_LOADED = {};
+function loadPaneFrame(i){
+  if(FRAME_LOADED[i]) return;
+  const pane = document.getElementById('rep-pane-'+i);
+  if(!pane) return;
+  const ifr = pane.querySelector('iframe');
+  const ph  = pane.querySelector('.ph');
+  if(ifr && ifr.dataset.src){
+    ifr.onload  = ()=>{ if(ph) ph.style.display='none'; };
+    ifr.onerror = ()=>{ if(ph) ph.textContent='Could not load panel.'; };
+    ifr.src = ifr.dataset.src;
+    FRAME_LOADED[i] = true;
+  }
+}
+
+function showPane(i){
+  document.querySelectorAll('#rep-main .ir-pane').forEach(p=>p.classList.remove('active'));
+  const pane = document.getElementById('rep-pane-'+i);
+  if(pane) pane.classList.add('active');
+  document.querySelectorAll('#rep-nav .ir-nav-link').forEach(l=>l.classList.toggle('active', l.dataset.idx==i));
+  loadPaneFrame(i);
+}
+
+function showSelector(){
+  document.body.classList.remove('report-mode');
+  if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+}
+
+// ── routing ──────────────────────────────────────────────────────────────────
+function route(){
+  const sheet = parseHash();
+  if(sheet){
+    // sync selector state to the sheet so "Back" keeps the selection
+    selTech = sheet.tech; selCountry = sheet.country; selVis = sheet.vis.slice();
+    renderSelector();
+    renderReport(sheet);
+  } else {
+    document.body.classList.remove('report-mode');
+    document.documentElement.style.setProperty('--accent', '#3cb54a');
+    renderSelector();
+  }
+}
+
+document.getElementById('btn-build').addEventListener('click', buildSheet);
+document.getElementById('tb-back').addEventListener('click', showSelector);
+document.getElementById('tb-print').addEventListener('click', ()=>window.print());
+window.addEventListener('hashchange', route);
+route();   // script is at end of <body>, DOM is ready — single entry point
+</script>
+</body>
+</html>
+

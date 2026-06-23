@@ -415,6 +415,19 @@ section:last-of-type { padding-bottom: 88px; }
     <div class="section-label"><span class="sl-num">02 —</span> Intelligence Reports <span style="font-size:9px;font-weight:700;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">IN PROGRESS</span></div>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:18px;">Country × technology analytics reports integrating trade data, PC scores, firm capabilities, and policy synthesis. Solar India is the pilot; additional country×tech reports in development.</p>
 
+    <a href="analysis/intelligence/report_builder.html"
+       style="display:flex;align-items:center;gap:14px;max-width:700px;margin-bottom:22px;padding:14px 18px;
+              background:linear-gradient(90deg,rgba(60,181,74,.12),rgba(60,181,74,.04));
+              border:1px solid rgba(60,181,74,.35);border-radius:10px;text-decoration:none;transition:border-color .15s;"
+       onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(60,181,74,.35)'">
+      <span style="font-size:24px;line-height:1">&#9881;</span>
+      <span style="flex:1">
+        <span style="display:block;font-size:14px;font-weight:800;color:#fff;">Report Builder &rarr;</span>
+        <span style="display:block;font-size:11.5px;color:var(--muted);margin-top:2px;">Pick a technology, a country, and the visuals — assemble a custom intelligence-report sheet (interactive, PDF-printable).</span>
+      </span>
+      <span style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:rgba(60,181,74,.12);border:1px solid rgba(60,181,74,.3);border-radius:3px;padding:2px 8px;">New</span>
+    </a>
+
     <div class="ir-tabs-row" id="ir-tabs">
       <div class="ir-tab-card active" onclick="irTabSwitch('solar-india',this)">
         <span class="ir-tab-tech" style="color:var(--solar)">Solar</span>
@@ -992,38 +1005,43 @@ function skCountry(name, el) {
 }
 
 // ── Modular Visualization Browser ────────────────────────────────────────────
+// REGISTRY-DATA: the three arrays below are generated from data/module_registry.csv
+// + data/case_registry.csv by scripts/render/build_report_builder.R. Do not edit by
+// hand — edit the CSVs and re-run the script. Markers must stay intact.
+// <<REGISTRY-DATA>>
 const BR_MODULES = [
-  {id:'radar',           label:'Capability Radar'},
-  {id:'pc_scatter',      label:'PC Scatter'},
-  {id:'trade_timeline',  label:'Trade Timeline'},
-  {id:'trade_composition',label:'Trade Composition'},
-  {id:'tech_tree',       label:'Tech Tree'},
-  {id:'sankey',          label:'Sankey'},
-  {id:'trade_map',       label:'Trade Map'},
-  {id:'activity_map',    label:'Activity Map'},
+  {id:'radar', label:'Capability Radar'},
+  {id:'pc_scatter', label:'PC Scatter'},
+  {id:'trade_timeline', label:'Trade Timeline'},
+  {id:'trade_composition', label:'Trade Composition'},
+  {id:'tech_tree', label:'Tech Tree'},
+  {id:'sankey', label:'Sankey'},
+  {id:'trade_map', label:'Trade Map'},
+  {id:'activity_map', label:'Activity Map'},
 ];
 const BR_TECHS = [
-  {name:'Solar',         slug:'Solar',         col:'#eab308'},
-  {name:'Nuclear',       slug:'Nuclear',       col:'#0ea5e9'},
-  {name:'Batteries',     slug:'Batteries',     col:'#f59e0b'},
-  {name:'Transmission',  slug:'Transmission',  col:'#06b6d4'},
-  {name:'Wind',          slug:'Wind',          col:'#3b82f6'},
-  {name:'Biofuel',       slug:'Biofuel',       col:'#84cc16'},
+  {name:'Solar', slug:'Solar', col:'#eab308'},
+  {name:'Nuclear', slug:'Nuclear', col:'#0ea5e9'},
+  {name:'Batteries', slug:'Batteries', col:'#f59e0b'},
+  {name:'Transmission', slug:'Transmission', col:'#06b6d4'},
+  {name:'Wind', slug:'Wind', col:'#3b82f6'},
+  {name:'Biofuel', slug:'Biofuel', col:'#84cc16'},
   {name:'Electrolyzers', slug:'Electrolyzers', col:'#a855f7'},
-  {name:'Geothermal',    slug:'Geothermal',    col:'#ef4444'},
-  {name:'Heat Pumps',    slug:'Heat_Pumps',    col:'#f97316'},
-  {name:'Magnets',       slug:'Magnets',       col:'#ec4899'},
-  {name:'EVs',           slug:'EVs',           col:'#14b8a6'},
+  {name:'Geothermal', slug:'Geothermal', col:'#ef4444'},
+  {name:'Heat Pumps', slug:'Heat_Pumps', col:'#f97316'},
+  {name:'Magnets', slug:'Magnets', col:'#ec4899'},
+  {name:'EVs', slug:'EVs', col:'#14b8a6'},
 ];
 const BR_COUNTRIES = [
-  {name:'India',     slug:'India',       col:'#3cb54a'},
-  {name:'Brazil',    slug:'Brazil',      col:'#C17A2E'},
-  {name:'Japan',     slug:'Japan',       col:'#0ea5e9'},
-  {name:'S. Korea',  slug:'South_Korea', col:'#06b6d4'},
-  {name:'Vietnam',   slug:'Vietnam',     col:'#3b82f6'},
-  {name:'Mexico',    slug:'Mexico',      col:'#84cc16'},
-  {name:'Spain',     slug:'Spain',       col:'#ef4444'},
+  {name:'India', slug:'India', col:'#3cb54a'},
+  {name:'Brazil', slug:'Brazil', col:'#C17A2E'},
+  {name:'Japan', slug:'Japan', col:'#0ea5e9'},
+  {name:'S. Korea', slug:'South_Korea', col:'#06b6d4'},
+  {name:'Vietnam', slug:'Vietnam', col:'#3b82f6'},
+  {name:'Mexico', slug:'Mexico', col:'#84cc16'},
+  {name:'Spain', slug:'Spain', col:'#ef4444'},
 ];
+// <</REGISTRY-DATA>>
 
 let brMod = 'radar', brCurTech = 'Solar', brCurCountry = 'India';
 let brFadeTimer = null;
