@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Data-driven report · Option A prototype</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#0a0f14;color:#dde8dd;font-family:"Archivo",system-ui,sans-serif;padding:16px 22px 60px;}
+  .top{display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px;margin-bottom:16px;flex-wrap:wrap;}
+  .top .eyebrow{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#3cb54a;}
+  .top h1{font-size:17px;font-weight:800;color:#fff;}
+  .top h1 .tech{color:#eab308;}
+  select{background:#0b1a0d;color:#dde8dd;border:1px solid rgba(255,255,255,.15);border-radius:6px;
+    padding:5px 9px;font-family:inherit;font-size:12px;cursor:pointer;}
+  .badge{margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:#3cb54a;background:rgba(60,181,74,.12);border:1px solid rgba(60,181,74,.3);border-radius:3px;padding:3px 9px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{background:#0b1a0d;border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:13px 15px;min-height:300px;}
+  .card.wide{grid-column:1 / -1;}
+  .card h3{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7a9b7d;margin-bottom:10px;display:flex;gap:8px;}
+  .card h3 .fam{margin-left:auto;color:rgba(255,255,255,.25);font-size:9px;}
+  .row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .row .v{color:#a5d6a7;font-weight:600;}
+  .pcols{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;}
+  .leg{display:flex;flex-wrap:wrap;gap:7px;font-size:9px;color:rgba(255,255,255,.5);margin-top:8px;}
+  .tip{position:fixed;background:rgba(6,13,8,.95);border:1px solid rgba(60,181,74,.3);border-radius:5px;
+    padding:5px 9px;font-size:11px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:99;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div>
+    <div class="eyebrow">NZIPL · Data-driven report (Option A prototype)</div>
+    <h1><span class="tech" id="h-tech">—</span> · <span id="h-country">—</span></h1>
+  </div>
+  <select id="sel-tech"></select>
+  <select id="sel-country"></select>
+  <span class="badge" id="h-meta"></span>
+</div>
+
+<div class="grid">
+  <div class="card"><h3>Capability Radar <span class="fam">SHAP × RCA</span></h3><svg id="radar" width="100%" height="300"></svg><div class="leg" id="radar-leg"></div></div>
+  <div class="card"><h3>PC Scatter <span class="fam">SHAP × trade value</span></h3><svg id="scatter" width="100%" height="300"></svg></div>
+  <div class="card wide"><h3>Trade Timeline <span class="fam">exports by value-chain position</span></h3><svg id="tl" width="100%" height="300"></svg><div class="leg" id="tl-leg"></div></div>
+  <div class="card wide"><h3>Trade Composition <span class="fam">treemap · top products by position</span></h3><svg id="tm" width="100%" height="320"></svg></div>
+  <div class="card"><h3>Top export destinations</h3><div id="dest"></div></div>
+  <div class="card"><h3>Top import sources</h3><div id="src"></div></div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const SR = {
+  "Upstream|Raw Material":"#b45309","Upstream|Processed Material":"#c17a2e",
+  "Midstream|Processed Material":"#22c55e","Midstream|Process Equipment":"#65a30d",
+  "Midstream|Product Component":"#16a34a","Downstream|Product Component":"#4ade80",
+  "Downstream|Process Equipment":"#6b7280","Downstream|Final Product":"#f97316",
+  "Final Product|Final Product":"#f97316"
+};
+const CAT = {Chemicals:"#2563eb",Electronics:"#7c3aed",Metals:"#ef4444",Machinery:"#10b981","Industrial Materials":"#f59e0b",Other:"#6b7280"};
+const srKey = d => d.stage+"|"+d.role;
+const fmtV = v => v>=1e6?"$"+(v/1e6).toFixed(1)+"B":v>=1e3?"$"+(v/1e3).toFixed(1)+"M":"$"+(+v).toFixed(0)+"K";
+const tip = d3.select("#tip");
+const showTip=(e,h)=>tip.style("opacity",1).style("left",(e.clientX+12)+"px").style("top",(e.clientY+12)+"px").html(h);
+const hideTip=()=>tip.style("opacity",0);
+let CUR = {tech:"Solar", country:"India"}, IDX=null;
+
+async function boot(){
+  IDX = await (await fetch('data/_index.json')).json(); IDX=Array.isArray(IDX)?IDX[0]:IDX;
+  const p = new URLSearchParams(location.search);
+  CUR.tech = (p.get('tech')||CUR.tech); CUR.country = (p.get('country')||CUR.country);
+  const st=d3.select('#sel-tech'); st.selectAll('option').data(IDX.techs).join('option').attr('value',d=>d).text(d=>d);
+  const sc=d3.select('#sel-country'); sc.selectAll('option').data(IDX.countries).join('option').attr('value',d=>d.slug).text(d=>d.name.replace(/_/g,' '));
+  st.property('value',CUR.tech); sc.property('value',CUR.country);
+  st.on('change',function(){CUR.tech=this.value;load();});
+  sc.on('change',function(){CUR.country=this.value;load();});
+  load();
+}
+
+async function load(){
+  const id = CUR.tech.replace(/ /g,'_')+'_'+CUR.country;
+  let d; try{ d=await (await fetch('data/'+id+'.json')).json(); }catch(e){ return; }
+  d=Array.isArray(d)?d[0]:d;
+  document.getElementById('h-tech').textContent=d.tech;
+  document.getElementById('h-country').textContent=(d.country||'').replace(/_/g,' ');
+  document.getElementById('h-meta').textContent=(JSON.stringify(d).length/1024).toFixed(0)+' KB · '+id+'.json';
+  drawRadar(d.radar); drawScatter(d.scatter);
+  drawTimeline(d.timeline.filter(r=>r.flow==='exp'));
+  drawTreemap(d.products);
+  partners('dest',d.partners.filter(r=>r.dir==='dest')); partners('src',d.partners.filter(r=>r.dir==='src'));
+}
+
+function drawRadar(rows){
+  const svg=d3.select('#radar'); svg.selectAll('*').remove();
+  const W=svg.node().clientWidth||400,H=300,cx=W/2,cy=H/2+6,R=Math.min(W,H)/2-46;
+  const n=rows.length, ang=i=>-Math.PI/2+i*2*Math.PI/n;
+  const maxShap=d3.max(rows,d=>Math.abs(d.shap))||1, maxRca=d3.max(rows,d=>d.rca)||1;
+  [0.33,0.66,1].forEach(g=>svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R*g).attr('fill','none').attr('stroke','rgba(255,255,255,.07)'));
+  rows.forEach((d,i)=>{ svg.append('line').attr('x1',cx).attr('y1',cy).attr('x2',cx+R*Math.cos(ang(i))).attr('y2',cy+R*Math.sin(ang(i))).attr('stroke','rgba(255,255,255,.12)');
+    svg.append('text').attr('x',cx+(R+16)*Math.cos(ang(i))).attr('y',cy+(R+16)*Math.sin(ang(i))).attr('text-anchor','middle').attr('dominant-baseline','middle').attr('font-size','9px').attr('fill','rgba(255,255,255,.6)').text(d.category); });
+  const poly=(acc,col,fill)=>{ const pts=rows.map((d,i)=>{const r=R*Math.min(1,Math.abs(acc(d)));return [cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))];});
+    svg.append('polygon').attr('points',pts.map(p=>p.join(',')).join(' ')).attr('fill',fill).attr('stroke',col).attr('stroke-width',1.8); };
+  poly(d=>d.rca/maxRca,'#3cb54a','rgba(60,181,74,.12)');
+  poly(d=>Math.abs(d.shap)/maxShap,'#eab308','rgba(234,179,8,.18)');
+  d3.select('#radar-leg').html('<span><span class="dot" style="background:#eab308"></span>SHAP weight</span><span><span class="dot" style="background:#3cb54a"></span>Country RCA</span>');
+}
+
+function drawScatter(rows){
+  const svg=d3.select('#scatter'); svg.selectAll('*').remove();
+  if(!rows||!rows.length) return;
+  const W=svg.node().clientWidth||400,H=300,m={t:12,r:14,b:30,l:44};
+  const x=d3.scaleLinear().domain(d3.extent(rows,d=>d.shap)).nice().range([m.l,W-m.r]);
+  const y=d3.scaleLog().domain([d3.max([1,d3.min(rows,d=>d.v)]),d3.max(rows,d=>d.v)]).range([H-m.b,m.t]);
+  const r=d3.scaleSqrt().domain([0,d3.max(rows,d=>d.v)]).range([2,16]);
+  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).ticks(4)).attr('color','rgba(255,255,255,.3)').attr('font-size','8px');
+  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(3,'~s')).attr('color','rgba(255,255,255,.3)').attr('font-size','8px');
+  svg.append('g').selectAll('circle').data(rows).join('circle')
+    .attr('cx',d=>x(d.shap)).attr('cy',d=>y(Math.max(1,d.v))).attr('r',d=>r(d.v))
+    .attr('fill',d=>(CAT[d.category]||CAT.Other)).attr('opacity',.62).attr('stroke','rgba(255,255,255,.25)')
+    .on('mousemove',(e,d)=>showTip(e,(d.name||d.code)+'<br>SHAP '+(+d.shap).toFixed(2)+' · '+fmtV(d.v))).on('mouseout',hideTip);
+}
+
+function drawTimeline(rows){
+  const svg=d3.select('#tl'); svg.selectAll('*').remove();
+  const W=svg.node().clientWidth||700,H=300,m={t:8,r:10,b:22,l:50};
+  const years=[...new Set(rows.map(d=>d.year))].sort((a,b)=>a-b);
+  const keys=[...new Set(rows.map(srKey))];
+  const byY=new Map(years.map(y=>[y,{year:y}])); rows.forEach(d=>{const o=byY.get(d.year);o[srKey(d)]=(o[srKey(d)]||0)+d.v;});
+  const series=d3.stack().keys(keys)(years.map(y=>byY.get(y)));
+  const x=d3.scaleLinear().domain(d3.extent(years)).range([m.l,W-m.r]);
+  const y=d3.scaleLinear().domain([0,d3.max(series,s=>d3.max(s,d=>d[1]))||1]).nice().range([H-m.b,m.t]);
+  const area=d3.area().x(d=>x(d.data.year)).y0(d=>y(d[0])).y1(d=>y(d[1]));
+  svg.append('g').selectAll('path').data(series).join('path').attr('d',area).attr('fill',s=>SR[s.key]||'#888').attr('opacity',.85);
+  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('d'))).attr('color','rgba(255,255,255,.3)').attr('font-size','9px');
+  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(fmtV)).attr('color','rgba(255,255,255,.3)').attr('font-size','9px');
+  d3.select('#tl-leg').html(keys.map(k=>'<span><span class="dot" style="background:'+(SR[k]||'#888')+'"></span>'+k+'</span>').join(''));
+}
+
+function drawTreemap(prod){
+  const svg=d3.select('#tm'); svg.selectAll('*').remove();
+  const W=svg.node().clientWidth||700,H=320;
+  const root=d3.hierarchy({children:prod.slice(0,60)}).sum(d=>d.v).sort((a,b)=>b.value-a.value);
+  d3.treemap().size([W,H]).padding(1)(root);
+  const g=svg.append('g').selectAll('g').data(root.leaves()).join('g').attr('transform',d=>`translate(${d.x0},${d.y0})`);
+  g.append('rect').attr('width',d=>d.x1-d.x0).attr('height',d=>d.y1-d.y0)
+    .attr('fill',d=>SR[srKey(d.data)]||'#888').attr('opacity',.82).attr('stroke','#0a0f14')
+    .on('mousemove',(e,d)=>showTip(e,(d.data.product_name||d.data.code)+'<br>'+fmtV(d.value))).on('mouseout',hideTip);
+  g.filter(d=>(d.x1-d.x0)>46&&(d.y1-d.y0)>16).append('text').attr('x',3).attr('y',12).attr('font-size','8px').attr('fill','rgba(0,0,0,.7)').attr('font-weight','700').text(d=>(d.data.product_name||d.data.code).slice(0,18));
+}
+
+function partners(id,rows){
+  rows=rows.sort((a,b)=>b.v-a.v).slice(0,8);
+  d3.select('#'+id).html(rows.map(d=>'<div class="row"><span>'+d.partner+'</span><span class="v">'+fmtV(d.v)+'</span></div>').join('')||'<div class="row">—</div>');
+}
+
+boot();
+</script>
+</body>
+</html>
