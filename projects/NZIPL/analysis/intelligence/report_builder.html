@@ -42,6 +42,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .btn-build:disabled{opacity:.4;cursor:not-allowed;}
 .sel-summary{font-size:12px;color:var(--muted);}
 .sel-summary b{color:var(--text);font-weight:700;}
+.sel-mode{display:flex;gap:8px;margin-bottom:24px;}
+.mode-btn{padding:8px 18px;border-radius:7px;border:1px solid var(--border-hi);background:var(--surface);color:rgba(255,255,255,.5);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;}
+.mode-btn:hover{color:#fff;}
+.mode-btn.active{background:rgba(60,181,74,.15);border-color:var(--accent);color:var(--accent);}
 
 /* ══ REPORT SCREEN (intelligence-report layout) ══ */
 #screen-report{display:none;}
@@ -65,6 +69,14 @@ body.report-mode #screen-report{display:flex;flex-direction:column;height:100vh;
 .ir-nav-link.active{color:var(--accent)!important;background:rgba(60,181,74,.1);font-weight:600;}
 .ir-nav-link .ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:currentColor;opacity:.7;}
 .ir-nav-num{font-size:9px;color:rgba(255,255,255,.25);margin-left:auto;font-weight:700;}
+.ir-nav-group{margin-bottom:2px;}
+.ir-nav-ghd{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:5px;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;user-select:none;transition:color .15s,background .15s;}
+.ir-nav-ghd:hover{color:#fff;background:rgba(255,255,255,.04);}
+.ir-nav-ghd .ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0;opacity:1;}
+.ir-nav-chevron{font-size:12px;color:rgba(255,255,255,.35);transition:transform .18s;display:inline-block;}
+.ir-nav-sub{display:none;}
+.ir-nav-sub.open{display:block;}
+.ir-nav-link.sub{padding-left:20px;font-size:12px;}
 #ir-main{flex:1;min-height:0;height:100%;overflow:hidden;padding:0;background:#0a0f14;}
 #rep-main{height:100%;}
 .ir-pane{display:none;height:100%;flex-direction:column;}
@@ -96,18 +108,22 @@ body.report-mode #screen-report{display:flex;flex-direction:column;height:100vh;
 <section id="screen-selector">
   <div class="sel-eyebrow">NZIPL · Atlas of the Global Clean Industrial Base</div>
   <div class="sel-title">Intelligence Report Builder</div>
-  <div class="sel-sub">Select one technology, one country, and the visuals to include. The builder assembles them into an intelligence-report sheet — interactive on screen, printable to PDF for the phone. The atlas keeps its fixed layout; here the selection is yours.</div>
+  <div class="sel-sub">Choose a report type, then pick the technologies, countries, and visuals to include. <b>Single Sheet</b> builds one technology × country case (e.g. Solar · India). <b>Multi-Sheet Report</b> builds a sheet for every selected technology × country combination, sharing the same visuals — interactive on screen, printable to PDF. The atlas keeps its fixed layout; here the selection is yours.</div>
+  <div class="sel-mode" id="sel-mode">
+    <button class="mode-btn active" data-mode="single">Single Sheet</button>
+    <button class="mode-btn" data-mode="multi">Multi-Sheet Report</button>
+  </div>
   <div class="sel-cols">
     <div class="sel-col">
       <div class="sel-col-hd">Visuals <span class="cnt" id="hd-vis"></span></div>
       <div id="col-modules"></div>
     </div>
     <div class="sel-col">
-      <div class="sel-col-hd">Technology</div>
+      <div class="sel-col-hd"><span id="hd-tech">Technology</span></div>
       <div id="col-techs"></div>
     </div>
     <div class="sel-col">
-      <div class="sel-col-hd">Country</div>
+      <div class="sel-col-hd"><span id="hd-country">Country</span></div>
       <div id="col-countries"></div>
     </div>
   </div>
@@ -158,61 +174,84 @@ function available(mod, techSlug, countrySlug){
 }
 
 // ── selector state ───────────────────────────────────────────────────────────
-let selVis = [];                       // module ids (multi)
-let selTech = TECHS[0] ? TECHS[0].slug : null;
+let selMode = 'single';                            // 'single' | 'multi'
+let selVis = [];                                   // module ids (both modes)
+let selTech = TECHS[0] ? TECHS[0].slug : null;     // single mode
 let selCountry = COUNTRIES[0] ? COUNTRIES[0].slug : null;
+let selTechs = [];                                 // multi mode
+let selCountries = [];                             // multi mode
+
+// Available for ≥1 currently-selected tech×country combo (multi mode)
+function comboAvail(mod){
+  for(const ts of selTechs){ for(const cs of selCountries){ if(available(mod,ts,cs)) return true; } }
+  return false;
+}
+function visEnabled(mod){
+  if(selMode==='single') return available(mod, selTech, selCountry);
+  if(!selTechs.length || !selCountries.length) return true;   // can't tell yet
+  return comboAvail(mod);
+}
+
+function setMode(mode){
+  if(mode===selMode) return;
+  if(mode==='multi'){
+    if(!selTechs.length && selTech) selTechs=[selTech];
+    if(!selCountries.length && selCountry) selCountries=[selCountry];
+  } else {
+    if(selTechs.length) selTech = selTechs[0];
+    if(selCountries.length) selCountry = selCountries[0];
+  }
+  selMode = mode;
+  pruneVis();
+  renderSelector();
+}
+
+function mkPick(name, color, on, multi, fn){
+  const b = document.createElement('button');
+  b.className = 'opt' + (on?' on':'');
+  const ind = multi
+    ? '<span class="box" style="margin-left:auto;'+(on?'background:'+color+';border-color:'+color:'')+'">'+(on?'✓':'')+'</span>'
+    : '<span class="radio" style="margin-left:auto;'+(on?'border-color:'+color+';box-shadow:inset 0 0 0 3px '+color:'')+'"></span>';
+  b.innerHTML = '<span class="swatch" style="background:'+color+'"></span><span>'+name+'</span>'+ind;
+  b.onclick = fn;
+  return b;
+}
 
 function renderSelector(){
-  // Modules (multi-select, live only). Disable when no panel for current tech x country.
+  const multi = selMode==='multi';
+  document.querySelectorAll('#sel-mode .mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===selMode));
+  document.getElementById('hd-tech').textContent    = multi ? 'Technologies' : 'Technology';
+  document.getElementById('hd-country').textContent = multi ? 'Countries'    : 'Country';
+
+  // Visuals (multi-select; disabled when no panel for the selection)
   const cm = document.getElementById('col-modules');
   cm.innerHTML = '';
   MODULES.forEach(m=>{
-    const ok = available(m, selTech, selCountry);
+    const ok = visEnabled(m);
     const on = selVis.includes(m.id);
     const b = document.createElement('button');
     b.className = 'opt' + (on?' on':'') + (ok?'':' disabled');
-    b.innerHTML = '<span class="box">'+(on?'✓':'')+'</span>'
-                + '<span>'+m.label+'</span>'
-                + '<span class="fam">'+m.family+'</span>';
-    if(ok){ b.onclick = ()=>{ toggleVis(m.id); }; }
+    b.innerHTML = '<span class="box">'+(on?'✓':'')+'</span><span>'+m.label+'</span><span class="fam">'+m.family+'</span>';
+    if(ok){ b.onclick = ()=>toggleVis(m.id); }
     cm.appendChild(b);
   });
   document.getElementById('hd-vis').textContent = selVis.length ? '('+selVis.length+' selected)' : '';
 
-  // Techs (single)
-  const ct = document.getElementById('col-techs');
-  ct.innerHTML = '';
+  // Techs
+  const ct = document.getElementById('col-techs'); ct.innerHTML='';
   TECHS.forEach(t=>{
-    const on = t.slug===selTech;
-    const b = document.createElement('button');
-    b.className = 'opt' + (on?' on':'');
-    b.innerHTML = '<span class="swatch" style="background:'+t.color+'"></span>'
-                + '<span>'+t.name+'</span>'
-                + '<span class="radio" style="'+(on?'border-color:'+t.color+';box-shadow:inset 0 0 0 3px '+t.color:'')+'"></span>';
-    b.onclick = ()=>{ selTech = t.slug; pruneVis(); renderSelector(); };
-    ct.appendChild(b);
+    const on = multi ? selTechs.includes(t.slug) : t.slug===selTech;
+    ct.appendChild(mkPick(t.name, t.color, on, multi, ()=>pickTech(t.slug)));
   });
 
-  // Countries (single)
-  const cc = document.getElementById('col-countries');
-  cc.innerHTML = '';
+  // Countries
+  const cc = document.getElementById('col-countries'); cc.innerHTML='';
   COUNTRIES.forEach(c=>{
-    const on = c.slug===selCountry;
-    const b = document.createElement('button');
-    b.className = 'opt' + (on?' on':'');
-    b.innerHTML = '<span class="swatch" style="background:'+c.color+'"></span>'
-                + '<span>'+c.name+'</span>'
-                + '<span class="radio" style="'+(on?'border-color:'+c.color+';box-shadow:inset 0 0 0 3px '+c.color:'')+'"></span>';
-    b.onclick = ()=>{ selCountry = c.slug; pruneVis(); renderSelector(); };
-    cc.appendChild(b);
+    const on = multi ? selCountries.includes(c.slug) : c.slug===selCountry;
+    cc.appendChild(mkPick(c.name, c.color, on, multi, ()=>pickCountry(c.slug)));
   });
 
-  // Summary + build button state
-  const tn = bySlugTech(selTech), cn = bySlugCountry(selCountry);
-  document.getElementById('sel-summary').innerHTML = selVis.length
-    ? '<b>'+(tn?tn.name:'?')+'</b> · <b>'+(cn?cn.name:'?')+'</b> · '+selVis.length+' visual'+(selVis.length>1?'s':'')
-    : 'Pick at least one visual to build a sheet.';
-  document.getElementById('btn-build').disabled = selVis.length===0;
+  updateSummary();
 }
 
 function toggleVis(id){
@@ -220,15 +259,58 @@ function toggleVis(id){
   if(i>=0) selVis.splice(i,1); else selVis.push(id);
   renderSelector();
 }
-// Drop selected visuals that became unavailable after a tech/country change
+function pickTech(slug){
+  if(selMode==='multi'){ const i=selTechs.indexOf(slug); if(i>=0)selTechs.splice(i,1); else selTechs.push(slug); }
+  else selTech = slug;
+  pruneVis(); renderSelector();
+}
+function pickCountry(slug){
+  if(selMode==='multi'){ const i=selCountries.indexOf(slug); if(i>=0)selCountries.splice(i,1); else selCountries.push(slug); }
+  else selCountry = slug;
+  pruneVis(); renderSelector();
+}
 function pruneVis(){
-  selVis = selVis.filter(id=>available(modById(id), selTech, selCountry));
+  selVis = selVis.filter(id=>visEnabled(modById(id)));
+}
+
+// How many (tech×country) sheets would have ≥1 available visual
+function countSheets(){
+  let n=0;
+  for(const ts of selTechs){ for(const cs of selCountries){
+    if(MODULES.some(m=>selVis.includes(m.id) && available(m,ts,cs))) n++;
+  } }
+  return n;
+}
+
+function updateSummary(){
+  const sm = document.getElementById('sel-summary');
+  const btn = document.getElementById('btn-build');
+  if(selMode==='single'){
+    const tn=bySlugTech(selTech), cn=bySlugCountry(selCountry);
+    btn.textContent = 'Build Sheet →';
+    btn.disabled = selVis.length===0;
+    sm.innerHTML = selVis.length
+      ? '<b>'+(tn?tn.name:'?')+'</b> · <b>'+(cn?cn.name:'?')+'</b> · '+selVis.length+' visual'+(selVis.length>1?'s':'')
+      : 'Pick at least one visual to build a sheet.';
+  } else {
+    btn.textContent = 'Build Report →';
+    const nT=selTechs.length, nC=selCountries.length, sheets=countSheets();
+    btn.disabled = !(nT && nC && selVis.length && sheets);
+    sm.innerHTML = (nT && nC && selVis.length)
+      ? '<b>'+nT+'</b> tech'+(nT>1?'s':'')+' × <b>'+nC+'</b> countr'+(nC>1?'ies':'y')+' × '+selVis.length+' visual'+(selVis.length>1?'s':'')+' → <b>'+sheets+'</b> sheet'+(sheets>1?'s':'')
+      : 'Select technologies, countries and visuals to build a multi-sheet report.';
+  }
 }
 
 // ── build → URL hash → report ────────────────────────────────────────────────
-function buildSheet(){
-  if(!selVis.length) return;
-  location.hash = 'tech='+selTech+'&country='+selCountry+'&vis='+selVis.join(',');
+function buildReport(){
+  if(selMode==='single'){
+    if(!selVis.length) return;
+    location.hash = 'tech='+selTech+'&country='+selCountry+'&vis='+selVis.join(',');
+  } else {
+    if(!selTechs.length || !selCountries.length || !selVis.length) return;
+    location.hash = 'mode=multi&techs='+selTechs.join(',')+'&countries='+selCountries.join(',')+'&vis='+selVis.join(',');
+  }
 }
 
 function parseHash(){
@@ -236,51 +318,82 @@ function parseHash(){
   if(!h) return null;
   const p = {};
   h.split('&').forEach(kv=>{ const [k,v]=kv.split('='); p[k]=decodeURIComponent(v||''); });
-  if(!p.tech || !p.country || !p.vis) return null;
-  return { tech:p.tech, country:p.country, vis:p.vis.split(',').filter(Boolean) };
+  if(p.mode==='multi'){
+    if(!p.techs || !p.countries || !p.vis) return null;
+    return { mode:'multi', techs:p.techs.split(',').filter(Boolean),
+             countries:p.countries.split(',').filter(Boolean), vis:p.vis.split(',').filter(Boolean) };
+  }
+  if(p.tech && p.country && p.vis)
+    return { mode:'single', tech:p.tech, country:p.country, vis:p.vis.split(',').filter(Boolean) };
+  return null;
 }
 
-let repPanes = [];   // [{id,label,family,path}]
-function renderReport(sheet){
-  const t = bySlugTech(sheet.tech), c = bySlugCountry(sheet.country);
-  if(!t || !c) { showSelector(); return; }
-  const accent = t.color || '#3cb54a';
-  document.documentElement.style.setProperty('--accent', accent);
+let repPanes = [];   // flat [{idx,label,family,path,t,c}]
+function renderReport(spec){
+  // Resolve the list of sheets (tech×country pairs)
+  let sheetDefs = [];
+  if(spec.mode==='multi'){
+    spec.techs.forEach(ts=>{ const t=bySlugTech(ts); if(!t) return;
+      spec.countries.forEach(cs=>{ const c=bySlugCountry(cs); if(c) sheetDefs.push({t,c}); }); });
+  } else {
+    const t=bySlugTech(spec.tech), c=bySlugCountry(spec.country);
+    if(t && c) sheetDefs.push({t,c});
+  }
 
-  // Keep only available visuals, in registry order
-  repPanes = MODULES.filter(m=>sheet.vis.includes(m.id) && available(m, sheet.tech, sheet.country))
-                    .map(m=>({ id:m.id, label:m.label, family:m.family,
-                               path:resolvePath(m, sheet.tech, sheet.country) }));
+  // For each sheet, the visuals available for it (registry order). Global pane index.
+  let gi=0; const sheets=[]; repPanes=[];
+  sheetDefs.forEach(sd=>{
+    const panes = MODULES.filter(m=>spec.vis.includes(m.id) && available(m,sd.t.slug,sd.c.slug))
+      .map(m=>{ const pane={ idx:gi++, label:m.label, family:m.family,
+                             path:resolvePath(m,sd.t.slug,sd.c.slug), t:sd.t, c:sd.c };
+                repPanes.push(pane); return pane; });
+    if(panes.length) sheets.push({ t:sd.t, c:sd.c, panes });
+  });
   if(!repPanes.length){ showSelector(); return; }
 
-  document.getElementById('rep-country').textContent = c.name;
-  document.getElementById('rep-tech').textContent = t.name + ' Value Chain';
+  const single = sheets.length===1;
+  document.documentElement.style.setProperty('--accent', single ? (sheets[0].t.color||'#3cb54a') : '#3cb54a');
 
-  // Sidebar nav
-  const nav = document.getElementById('rep-nav');
-  nav.innerHTML = '';
-  repPanes.forEach((p,i)=>{
-    const b = document.createElement('button');
-    b.className = 'ir-nav-link' + (i===0?' active':'');
-    b.dataset.idx = i;
-    b.innerHTML = '<span class="ndot"></span><span>'+p.label+'</span><span class="ir-nav-num">'+String(i+1).padStart(2,'0')+'</span>';
-    b.onclick = ()=>showPane(i);
-    nav.appendChild(b);
-  });
+  // Brand
+  if(single){
+    document.getElementById('rep-country').textContent = sheets[0].c.name;
+    document.getElementById('rep-tech').textContent    = sheets[0].t.name+' Value Chain';
+  } else {
+    const nT=new Set(sheets.map(s=>s.t.slug)).size, nC=new Set(sheets.map(s=>s.c.slug)).size;
+    document.getElementById('rep-country').textContent = 'Multi-Sheet Report';
+    document.getElementById('rep-tech').textContent =
+      sheets.length+' sheets · '+nT+' tech'+(nT>1?'s':'')+' · '+nC+' countr'+(nC>1?'ies':'y');
+  }
 
-  // Panes (iframes lazy-loaded on first show). Reset load flags — panes are
-  // rebuilt here, so any prior "loaded" markers no longer apply.
+  // Sidebar: flat for one sheet, collapsible groups for many
+  const nav = document.getElementById('rep-nav'); nav.innerHTML='';
+  if(single){
+    sheets[0].panes.forEach(p=>nav.appendChild(mkNavLink(p,false)));
+  } else {
+    sheets.forEach((s,si)=>{
+      const grp = document.createElement('div'); grp.className='ir-nav-group';
+      const hd  = document.createElement('div'); hd.className='ir-nav-ghd';
+      hd.innerHTML = '<span class="ir-nav-chevron">›</span><span class="ndot" style="background:'+s.t.color+'"></span><span>'+s.t.name+' · '+s.c.name+'</span>';
+      const sub = document.createElement('div'); sub.className='ir-nav-sub'+(si===0?' open':'');
+      hd.onclick = ()=>{ const open=sub.classList.toggle('open');
+                         hd.querySelector('.ir-nav-chevron').style.transform = open?'rotate(90deg)':'rotate(0deg)'; };
+      if(si===0) hd.querySelector('.ir-nav-chevron').style.transform='rotate(90deg)';
+      s.panes.forEach(p=>sub.appendChild(mkNavLink(p,true)));
+      grp.appendChild(hd); grp.appendChild(sub); nav.appendChild(grp);
+    });
+  }
+
+  // Panes (iframes lazy-loaded on first show). Reset load flags on rebuild.
   FRAME_LOADED = {};
-  const main = document.getElementById('rep-main');
-  main.innerHTML = '';
-  repPanes.forEach((p,i)=>{
+  const main = document.getElementById('rep-main'); main.innerHTML='';
+  repPanes.forEach((p,k)=>{
     const pane = document.createElement('div');
-    pane.className = 'ir-pane' + (i===0?' active':'');
-    pane.id = 'rep-pane-'+i;
+    pane.className = 'ir-pane' + (k===0?' active':'');
+    pane.id = 'rep-pane-'+p.idx;
     pane.innerHTML =
-      '<div class="ir-pane-head"><div class="ir-pane-title"><span class="accent">'
-        + String(i+1).padStart(2,'0') + ' —</span> ' + p.label
-        + '</div><div class="ir-pane-sub">' + t.name + ' · ' + c.name + ' · ' + p.family + '</div></div>'
+      '<div class="ir-pane-head"><div class="ir-pane-title"><span class="accent" style="color:'+p.t.color+'">'
+        + String(p.idx+1).padStart(2,'0') + ' —</span> ' + p.label
+        + '</div><div class="ir-pane-sub">' + p.t.name + ' · ' + p.c.name + ' · ' + p.family + '</div></div>'
       + '<div class="ir-frame-wrap"><div class="ph">Loading…</div>'
         + '<iframe data-src="' + p.path + '" '
         + 'sandbox="allow-scripts allow-same-origin allow-popups allow-downloads"></iframe></div>';
@@ -288,7 +401,17 @@ function renderReport(sheet){
   });
 
   document.body.classList.add('report-mode');
-  loadPaneFrame(0);
+  document.getElementById('ir-main').scrollTop = 0;
+  loadPaneFrame(repPanes[0].idx);
+}
+
+function mkNavLink(p, sub){
+  const b = document.createElement('button');
+  b.className = 'ir-nav-link' + (sub?' sub':'') + (p.idx===0?' active':'');
+  b.dataset.idx = p.idx;
+  b.innerHTML = '<span class="ndot"></span><span>'+p.label+'</span><span class="ir-nav-num">'+String(p.idx+1).padStart(2,'0')+'</span>';
+  b.onclick = ()=>showPane(p.idx);
+  return b;
 }
 
 let FRAME_LOADED = {};
@@ -306,12 +429,17 @@ function loadPaneFrame(i){
   }
 }
 
-function showPane(i){
+function showPane(idx){
   document.querySelectorAll('#rep-main .ir-pane').forEach(p=>p.classList.remove('active'));
-  const pane = document.getElementById('rep-pane-'+i);
+  const pane = document.getElementById('rep-pane-'+idx);
   if(pane) pane.classList.add('active');
-  document.querySelectorAll('#rep-nav .ir-nav-link').forEach(l=>l.classList.toggle('active', l.dataset.idx==i));
-  loadPaneFrame(i);
+  document.querySelectorAll('#rep-nav .ir-nav-link').forEach(l=>l.classList.toggle('active', l.dataset.idx==idx));
+  // ensure the containing group (multi mode) is open
+  const link = document.querySelector('#rep-nav .ir-nav-link[data-idx="'+idx+'"]');
+  if(link){ const sub=link.closest('.ir-nav-sub');
+    if(sub && !sub.classList.contains('open')){ sub.classList.add('open');
+      const hd=sub.previousElementSibling; if(hd){ const ch=hd.querySelector('.ir-nav-chevron'); if(ch) ch.style.transform='rotate(90deg)'; } } }
+  loadPaneFrame(idx);
 }
 
 function showSelector(){
@@ -321,12 +449,13 @@ function showSelector(){
 
 // ── routing ──────────────────────────────────────────────────────────────────
 function route(){
-  const sheet = parseHash();
-  if(sheet){
-    // sync selector state to the sheet so "Back" keeps the selection
-    selTech = sheet.tech; selCountry = sheet.country; selVis = sheet.vis.slice();
+  const spec = parseHash();
+  if(spec){
+    // sync selector state so "← Builder" keeps the selection
+    if(spec.mode==='multi'){ selMode='multi'; selTechs=spec.techs.slice(); selCountries=spec.countries.slice(); selVis=spec.vis.slice(); }
+    else { selMode='single'; selTech=spec.tech; selCountry=spec.country; selVis=spec.vis.slice(); }
     renderSelector();
-    renderReport(sheet);
+    renderReport(spec);
   } else {
     document.body.classList.remove('report-mode');
     document.documentElement.style.setProperty('--accent', '#3cb54a');
@@ -334,7 +463,8 @@ function route(){
   }
 }
 
-document.getElementById('btn-build').addEventListener('click', buildSheet);
+document.querySelectorAll('#sel-mode .mode-btn').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
+document.getElementById('btn-build').addEventListener('click', buildReport);
 document.getElementById('tb-back').addEventListener('click', showSelector);
 document.getElementById('tb-print').addEventListener('click', ()=>window.print());
 window.addEventListener('hashchange', route);
