@@ -48,11 +48,14 @@ scores + RCA-by-category. See corrected `model_data_inventory.md`.
 - **Ready to wire (in zip):**
   - `ev_predicted_competition_all_years.csv` (`country_code, year, predicted_comp`) → `pc_scores` ✅
   - `ev_rca_by_category_year.csv` (`country, year, category, …, RCA`) → `pc_rca` (radar green) ✅
-- **Still needs lifting from the notebook:** per-category / per-HS6 **SHAP** (radar gold polygon +
-  PC-scatter x-axis) — computed in `Analysis/RCA EV Analysis.ipynb` (`shap_by_cat`, `shap_df`), no CSV.
-- **Plan:** append EV rows to `data/pc/pc_scores.parquet` + `data/pc/pc_rca.parquet`; extract EV SHAP
-  from the notebook → `data/pc/pc_features.csv`; rebuild EV radar + PC scatter; regen Option A EV cases.
-- **Bonus:** DAC / DRI / Mass Timber also have full PC data — candidates to onboard later.
+- **Done:** PC scores + RCA appended to `pc_scores.parquet` + `pc_rca.parquet` (EVs). Radar green renders.
+- **Last mile — EV SHAP:** the 10-tech SHAP is NOT in the model repo or `ML_vars.zip` — it's hand-delivered
+  per-tech files in **`data/pc/Feature Importance/<tech>_hs_shap_above_threshold.csv`**
+  (cols `HS Code, Description, Category, Mean absolute z-score`), consolidated by `07_build_pc.R`.
+  EV needs `ev_hs_shap_above_threshold.csv` in that exact shape. **Requested from Ishana.**
+  On arrival: drop in the folder → add `ev = "EVs"` to `07_build_pc.R` tech_map → re-run `07` →
+  `pc_features` gains EV → rebuild EV radar gold + PC scatter; regen Option A EV cases.
+- **Bonus:** DAC / DRI / Mass Timber / E-waste also have full PC data — candidates to onboard later.
 
 ---
 
