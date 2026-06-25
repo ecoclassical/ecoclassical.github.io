@@ -6,6 +6,7 @@
 <title>Intelligence Report · Option A slides</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
+<script src="geo.js"></script>
 <script src="viz.js"></script>
 <style>
   :root{ --ink:#0b1a12; --muted:#5c6b60; --line:#e3e8e3; --rail:#0a1410; --green:#3cb54a; --accent:#eab308; }
@@ -49,9 +50,17 @@
   .cover .stat .v{font-size:22px;font-weight:800;}
   .cover .stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:2px;}
   .tip{position:fixed;background:rgba(6,13,8,.95);color:#dde8dd;border:1px solid rgba(60,181,74,.3);border-radius:5px;padding:5px 9px;font-size:11px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:99;}
-  /* print: one landscape page per slide, no chrome */
+  /* LIGHT theme (toggled by body.light: print path + ?theme=light preview) */
+  body.light .vis{background:#f6f8f6;border:1px solid #e3e8e3;}
+  body.light .toc{background:#f1f4f1;color:#3a463f;}
+  body.light .toc .sub{color:#6b766e;}
+  body.light .toc a{color:#5a665d;} body.light .toc a .n{color:#9aa69d;}
+  body.light .toc a.active{background:rgba(60,181,74,.16);color:#1d2a22;}
+  body.light .bullets li{color:#23332a;} body.light .bullets li b{color:#0b1a12;}
+  /* print: one landscape page per slide, no chrome (forced light via beforeprint) */
   @page{ size:Letter landscape; margin:7mm; }
   @media print{
+    *{ -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
     body{background:#fff;}
     .bar,.tip{display:none!important;}
     .deck{gap:0;padding:0;}
@@ -85,17 +94,28 @@ let IDX=null, CUR={tech:'Solar',country:'India',vis:VISUALS.map(v=>v.id)};
 
 async function boot(){
   IDX=await (await fetch('data/_index.json')).json(); IDX=Array.isArray(IDX)?IDX[0]:IDX;
-  try{ VIZ.initGeo(await (await fetch('../lib/countries-110m.json')).json()); }catch(e){ console.warn('geo',e); }
+  // geo is inlined (geo.js) so the world map renders even under file:// — fall back to fetch
+  try{ VIZ.initGeo(window.__WORLD110 || await (await fetch('../lib/countries-110m.json')).json()); }catch(e){ console.warn('geo',e); }
   const p=new URLSearchParams(location.search);
   CUR.tech=p.get('tech')||CUR.tech; CUR.country=p.get('country')||CUR.country;
+  CUR.theme=p.get('theme')==='light'?'light':'dark';
   if(p.get('vis')) CUR.vis=p.get('vis').split(',').filter(x=>VISUALS.find(v=>v.id===x));
   const st=d3.select('#sel-tech'); st.selectAll('option').data(IDX.techs).join('option').attr('value',d=>d).text(d=>d); st.property('value',CUR.tech);
   const sc=d3.select('#sel-country'); sc.selectAll('option').data(IDX.countries).join('option').attr('value',d=>d.slug).text(d=>d.name.replace(/_/g,' ')); sc.property('value',CUR.country);
   st.on('change',function(){CUR.tech=this.value;render();});
   sc.on('change',function(){CUR.country=this.value;render();});
-  document.getElementById('print').onclick=()=>window.print();
+  // Save-as-PDF: force LIGHT, redraw, print, then restore the chosen screen theme.
+  document.getElementById('print').onclick=()=>{ applyTheme('light'); setTimeout(()=>window.print(),60); };
+  // also covers Cmd/Ctrl-P: switch to light before the browser paints the print view
+  window.addEventListener('beforeprint',()=>applyTheme('light'));
+  window.addEventListener('afterprint',()=>applyTheme(CUR.theme));
   render();
 }
+
+let LAST={d:null,td:null,chosen:[]};
+function drawAll(){ LAST.chosen.forEach(s=>{ try{ s.draw(LAST.d,LAST.td); }catch(e){ console.warn('draw',s.id,e); } }); }
+// flip CSS chrome + chart ink together, then redraw the SVGs
+function applyTheme(mode){ document.body.classList.toggle('light',mode==='light'); VIZ.setTheme(mode); drawAll(); }
 
 function tocHTML(slides,activeIdx){
   const cn=(IDX.countries.find(c=>c.slug===CUR.country)||{}).name||CUR.country;
@@ -124,7 +144,7 @@ async function render(){
     deck.appendChild(sec);
   });
   // draw all visuals now (synchronous, no lazy iframes → prints clean)
-  chosen.forEach(s=>{ try{ s.draw(d,td); }catch(e){ console.warn('draw',s.id,e); } });
+  LAST={d,td,chosen}; applyTheme(CUR.theme);
 }
 
 function coverMain(d,td,cn){

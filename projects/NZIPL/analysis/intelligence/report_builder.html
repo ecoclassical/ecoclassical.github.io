@@ -248,6 +248,14 @@ function renderSelector(){
   // Visuals (multi-select; disabled when no panel for the selection)
   const cm = document.getElementById('col-modules');
   cm.innerHTML = '';
+  // "All visuals" select-all header (mirrors the per-region all/clear)
+  const visEnabledList = MODULES.filter(m=>visEnabled(m));
+  const visAllOn = visEnabledList.length>0 && visEnabledList.every(m=>selVis.includes(m.id));
+  const vhd = document.createElement('div');
+  vhd.className = 'set-hd clickable' + (visAllOn?' allon':'');
+  vhd.innerHTML = '<span>All visuals</span><span class="set-act">'+(visAllOn?'clear':'all')+'</span>';
+  vhd.onclick = ()=>toggleAllVis(visEnabledList.map(m=>m.id), !visAllOn);
+  cm.appendChild(vhd);
   MODULES.forEach(m=>{
     const ok = visEnabled(m);
     const on = selVis.includes(m.id);
@@ -261,6 +269,15 @@ function renderSelector(){
 
   // Techs
   const ct = document.getElementById('col-techs'); ct.innerHTML='';
+  // "All technologies" select-all header (multi mode only — single mode is a radio pick)
+  if(multi){
+    const techAllOn = TECHS.length>0 && TECHS.every(t=>selTechs.includes(t.slug));
+    const thd = document.createElement('div');
+    thd.className = 'set-hd clickable' + (techAllOn?' allon':'');
+    thd.innerHTML = '<span>All technologies</span><span class="set-act">'+(techAllOn?'clear':'all')+'</span>';
+    thd.onclick = ()=>toggleAllTechs(TECHS.map(t=>t.slug), !techAllOn);
+    ct.appendChild(thd);
+  }
   TECHS.forEach(t=>{
     const on = multi ? selTechs.includes(t.slug) : t.slug===selTech;
     ct.appendChild(mkPick(t.name, t.color, on, multi, ()=>pickTech(t.slug)));
@@ -308,6 +325,18 @@ function pickCountry(slug){
 function toggleSet(slugs, turnOn){
   if(turnOn){ slugs.forEach(s=>{ if(!selCountries.includes(s)) selCountries.push(s); }); }
   else { selCountries = selCountries.filter(s=>!slugs.includes(s)); }
+  pruneVis(); renderSelector();
+}
+// Select or clear every (enabled) visual at once
+function toggleAllVis(ids, turnOn){
+  if(turnOn){ ids.forEach(id=>{ if(!selVis.includes(id)) selVis.push(id); }); }
+  else { selVis = selVis.filter(id=>!ids.includes(id)); }
+  renderSelector();
+}
+// Multi mode: select or clear every technology at once
+function toggleAllTechs(slugs, turnOn){
+  if(turnOn){ slugs.forEach(s=>{ if(!selTechs.includes(s)) selTechs.push(s); }); }
+  else { selTechs = selTechs.filter(s=>!slugs.includes(s)); }
   pruneVis(); renderSelector();
 }
 function pruneVis(){
