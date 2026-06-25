@@ -39,7 +39,23 @@ Root cause of the old broken PDF: iframes loaded/drew async → print fired befo
 
 ---
 
-## 🟡 Task 3 — Add EV PC data — **ACTIONABLE (data located)**
+## 🟢 Task 3 — Add EV PC data — **DONE (interim; awaiting Ishana's authoritative RCA)**
+
+**EV is fully loaded and consistent across all 3 PC files + rebuilt everywhere:**
+- `pc_scores` ✅ · `pc_rca` ✅ (Electronics present, standard mapping) · `pc_features`/SHAP ✅
+- Rebuilt: Global Atlas of the EVs Base + 7 EV country sheets + 7 focal radar/PC-scatter panels + Option A.
+- **EV RCA fix (Option B):** Ishana's `ev_rca_by_category_year.csv` used a different `hs2_category`
+  (ch85→Machinery, no Electronics). SHAP was per-HS so recategorised directly; RCA was pre-aggregated
+  so **recomputed from the product-level `hs17_rca_cyh.csv`** with the standard mapping —
+  `scripts/build_data/07c_ev_rca_reaggregate.py` (validated: replicating her mapping reproduces her
+  file to 6 dp). EV radar gold + green now consistent and matching the other 10 techs.
+- **Still pending (Option A, authoritative):** Ishana re-exports `ev_rca_by_category_year.csv` +
+  `ev_hs_shap_above_threshold.csv` with the standard `hs2_category` → drop-in supersedes the interim.
+- **Reproducibility caveat:** EV `pc_scores`/`pc_rca` are manual overlays from the EV-folder CSVs;
+  `07_build_pc.R` rebuilds the 10 base techs from the datawheel Excel (EV-less) — re-apply EV after a
+  full `07` run (or wire an EV step into the pipeline).
+
+### (original notes below — superseded by the above)
 
 Correction (2026-06-25): the EV data was **not** missing — `RCA Construction/EV/` in `ML_vars.zip` is
 fully populated (earlier "empty folder" call was an `awk`-on-spaces bug). All 14 model techs carry PC
