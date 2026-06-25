@@ -39,17 +39,20 @@ Root cause of the old broken PDF: iframes loaded/drew async → print fired befo
 
 ---
 
-## ⛔ Task 3 — Add EV PC data — **BLOCKED (awaiting data)**
+## 🟡 Task 3 — Add EV PC data — **ACTIONABLE (data located)**
 
-EVs aren't in the PC ML dataset, so the EV radar + PC scatter render blank.
+Correction (2026-06-25): the EV data was **not** missing — `RCA Construction/EV/` in `ML_vars.zip` is
+fully populated (earlier "empty folder" call was an `awk`-on-spaces bug). All 14 model techs carry PC
+scores + RCA-by-category. See corrected `model_data_inventory.md`.
 
-- The EV model exists (`RCA EV Analysis.ipynb`, RandomForest + SHAP) but its outputs were **not
-  shipped** — `RCA Construction/EV/` is an empty folder in `ML_vars.zip`. See `model_data_inventory.md`.
-- **Action:** request the 3 CSVs the notebook writes to `RCA Construction/EV/` from Ishana/Alon:
-  - `ev_rca_by_category_year.csv` → radar axis (`pc_rca`)
-  - `predicted_comp` by country-year → PC scores (`pc_scores`)
-  - `shap_df` / `shap_by_cat` (per-HS6 SHAP) → `pc_features`
-- Once received: slot into `data/pc/*` for EVs, rebuild radar + scatter (incl. Option A regen).
+- **Ready to wire (in zip):**
+  - `ev_predicted_competition_all_years.csv` (`country_code, year, predicted_comp`) → `pc_scores` ✅
+  - `ev_rca_by_category_year.csv` (`country, year, category, …, RCA`) → `pc_rca` (radar green) ✅
+- **Still needs lifting from the notebook:** per-category / per-HS6 **SHAP** (radar gold polygon +
+  PC-scatter x-axis) — computed in `Analysis/RCA EV Analysis.ipynb` (`shap_by_cat`, `shap_df`), no CSV.
+- **Plan:** append EV rows to `data/pc/pc_scores.parquet` + `data/pc/pc_rca.parquet`; extract EV SHAP
+  from the notebook → `data/pc/pc_features.csv`; rebuild EV radar + PC scatter; regen Option A EV cases.
+- **Bonus:** DAC / DRI / Mass Timber also have full PC data — candidates to onboard later.
 
 ---
 

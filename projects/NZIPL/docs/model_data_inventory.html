@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>model_data_inventory</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="model_data_inventory_files/libs/clipboard/clipboard.min.js"></script>
+<script src="model_data_inventory_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="model_data_inventory_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="model_data_inventory_files/libs/quarto-html/popper.min.js"></script>
+<script src="model_data_inventory_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="model_data_inventory_files/libs/quarto-html/anchor.min.js"></script>
+<link href="model_data_inventory_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="model_data_inventory_files/libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="model_data_inventory_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="model_data_inventory_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="model_data_inventory_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="model-data-inventory-shared-material-pc-rca-model-optimization-tool" class="level1">
+<h1>Model Data Inventory — Shared Material (PC / RCA model + optimization tool)</h1>
+<p><strong>Compiled:</strong> 2026-06-25 · <strong>Author of source material:</strong> Alon &amp; Ishana (NZIPL modeling team) <strong>Purpose:</strong> inventory of two shared drops on OneDrive (<code>000 Data Infrastructure/</code>), what each contains, and — critically — whether the material is <strong>reproducible</strong> and whether <strong>EVs</strong> are covered.</p>
+<hr>
+<section id="cice-updated-the-model-inputs-per-tech-rca-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="cice-updated-the-model-inputs-per-tech-rca-analyses">1. <code>CICE Updated/</code> — the model inputs &amp; per-tech RCA analyses</h2>
+<p>Folder holding the Predicted-Competitiveness (PC) / RCA model material.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Size</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ML_vars.zip</code></td>
+<td>968 MB</td>
+<td>Model variables + per-technology RCA analysis notebooks (see below)</td>
+</tr>
+<tr class="even">
+<td><code>baci.zip</code></td>
+<td>3.07 GB</td>
+<td>Raw CEPII <strong>BACI</strong> bilateral trade (the model’s trade input)</td>
+</tr>
+<tr class="odd">
+<td><code>Product Proximity Update.ipynb</code></td>
+<td>14 KB</td>
+<td>Product-space proximity / relatedness update (standalone)</td>
+</tr>
+</tbody>
+</table>
+<section id="inside-ml_vars.zip" class="level3">
+<h3 class="anchored" data-anchor-id="inside-ml_vars.zip">Inside <code>ML_vars.zip</code></h3>
+<pre><code>ML_vars/
+├── Bentley_data_cleaning.R          # WDI download + cleaning (context variables)
+├── wdi.xlsx · wdi_impute.csv        # World Bank Development Indicators (imputed) — model covariates
+├── IRENA_INSPIRE_Patents_April_2024(INSPIRE_data).csv   # patent counts (feature)
+├── Analysis/RCA &lt;Tech&gt; Analysis.ipynb   # 14 per-tech notebooks (the actual model runs)
+└── RCA Construction/&lt;Tech&gt;/         # ⚠️ ALL EMPTY directory stubs (no files shipped)</code></pre>
+<p><strong>Context / covariate data present (reproducibility inputs):</strong> - <code>wdi_impute.csv</code> + <code>Bentley_data_cleaning.R</code> — the WDI macro covariates (GDP, population, FDI, electricity use, governance, trade openness, manufacturing share, …) and how they’re built. - <code>IRENA_INSPIRE_Patents…csv</code> — patent feature. - <code>baci.zip</code> — raw trade (the RCA base).</p>
+<p><strong>Per-tech model notebooks (<code>Analysis/</code>)</strong> — 14 technologies, each a fully-executed notebook (RandomForest classifier on an RCA&gt;1 target + <code>shap.TreeExplainer</code> for feature importance): Batteries · Biofuel · Electrolyzer · Geothermal · Heatpump · Magnets · Nuclear · Solar · Transmission · Wind · <strong>EV</strong> · plus DRI, DAC, Mass Timber (not in CVCE).</p>
+</section>
+<section id="reproducibility-status-partial" class="level3">
+<h3 class="anchored" data-anchor-id="reproducibility-status-partial">Reproducibility status — ⚠️ PARTIAL</h3>
+<p>The notebooks read their main inputs from <strong>hardcoded local paths on the author’s machine</strong> that are <strong>not bundled</strong>, e.g.&nbsp;(from <code>RCA EV Analysis.ipynb</code>):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ev      <span class="op">=</span> pd.read_csv(<span class="st">"…/RCA Construction/EV/ev_trade.csv"</span>)        <span class="co"># ❌ missing (folder empty)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rca_hs17<span class="op">=</span> pd.read_csv(<span class="st">"…/RCA Construction/EV/hs17_rca_cyh.csv"</span>)    <span class="co"># ❌ missing</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hs_master<span class="op">=</span>pd.read_csv(<span class="st">"…/concordance/HS_Descriptions.csv"</span>)        <span class="co"># ❌ no concordance/ in zip</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wdi     <span class="op">=</span> pd.read_csv(<span class="st">"…/ML_vars/wdi_impute.csv"</span>)                  <span class="co"># ✅ present</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So: <strong>present</strong> = model code (notebooks), WDI covariates, patents, raw BACI. <strong>Missing</strong> = the intermediate <strong>“RCA Construction”</strong> per-tech panels (<code>ev_trade.csv</code>, <code>hs17_rca_cyh.csv</code>, …) and the <strong>HS concordance</strong> file. Those <code>RCA Construction/&lt;Tech&gt;/</code> folders ship as empty stubs. → <strong>You cannot push-button rerun the model as-is</strong>; the intermediate RCA panels between raw BACI and the RF must be regenerated or requested.</p>
+</section>
+<section id="evs-specifically-answering-is-it-empty" class="level3">
+<h3 class="anchored" data-anchor-id="evs-specifically-answering-is-it-empty">EVs specifically — answering “is it empty?”</h3>
+<ul>
+<li><strong>Not empty as code:</strong> there <strong>is</strong> a complete <code>RCA EV Analysis.ipynb</code> (22 cells, fully executed, dated 2026-05-15) — RandomForest + SHAP, identical pattern to the other techs.</li>
+<li><strong>Empty as data:</strong> the <code>RCA Construction/EV/</code> output folder is an <strong>empty directory</strong> in the zip. The notebook <em>writes</em> its results there on the author’s machine (<code>out_dir = …/RCA Construction/EV/</code>):
+<ul>
+<li><code>ev_rca_by_category_year.csv</code> — RCA by category × year (→ atlas <strong>radar</strong> axis)</li>
+<li><code>X_rank_save[['country_code','year','predicted_comp']]</code> — PC scores by country-year (→ <strong>pc_scores</strong>)</li>
+<li><code>df_2024_ev[['country_code','rank','rank_label','predicted_comp']]</code> — 2024 ranks</li>
+<li>a per-HS6 SHAP table (<code>shap_df</code>, <code>shap_by_cat</code>) (→ <strong>pc_features</strong> SHAP weights)</li>
+</ul>
+<strong>None of these output CSVs are in the zip.</strong> They exist only inside the notebook’s run.</li>
+</ul>
+<p><strong>Implication for Task 3 (wire EVs into the atlas radar + PC scatter):</strong> the three CSVs the CVCE pipeline needs (PC scores, RCA-by-category, SHAP-by-HS6) are <em>computed</em> but <em>not shipped</em>. Cleanest path is to <strong>ask Ishana/Alon for the contents of <code>RCA Construction/EV/</code></strong> (3 small CSVs) — that is exactly the <code>pc_scores.parquet</code> / <code>pc_rca.parquet</code> / <code>pc_features.csv</code> material for EVs. Failing that, the values are partially recoverable by re-executing the EV notebook, but only after the missing <code>ev_trade.csv</code> / <code>hs17_rca_cyh.csv</code> / <code>HS_Descriptions.csv</code> inputs are obtained.</p>
+<hr>
+</section>
+</section>
+<section id="alons-optimization-tool.zip-cice-v1-interactive-poc" class="level2">
+<h2 class="anchored" data-anchor-id="alons-optimization-tool.zip-cice-v1-interactive-poc">2. <code>Alon's optimization tool.zip</code> — CICE-V1 Interactive POC</h2>
+<p>A <strong>self-contained, email-able proof-of-concept dashboard</strong>: a <em>country-competitiveness sensitivity</em> tool. “If country X invested an extra ΔExport (as % of GDP) in technology T, how would its probability of being competitive — P(RCA&gt;1) — move, and which HS categories drive it?”</p>
+<pre><code>web/
+├── interactive_poc.html        # the dashboard (template + manifest + HS6 meta inlined)
+├── interactive_template.html   # hand-written template (__INLINE_DATA__ substituted at build)
+├── pipeline_flowchart.html + FLOWCHART_GUIDE.md   # methodology flowchart + its style guide
+├── README.md                   # methodology + build instructions
+└── data/
+    ├── manifest.json           # {tech:{iso3:[years]}} availability + country names + ALPHAS grid
+    ├── _hs_meta.js             # HS6 code → description cache
+    └── &lt;Tech&gt;.json.gz          # one gzipped bundle per tech (country × year payloads)</code></pre>
+<p><strong>Scope:</strong> 10 technologies (Batteries, Biofuel, Electrolyzer, Geothermal, Heatpump, Magnets, Nuclear, Solar, Transmission, Wind) × ~153 countries × 21 years (<strong>2003–2023</strong>). <strong>No EVs / DRI / DAC / Timber.</strong></p>
+<p><strong>What the dashboard does (methodology):</strong> - <strong>Left panel</strong> — P(RCA&gt;1) vs.&nbsp;investment expressed as <strong>ΔExport (% of GDP</strong>, with a $ axis). The blue curve is the full <strong>log-linear-form (LLF)</strong> model prediction; drag the marker to read <code>P</code>, <code>ΔP</code>, <code>ΔExport (%GDP)</code>, <code>ΔExport ($)</code>. An <strong>orange dotted “validity range”</strong> marks the largest investment α at which the local linearization stays within 50% of the full prediction. A static label reports <code>P_baseline</code>, marginal <code>dP/dExport ($)</code>, and the validity threshold. - <strong>Right panel</strong> — <strong>RCA Impact (%) by HS2 category</strong>, recomputed live as you drag. Bar height = <code>Σ_{i∈C} gᵢ² / Σ_all gⱼ² × 100</code> (bars sum to 100%); stacked segments are individual HS6 products by their L2² share. Categories: Chemicals, Industrial Materials, Electronics, Machinery, Metals, Textiles, Other.</p>
+<p><strong>Per-country-year payload</strong> (in each <code>&lt;Tech&gt;.json.gz</code>): <code>pb</code> (baseline P), <code>gdp</code>, <code>exp</code> (export level), <code>val</code>, and <code>pf</code> (the per-HS6 gradient / prediction vector) — the inputs that drive the draggable sensitivity curve.</p>
+<p><strong>Reproducibility:</strong> the bundles are <strong>build artifacts</strong> (gitignored upstream), regenerated by <code>scripts/build_interactive_data.py --techs ALL --countries ALL --years ALL</code>. That build script is <strong>not</strong> in this zip (only its outputs + the assembled HTML are). Runs over HTTP only (uses <code>fetch</code>); Plotly.js + pako load from CDN.</p>
+<hr>
+</section>
+<section id="bottom-line" class="level2">
+<h2 class="anchored" data-anchor-id="bottom-line">Bottom line</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Is there an EV model?</td>
+<td><strong>Yes</strong> — <code>RCA EV Analysis.ipynb</code>, fully run (RF + SHAP), May 15.</td>
+</tr>
+<tr class="even">
+<td>Is the EV <em>data</em> shipped?</td>
+<td><strong>No</strong> — <code>RCA Construction/EV/</code> is an empty folder; output CSVs not included.</td>
+</tr>
+<tr class="odd">
+<td>Can we reproduce the model from this drop?</td>
+<td><strong>Not fully</strong> — covariates (WDI), patents, raw BACI present, but the intermediate per-tech RCA panels + HS concordance are missing (hardcoded author-local paths).</td>
+</tr>
+<tr class="even">
+<td>Fastest route to EVs in the atlas</td>
+<td>Request the 3 CSVs in <code>RCA Construction/EV/</code> from Ishana/Alon (PC scores, RCA-by-category, SHAP-by-HS6).</td>
+</tr>
+<tr class="odd">
+<td>Does Alon’s tool cover EVs?</td>
+<td><strong>No</strong> — 10 techs, EVs not among them.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

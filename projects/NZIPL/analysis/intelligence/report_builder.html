@@ -160,7 +160,7 @@ body.printing .ir-pane iframe{height:620px;}
     <nav id="ir-sidebar">
       <div class="ir-topbar">
         <button class="ir-tb-btn" id="tb-back">&larr; Builder</button>
-        <button class="ir-tb-btn" id="tb-print">Print / PDF</button>
+        <button class="ir-tb-btn" id="tb-print">Save as PDF ↗</button>
       </div>
       <div class="ir-brand">
         <div class="ir-brand-eyebrow">NZIPL · Intelligence Report</div>
@@ -472,15 +472,21 @@ function loadPaneFrame(idx){
 function loadAllFrames(){
   return Promise.all([...document.querySelectorAll('#rep-main iframe')].map(loadFrame));
 }
-// Print / PDF: show every pane sized, load all iframes, let charts settle, then print.
-async function printReport(){
-  const btn = document.getElementById('tb-print');
-  if(btn){ btn.textContent='Preparing…'; btn.disabled=true; }
-  document.body.classList.add('printing');
-  await loadAllFrames();
-  await new Promise(r=>setTimeout(r, 1500));   // let chart entry transitions finish
-  if(btn){ btn.textContent='Print / PDF'; btn.disabled=false; }
-  window.print();
+// Save as PDF: hand off to the data-driven slides renderer (report.html). It draws every
+// visual from data (no iframes), so the print is reliable — unlike printing this composer.
+function printReport(){
+  const tech    = (selMode==='multi' ? selTechs[0]    : selTech);
+  const country = (selMode==='multi' ? selCountries[0] : selCountry);
+  const tn = (typeof TECHS!=='undefined') ? TECHS.find(t=>t.slug===tech) : null;
+  const techName = tn ? tn.name : tech;
+  const VMAP = {radar:'radar', pc_scatter:'scatter', trade_timeline:'timeline',
+                trade_composition:'treemap', trade_map:'map', activity_map:'firms',
+                sankey:'sankey', tech_tree:'tree'};
+  const vis = selVis.map(id=>VMAP[id]).filter(Boolean);
+  if(!tech || !country || !vis.length){ alert('Pick a technology, a country, and at least one visual first.'); return; }
+  const url = '../_proto_datadriven/report.html?tech=' + encodeURIComponent(techName)
+            + '&country=' + encodeURIComponent(country) + '&vis=' + vis.join(',');
+  window.open(url, '_blank');   // clean landscape slides → File ▸ Print ▸ Save as PDF
 }
 
 function showPane(idx){
@@ -521,8 +527,6 @@ document.querySelectorAll('#sel-mode .mode-btn').forEach(b=>b.addEventListener('
 document.getElementById('btn-build').addEventListener('click', buildReport);
 document.getElementById('tb-back').addEventListener('click', showSelector);
 document.getElementById('tb-print').addEventListener('click', printReport);
-window.addEventListener('beforeprint', ()=>{ document.body.classList.add('printing'); loadAllFrames(); });
-window.addEventListener('afterprint',  ()=>{ document.body.classList.remove('printing'); });
 window.addEventListener('hashchange', route);
 route();   // script is at end of <body>, DOM is ready — single entry point
 </script>

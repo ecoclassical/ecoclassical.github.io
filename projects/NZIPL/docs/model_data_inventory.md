@@ -24,8 +24,15 @@ ML_vars/
 ├── wdi.xlsx · wdi_impute.csv        # World Bank Development Indicators (imputed) — model covariates
 ├── IRENA_INSPIRE_Patents_April_2024(INSPIRE_data).csv   # patent counts (feature)
 ├── Analysis/RCA <Tech> Analysis.ipynb   # 14 per-tech notebooks (the actual model runs)
-└── RCA Construction/<Tech>/         # ⚠️ ALL EMPTY directory stubs (no files shipped)
+└── RCA Construction/<Tech>/         # ✅ POPULATED — 146 files / 1.3 GB; per-tech variable-build
+                                     #    files + PC values (see correction note below)
 ```
+
+> **Correction (2026-06-25):** an earlier version of this file said `RCA Construction/<Tech>/` was
+> empty. That was a tooling error on our side (a shell `awk` split on the space in "RCA Construction"
+> and truncated the filenames). The model author confirmed — and a re-listing verified — that **every
+> tech folder is fully populated**. Per the author: *"ML vars has all the files that build the model
+> variables; those are under RCA Construction; PC values are in each technology folder."*
 
 **Context / covariate data present (reproducibility inputs):**
 - `wdi_impute.csv` + `Bentley_data_cleaning.R` — the WDI macro covariates (GDP, population, FDI,
@@ -38,43 +45,45 @@ ML_vars/
 Batteries · Biofuel · Electrolyzer · Geothermal · Heatpump · Magnets · Nuclear · Solar ·
 Transmission · Wind · **EV** · plus DRI, DAC, Mass Timber (not in CVCE).
 
-### Reproducibility status — ⚠️ PARTIAL
+### Reproducibility status — ✅ AVAILABLE
 
-The notebooks read their main inputs from **hardcoded local paths on the author's machine** that
-are **not bundled**, e.g. (from `RCA EV Analysis.ipynb`):
+`RCA Construction/` is **fully populated** — **146 files / 1.3 GB**, with a subfolder per technology
+holding the variable-build inputs *and* the model's PC outputs. Verified for **all 14 techs**: every
+folder carries PC scores, RCA-by-category, and the trade panel.
 
-```python
-ev      = pd.read_csv("…/RCA Construction/EV/ev_trade.csv")        # ❌ missing (folder empty)
-rca_hs17= pd.read_csv("…/RCA Construction/EV/hs17_rca_cyh.csv")    # ❌ missing
-hs_master=pd.read_csv("…/concordance/HS_Descriptions.csv")        # ❌ no concordance/ in zip
-wdi     = pd.read_csv("…/ML_vars/wdi_impute.csv")                  # ✅ present
-```
+| What | File (per tech, e.g. `EV/`) | Maps to |
+|---|---|---|
+| PC scores (country × year) | `<tech>_predicted_competition_all_years.csv` | `data/pc/pc_scores.parquet` |
+| RCA by capability category | `<tech>_rca_by_category_year.csv` | `data/pc/pc_rca.parquet` (radar) |
+| Product RCA (country × year × HS) | `hs17_rca_cyh.csv` | product-level RCA (PC scatter) |
+| Trade panel | `<tech>_trade.csv` | RF feature build |
+| Product-space proximity (EV only) | `ev_phi.csv` | relatedness/density |
 
-So: **present** = model code (notebooks), WDI covariates, patents, raw BACI. **Missing** = the
-intermediate **"RCA Construction"** per-tech panels (`ev_trade.csv`, `hs17_rca_cyh.csv`, …) and the
-**HS concordance** file. Those `RCA Construction/<Tech>/` folders ship as empty stubs. → **You cannot
-push-button rerun the model as-is**; the intermediate RCA panels between raw BACI and the RF must be
-regenerated or requested.
+So the model **is** reproducible from this drop: the per-tech RCA-construction inputs are present
+(plus `wdi_impute.csv`, patents, `baci.zip`). The only piece not shipped as a tidy CSV is the
+**per-category / per-HS6 SHAP table** (the radar's gold "need" polygon + the PC-scatter x-axis) — that
+is computed inside each `Analysis/RCA <Tech> Analysis.ipynb` (`shap_by_cat`, `shap_df`) and lifted from
+the notebook output rather than read from a file.
 
-### EVs specifically — answering "is it empty?"
+### EVs specifically
 
-- **Not empty as code:** there **is** a complete `RCA EV Analysis.ipynb` (22 cells, fully executed,
-  dated 2026-05-15) — RandomForest + SHAP, identical pattern to the other techs.
-- **Empty as data:** the `RCA Construction/EV/` output folder is an **empty directory** in the zip.
-  The notebook *writes* its results there on the author's machine (`out_dir = …/RCA Construction/EV/`):
-  - `ev_rca_by_category_year.csv` — RCA by category × year (→ atlas **radar** axis)
-  - `X_rank_save[['country_code','year','predicted_comp']]` — PC scores by country-year (→ **pc_scores**)
-  - `df_2024_ev[['country_code','rank','rank_label','predicted_comp']]` — 2024 ranks
-  - a per-HS6 SHAP table (`shap_df`, `shap_by_cat`) (→ **pc_features** SHAP weights)
+`RCA Construction/EV/` is the **most complete** folder (15–18 files), containing everything needed to
+wire EVs into the atlas:
 
-  **None of these output CSVs are in the zip.** They exist only inside the notebook's run.
+- `ev_predicted_competition_all_years.csv` (`country_code, year, predicted_comp`) → **PC scores** ✅
+- `ev_rca_by_category_year.csv` (`country, year, category, …, RCA`) → **radar RCA (green) axis** ✅
+- `ev_phi.csv`, `ev_trade.csv`, `hs17_rca_cyh.csv` (389 MB product RCA), `BACI_HS17_V202601.zip` (794 MB)
+- Notebooks: `EV_Vars.ipynb`, `EV_Historical_Downscaling.ipynb`; `EVDataExplorer2025.xlsx`
 
-**Implication for Task 3 (wire EVs into the atlas radar + PC scatter):** the three CSVs the CVCE
-pipeline needs (PC scores, RCA-by-category, SHAP-by-HS6) are *computed* but *not shipped*. Cleanest
-path is to **ask Ishana/Alon for the contents of `RCA Construction/EV/`** (3 small CSVs) — that is
-exactly the `pc_scores.parquet` / `pc_rca.parquet` / `pc_features.csv` material for EVs. Failing that,
-the values are partially recoverable by re-executing the EV notebook, but only after the missing
-`ev_trade.csv` / `hs17_rca_cyh.csv` / `HS_Descriptions.csv` inputs are obtained.
+**Task 3 status — unblocked.** PC scores + RCA-by-category are ready to slot into `data/pc/` for EVs
+(rebuilds the radar's green polygon + PC-score readout). The radar's **gold SHAP polygon** and the
+**PC-scatter SHAP axis** still need the per-category / per-HS6 SHAP, lifted from `RCA EV Analysis.ipynb`.
+
+### Three techs in the model not yet in CVCE
+
+All fully populated with PC scores + RCA: **DAC** (direct air capture), **DRI** (direct reduced iron /
+green steel), **Mass Timber**. PC side is done; onboarding would need green-dict HS codes + a BACI
+extract (see CLAUDE.md "Adding a new technology").
 
 ---
 
@@ -126,7 +135,8 @@ Plotly.js + pako load from CDN.
 | Question | Answer |
 |---|---|
 | Is there an EV model? | **Yes** — `RCA EV Analysis.ipynb`, fully run (RF + SHAP), May 15. |
-| Is the EV *data* shipped? | **No** — `RCA Construction/EV/` is an empty folder; output CSVs not included. |
-| Can we reproduce the model from this drop? | **Not fully** — covariates (WDI), patents, raw BACI present, but the intermediate per-tech RCA panels + HS concordance are missing (hardcoded author-local paths). |
-| Fastest route to EVs in the atlas | Request the 3 CSVs in `RCA Construction/EV/` from Ishana/Alon (PC scores, RCA-by-category, SHAP-by-HS6). |
+| Is the EV *data* shipped? | **Yes** — `RCA Construction/EV/` is fully populated (15–18 files): PC scores, RCA-by-category, product RCA, trade, proximity, raw BACI. |
+| Can we reproduce the model from this drop? | **Yes** — `RCA Construction/` holds the per-tech variable-build inputs + outputs for all 14 techs, plus WDI/patents/BACI. Only the tidy SHAP table isn't a CSV (it's in the notebooks). |
+| Fastest route to EVs in the atlas | Slot `ev_predicted_competition_all_years.csv` → `pc_scores` and `ev_rca_by_category_year.csv` → `pc_rca`; lift SHAP-by-category from `RCA EV Analysis.ipynb` for the radar gold polygon / scatter x-axis. |
+| Techs in the model but not in CVCE | **DAC, DRI, Mass Timber** — PC side done; need green-dict + BACI extract to onboard. |
 | Does Alon's tool cover EVs? | **No** — 10 techs, EVs not among them. |
