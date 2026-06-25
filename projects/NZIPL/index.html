@@ -304,9 +304,8 @@ section:last-of-type { padding-bottom: 88px; }
     <a href="#intel">02 Intelligence</a>
     <a href="#pc">03 Predicted Competitiveness</a>
     <a href="#browser">04 Module Browser</a>
-    <a href="#portfolio">05 Portfolio</a>
-    <a href="#kit">06 Claude Kit</a>
-    <a href="#archive">07 Archive</a>
+    <a href="#kit">05 Claude Kit</a>
+    <a href="#archive">06 Archive</a>
     <a href="#commands">10 Commands</a>
   </nav>
 </div>
@@ -470,7 +469,7 @@ section:last-of-type { padding-bottom: 88px; }
   <div class="wrap">
     <div class="section-label"><span class="sl-num">03 —</span> Predicted Competitiveness</div>
 
-    <div class="rp-sub">PC Scores &amp; Trade Validation</div>
+    <div class="rp-sub">PC Scores · Trade Validation · ML Model</div>
     <div class="tools-grid" style="margin-bottom:20px;">
       <a class="t-card" href="analysis/scatterplot/pc_scatter.html">
         <div class="t-icon" style="color:var(--accent)">PC SCATTER</div>
@@ -482,10 +481,6 @@ section:last-of-type { padding-bottom: 88px; }
         <div class="t-title">SHAP–Trade Report</div>
         <div class="t-sub">OLS regression: SHAP importance predicts export intensity across techs and value-chain stages</div>
       </a>
-    </div>
-
-    <div class="rp-sub">ML Competitiveness Model</div>
-    <div class="tools-grid" style="margin-bottom:20px;">
       <a class="t-card" href="analysis/ml_model/ml_pipeline_explainer.html">
         <div class="t-icon" style="color:var(--accent)">EXPLAINER</div>
         <div class="t-title">ML Pipeline Explainer</div>
@@ -498,22 +493,22 @@ section:last-of-type { padding-bottom: 88px; }
       </a>
     </div>
 
-    <div class="rp-sub">Methodology Notes</div>
+    <div class="rp-sub">Methodology &amp; Gap Analysis</div>
     <div class="tools-grid">
       <a class="t-card" href="analysis/ml_model/capability_radar_methodology.html">
         <div class="t-icon" style="color:var(--solar)">RADAR · WP-4</div>
         <div class="t-title">Capability Gap Radar</div>
         <div class="t-sub">WP-4 3×3 classification grid, SHAP weights, RCA computation, product-count heatmap, gap reasoning, scatterplot validation</div>
       </a>
+      <a class="t-card" href="analysis/ml_model/model_implications_handbook.html">
+        <div class="t-icon" style="color:var(--solar)">HANDBOOK · GAP</div>
+        <div class="t-title">Model Implications</div>
+        <div class="t-sub">SHAP–RCA gap-analysis handbook — the WP-4 7-cell grid with a worked example per cell, across radar and PC scatter</div>
+      </a>
       <a class="t-card" href="analysis/ml_model/hs_exiobase_use_shares_methodology.html">
         <div class="t-icon" style="color:var(--accent2)">EXIOBASE · IO</div>
         <div class="t-title">IO Use Shares Methodology</div>
         <div class="t-sub">EXIOBASE Leontief use shares for HS products — Z-based aggregation, leontief vs direct share, supervisor review v2</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/ml_model_trade_variables.html">
-        <div class="t-icon" style="color:var(--accent)">TRADE VARS</div>
-        <div class="t-title">ML Trade Variables</div>
-        <div class="t-sub">Trade-based features used in the competitiveness model — HS6 export/import variables</div>
       </a>
       <a class="t-card" href="analysis/ml_model/nature_industrial_base_summary.html">
         <div class="t-icon" style="color:var(--accent)">SUMMARY</div>
@@ -570,37 +565,11 @@ section:last-of-type { padding-bottom: 88px; }
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     05 — PORTFOLIO
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="portfolio">
-  <div class="wrap">
-    <div class="section-label"><span class="sl-num">05 —</span> Portfolio</div>
-    <div class="portfolio-grid">
-      <a class="t-card" href="docs/workplan.html">
-        <div class="t-icon" style="color:var(--accent)">WORK PLAN</div>
-        <div class="t-title">Phase II Work Plan</div>
-        <div class="t-sub">Methodology, architecture, deliverables, and six-month progress tracking</div>
-      </a>
-      <a class="t-card" href="docs/analysis_index.html">
-        <div class="t-icon" style="color:var(--accent)">ALL OUTPUTS</div>
-        <div class="t-title">Analysis Viewer</div>
-        <div class="t-sub">Catalogue of all HTML and PNG outputs across the full project</div>
-      </a>
-      <a class="t-card" href="docs/cvce_diagram.html">
-        <div class="t-icon" style="color:var(--accent)">ARCHITECTURE</div>
-        <div class="t-title">Architecture Diagram</div>
-        <div class="t-sub">CVCE data flow: CIB · BACI · PC · ORBIS · Macro pipeline</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     06 — NZIPL TEAM CLAUDE KIT
+     05 — NZIPL TEAM CLAUDE KIT
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="kit">
   <div class="wrap">
-    <div class="section-label"><span class="sl-num">06 —</span> NZIPL Team Claude Kit</div>
+    <div class="section-label"><span class="sl-num">05 —</span> NZIPL Team Claude Kit</div>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:20px;">Shared knowledge base maintained by Gilberto García-Vázquez. Loads automatically into Claude Code sessions — data source conventions, API patterns, design tokens, and hard-won gotchas so the team doesn't rediscover the same issues independently.</p>
 
     <div class="kit-grid">
@@ -822,8 +791,27 @@ Rscript scripts/build_data/08d_build_sp_firms.R
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="archive">
   <div class="wrap">
-    <div class="section-label"><span class="sl-num">07 —</span> Archive <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">STANDALONE VIEWERS</span></div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:24px;">Older standalone viewer formats — ORBIS firm maps, sankey diagrams, and value chain dendrites. Superseded by the Module Browser above for most use cases.</p>
+    <div class="section-label"><span class="sl-num">06 —</span> Archive <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">STANDALONE VIEWERS &amp; PROJECT DOCS</span></div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:24px;">Project documentation plus older standalone viewer formats — ORBIS firm maps, sankey diagrams, and value chain dendrites. Superseded by the Module Browser above for most use cases.</p>
+
+    <div class="rp-sub">Project Documentation</div>
+    <div class="tools-grid" style="margin-bottom:28px;">
+      <a class="t-card" href="docs/workplan.html">
+        <div class="t-icon" style="color:var(--accent)">WORK PLAN</div>
+        <div class="t-title">Phase II Work Plan</div>
+        <div class="t-sub">Methodology, architecture, deliverables, and six-month progress tracking</div>
+      </a>
+      <a class="t-card" href="docs/analysis_index.html">
+        <div class="t-icon" style="color:var(--accent)">ALL OUTPUTS</div>
+        <div class="t-title">Analysis Viewer</div>
+        <div class="t-sub">Catalogue of all HTML and PNG outputs across the full project</div>
+      </a>
+      <a class="t-card" href="docs/cvce_diagram.html">
+        <div class="t-icon" style="color:var(--accent)">ARCHITECTURE</div>
+        <div class="t-title">Architecture Diagram</div>
+        <div class="t-sub">CVCE data flow: CIB · BACI · PC · ORBIS · Macro pipeline</div>
+      </a>
+    </div>
 
     <nav style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;">
       <a href="#arch-production" style="font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:rgba(255,255,255,.03);transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">A1 Production · ORBIS</a>
