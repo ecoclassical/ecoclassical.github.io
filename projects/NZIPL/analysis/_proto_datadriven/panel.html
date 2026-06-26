@@ -128,13 +128,18 @@ async function load(){
 }
 
 // ── world base map (shared by trade map + activity map) ───────────────────────
-function baseMap(svgSel,W,H){
+function baseMap(svgSel,W,H,focalIso){
   const svg=d3.select(svgSel); svg.selectAll('*').remove();
   if(!FEATS){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle').attr('fill','rgba(255,255,255,.3)').attr('font-size','11px').text('world map unavailable'); return null; }
-  const proj=d3.geoNaturalEarth1().rotate([-10,0,0]).fitSize([W,H],{type:'FeatureCollection',features:FEATS});
+  const proj=d3.geoNaturalEarth1().rotate([-10,0,0]);
+  const focalFeat=focalIso?FEATS.find(f=>parseInt(f.id)===ISO3N[focalIso]):null;
+  if(focalFeat){ proj.fitExtent([[W*0.16,H*0.16],[W*0.84,H*0.84]],focalFeat); }
+  else { proj.fitSize([W,H],{type:'FeatureCollection',features:FEATS}); }
   const path=d3.geoPath(proj);
   svg.append('g').selectAll('path').data(FEATS).join('path').attr('d',path)
-    .attr('fill','#10231a').attr('stroke','rgba(255,255,255,.07)').attr('stroke-width',.5);
+    .attr('fill',d=>focalFeat&&d===focalFeat?'#1c3d2c':'#10231a')
+    .attr('stroke',d=>focalFeat&&d===focalFeat?'rgba(60,181,74,.85)':'rgba(255,255,255,.07)')
+    .attr('stroke-width',d=>focalFeat&&d===focalFeat?.9:.5);
   return {svg,proj};
 }
 
@@ -155,7 +160,7 @@ function drawMap(parts,focal){
 
 function drawFirms(firms,focal){
   const W=d3.select('#amap').node().clientWidth||900,H=320;
-  const b=baseMap('#amap',W,H); if(!b) return;
+  const b=baseMap('#amap',W,H,focal); if(!b) return;
   if(!firms.length){ b.svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle').attr('fill','rgba(255,255,255,.3)').attr('font-size','11px').text('no S&P firm data for this country (focal-7 only)'); d3.select('#amap-leg').html(''); return; }
   const maxn=d3.max(firms,d=>d.n)||1, r=d3.scaleSqrt().domain([0,maxn]).range([2,14]);
   b.svg.append('g').selectAll('circle').data(firms).join('circle')

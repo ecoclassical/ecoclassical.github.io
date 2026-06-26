@@ -27,10 +27,12 @@ const THEMES = {
   dark:  { axis:"rgba(255,255,255,.42)", grid:"rgba(255,255,255,.10)", label:"rgba(255,255,255,.70)",
            faint:"rgba(255,255,255,.45)", title:"rgba(255,255,255,.85)",
            land:"#10231a", landStroke:"rgba(255,255,255,.08)", nodeStroke:"#0a0f14",
+           focalLand:"#1c3d2c", focalStroke:"rgba(60,181,74,.85)",
            tile:"#0a0f14", focal:"#ffffff", empty:"rgba(255,255,255,.40)", tmText:"rgba(0,0,0,.82)" },
   light: { axis:"#8a948c", grid:"#e2e8e2", label:"#3a463f",
            faint:"#6b766e", title:"#1d2a22",
            land:"#ecefec", landStroke:"#c8d0c9", nodeStroke:"#ffffff",
+           focalLand:"#d6ead9", focalStroke:"#3cb54a",
            tile:"#ffffff", focal:"#0b1a12", empty:"#9aa69d", tmText:"rgba(0,0,0,.82)" }
 };
 let T = THEMES.dark;
@@ -133,12 +135,17 @@ function treemap(sel,prod){
     t.append('tspan').attr('x',4).attr('dy',lines?10:0).text(clip(line,cpl));
   });
 }
-function baseMap(svg,W,H){
+function baseMap(svg,W,H,focalIso){
   svg.selectAll('*').remove();
   if(!FEATS){ empty(svg,W,H,'world map unavailable'); return null; }
-  const proj=d3.geoNaturalEarth1().rotate([-10,0,0]).fitSize([W,H],{type:'FeatureCollection',features:FEATS});
+  const proj=d3.geoNaturalEarth1().rotate([-10,0,0]);
+  const focalFeat=focalIso?FEATS.find(f=>parseInt(f.id)===ISO3N[focalIso]):null;
+  if(focalFeat){ proj.fitExtent([[W*0.16,H*0.16],[W*0.84,H*0.84]],focalFeat); }
+  else { proj.fitSize([W,H],{type:'FeatureCollection',features:FEATS}); }
   svg.append('g').selectAll('path').data(FEATS).join('path').attr('d',d3.geoPath(proj))
-    .attr('fill',T.land).attr('stroke',T.landStroke).attr('stroke-width',.5);
+    .attr('fill',d=>focalFeat&&d===focalFeat?T.focalLand:T.land)
+    .attr('stroke',d=>focalFeat&&d===focalFeat?T.focalStroke:T.landStroke)
+    .attr('stroke-width',d=>focalFeat&&d===focalFeat?.9:.5);
   return {svg,proj};
 }
 function map(sel,parts,focal){
@@ -152,7 +159,7 @@ function map(sel,parts,focal){
   legend(svg,8,8,[['#f97316','export destination'],['#3cb54a','import source']]);
 }
 function firms(sel,fr,focal){
-  const {W,H}=dims(sel); const svg=d3.select(sel); const b=baseMap(svg,W,H); if(!b)return;
+  const {W,H}=dims(sel); const svg=d3.select(sel); const b=baseMap(svg,W,H,focal); if(!b)return;
   if(!fr||!fr.length) return empty(svg,W,H,'no S&P firm data (focal-7 only)',true);
   const maxn=d3.max(fr,d=>d.n)||1, r=d3.scaleSqrt().domain([0,maxn]).range([2,14]);
   svg.append('g').selectAll('circle').data(fr).join('circle')
