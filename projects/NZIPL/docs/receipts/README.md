@@ -33,10 +33,14 @@ Compiled from Gmail (oriolvallescodina@gmail.com) on 2026-04-27.
 
 ## Grand totals (documented receipts only)
 
+_Updated 2026-06-26 — period extended to June 15, 2026; adds Anthropic invoice 0015 (Jun 6, €21.78, personal)._
+
 | Currency | Amount |
 |----------|--------|
-| EUR | €220.82 |
-| USD | $429.17 |
+| EUR (Anthropic, 15 invoices) | €449.38 |
+| USD (ChatGPT + Windsurf + Posit) | $431.45 |
+
+Software grand total ≈ **$950** (EUR 449.38 @ 1.155 + $431.45). Of which **$787 project** (72% Anthropic CVCE + pre-Claude tools), **$163 personal**. See `docs/nzipl_expenses_paragraph.txt` for the full period summary including research travel and accommodation (grand total ≈ $3,601; project ≈ $3,439).
 
 Notes:
 - EUR and USD are kept separate (no cross-currency conversion applied).

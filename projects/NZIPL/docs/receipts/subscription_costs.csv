@@ -1,4 +1,5 @@
 date,vendor,description,amount_eur,amount_usd,receipt_number,notes
+2026-06-06,Anthropic,Claude Pro – monthly subscription (personal),21.78,,2949-5547-5809,18.00 EUR + 21% Spanish VAT; invoice NJJAFZLE-0015 (Jun 6–Jul 6); same nature as 0012
 2026-05-11,Anthropic,Claude Team Pro – prepaid usage (NZIPL),46.28,,2814-7213-9288,38.25 EUR + 21% Spanish VAT
 2026-05-07,Anthropic,Claude Team Pro – prepaid usage (NZIPL),46.28,,2008-1251-3747,38.25 EUR + 21% Spanish VAT
 2026-05-06,Anthropic,Claude Pro – monthly subscription (personal),21.78,,2428-9740-2522,18.00 EUR + 21% Spanish VAT
@@ -42,4 +43,4 @@ date,vendor,description,amount_eur,amount_usd,receipt_number,notes
 2025-01-17,ChatGPT/OpenAI,ChatGPT Plus Subscription (first month),,21.63,,20.00 USD + 1.63 USD CA tax
 2026-04-29,Anthropic,Claude Team Pro – prepaid usage (NZIPL),46.28,,2507-6844-2787,38.25 EUR + 21% Spanish VAT
 2026-04-28,Anthropic,Claude Team Pro – prepaid usage (NZIPL),46.28,,2553-9860-4124,38.25 EUR + 21% Spanish VAT
-TOTAL,,,427.60,582.86,,EUR = Anthropic 14 receipts (€427.60: +€114.34 since Apr-27 update). USD = ChatGPT cancelled Apr 2026. Windsurf 7×$16.22 ($113.54) + Posit 6×$20.54 ($123.24). Grand total USD incl. EUR@1.08: $1045.07
+TOTAL,,,449.38,582.86,,EUR = Anthropic 15 receipts (€449.38: 14×=€427.60 + €21.78 Jun-6 inv. 0015 personal). USD = ChatGPT cancelled Apr 2026. Windsurf 7×$16.22 ($113.54) + Posit 6×$20.54 ($123.24). Software grand total USD incl. EUR@1.155: ~$950 (period to Jun 15, 2026)
