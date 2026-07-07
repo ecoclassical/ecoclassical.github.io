@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Net Zero Industrial Policy Lab (NZIPL) · Johns Hopkins SAIS">
-<meta name="dcterms.date" content="2026-07-06">
+<meta name="dcterms.date" content="2026-07-07">
 
 <title>A Common Technology Profile</title>
 <style>
@@ -2214,7 +2214,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 6, 2026</p>
+      <p class="date">July 7, 2026</p>
     </div>
   </div>
   
@@ -2877,7 +2877,17 @@ vertical-align: -.125em;
 </section>
 <section id="the-gap-layer-briefly" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> The gap layer, briefly</h1>
-<p>The target radar answers <em>what to build toward</em>; a country’s <strong>gap</strong> answers <em>how far it is and where it’s over/under-built</em>. That is the country’s own signed SHAP row read against the target — and it is exactly where the country dimension (§3’s magnitude dispersion) and negative numbers (a <strong>surplus</strong> the country should rotate out of) do their real work. It is a natural next module: overlay each focal country’s per-cluster signed SHAP on the common target, so the Atlas shows both the destination (shared) and the distance (specific). The ingredients already exist in <code>analysis/ml/raw_signed/</code>.</p>
+<p>The target radar answers <em>what to build toward</em>; a country’s <strong>gap</strong> answers <em>how far it is and where it’s over/under-built</em>. That is the country’s own signed SHAP row read against the target — and it is exactly where the country dimension (§3’s magnitude dispersion) and negative numbers (a <strong>surplus</strong> the country should rotate out of) do their real work.</p>
+<div class="callout callout-style-simple callout-tip no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>This is now built → <code>capability_gap.qmd</code>.</strong> It overlays each of the six focal countries’ recent-3-year signed SHAP on the common target, per cluster: a gap radar (target frontier as the outer ring, the country’s fill as % reached), ranked build-priority bars, and a country × tech distance-to-frontier board. E.g. <strong>India · Solar</strong> — a machinery-heavy economy against an Electronics-led target — reads as a deep <strong>Electronics</strong> gap with a <strong>Machinery</strong> surplus.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="recommendation" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Recommendation</h1>
@@ -3649,18 +3659,22 @@ vertical-align: -.125em;
 <span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a><span class="fu"># The gap layer, briefly</span></span>
 <span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>The target radar answers *what to build toward*; a country&#39;s **gap** answers *how far it is and where it&#39;s over/under-built*. That is the country&#39;s own signed SHAP row read against the target — and it is exactly where the country dimension (§3&#39;s magnitude dispersion) and negative numbers (a **surplus** the country should rotate out of) do their real work. It is a natural next module: overlay each focal country&#39;s per-cluster signed SHAP on the common target, so the Atlas shows both the destination (shared) and the distance (specific). The ingredients already exist in <span class="in">`analysis/ml/raw_signed/`</span>.</span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>The target radar answers *what to build toward*; a country&#39;s **gap** answers *how far it is and where it&#39;s over/under-built*. That is the country&#39;s own signed SHAP row read against the target — and it is exactly where the country dimension (§3&#39;s magnitude dispersion) and negative numbers (a **surplus** the country should rotate out of) do their real work.</span>
 <span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a><span class="fu"># Recommendation</span></span>
-<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Keep the common profile — it is justified.** Countries rank-agree on the shape of each tech&#39;s capability needs (median ρ ≈ <span class="in">`r round(median(cr$spearman_retained),2)`</span>); a single target radar per technology is a faithful summary. EDA 4&#39;s dispersion is a *scale* fact that belongs to the gap layer, not a refutation of the target.</span>
-<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Build the target axis from the competitive-class signed SHAP**, summed per cluster — magnitude-preserving and direction-checked — rather than the sum-of-<span class="in">`z`</span>, which is a product count. This moves the headline cluster for most techs (<span class="in">`r sum(flip[[&quot;Shipped (sum of z)&quot;]] != flip[[&quot;Target (winners&#39; recipe)&quot;]])`</span>/11).</span>
-<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Do not sign the pooled mean.** Pooled negativity (~`r share_neg_pooled`% of retained features) is base rate — the have-nots&#39; deficit — not &quot;avoid.&quot; Report a genuine **avoid list** from competitive-class-negative features instead; for these 11 techs it is essentially empty, which is itself a clean finding.</span>
-<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Put sign and the country dimension in a gap overlay**, not in the target. That is where &quot;this country has a surplus it should rotate out of&quot; is a real, signed, country-specific statement.</span>
-<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance=&quot;minimal&quot;}</span>
-<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a>**Reproduce.** <span class="in">`scripts/ml/regen_shap.py`</span> regenerates the raw signed SHAP; <span class="in">`scripts/ml/target_profile_prep.py`</span> reconstructs the RCA&gt;1 class per country-year from the CICE trade files and writes <span class="in">`shap_replication_country_rank.csv`</span> (§3) and <span class="in">`shap_replication_by_class.csv`</span> (§4–§5). No model re-fit is needed for the class split — the label is deterministic from <span class="in">`dv_&lt;finalproduct&gt;`</span>.</span>
-<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance=&quot;minimal&quot;}</span>
+<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a>**This is now built → `capability_gap.qmd`.** It overlays each of the six focal countries&#39; recent-3-year signed SHAP on the common target, per cluster: a gap radar (target frontier as the outer ring, the country&#39;s fill as % reached), ranked build-priority bars, and a country × tech distance-to-frontier board. E.g. **India · Solar** — a machinery-heavy economy against an Electronics-led target — reads as a deep **Electronics** gap with a **Machinery** surplus.</span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a><span class="fu"># Recommendation</span></span>
+<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Keep the common profile — it is justified.** Countries rank-agree on the shape of each tech&#39;s capability needs (median ρ ≈ <span class="in">`r round(median(cr$spearman_retained),2)`</span>); a single target radar per technology is a faithful summary. EDA 4&#39;s dispersion is a *scale* fact that belongs to the gap layer, not a refutation of the target.</span>
+<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Build the target axis from the competitive-class signed SHAP**, summed per cluster — magnitude-preserving and direction-checked — rather than the sum-of-<span class="in">`z`</span>, which is a product count. This moves the headline cluster for most techs (<span class="in">`r sum(flip[[&quot;Shipped (sum of z)&quot;]] != flip[[&quot;Target (winners&#39; recipe)&quot;]])`</span>/11).</span>
+<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Do not sign the pooled mean.** Pooled negativity (~`r share_neg_pooled`% of retained features) is base rate — the have-nots&#39; deficit — not &quot;avoid.&quot; Report a genuine **avoid list** from competitive-class-negative features instead; for these 11 techs it is essentially empty, which is itself a clean finding.</span>
+<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Put sign and the country dimension in a gap overlay**, not in the target. That is where &quot;this country has a surplus it should rotate out of&quot; is a real, signed, country-specific statement.</span>
+<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance=&quot;minimal&quot;}</span>
+<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a>**Reproduce.** <span class="in">`scripts/ml/regen_shap.py`</span> regenerates the raw signed SHAP; <span class="in">`scripts/ml/target_profile_prep.py`</span> reconstructs the RCA&gt;1 class per country-year from the CICE trade files and writes <span class="in">`shap_replication_country_rank.csv`</span> (§3) and <span class="in">`shap_replication_by_class.csv`</span> (§4–§5). No model re-fit is needed for the class split — the label is deterministic from <span class="in">`dv_&lt;finalproduct&gt;`</span>.</span>
+<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
