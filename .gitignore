@@ -16,3 +16,13 @@ _site/
 .sass-cache/
 vendor/
 .DS_Store
+
+# NZIPL: orphan files not served by the live site (unpublished to keep Pages under CDN sync limits)
+# kept on disk + in nzipl-cvce source + OneDrive; see nzipl-cvce Item-2 orphan trim
+projects/NZIPL/analysis/pc_scatterplot/
+projects/NZIPL/analysis/shap_rca_scatter/
+projects/NZIPL/docs/nature_submission/
+projects/NZIPL/docs/data/
+projects/NZIPL/docs/slides.html
+projects/NZIPL/docs/receipts/
+projects/NZIPL/docs/Solar India Report.zip
