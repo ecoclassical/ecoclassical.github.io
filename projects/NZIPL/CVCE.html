@@ -469,28 +469,8 @@ section:last-of-type { padding-bottom: 88px; }
   <div class="wrap">
     <div class="section-label"><span class="sl-num">03 —</span> Predicted Competitiveness</div>
 
-    <div class="rp-sub">PC Scores · Trade Validation · ML Model</div>
+    <div class="rp-sub">Capability Gap Analysis · latest</div>
     <div class="tools-grid" style="margin-bottom:20px;">
-      <a class="t-card" href="analysis/scatterplot/pc_scatter.html">
-        <div class="t-icon" style="color:var(--accent)">PC SCATTER</div>
-        <div class="t-title">Competitiveness Scatter</div>
-        <div class="t-sub">PC scores vs trade flows across 10 technologies and 155 countries</div>
-      </a>
-      <a class="t-card" href="analysis/scatterplot/scatterplot_report.html">
-        <div class="t-icon" style="color:var(--accent)">SHAP · TRADE</div>
-        <div class="t-title">SHAP–Trade Report</div>
-        <div class="t-sub">OLS regression: SHAP importance predicts export intensity across techs and value-chain stages</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/ml_pipeline_explainer.html">
-        <div class="t-icon" style="color:var(--accent)">EXPLAINER</div>
-        <div class="t-title">ML Pipeline Explainer</div>
-        <div class="t-sub">RF on RCA · SHAP mean |z| · 155 countries × 10 techs — non-technical walkthrough</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/ml_pipeline_review.html">
-        <div class="t-icon" style="color:var(--accent)">REVIEW</div>
-        <div class="t-title">ML Pipeline Review</div>
-        <div class="t-sub">Critical review of SHAP features, RCA coverage, SHAP↔trade correlation, and replication roadmap</div>
-      </a>
       <a class="t-card" href="analysis/ml_model/ml_replication.html">
         <div class="t-icon" style="color:var(--accent)">REPLICATION</div>
         <div class="t-title">SHAP Replication (from source)</div>
@@ -499,51 +479,31 @@ section:last-of-type { padding-bottom: 88px; }
       <a class="t-card" href="analysis/ml_model/target_profile.html">
         <div class="t-icon" style="color:var(--accent)">TARGET · RADAR</div>
         <div class="t-title">Common Technology Profile</div>
-        <div class="t-sub">Constructive follow-on: is a single "standard capability radar" countries evolve toward defensible (they rank-agree on shape, ρ≈0.89), where negative "avoid" weights actually belong (base-rate deficit, not anti-target), and a winners'-recipe target radar that reorders the top cluster for 5 of 11 techs</div>
+        <div class="t-sub">Is a single "standard capability radar" countries evolve toward defensible (they rank-agree on shape, ρ≈0.89), where negative "avoid" weights belong (base-rate deficit, not anti-target), and a winners'-recipe target radar that reorders the top cluster for 5 of 11 techs</div>
       </a>
       <a class="t-card" href="analysis/ml_model/capability_gap.html">
         <div class="t-icon" style="color:var(--accent)">GAP · COUNTRY</div>
         <div class="t-title">The Capability Gap</div>
-        <div class="t-sub">The country layer: each focal country's recent signed SHAP vs the common target — gap radars (target frontier vs % reached), ranked build priorities, and a country × tech distance-to-frontier board. Magnitude-preserving, signed, country-specific</div>
+        <div class="t-sub">The country layer: each focal country's recent signed SHAP vs the common target — gap radars (target frontier vs % reached), ranked build priorities, and a country × tech distance-to-frontier board</div>
       </a>
-      <a class="t-card" href="analysis/ml_model/shap_vs_probability_note.html">
-        <div class="t-icon" style="color:var(--accent)">SCORE vs SHAP</div>
-        <div class="t-title">SHAP vs RF Probability</div>
-        <div class="t-sub">Modeler note: the two RF outputs (score vs SHAP decomposition), what the year z-score does to magnitude, and feature-selection vs repurposing</div>
+      <a class="t-card" href="analysis/ml_model/model_implications_handbook.html">
+        <div class="t-icon" style="color:var(--accent)">HANDBOOK · GAP</div>
+        <div class="t-title">Model Implications</div>
+        <div class="t-sub">Handbook for reading the capability gap radar: need (winners' recipe) vs achievement, the seven-cell grid with a worked case per cell, and a radar gallery of five focal cases</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/capability_radar_methodology.html">
+        <div class="t-icon" style="color:var(--accent)">RADAR · METHOD</div>
+        <div class="t-title">Capability Gap Radar — Methodology</div>
+        <div class="t-sub">How the two axes are computed: winners'-recipe target share (need) × achievement fraction (reached), the seven-cell classification, worked India·Solar example, and SHAP↔trade validation</div>
       </a>
     </div>
 
-    <div class="rp-sub">Methodology, Data &amp; Gap Analysis</div>
+    <div class="rp-sub">Foundations</div>
     <div class="tools-grid">
-      <a class="t-card" href="analysis/ml_model/capability_radar_methodology.html">
-        <div class="t-icon" style="color:var(--solar)">RADAR · WP-4</div>
-        <div class="t-title">Capability Gap Radar</div>
-        <div class="t-sub">WP-4 3×3 classification grid, SHAP weights, RCA computation, product-count heatmap, gap reasoning, scatterplot validation</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/model_implications_handbook.html">
-        <div class="t-icon" style="color:var(--solar)">HANDBOOK · GAP</div>
-        <div class="t-title">Model Implications</div>
-        <div class="t-sub">SHAP–RCA gap-analysis handbook — the WP-4 7-cell grid with a worked example per cell, across radar and PC scatter</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/capability_model_audit.html">
-        <div class="t-icon" style="color:var(--solar)">AUDIT · GAP</div>
-        <div class="t-title">Capability Model Audit</div>
-        <div class="t-sub">Consolidated audit of the SHAP–RCA need-axis: the two RF outputs, feature selection vs the "standard tech profile," count-driven aggregation, sum-vs-mean sensitivity, and the circularity check — verified against source</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/hs_exiobase_use_shares_methodology.html">
-        <div class="t-icon" style="color:var(--accent2)">EXIOBASE · IO</div>
-        <div class="t-title">IO Use Shares Methodology</div>
-        <div class="t-sub">EXIOBASE Leontief use shares for HS products — Z-based aggregation, leontief vs direct share, supervisor review v2</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/nature_industrial_base_summary.html">
-        <div class="t-icon" style="color:var(--accent)">SUMMARY</div>
-        <div class="t-title">Industrial Base Summary</div>
-        <div class="t-sub">Nature-style summary of the clean industrial base methodology and findings</div>
-      </a>
-      <a class="t-card" href="analysis/ml_model/model_data_inventory.html">
-        <div class="t-icon" style="color:var(--accent2)">MODEL DATA</div>
-        <div class="t-title">Model Data Inventory</div>
-        <div class="t-sub">Shared model-data drops — RCA construction, PC values per tech, reproducibility, and EV / new-tech (DAC · DRI · Timber) availability</div>
+      <a class="t-card" href="analysis/ml_model/ml_pipeline_explainer.html">
+        <div class="t-icon" style="color:var(--accent)">EXPLAINER</div>
+        <div class="t-title">ML Pipeline Explainer</div>
+        <div class="t-sub">RF on RCA · SHAP mean |z| · 155 countries × 10 techs — the non-technical walkthrough of the model behind the gap analysis</div>
       </a>
     </div>
   </div>
@@ -840,6 +800,51 @@ Rscript scripts/build_data/08d_build_sp_firms.R
         <div class="t-icon" style="color:var(--accent)">ARCHITECTURE</div>
         <div class="t-title">Architecture Diagram</div>
         <div class="t-sub">CVCE data flow: CIB · BACI · PC · ORBIS · Macro pipeline</div>
+      </a>
+    </div>
+
+    <div class="rp-sub">Predicted Competitiveness &amp; Methodology — Archived</div>
+    <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px;">Earlier PC/ML material moved out of §03 for focus — the standalone competitiveness scatter, notes superseded by the capability-gap arc, and secondary methodology.</p>
+    <div class="tools-grid" style="margin-bottom:28px;">
+      <a class="t-card" href="analysis/scatterplot/pc_scatter.html">
+        <div class="t-icon" style="color:var(--muted)">PC SCATTER</div>
+        <div class="t-title">Competitiveness Scatter</div>
+        <div class="t-sub">Standalone interactive: PC scores vs trade flows across 10 technologies and 155 countries</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/capability_model_audit.html">
+        <div class="t-icon" style="color:var(--muted)">AUDIT · GAP</div>
+        <div class="t-title">Capability Model Audit</div>
+        <div class="t-sub">Consolidated audit of the SHAP–RCA need-axis — largely superseded by SHAP Replication (§03)</div>
+      </a>
+      <a class="t-card" href="analysis/scatterplot/scatterplot_report.html">
+        <div class="t-icon" style="color:var(--muted)">SHAP · TRADE</div>
+        <div class="t-title">SHAP–Trade Report</div>
+        <div class="t-sub">OLS: SHAP importance predicts export intensity across techs and value-chain stages</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/ml_pipeline_review.html">
+        <div class="t-icon" style="color:var(--muted)">REVIEW</div>
+        <div class="t-title">ML Pipeline Review</div>
+        <div class="t-sub">Critical review of SHAP features, RCA coverage, and the replication roadmap</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/shap_vs_probability_note.html">
+        <div class="t-icon" style="color:var(--muted)">SCORE vs SHAP</div>
+        <div class="t-title">SHAP vs RF Probability</div>
+        <div class="t-sub">Modeler note: the two RF outputs and what the year z-score does to magnitude</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/nature_industrial_base_summary.html">
+        <div class="t-icon" style="color:var(--muted)">SUMMARY</div>
+        <div class="t-title">Industrial Base Summary</div>
+        <div class="t-sub">Nature-style summary of the clean industrial base methodology and findings</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/model_data_inventory.html">
+        <div class="t-icon" style="color:var(--muted)">MODEL DATA</div>
+        <div class="t-title">Model Data Inventory</div>
+        <div class="t-sub">Shared model-data drops — RCA construction, PC values, reproducibility, EV/new-tech availability</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/hs_exiobase_use_shares_methodology.html">
+        <div class="t-icon" style="color:var(--muted)">EXIOBASE · IO</div>
+        <div class="t-title">IO Use Shares Methodology</div>
+        <div class="t-sub">EXIOBASE Leontief use shares for HS products — Z-based aggregation, supervisor review v2</div>
       </a>
     </div>
 

@@ -7,11 +7,9 @@ Facts sourced from the JHU appointment letter + ecoclassical.github.io CV.
 Oriol Vallès Codina
 Senior Research Associate
 
-Oriol Vallès Codina is a Senior Research Associate at the Net Zero Industrial Policy Lab. He holds a PhD in Economics from the New School for Social Research and graduate studies in physics, bioinformatics, and anthropology. With an interdisciplinary profile at the intersection of ecological macroeconomics, complexity science, and classical political economy, he develops macroeconomic multi-region input-output models to explore questions of value, accumulation, and income distribution within social and ecological limits. At the lab, he builds a clean industrial policy intelligence platform mapping the evolution, structure, and geography of green value chains worldwide.
+Oriol Vallès Codina is a Senior Research Associate at the Net Zero Industrial Policy Lab. He holds a PhD in Economics from the New School for Social Research and graduate studies in physics, bioinformatics, and anthropology. With an interdisciplinary profile at the intersection of ecological macroeconomics, complexity science, and classical political economy, he develops macroeconomic multi-region input-output models to explore questions of value, accumulation, and income distribution within social and ecological limits. 
 
-Previously, Oriol was a postdoctoral research fellow at Leeds University Business School and
-University College London, and a research consultant for the Agence Française de
-Développement and the World Bank.
+At the lab, he builds a clean industrial policy intelligence platform mapping the evolution, structure, and geography of green value chains worldwide. Previously, Oriol was a postdoctoral research fellow at Leeds University Business School and University College London, and a research consultant for the Agence Française de Développement and the World Bank.
 
 
 ======================================================================================
