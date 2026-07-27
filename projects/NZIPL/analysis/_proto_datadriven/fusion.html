@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NZIPL — Clean Trade Cockpit</title>
+<!--
+  fusion.html — the "Clean Trade Cockpit" (Phase 1 shell).
+
+  A single integrated visual fusing three atlas panes into one:
+    ① focal-centered world map           (cockpit zoom on the focus country)
+    ② domestic S&P firm activity INSIDE the focus country
+    ③ external trade arrows to top import sources / export destinations,
+       clamped to the map edge at the partner's true bearing
+    ④ the process-of-production dendrite, radiating from the focal centroid,
+       acting as the product NAVIGATOR (click a node to walk the supply chain)
+
+  Navigation:
+    • click a country on the map      → refocus there (reloads that case)
+    • click a dendrite node           → select that product (highlights firms/edges)
+    • tech dropdown                   → switch technology
+
+  Params: ?tech=<TechSlug>&country=<CountrySlug>   (default Solar / India)
+
+  PHASE 1 CAVEAT: trade arrows use the engine's TECH-LEVEL `partners` list.
+  Per-product arrows need the proto builder to nest partners per product
+  (Phase 2). Firms are focal-7 only and tagged by stage·role (not HS code).
+
+  Reuses the shared engine core (geo.js + viz.js): VIZ.baseMap / centroids /
+  feats / ISO3N / SR / fmtV — no duplicated geo tables.
+-->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3"></script>
+<script src="geo.js"></script>
+<script src="viz.js"></script>
+<style>
+  :root{ --bg:#0a1218; --ink:#e2e8f0; --faint:rgba(226,232,240,.6); --line:rgba(255,255,255,.1);
+         --panel:rgba(10,18,15,.82); --accent:#3cb54a; }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+    font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  #stage{display:block;width:100vw;height:100vh;}
+
+  /* ── top control bar ── */
+  #bar{position:fixed;top:0;left:0;right:0;height:46px;z-index:6;display:flex;align-items:center;gap:16px;
+    padding:0 16px;background:linear-gradient(180deg,rgba(10,18,24,.92),rgba(10,18,24,.55) 70%,transparent);
+    backdrop-filter:blur(2px);}
+  #bar .brand{font-weight:800;letter-spacing:.3px;font-size:.86rem;color:#fff;white-space:nowrap;}
+  #bar .brand span{color:var(--accent);}
+  #bar select{background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;
+    padding:5px 8px;font:inherit;font-size:.78rem;cursor:pointer;}
+  #bar .focal{font-size:.8rem;color:var(--ink);}
+  #bar .focal b{color:var(--accent);}
+  #bar .hint{font-size:.68rem;color:var(--faint);}
+  #bar #mapmode{background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;
+    padding:5px 10px;font:inherit;font-size:.76rem;cursor:pointer;white-space:nowrap;}
+  #bar #mapmode:hover{border-color:var(--accent);color:#fff;}
+  #sel-readout{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.76rem;}
+  #sel-readout .chip{background:rgba(60,181,74,.14);border:1px solid rgba(60,181,74,.4);border-radius:20px;
+    padding:3px 10px;color:#eaffea;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #sel-readout button{background:#1a2430;color:var(--faint);border:1px solid var(--line);border-radius:6px;
+    padding:3px 9px;font:inherit;font-size:.72rem;cursor:pointer;}
+  #sel-readout button:hover{color:#fff;border-color:var(--accent);}
+
+  /* ── stats + legend panels ── */
+  #stats{position:fixed;top:58px;left:16px;z-index:5;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px;min-width:172px;backdrop-filter:blur(3px);}
+  #stats .t{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);margin-bottom:6px;}
+  #stats .row{display:flex;justify-content:space-between;gap:16px;font-size:.82rem;padding:2px 0;}
+  #stats .row .k{color:var(--faint);} #stats .row .v{font-weight:700;font-variant-numeric:tabular-nums;}
+  #stats .exp{color:#f97316;} #stats .imp{color:#3cb54a;}
+
+  #legend{position:fixed;bottom:14px;left:16px;z-index:5;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:9px 12px;font-size:.7rem;color:var(--faint);backdrop-filter:blur(3px);line-height:1.7;}
+  #legend b{color:var(--ink);font-weight:700;}
+  #legend .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+  #legend .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;opacity:.8;}
+  #phase{position:fixed;bottom:14px;right:16px;z-index:5;font-size:.64rem;color:rgba(226,232,240,.4);
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 9px;}
+
+  #tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:9;
+    background:rgba(10,18,15,.96);border:1px solid rgba(60,181,74,.35);border-radius:6px;
+    padding:6px 9px;font-size:.72rem;color:var(--ink);max-width:260px;line-height:1.45;}
+</style>
+</head>
+<body>
+<svg id="stage"></svg>
+
+<div id="bar">
+  <div class="brand">CLEAN TRADE <span>COCKPIT</span></div>
+  <select id="tech-sel" title="Technology"></select>
+  <div class="focal">Focus: <select id="country-sel" title="Focus country (grouped by bloc)"></select></div>
+  <button id="mapmode" title="Toggle flat map / 3D globe">🌐 Globe</button>
+  <div class="hint">scroll to zoom · drag to pan/spin · click a country to focus · click a node to trace a product</div>
+  <div id="sel-readout"><span class="chip" id="sel-chip">Whole technology</span>
+    <button id="sel-clear" style="display:none">clear</button></div>
+</div>
+
+<div id="stats">
+  <div class="t" id="stats-title">Solar · India</div>
+  <div class="row"><span class="k">Exports</span><span class="v exp" id="s-exp">—</span></div>
+  <div class="row"><span class="k">Imports</span><span class="v imp" id="s-imp">—</span></div>
+  <div class="row"><span class="k">Net</span><span class="v" id="s-net">—</span></div>
+  <div class="row"><span class="k">Firm sites</span><span class="v" id="s-firms">—</span></div>
+</div>
+
+<div id="legend">
+  <div><span class="dot" style="background:#f97316"></span><b>Export</b> destinations &nbsp; <span class="dot" style="background:#3cb54a"></span><b>Import</b> sources</div>
+  <div><span class="sw" style="background:#c17a2e"></span>Upstream <span class="sw" style="background:#22c55e"></span>Midstream <span class="sw" style="background:#4ade80"></span>Downstream <span class="sw" style="background:#f97316"></span>Final &nbsp;— firms &amp; dendrite by stage·role</div>
+  <div style="margin-top:3px;opacity:.85;">picker: <b>★</b> focal country · <b>◆</b> Group-of-Thirty member</div>
+</div>
+<div id="phase">Phase 1 shell · arrows are tech-level</div>
+
+<div id="tip"></div>
+
+<script>
+/* ── engine country roster ─────────────────────────────────────────────────── */
+// COUNTRIES is loaded from data/_countries.json (generated from case_registry.csv),
+// so the picker + click-to-refocus map auto-expand as the engine's roster grows.
+let COUNTRIES = [];               // [{iso, slug, name, bloc, focal}]
+let ISO2SLUG = {};                // iso3 → slug (rebuilt from COUNTRIES)
+const BLOC_ORDER = ["Factory North America","Factory Asia","Factory Europe",
+                    "Supplier South America","Supplier Africa","Supplier Oceania",
+                    "Supplier Eurasia","Other"];
+const TECHS = ["Solar","Wind","Batteries","Biofuel","Electrolyzers","Geothermal",
+  "Heat_Pumps","Magnets","Nuclear","Transmission","EVs"];
+
+/* ── state ─────────────────────────────────────────────────────────────────── */
+let TECH="Solar", COUNTRY="India";
+let D=null, TD=null;           // case json, tech json (dendrite tree)
+let selProduct=null;           // selected HS code (dendrite navigation)
+let root=null, zoomB=null, zoomT=d3.zoomIdentity;   // pan/zoom container + behavior + transform
+let mapMode='flat', globeRot=null, globeScale=1;    // flat map ⇄ 3D orthographic globe
+
+/* ── tiny helpers ──────────────────────────────────────────────────────────── */
+const tipEl=()=>document.getElementById('tip');
+function tip(e,h){ const t=tipEl(); t.style.opacity=1; t.style.left=(e.clientX+13)+'px'; t.style.top=(e.clientY+13)+'px'; t.innerHTML=h; }
+function tipOut(){ tipEl().style.opacity=0; }
+function msg(t){ d3.select('#stage').selectAll('*').remove();
+  d3.select('#stage').append('text').attr('x','50%').attr('y','50%').attr('text-anchor','middle')
+    .attr('fill','rgba(148,163,184,.7)').attr('font-size',13).text(t); }
+
+function hashCode(s){ let h=0; s=String(s); for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
+// ray from (cx,cy) toward (px,py) clamped to the inset rect [pad,W-pad]×[pad,H-pad]
+function edgePoint(cx,cy,px,py,W,H,pad){
+  const dx=px-cx, dy=py-cy; if(!dx&&!dy) return [cx,cy];
+  let t=Infinity;
+  if(dx>0) t=Math.min(t,(W-pad-cx)/dx); else if(dx<0) t=Math.min(t,(pad-cx)/dx);
+  if(dy>0) t=Math.min(t,(H-pad-cy)/dy); else if(dy<0) t=Math.min(t,(pad-cy)/dy);
+  return [cx+dx*Math.max(0,t), cy+dy*Math.max(0,t)];
+}
+function selSR(){
+  if(!selProduct) return null;
+  const p=(D.products||[]).find(x=>x.code===selProduct);
+  if(p) return p.stage+'|'+p.role;
+  const e=((TD&&TD.tree)||[]).find(x=>x.from_code===selProduct||x.to_code===selProduct);
+  if(e) return e.from_code===selProduct?(e.from_stage+'|'+e.from_role):(e.to_stage+'|'+e.to_role);
+  return null;
+}
+function selName(){
+  if(!selProduct) return null;
+  const e=((TD&&TD.tree)||[]).find(x=>x.from_code===selProduct||x.to_code===selProduct);
+  if(e) return e.from_code===selProduct?e.from_name:e.to_name;
+  const p=(D.products||[]).find(x=>x.code===selProduct); return p?p.product_name:selProduct;
+}
+
+/* ── the cockpit render ────────────────────────────────────────────────────── */
+function drawFusion(){
+  if(!D) return;
+  const svg=d3.select('#stage');
+  const {W,H}=VIZ.dims('#stage');
+  svg.selectAll('*').remove();
+  const CENT=VIZ.centroids(), FEATS=VIZ.feats(), ISO3N=VIZ.ISO3N;
+  const iso4id=id=>{ const s=String(id).padStart(3,'0'); return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(s)); };
+  let proj, fc, front=()=>true;   // front(lonlat) → is the point on the visible hemisphere (globe only)
+
+  if(mapMode==='globe'){
+    root=svg.append('g').attr('class','zoom-root');            // globe rotates via projection, not a group transform
+    const c0=CENT[D.iso]||[0,0];
+    const rot=globeRot||[-c0[0],-c0[1],0];
+    const scale=(Math.min(W,H)/2-24)*globeScale;
+    proj=d3.geoOrthographic().rotate(rot).translate([W/2,H/2]).scale(scale).clipAngle(90);
+    const gp=d3.geoPath(proj), centerLL=[-rot[0],-rot[1]];
+    front=ll=>d3.geoDistance(ll,centerLL)<=Math.PI/2+0.02;
+    root.append('path').datum({type:'Sphere'}).attr('d',gp)          // ocean sphere
+      .attr('fill','#0a1a12').attr('stroke','rgba(96,165,250,.28)').attr('stroke-width',1);
+    root.append('path').datum(d3.geoGraticule10()).attr('d',gp)      // graticule
+      .attr('fill','none').attr('stroke','rgba(255,255,255,.06)').attr('stroke-width',0.5);
+    root.append('g').selectAll('path').data(FEATS).join('path').attr('d',gp)  // land (clipAngle culls back)
+      .attr('fill',d=>iso4id(d.id)===D.iso?'#1c3d2c':'#12281c')
+      .attr('stroke',d=>iso4id(d.id)===D.iso?'rgba(60,181,74,.85)':'rgba(255,255,255,.08)')
+      .attr('stroke-width',d=>iso4id(d.id)===D.iso?1.1:0.4);
+    fc=[W/2,H/2];
+  } else {
+    root=svg.append('g').attr('class','zoom-root').attr('transform',zoomT);  // pan/zoom container
+    const b=VIZ.baseMap(root,W,H,D.iso);   // focal-centered flat land
+    if(!b){ msg('world map unavailable'); return; }
+    proj=b.proj;
+    fc = CENT[D.iso] ? proj(CENT[D.iso]) : [W/2,H/2];
+  }
+
+  // ◆ highlight G30 member countries (gold), so they stand out as focus targets
+  const g30set=new Set(COUNTRIES.filter(c=>c.g30).map(c=>c.iso));
+  root.append('g').selectAll('path')
+    .data(FEATS.filter(f=>{const iso=iso4id(f.id);return g30set.has(iso)&&iso!==D.iso;})).join('path')
+    .attr('d',d3.geoPath(proj)).attr('fill','rgba(251,191,36,.11)')
+    .attr('stroke','rgba(251,191,36,.6)').attr('stroke-width',0.8).attr('pointer-events','none');
+
+  // arrowhead markers
+  const defs=root.append('defs');
+  [['dest','#f97316'],['src','#3cb54a']].forEach(([k,c])=>{
+    defs.append('marker').attr('id','ah-'+k).attr('viewBox','0 0 10 10').attr('refX',8).attr('refY',5)
+      .attr('markerWidth',10).attr('markerHeight',10).attr('markerUnits','userSpaceOnUse')  // fixed size, not ∝ stroke
+      .attr('orient','auto-start-reverse')
+      .append('path').attr('d','M0,0 L10,5 L0,10 z').attr('fill',c);
+  });
+
+  // ① invisible country hit-layer (click-to-refocus / hover) — under the marks
+  root.append('g').selectAll('path').data(FEATS).join('path')
+    .attr('d',d3.geoPath(proj)).attr('fill','transparent').attr('stroke','none')
+    .attr('cursor',d=>{const iso=iso4id(d.id);return (iso&&ISO2SLUG[iso]&&iso!==D.iso)?'pointer':'default';})
+    .on('click',(e,d)=>{const iso=iso4id(d.id); if(iso&&ISO2SLUG[iso]&&iso!==D.iso) loadCase(TECH,ISO2SLUG[iso]);})
+    .on('mousemove',(e,d)=>{const iso=iso4id(d.id); if(iso&&ISO2SLUG[iso]) tip(e,'<b>'+ISO2SLUG[iso].replace(/_/g,' ')+'</b>'+(iso===D.iso?'<br>focal country':'<br>click to refocus')); else tipOut();})
+    .on('mouseout',tipOut);
+
+  // ③ partner trade arrows — width ∝ log(value); great-circle arcs on the globe
+  const pad=26;
+  const dests=(D.partners||[]).filter(p=>p.dir==='dest'&&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
+  const srcs =(D.partners||[]).filter(p=>p.dir==='src' &&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
+  const arr=[...dests,...srcs];
+  const maxV=d3.max(arr,p=>p.v)||1;
+  const minV=Math.max(1, d3.min(arr,p=>p.v)||1);
+  const wsc=d3.scaleLog().domain([minV, Math.max(maxV, minV*10)]).range([1,7]).clamp(true);  // log width
+  const rsc=d3.scaleSqrt().domain([0,maxV]).range([2.5,9]);
+  const ag=root.append('g').attr('class','arrows');
+  const gpArc=d3.geoPath(proj);
+  const focalLL=CENT[D.iso]||[0,0];
+  arr.forEach(p=>{
+    const cll=CENT[p.partner]; if(!cll) return;
+    if(mapMode==='globe' && !front(cll)) return;    // hide partners on the far side of the globe
+    const tgt=proj(cll); if(!tgt) return;
+    const col=p.dir==='dest'?'#f97316':'#3cb54a', w=wsc(Math.max(1,p.v));
+    if(mapMode==='globe'){
+      // arc bowed PERPENDICULAR to the chord, on the side away from the globe centre → lifts off the sphere
+      const A=p.dir==='dest'?fc:tgt, B=p.dir==='dest'?tgt:fc;
+      const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2, cx=W/2, cy=H/2;
+      const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
+      const px=-dy/len, py=dx/len, bow=len*0.42+22;                             // perpendicular unit × curvature
+      const c1=[mx+px*bow,my+py*bow], c2=[mx-px*bow,my-py*bow];                 // two sides…
+      const ctrl=(Math.hypot(c1[0]-cx,c1[1]-cy)>Math.hypot(c2[0]-cx,c2[1]-cy))?c1:c2;  // …pick the outward one
+      ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
+        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.62)
+        .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
+    } else {
+      const inside=tgt[0]>=pad&&tgt[0]<=W-pad&&tgt[1]>=pad&&tgt[1]<=H-pad;
+      const end=inside?tgt:edgePoint(fc[0],fc[1],tgt[0],tgt[1],W,H,pad);
+      const [x1,y1,x2,y2]=p.dir==='dest'?[fc[0],fc[1],end[0],end[1]]:[end[0],end[1],fc[0],fc[1]];
+      ag.append('line').attr('x1',x1).attr('y1',y1).attr('x2',x2).attr('y2',y2)
+        .attr('stroke',col).attr('stroke-opacity',.5).attr('stroke-width',w).attr('marker-end','url(#ah-'+p.dir+')');
+    }
+    // partner dot + label (globe: at the partner's true position; flat: at the clamped edge)
+    let dp=tgt;
+    if(mapMode!=='globe'){ const inside=tgt[0]>=pad&&tgt[0]<=W-pad&&tgt[1]>=pad&&tgt[1]<=H-pad;
+      dp=inside?tgt:edgePoint(fc[0],fc[1],tgt[0],tgt[1],W,H,pad); }
+    ag.append('circle').attr('cx',dp[0]).attr('cy',dp[1]).attr('r',rsc(p.v))
+      .attr('fill',col).attr('fill-opacity',.45).attr('stroke',col).attr('stroke-width',1).attr('cursor','pointer')
+      .on('mousemove',e=>tip(e,'<b>'+p.partner+'</b><br>'+(p.dir==='dest'?'export destination':'import source')+' · '+VIZ.fmtV(p.v))).on('mouseout',tipOut);
+    ag.append('text').attr('x',dp[0]).attr('y',dp[1]-rsc(p.v)-3).attr('text-anchor','middle')
+      .attr('font-size','9px').attr('fill',col).attr('font-weight','700').attr('pointer-events','none').text(p.partner);
+  });
+
+  // ② domestic firms inside the focal country
+  const firms=D.firms||[]; const sr=selSR();
+  if(firms.length){
+    const maxN=d3.max(firms,f=>f.n)||1;
+    const fr=d3.scaleSqrt().domain([0,maxN]).range([2.5,12]);
+    const fg=root.append('g').attr('class','firms');
+    [...firms].sort((a,b)=>b.n-a.n).forEach(f=>{
+      const ll=[+f.lon,+f.lat];
+      if(mapMode==='globe' && !front(ll)) return;   // hide firms on the far side of the globe
+      const px=proj(ll); if(!px) return; const [x,y]=px;
+      if(x<-20||x>W+20||y<-20||y>H+20) return;
+      const k=f.stage+'|'+f.role, col=VIZ.SR[k]||'#888', match=!sr||k===sr, r=fr(f.n);
+      fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r)
+        .attr('fill',col).attr('opacity',sr?(match?0.95:0.1):0.68)
+        .attr('stroke','rgba(10,15,20,.9)').attr('stroke-width',.5).attr('cursor','pointer')
+        .on('mousemove',e=>tip(e,f.stage+' · '+f.role+'<br><b>'+f.n+'</b> firm'+(f.n>1?'s':''))).on('mouseout',tipOut);
+      if(sr&&match) fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r+3)
+        .attr('fill','none').attr('stroke','#fff').attr('stroke-width',1.5).attr('pointer-events','none');
+    });
+  }
+
+  // ④ radial dendrite from the focal centroid — the product navigator
+  const edges=(TD&&TD.tree)||[];
+  if(edges.length){
+    const nmap=new Map();
+    const reg=(c,nm,st,ro)=>{ if(!nmap.has(c)) nmap.set(c,{code:c,name:nm,stage:st,role:ro}); return nmap.get(c); };
+    edges.forEach(e=>{ reg(e.from_code,e.from_name,e.from_stage,e.from_role); reg(e.to_code,e.to_name,e.to_stage,e.to_role); });
+    const nodes=[...nmap.values()];
+    // topological step = distance to a sink (final product); step(from) ≥ step(to)+1
+    const step=new Map(nodes.map(n=>[n.code,0]));
+    for(let i=0;i<20;i++){ let ch=false; edges.forEach(e=>{ const s=(step.get(e.to_code)||0)+1; if((step.get(e.from_code)||0)<s){ step.set(e.from_code,s); ch=true; } }); if(!ch) break; }
+    const maxStep=d3.max([...step.values()])||1;
+    const Rmin=70, Rmax=Math.min(W,H)*0.30;              // tight halo around the focal country
+    const rad=s=>Rmin+(Rmax-Rmin)*(s/(maxStep||1));      // final near centre, upstream outer
+    // Angle: final products spread evenly; each upstream node inherits the circular-mean
+    // bearing of its downstream targets → edges run near-radial ("roots" growing outward).
+    const targetsOf=new Map(nodes.map(n=>[n.code,[]]));
+    edges.forEach(e=>{ if(targetsOf.has(e.from_code)) targetsOf.get(e.from_code).push(e.to_code); });
+    const ang=new Map();
+    const byStepAsc=nodes.slice().sort((a,b)=>(step.get(a.code)||0)-(step.get(b.code)||0));
+    const finals=byStepAsc.filter(n=>(step.get(n.code)||0)===0);
+    finals.forEach((n,i)=>ang.set(n.code,(i/Math.max(1,finals.length))*2*Math.PI - Math.PI/2));
+    byStepAsc.forEach(n=>{ if(ang.has(n.code)) return;
+      const tg=targetsOf.get(n.code).filter(c=>ang.has(c));
+      if(tg.length){ let sx=0,sy=0; tg.forEach(c=>{sx+=Math.cos(ang.get(c));sy+=Math.sin(ang.get(c));}); ang.set(n.code,Math.atan2(sy,sx)); }
+      else ang.set(n.code,(hashCode(n.code)%360)*Math.PI/180); });
+    // de-overlap: spread nodes that collide in angle within the same ring
+    d3.groups(nodes,n=>step.get(n.code)||0).forEach(([s,ns])=>{
+      ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code));
+      const minGap=Math.min(0.42,(2*Math.PI)/Math.max(8,ns.length));
+      for(let i=1;i<ns.length;i++){ const prev=ang.get(ns[i-1].code); if(ang.get(ns[i].code)-prev<minGap) ang.set(ns[i].code,prev+minGap); }
+    });
+    const pos=c=>{ const a=ang.get(c)||0, r=rad(step.get(c)||0); return [fc[0]+r*Math.cos(a), fc[1]+r*Math.sin(a)]; };
+    const tv=new Map((D.products||[]).map(p=>[p.code,p.v]));
+    const maxTV=d3.max([...tv.values()])||1;
+    const nr=d3.scaleSqrt().domain([0,maxTV]).range([3,11]);
+    const dg=root.append('g').attr('class','dendrite');
+
+    dg.append('g').selectAll('path').data(edges).join('path')
+      .attr('d',e=>{const a=pos(e.from_code),z=pos(e.to_code);return 'M'+a[0]+','+a[1]+'L'+z[0]+','+z[1];})
+      .attr('fill','none')
+      .attr('stroke',e=>(selProduct&&(e.from_code===selProduct||e.to_code===selProduct))?'rgba(255,255,255,.85)':'rgba(255,255,255,.20)')
+      .attr('stroke-width',e=>(selProduct&&(e.from_code===selProduct||e.to_code===selProduct))?1.8:0.7);
+
+    dg.append('g').selectAll('circle').data(nodes).join('circle')
+      .attr('cx',n=>pos(n.code)[0]).attr('cy',n=>pos(n.code)[1])
+      .attr('r',n=>{const base=Math.max(nr(tv.get(n.code)||0),3);return n.code===selProduct?base+2:base;})
+      .attr('fill',n=>VIZ.SR[n.stage+'|'+n.role]||'#888')
+      .attr('stroke',n=>n.code===selProduct?'#fff':'rgba(255,255,255,.55)').attr('stroke-width',n=>n.code===selProduct?2.4:1)
+      .attr('opacity',n=>!selProduct?0.98:(n.code===selProduct?1:0.5)).attr('cursor','pointer')
+      .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; drawFusion(); updateReadout(); })
+      .on('mousemove',(e,n)=>tip(e,'<b>'+(n.name||n.code)+'</b><br>HS '+n.code+'<br>'+n.stage+' · '+n.role+(tv.get(n.code)?'<br>Trade: '+VIZ.fmtV(tv.get(n.code)):'')))
+      .on('mouseout',tipOut);
+
+    // focal centroid marker (chain origin)
+    dg.append('circle').attr('cx',fc[0]).attr('cy',fc[1]).attr('r',5)
+      .attr('fill','#fff').attr('stroke','#3cb54a').attr('stroke-width',1.6).attr('pointer-events','none');
+  }
+}
+
+/* ── flat ⇄ globe ──────────────────────────────────────────────────────────── */
+const globeDrag=d3.drag().on('drag',ev=>{
+  const c0=VIZ.centroids()[D.iso]||[0,0];
+  const r=globeRot||[-c0[0],-c0[1],0], k=0.35;
+  globeRot=[r[0]+ev.dx*k, Math.max(-90,Math.min(90, r[1]-ev.dy*k)), 0];  // spin the globe
+  drawFusion();
+});
+function globeWheel(ev){ ev.preventDefault();
+  globeScale=Math.max(0.5,Math.min(5, globeScale*(ev.deltaY<0?1.12:0.9))); drawFusion(); }
+function setMapMode(m){
+  mapMode=m; globeRot=null; globeScale=1; zoomT=d3.zoomIdentity;
+  const btn=document.getElementById('mapmode'); if(btn) btn.textContent = m==='globe'?'🗺 Flat map':'🌐 Globe';
+  const svg=d3.select('#stage');
+  svg.on('.zoom',null).on('.drag',null).on('wheel.globe',null);        // clear all interactions
+  if(m==='globe'){ svg.call(globeDrag).on('wheel.globe',globeWheel); }
+  else if(zoomB){ svg.call(zoomB).on('dblclick.zoom',null); svg.call(zoomB.transform,d3.zoomIdentity); }
+  drawFusion();
+}
+
+/* ── control-bar readouts ──────────────────────────────────────────────────── */
+function updateReadout(){
+  const cs=document.getElementById('country-sel'); if(cs&&cs.value!==COUNTRY) cs.value=COUNTRY;
+  document.getElementById('stats-title').textContent=TECH.replace(/_/g,' ')+' · '+(COUNTRY||'').replace(/_/g,' ');
+  const exp=d3.sum((D.partners||[]).filter(p=>p.dir==='dest'),p=>p.v);
+  const imp=d3.sum((D.partners||[]).filter(p=>p.dir==='src'),p=>p.v);
+  const net=exp-imp;
+  document.getElementById('s-exp').textContent=VIZ.fmtV(exp);
+  document.getElementById('s-imp').textContent=VIZ.fmtV(imp);
+  const ne=document.getElementById('s-net'); ne.textContent=(net>=0?'+':'−')+VIZ.fmtV(Math.abs(net));
+  ne.style.color=net>=0?'#4ade80':'#f87171';
+  document.getElementById('s-firms').textContent=(D.firms||[]).length||'—';
+  const chip=document.getElementById('sel-chip'), clr=document.getElementById('sel-clear');
+  if(selProduct){ chip.textContent=selName()+'  ·  HS '+selProduct; clr.style.display=''; }
+  else { chip.textContent='Whole technology'; clr.style.display='none'; }
+}
+
+/* ── loading ───────────────────────────────────────────────────────────────── */
+async function loadCase(tech,slug){
+  TECH=tech; COUNTRY=slug;
+  const id=tech.replace(/ /g,'_')+'_'+slug;
+  try{ D=await (await fetch('data/'+id+'.json')).json(); D=Array.isArray(D)?D[0]:D; }
+  catch(e){ msg(location.protocol==='file:'
+      ? 'Open over HTTP, not file:// — browsers block fetch on file://. Run  python3 -m http.server  in the project root, then open the localhost URL.'
+      : 'no data for '+id); return; }
+  try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
+  catch(e){ TD=null; }
+  selProduct=null;
+  zoomT=d3.zoomIdentity; if(zoomB) d3.select('#stage').call(zoomB.transform, d3.zoomIdentity);  // recenter on new focal
+  globeRot=null; globeScale=1;   // globe recenters/​rezooms on the new focal country
+  document.getElementById('tech-sel').value=tech;
+  const cs=document.getElementById('country-sel'); if(cs) cs.value=slug;
+  drawFusion(); updateReadout();
+}
+
+// grouped country picker: <optgroup> per bloc, ★ marks focal countries
+function populateCountrySel(){
+  const cs=document.getElementById('country-sel'); cs.innerHTML='';
+  const byBloc=d3.groups(COUNTRIES,c=>c.bloc)
+    .sort((a,b)=>(BLOC_ORDER.indexOf(a[0])+1||99)-(BLOC_ORDER.indexOf(b[0])+1||99));
+  byBloc.forEach(([bloc,cs2])=>{
+    const og=document.createElement('optgroup'); og.label=bloc;
+    cs2.sort((a,b)=>(b.focal-a.focal)||a.name.localeCompare(b.name)).forEach(c=>{
+      const o=document.createElement('option'); o.value=c.slug;
+      // ★ = focal country · ◆ = Group-of-Thirty member
+      o.textContent=(c.focal?'★':'')+(c.g30?'◆':'')+((c.focal||c.g30)?' ':'')+c.name; og.appendChild(o); });
+    cs.appendChild(og);
+  });
+  cs.value=COUNTRY;
+  cs.onchange=e=>loadCase(TECH,e.target.value);
+}
+
+async function boot(){
+  const q=new URLSearchParams(location.search);
+  TECH=q.get('tech')||'Solar'; COUNTRY=q.get('country')||'India';
+  VIZ.setTheme('dark');
+  // tech dropdown
+  const ts=document.getElementById('tech-sel');
+  TECHS.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t.replace(/_/g,' ');ts.appendChild(o);});
+  ts.value=TECH;
+  ts.onchange=e=>loadCase(e.target.value,COUNTRY);
+  document.getElementById('sel-clear').onclick=()=>{selProduct=null;drawFusion();updateReadout();};
+  document.getElementById('mapmode').onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
+  // country roster (bloc-grouped picker + click-to-refocus map) from the manifest
+  try{ COUNTRIES=await (await fetch('data/_countries.json')).json();
+       ISO2SLUG=Object.fromEntries(COUNTRIES.map(c=>[c.iso,c.slug])); populateCountrySel(); }
+  catch(e){ console.warn('countries manifest',e); }
+  // geo (inline for file://, fetch fallback)
+  try{ VIZ.initGeo(window.__WORLD110 || await (await fetch('../lib/countries-110m.json')).json()); }
+  catch(e){ console.warn('geo',e); }
+  // pan/zoom: scroll to zoom out and reach any country, drag to pan — then click to focus
+  zoomB=d3.zoom().scaleExtent([0.6,8]).on('zoom',ev=>{ zoomT=ev.transform; if(root) root.attr('transform',zoomT); });
+  d3.select('#stage').call(zoomB).on('dblclick.zoom',null);
+  await loadCase(TECH,COUNTRY);
+  const pp=q.get('product'); if(pp){ selProduct=pp; drawFusion(); updateReadout(); }
+  if(q.get('map')==='globe') setMapMode('globe');
+  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawFusion,150);});
+}
+boot();
+</script>
+</body>
+</html>

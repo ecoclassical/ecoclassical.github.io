@@ -300,6 +300,7 @@ section:last-of-type { padding-bottom: 88px; }
   <div class="topbar-brand">NZIPL · CVCE</div>
   <div class="topbar-sep"></div>
   <nav class="topbar-nav">
+    <a href="#cockpit">★ Explorer</a>
     <a href="#atlases">01 Atlases</a>
     <a href="#intel">02 Intelligence</a>
     <a href="#pc">03 Predicted Competitiveness</a>
@@ -327,6 +328,42 @@ section:last-of-type { padding-bottom: 88px; }
     </div>
   </div>
 </header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     ★ — CLEAN VALUE CHAIN EXPLORER  (Atlas + Intelligence Report fusion cockpit)
+     Hand-authored flagship section. Links to the data-driven fusion engine at
+     analysis/_proto_datadriven/fusion.html — served over HTTP (fetches case JSON).
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="cockpit">
+  <div class="wrap">
+    <div class="section-label"><span class="sl-num">★ —</span> Clean Value Chain Explorer
+      <span style="font-size:9px;font-weight:700;color:#3cb54a;background:rgba(60,181,74,.12);border:1px solid rgba(60,181,74,.4);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">NEW · FUSION</span>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:18px;">One integrated view fusing the <b style="color:var(--text)">Atlas</b> and the <b style="color:var(--text)">Intelligence Report</b>: a focus country on the world map, its domestic S&amp;P firm activity inside, external trade arrows to the top import sources &amp; export destinations, and the process-of-production dendrite overlaid as a live navigator radiating from the country. Two ways to drive it — <b style="color:var(--text)">navigate the map</b> to change the focus country, or <b style="color:var(--text)">walk the dendrite</b> from product to product, updating the map beneath. Data-driven across 23 countries × 11 technologies.</p>
+
+    <div class="flagship-card">
+      <div class="a-header">
+        <div class="a-badge green">★ Flagship · Atlas + Intelligence Report Fusion</div>
+        <div class="a-title" style="margin-top:8px;">Clean Value Chain Explorer</div>
+        <div class="a-desc">Focus-country cockpit: world map + domestic firm activity + edge-clamped trade arrows for the selected product + a radial supply-chain dendrite that doubles as the product navigator. Click a country to refocus; click a supply-chain node to trace that product across suppliers, buyers, and domestic firms.</div>
+      </div>
+      <div class="a-body">
+        <div class="a-sub">Quick launch</div>
+        <div class="cases-grid compact">
+          <a class="case-chip" href="analysis/_proto_datadriven/fusion.html?tech=Solar&amp;country=India"><span class="chip-tech" style="color:var(--solar)">Solar</span><span class="chip-country">India</span></a>
+          <a class="case-chip" href="analysis/_proto_datadriven/fusion.html?tech=Batteries&amp;country=South_Korea"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">South Korea</span></a>
+          <a class="case-chip" href="analysis/_proto_datadriven/fusion.html?tech=Wind&amp;country=Japan"><span class="chip-tech" style="color:var(--wind)">Wind</span><span class="chip-country">Japan</span></a>
+          <a class="case-chip" href="analysis/_proto_datadriven/fusion.html?tech=Magnets&amp;country=Japan"><span class="chip-tech" style="color:var(--magnets)">Magnets</span><span class="chip-country">Japan</span></a>
+          <a class="case-chip" href="analysis/_proto_datadriven/fusion.html?tech=Nuclear&amp;country=Japan"><span class="chip-tech" style="color:var(--nuclear)">Nuclear</span><span class="chip-country">Japan</span></a>
+          <a class="case-chip" href="analysis/_proto_datadriven/fusion.html?tech=Transmission&amp;country=Vietnam"><span class="chip-tech" style="color:var(--transmission)">Transmission</span><span class="chip-country">Vietnam</span></a>
+        </div>
+      </div>
+      <div class="a-footer">
+        <a class="a-link" href="analysis/_proto_datadriven/fusion.html?tech=Solar&amp;country=India">Open the Explorer →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
      01 — ATLASES OF THE CLEAN INDUSTRIAL BASE
@@ -1039,6 +1076,7 @@ const BR_MODULES = [
   {id:'trade_timeline', label:'Trade Timeline'},
   {id:'trade_composition', label:'Trade Composition'},
   {id:'tech_tree', label:'Tech Tree'},
+  {id:'solar_system', label:'Value-Chain Solar System'},
   {id:'sankey', label:'Sankey'},
   {id:'trade_map', label:'Trade Map'},
   {id:'activity_map', label:'Activity Map'},
@@ -1080,6 +1118,10 @@ const BR_COUNTRIES = [
   {name:'Argentina', slug:'Argentina', col:'#38bdf8'},
   {name:'Nigeria', slug:'Nigeria', col:'#22c55e'},
   {name:'South Africa', slug:'South_Africa', col:'#a855f7'},
+  {name:'Australia', slug:'Australia', col:'#d97706'},
+  {name:'Russia', slug:'Russia', col:'#64748b'},
+  {name:'Singapore', slug:'Singapore', col:'#db2777'},
+  {name:'Switzerland', slug:'Switzerland', col:'#e11d48'},
 ];
 // <</REGISTRY-DATA>>
 
@@ -1095,7 +1137,7 @@ function buildPath(mod, tech, country) {
   // of a pre-rendered standalone panel — one renderer, all engine countries.
   // sankey/tech_tree pull from _tech_<tech>.json (country is ignored there).
   var ENGINE = {radar:1, pc_scatter:1, trade_timeline:1, trade_composition:1,
-                trade_map:1, activity_map:1, sankey:1, tech_tree:1};
+                trade_map:1, activity_map:1, sankey:1, tech_tree:1, solar_system:1};
   if(ENGINE[mod]) {
     return 'analysis/_proto_datadriven/embed.html?tech=' + encodeURIComponent(tech)
          + '&country=' + encodeURIComponent(country) + '&panel=' + mod;

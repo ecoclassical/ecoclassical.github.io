@@ -46,10 +46,12 @@ const DRAW = {
   activity_map:      (d,td)=>VIZ.firms('#stage', d.firms, d.iso),
   sankey:            (d,td)=>VIZ.sankey('#stage', td && td.sankey),
   tech_tree:         (d,td)=>VIZ.tree('#stage', td && td.tree),
+  solar_system:      (d,td)=>VIZ.solarsystem('#stage', td && td.tree),
 };
 // engine-native aliases, so ?panel=scatter also works
 const ALIAS = { scatter:'pc_scatter', timeline:'trade_timeline', treemap:'trade_composition',
-                map:'trade_map', firms:'activity_map', tree:'tech_tree' };
+                map:'trade_map', firms:'activity_map', tree:'tech_tree',
+                solarsystem:'solar_system', orrery:'solar_system' };
 
 function msg(t){ document.getElementById('stage').innerHTML =
   '<text x="50%" y="50%" text-anchor="middle" fill="rgba(148,163,184,.7)" font-size="12">'+t+'</text>'; }
@@ -73,7 +75,7 @@ async function boot(){
   d = Array.isArray(d) ? d[0] : d;
 
   let td = null;
-  if(panel==='sankey' || panel==='tech_tree'){
+  if(panel==='sankey' || panel==='tech_tree' || panel==='solar_system'){
     try{ td = await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); td = Array.isArray(td)?td[0]:td; }
     catch(e){ td = null; }
   }

@@ -208,6 +208,53 @@ function tree(sel,edges){
     .attr('cx',d=>d.x).attr('cy',d=>d.y).attr('r',d=>Math.min(9,4+d.deg)).attr('fill',d=>SR[d.stage+'|'+d.role]||'#888').attr('stroke',T.nodeStroke)
     .on('mousemove',(e,d)=>tipMove(e,(d.name||d.code)+'<br>'+d.stage+' · '+d.role)).on('mouseout',tipOut);
 }
+// Value-chain "solar system" — circular alternative to tree(): final product = Sun at
+// the centre, concentric rings by step-distance to the final product (same step ⇒ same
+// ring, radius ∝ product space), products = planets sized by connectivity, edges minimised
+// via barycentric angle relaxation. Same tech-level input as tree() (dendrite edges).
+function solarsystem(sel,edges){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  if(!edges||!edges.length) return empty(svg,W,H,'no value-chain (dendrite) data');
+  const nm=new Map(); const reg=(c,nn,st,ro)=>{ if(!nm.has(c)) nm.set(c,{code:c,name:nn,stage:st,role:ro,deg:0}); return nm.get(c); };
+  edges.forEach(e=>{ const a=reg(e.from_code,e.from_name,e.from_stage,e.from_role),b=reg(e.to_code,e.to_name,e.to_stage,e.to_role); a.deg++; b.deg++; });
+  const nodes=[...nm.values()];
+  // step = SHORTEST distance to a final product (sink = no outgoing edge); cycle-safe
+  const hasOut=new Set(edges.map(e=>e.from_code));
+  const step=new Map(nodes.map(n=>[n.code, hasOut.has(n.code)?Infinity:0]));
+  for(let i=0;i<nodes.length;i++){ let ch=false; edges.forEach(e=>{ const d=step.get(e.to_code); if(d!==Infinity && step.get(e.from_code)>d+1){ step.set(e.from_code,d+1); ch=true; } }); if(!ch) break; }
+  let fm=0; step.forEach(v=>{ if(v!==Infinity&&v>fm) fm=v; }); step.forEach((v,k)=>{ if(v===Infinity) step.set(k,fm+1); });
+  const maxStep=d3.max([...step.values()])||1;
+  const ringsBy=d3.groups(nodes,n=>step.get(n.code)).sort((a,b)=>a[0]-b[0]);
+  // angle: barycentric relaxation → short edges, then de-overlap per ring
+  const nbr=new Map(nodes.map(n=>[n.code,[]]));
+  edges.forEach(e=>{ nbr.get(e.from_code).push(e.to_code); nbr.get(e.to_code).push(e.from_code); });
+  const ang=new Map();
+  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>b.deg-a.deg); ns.forEach((n,i)=>ang.set(n.code,(i/ns.length)*2*Math.PI)); });
+  for(let it=0;it<60;it++){ const na=new Map();
+    nodes.forEach(n=>{ const nb=nbr.get(n.code).filter(c=>ang.has(c)); if(!nb.length){ na.set(n.code,ang.get(n.code)); return; }
+      let sx=0,sy=0; nb.forEach(c=>{ sx+=Math.cos(ang.get(c)); sy+=Math.sin(ang.get(c)); }); na.set(n.code,(sx||sy)?Math.atan2(sy,sx):ang.get(n.code)); });
+    na.forEach((v,k)=>ang.set(k,v)); }
+  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code)); const mg=(2*Math.PI)/Math.max(ns.length,1)*0.72;
+    for(let i=1;i<ns.length;i++){ if(ang.get(ns[i].code)-ang.get(ns[i-1].code)<mg) ang.set(ns[i].code,ang.get(ns[i-1].code)+mg); } });
+  // product-space ring radius
+  const rAbs=[]; let acc=0; for(let s=0;s<=maxStep;s++){ const c=(ringsBy.find(g=>g[0]===s)||[0,[]])[1].length; acc+=1+0.16*c; rAbs[s]=acc; }
+  const rMax=rAbs[maxStep]||1;
+  const cx=W/2, cy=H/2+4, R0=Math.min(W,H)*0.08, maxR=Math.min(W,H)*0.44;
+  const R=s=>R0+((rAbs[s]||0)/rMax)*(maxR-R0);
+  const pos=c=>{ const a=ang.get(c)||0, r=R(step.get(c)||0); return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,n=>n.deg)||1]).range([4,14]);
+  for(let s=1;s<=maxStep;s++) svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R(s)).attr('fill','none').attr('stroke',T.grid).attr('stroke-width',1);
+  svg.append('g').selectAll('path').data(edges).join('path')
+    .attr('d',e=>{ const a=pos(e.from_code),b=pos(e.to_code); return `M${a[0]},${a[1]}L${b[0]},${b[1]}`; })
+    .attr('fill','none').attr('stroke',T.grid).attr('stroke-width',.7);
+  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R0*0.6+9).attr('fill','#f97316').attr('opacity',.15);
+  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R0*0.5+6).attr('fill','#f59e0b').attr('stroke','#fbbf24').attr('stroke-width',1.2)
+    .on('mousemove',e=>tipMove(e,'Final product (centre)')).on('mouseout',tipOut);
+  svg.append('g').selectAll('circle').data(nodes).join('circle')
+    .attr('cx',n=>pos(n.code)[0]).attr('cy',n=>pos(n.code)[1]).attr('r',n=>Math.max(3,rSc(n.deg)))
+    .attr('fill',n=>SR[n.stage+'|'+n.role]||'#888').attr('stroke',T.nodeStroke).attr('stroke-width',.6)
+    .on('mousemove',(e,n)=>tipMove(e,(n.name||n.code)+'<br>'+n.stage+' · '+n.role+'<br>step '+step.get(n.code)+' from final')).on('mouseout',tipOut);
+}
 function empty(svg,W,H,msg,muted){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle').attr('fill',T.empty).attr('font-size','12px').text(msg); }
 // small inline swatch legend (top-left of a chart)
 function legend(svg,x,y,items){ const g=svg.append('g').attr('transform',`translate(${x},${y})`); let dx=0;
@@ -256,12 +303,16 @@ function highlights(kind,d,td){
   } else if(kind==='sankey'){
     const fl=(td&&td.sankey)||[]; if(fl.length){ const tw=d3.sum(fl,f=>f.weight); out.push(`${fl.length} bilateral flows across the 7-lane value chain (${fmtV(tw)} total, ${td.year}).`);
       const bigf=fl.slice().sort((a,b)=>b.weight-a.weight)[0]; if(bigf) out.push(`Largest flow: <b>${bigf.from_country}→${bigf.to_country}</b> (${fmtV(bigf.weight)}).`); }
-  } else if(kind==='tree'){
+  } else if(kind==='tree'||kind==='solar_system'){
     const e=(td&&td.tree)||[]; if(e.length){ const codes=new Set(); e.forEach(x=>{codes.add(x.from_code);codes.add(x.to_code);});
       out.push(`Production process spans <b>${codes.size}</b> HS products and ${e.length} transformation links.`); }
   }
   return out;
 }
 
-global.VIZ = {SR,CAT,fmtV,setTheme,initGeo,radar,scatter,timeline,treemap,map,firms,sankey,tree,highlights};
+global.VIZ = {SR,CAT,fmtV,setTheme,initGeo,radar,scatter,timeline,treemap,map,firms,sankey,tree,solarsystem,highlights,
+  // additive exports for the fusion cockpit (fusion.html) — reuse the engine's
+  // focal projection + geo tables without duplicating them. Getters because CENT
+  // and FEATS are populated by initGeo() after load.
+  ISO3N, baseMap, dims, centroids:()=>CENT, feats:()=>FEATS};
 })(window);
