@@ -38,12 +38,35 @@
          --panel:rgba(10,18,15,.82); --accent:#3cb54a; }
   html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
     font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
-  #stage{display:block;width:100vw;height:100vh;}
+  #split{position:fixed;top:88px;left:0;right:0;bottom:0;display:flex;}
+  #left{position:relative;flex:0 0 66%;min-width:0;}
+  #right{position:relative;flex:1;min-width:0;border-left:1px solid rgba(255,255,255,.09);background:#08110c;}
+  #stage{display:block;width:100%;height:100%;}
+  #nav{display:block;width:100%;height:100%;cursor:default;}
+  #nav-hd{position:absolute;top:0;left:0;right:0;padding:8px 12px;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(8,17,12,.92),transparent);}
+  #nav-hd b{font-size:.74rem;font-weight:800;color:var(--ink);}
+  #nav-hd span{display:block;font-size:.63rem;color:var(--faint);margin-top:2px;}
 
   /* ── top control bar ── */
-  #bar{position:fixed;top:0;left:0;right:0;height:46px;z-index:6;display:flex;align-items:center;gap:16px;
-    padding:0 16px;background:linear-gradient(180deg,rgba(10,18,24,.92),rgba(10,18,24,.55) 70%,transparent);
-    backdrop-filter:blur(2px);}
+  #bar{position:fixed;top:0;left:0;right:0;height:88px;z-index:6;display:flex;align-items:center;gap:14px;
+    padding:0 16px;background:linear-gradient(180deg,rgba(10,18,24,.96),rgba(10,18,24,.82) 80%,rgba(10,18,24,.6));
+    backdrop-filter:blur(3px);border-bottom:1px solid rgba(255,255,255,.07);}
+  /* ── drum-wheel selectors (Stage → Role → Category → Product), ported from the atlas ── */
+  .drums{display:flex;gap:8px;align-items:flex-end;}
+  .drum-row{display:flex;flex-direction:column;align-items:center;gap:1px;}
+  .drum-lab{font-size:.54rem;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);}
+  .drum-wrap{height:72px;overflow:hidden;position:relative;width:84px;cursor:ns-resize;}
+  .drum-wrap.drum-product{width:172px;}
+  .drum-wrap::before,.drum-wrap::after{content:"";position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none;}
+  .drum-wrap::before{top:0;background:linear-gradient(rgba(11,18,26,.98),transparent);}
+  .drum-wrap::after{bottom:0;background:linear-gradient(transparent,rgba(11,18,26,.98));}
+  .drum-hl{position:absolute;top:50%;transform:translateY(-50%);left:2px;right:2px;height:24px;border-top:1px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(255,255,255,.15);border-radius:4px;background:rgba(255,255,255,.03);z-index:1;pointer-events:none;}
+  .drum-inner{overflow-y:scroll;scroll-snap-type:y mandatory;height:100%;scrollbar-width:none;-ms-overflow-style:none;}
+  .drum-inner::-webkit-scrollbar{display:none;}
+  .drum-opt{scroll-snap-align:center;height:22px;line-height:22px;padding:0 6px;font-size:.68rem;color:rgba(255,255,255,.3);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .drum-opt.drum-active{color:var(--accent);font-weight:700;font-size:.72rem;}
+  .drum-spacer{height:22px;scroll-snap-align:none;}
   #bar .brand{font-weight:800;letter-spacing:.3px;font-size:.86rem;color:#fff;white-space:nowrap;}
   #bar .brand span{color:var(--accent);}
   #bar select{background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;
@@ -62,7 +85,7 @@
   #sel-readout button:hover{color:#fff;border-color:var(--accent);}
 
   /* ── stats + legend panels ── */
-  #stats{position:fixed;top:58px;left:16px;z-index:5;background:var(--panel);border:1px solid var(--line);
+  #stats{position:fixed;top:100px;left:16px;z-index:5;background:var(--panel);border:1px solid var(--line);
     border-radius:10px;padding:11px 13px;min-width:172px;backdrop-filter:blur(3px);}
   #stats .t{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);margin-bottom:6px;}
   #stats .row{display:flex;justify-content:space-between;gap:16px;font-size:.82rem;padding:2px 0;}
@@ -83,14 +106,25 @@
 </style>
 </head>
 <body>
-<svg id="stage"></svg>
+<div id="split">
+  <div id="left"><svg id="stage"></svg></div>
+  <div id="right">
+    <div id="nav-hd"><b>Value-Chain Solar System</b><span>final product at centre · rings = steps upstream · click a planet to trace it on the map</span></div>
+    <svg id="nav"></svg>
+  </div>
+</div>
 
 <div id="bar">
   <div class="brand">CLEAN TRADE <span>COCKPIT</span></div>
   <select id="tech-sel" title="Technology"></select>
   <div class="focal">Focus: <select id="country-sel" title="Focus country (grouped by bloc)"></select></div>
   <button id="mapmode" title="Toggle flat map / 3D globe">🌐 Globe</button>
-  <div class="hint">scroll to zoom · drag to pan/spin · click a country to focus · click a node to trace a product</div>
+  <div class="drums">
+    <div class="drum-row"><span class="drum-lab">Stage</span><div class="drum-wrap" id="drum-stage"><div class="drum-hl"></div><div class="drum-inner" id="drum-stage-inner"></div></div></div>
+    <div class="drum-row"><span class="drum-lab">Role</span><div class="drum-wrap" id="drum-role"><div class="drum-hl"></div><div class="drum-inner" id="drum-role-inner"></div></div></div>
+    <div class="drum-row"><span class="drum-lab">Category</span><div class="drum-wrap" id="drum-cat"><div class="drum-hl"></div><div class="drum-inner" id="drum-cat-inner"></div></div></div>
+    <div class="drum-row"><span class="drum-lab">Product</span><div class="drum-wrap drum-product" id="drum-product"><div class="drum-hl"></div><div class="drum-inner" id="drum-product-inner"></div></div></div>
+  </div>
   <div id="sel-readout"><span class="chip" id="sel-chip">Whole technology</span>
     <button id="sel-clear" style="display:none">clear</button></div>
 </div>
@@ -127,7 +161,8 @@ const TECHS = ["Solar","Wind","Batteries","Biofuel","Electrolyzers","Geothermal"
 /* ── state ─────────────────────────────────────────────────────────────────── */
 let TECH="Solar", COUNTRY="India";
 let D=null, TD=null;           // case json, tech json (dendrite tree)
-let selProduct=null;           // selected HS code (dendrite navigation)
+let selProduct=null;           // selected HS code (solar-system navigation)
+let selStage='ALL', selRole='ALL', selCat='ALL';   // drum filters (top-bar drumwheels)
 let root=null, zoomB=null, zoomT=d3.zoomIdentity;   // pan/zoom container + behavior + transform
 let mapMode='flat', globeRot=null, globeScale=1;    // flat map ⇄ 3D orthographic globe
 
@@ -270,6 +305,14 @@ function drawFusion(){
 
   // ② domestic firms inside the focal country
   const firms=D.firms||[]; const sr=selSR();
+  const drumOn = selStage!=='ALL'||selRole!=='ALL';
+  const firmActive=f=>{
+    if(selStage!=='ALL'&&f.stage!==selStage) return false;
+    if(selRole!=='ALL'&&f.role!==selRole) return false;
+    if(sr && (f.stage+'|'+f.role)!==sr) return false;
+    return true;
+  };
+  const anyFilter = !!sr || drumOn;
   if(firms.length){
     const maxN=d3.max(firms,f=>f.n)||1;
     const fr=d3.scaleSqrt().domain([0,maxN]).range([2.5,12]);
@@ -279,73 +322,118 @@ function drawFusion(){
       if(mapMode==='globe' && !front(ll)) return;   // hide firms on the far side of the globe
       const px=proj(ll); if(!px) return; const [x,y]=px;
       if(x<-20||x>W+20||y<-20||y>H+20) return;
-      const k=f.stage+'|'+f.role, col=VIZ.SR[k]||'#888', match=!sr||k===sr, r=fr(f.n);
+      const k=f.stage+'|'+f.role, col=VIZ.SR[k]||'#888', active=firmActive(f), r=fr(f.n);
       fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r)
-        .attr('fill',col).attr('opacity',sr?(match?0.95:0.1):0.68)
+        .attr('fill',col).attr('opacity',anyFilter?(active?0.95:0.1):0.68)
         .attr('stroke','rgba(10,15,20,.9)').attr('stroke-width',.5).attr('cursor','pointer')
         .on('mousemove',e=>tip(e,f.stage+' · '+f.role+'<br><b>'+f.n+'</b> firm'+(f.n>1?'s':''))).on('mouseout',tipOut);
-      if(sr&&match) fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r+3)
+      if(sr&&active) fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r+3)
         .attr('fill','none').attr('stroke','#fff').attr('stroke-width',1.5).attr('pointer-events','none');
     });
   }
 
-  // ④ radial dendrite from the focal centroid — the product navigator
+  // (product navigator lives in the right-hand solar-system panel — see drawNav)
+}
+
+/* ── right panel: the value-chain solar system (product navigator) ───────────── */
+function drawNav(){
+  const svg=d3.select('#nav'); svg.selectAll('*').remove();
+  const {W,H}=VIZ.dims('#nav');
   const edges=(TD&&TD.tree)||[];
-  if(edges.length){
-    const nmap=new Map();
-    const reg=(c,nm,st,ro)=>{ if(!nmap.has(c)) nmap.set(c,{code:c,name:nm,stage:st,role:ro}); return nmap.get(c); };
-    edges.forEach(e=>{ reg(e.from_code,e.from_name,e.from_stage,e.from_role); reg(e.to_code,e.to_name,e.to_stage,e.to_role); });
-    const nodes=[...nmap.values()];
-    // topological step = distance to a sink (final product); step(from) ≥ step(to)+1
-    const step=new Map(nodes.map(n=>[n.code,0]));
-    for(let i=0;i<20;i++){ let ch=false; edges.forEach(e=>{ const s=(step.get(e.to_code)||0)+1; if((step.get(e.from_code)||0)<s){ step.set(e.from_code,s); ch=true; } }); if(!ch) break; }
-    const maxStep=d3.max([...step.values()])||1;
-    const Rmin=70, Rmax=Math.min(W,H)*0.30;              // tight halo around the focal country
-    const rad=s=>Rmin+(Rmax-Rmin)*(s/(maxStep||1));      // final near centre, upstream outer
-    // Angle: final products spread evenly; each upstream node inherits the circular-mean
-    // bearing of its downstream targets → edges run near-radial ("roots" growing outward).
-    const targetsOf=new Map(nodes.map(n=>[n.code,[]]));
-    edges.forEach(e=>{ if(targetsOf.has(e.from_code)) targetsOf.get(e.from_code).push(e.to_code); });
-    const ang=new Map();
-    const byStepAsc=nodes.slice().sort((a,b)=>(step.get(a.code)||0)-(step.get(b.code)||0));
-    const finals=byStepAsc.filter(n=>(step.get(n.code)||0)===0);
-    finals.forEach((n,i)=>ang.set(n.code,(i/Math.max(1,finals.length))*2*Math.PI - Math.PI/2));
-    byStepAsc.forEach(n=>{ if(ang.has(n.code)) return;
-      const tg=targetsOf.get(n.code).filter(c=>ang.has(c));
-      if(tg.length){ let sx=0,sy=0; tg.forEach(c=>{sx+=Math.cos(ang.get(c));sy+=Math.sin(ang.get(c));}); ang.set(n.code,Math.atan2(sy,sx)); }
-      else ang.set(n.code,(hashCode(n.code)%360)*Math.PI/180); });
-    // de-overlap: spread nodes that collide in angle within the same ring
-    d3.groups(nodes,n=>step.get(n.code)||0).forEach(([s,ns])=>{
-      ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code));
-      const minGap=Math.min(0.42,(2*Math.PI)/Math.max(8,ns.length));
-      for(let i=1;i<ns.length;i++){ const prev=ang.get(ns[i-1].code); if(ang.get(ns[i].code)-prev<minGap) ang.set(ns[i].code,prev+minGap); }
-    });
-    const pos=c=>{ const a=ang.get(c)||0, r=rad(step.get(c)||0); return [fc[0]+r*Math.cos(a), fc[1]+r*Math.sin(a)]; };
-    const tv=new Map((D.products||[]).map(p=>[p.code,p.v]));
-    const maxTV=d3.max([...tv.values()])||1;
-    const nr=d3.scaleSqrt().domain([0,maxTV]).range([3,11]);
-    const dg=root.append('g').attr('class','dendrite');
+  if(!edges.length){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle')
+    .attr('fill','rgba(255,255,255,.3)').attr('font-size',11).text('no value-chain data for this tech'); return; }
+  const nm=new Map(); const reg=(c,nn,st,ro)=>{ if(!nm.has(c)) nm.set(c,{code:c,name:nn,stage:st,role:ro,deg:0}); return nm.get(c); };
+  edges.forEach(e=>{ const a=reg(e.from_code,e.from_name,e.from_stage,e.from_role),b=reg(e.to_code,e.to_name,e.to_stage,e.to_role); a.deg++; b.deg++; });
+  const nodes=[...nm.values()];
+  // step = shortest distance to a final product (cycle-safe)
+  const hasOut=new Set(edges.map(e=>e.from_code));
+  const step=new Map(nodes.map(n=>[n.code, hasOut.has(n.code)?Infinity:0]));
+  for(let i=0;i<nodes.length;i++){ let ch=false; edges.forEach(e=>{ const d=step.get(e.to_code); if(d!==Infinity && step.get(e.from_code)>d+1){ step.set(e.from_code,d+1); ch=true; } }); if(!ch) break; }
+  let fm=0; step.forEach(v=>{ if(v!==Infinity&&v>fm) fm=v; }); step.forEach((v,k)=>{ if(v===Infinity) step.set(k,fm+1); });
+  const maxStep=d3.max([...step.values()])||1;
+  const ringsBy=d3.groups(nodes,n=>step.get(n.code)).sort((a,b)=>a[0]-b[0]);
+  // barycentric angle relaxation → short edges
+  const nbr=new Map(nodes.map(n=>[n.code,[]]));
+  edges.forEach(e=>{ nbr.get(e.from_code).push(e.to_code); nbr.get(e.to_code).push(e.from_code); });
+  const ang=new Map();
+  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>b.deg-a.deg); ns.forEach((n,i)=>ang.set(n.code,(i/ns.length)*2*Math.PI)); });
+  for(let it=0;it<60;it++){ const na=new Map();
+    nodes.forEach(n=>{ const nb=nbr.get(n.code).filter(c=>ang.has(c)); if(!nb.length){ na.set(n.code,ang.get(n.code)); return; }
+      let sx=0,sy=0; nb.forEach(c=>{ sx+=Math.cos(ang.get(c)); sy+=Math.sin(ang.get(c)); }); na.set(n.code,(sx||sy)?Math.atan2(sy,sx):ang.get(n.code)); });
+    na.forEach((v,k)=>ang.set(k,v)); }
+  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code)); const mg=(2*Math.PI)/Math.max(ns.length,1)*0.72;
+    for(let i=1;i<ns.length;i++){ if(ang.get(ns[i].code)-ang.get(ns[i-1].code)<mg) ang.set(ns[i].code,ang.get(ns[i-1].code)+mg); } });
+  const rAbs=[]; let acc=0; for(let s=0;s<=maxStep;s++){ const c=(ringsBy.find(g=>g[0]===s)||[0,[]])[1].length; acc+=1+0.16*c; rAbs[s]=acc; }
+  const rMax=rAbs[maxStep]||1;
+  const cx=W/2, cy=H/2+6, R0=Math.min(W,H)*0.09, maxR=Math.min(W,H)*0.44;
+  const R=s=>R0+((rAbs[s]||0)/rMax)*(maxR-R0);
+  const pos=c=>{ const a=ang.get(c)||0, r=R(step.get(c)||0); return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  // planet size ∝ focal-country trade value (fallback: connectivity)
+  const tv=new Map(((D&&D.products)||[]).map(p=>[p.code,p.v]));
+  const useDeg=!tv.size, sval=c=>useDeg?(nm.get(c)?.deg||0):(tv.get(c)||0);
+  const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,n=>sval(n.code))||1]).range([3.5,12]);
+  const cm=catMap();
+  const drumOn = selStage!=='ALL'||selRole!=='ALL'||selCat!=='ALL';
+  const passDrum=n=>(selStage==='ALL'||n.stage===selStage)&&(selRole==='ALL'||n.role===selRole)&&(selCat==='ALL'||(cm[n.code]||'Other')===selCat);
+  const isSel=e=>selProduct&&(e.from_code===selProduct||e.to_code===selProduct);
+  for(let s=1;s<=maxStep;s++) svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R(s))
+    .attr('fill','none').attr('stroke','rgba(255,255,255,.10)').attr('stroke-width',1);
+  svg.append('g').selectAll('path').data(edges).join('path')
+    .attr('d',e=>{ const a=pos(e.from_code),b=pos(e.to_code); return `M${a[0]},${a[1]}L${b[0]},${b[1]}`; })
+    .attr('fill','none').attr('stroke',e=>isSel(e)?'rgba(255,255,255,.85)':'rgba(255,255,255,.14)').attr('stroke-width',e=>isSel(e)?1.6:.6);
+  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R0*0.6+7).attr('fill','#f97316').attr('opacity',.15);
+  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R0*0.5+5).attr('fill','#f59e0b').attr('stroke','#fbbf24').attr('stroke-width',1.1)
+    .on('mousemove',e=>tip(e,'Final product (centre)')).on('mouseout',tipOut);
+  svg.append('g').selectAll('circle').data(nodes).join('circle')
+    .attr('cx',n=>pos(n.code)[0]).attr('cy',n=>pos(n.code)[1])
+    .attr('r',n=>{ const r=Math.max(3,rSc(sval(n.code))); return n.code===selProduct?r+2:r; })
+    .attr('fill',n=>VIZ.SR[n.stage+'|'+n.role]||'#888')
+    .attr('stroke',n=>n.code===selProduct?'#fff':'rgba(255,255,255,.5)').attr('stroke-width',n=>n.code===selProduct?2.2:.7)
+    .attr('opacity',n=>{ if(selProduct) return n.code===selProduct?1:.45; if(drumOn) return passDrum(n)?.98:.14; return .96; })
+    .attr('cursor','pointer')
+    .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; drawFusion(); drawNav(); updateReadout(); })
+    .on('mousemove',(e,n)=>tip(e,'<b>'+(n.name||n.code)+'</b><br>HS '+n.code+'<br>'+n.stage+' · '+n.role+' · step '+step.get(n.code)+(tv.get(n.code)?'<br>'+VIZ.fmtV(tv.get(n.code)):'')))
+    .on('mouseout',tipOut);
+}
 
-    dg.append('g').selectAll('path').data(edges).join('path')
-      .attr('d',e=>{const a=pos(e.from_code),z=pos(e.to_code);return 'M'+a[0]+','+a[1]+'L'+z[0]+','+z[1];})
-      .attr('fill','none')
-      .attr('stroke',e=>(selProduct&&(e.from_code===selProduct||e.to_code===selProduct))?'rgba(255,255,255,.85)':'rgba(255,255,255,.20)')
-      .attr('stroke-width',e=>(selProduct&&(e.from_code===selProduct||e.to_code===selProduct))?1.8:0.7);
-
-    dg.append('g').selectAll('circle').data(nodes).join('circle')
-      .attr('cx',n=>pos(n.code)[0]).attr('cy',n=>pos(n.code)[1])
-      .attr('r',n=>{const base=Math.max(nr(tv.get(n.code)||0),3);return n.code===selProduct?base+2:base;})
-      .attr('fill',n=>VIZ.SR[n.stage+'|'+n.role]||'#888')
-      .attr('stroke',n=>n.code===selProduct?'#fff':'rgba(255,255,255,.55)').attr('stroke-width',n=>n.code===selProduct?2.4:1)
-      .attr('opacity',n=>!selProduct?0.98:(n.code===selProduct?1:0.5)).attr('cursor','pointer')
-      .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; drawFusion(); updateReadout(); })
-      .on('mousemove',(e,n)=>tip(e,'<b>'+(n.name||n.code)+'</b><br>HS '+n.code+'<br>'+n.stage+' · '+n.role+(tv.get(n.code)?'<br>Trade: '+VIZ.fmtV(tv.get(n.code)):'')))
-      .on('mouseout',tipOut);
-
-    // focal centroid marker (chain origin)
-    dg.append('circle').attr('cx',fc[0]).attr('cy',fc[1]).attr('r',5)
-      .attr('fill','#fff').attr('stroke','#3cb54a').attr('stroke-width',1.6).attr('pointer-events','none');
-  }
+/* ── drum-wheel selectors (Stage → Role → Category → Product) ─────────────────── */
+function catMap(){ const m={}; ((D&&D.scatter)||[]).forEach(s=>{ if(s.code) m[s.code]=s.category||'Other'; }); return m; }
+function allProducts(){ const cm=catMap(); return ((D&&D.products)||[]).map(p=>({code:p.code,name:p.product_name||p.code,stage:p.stage,role:p.role,cat:cm[p.code]||'Other',v:p.v||0})); }
+function redrawAll(){ drawFusion(); drawNav(); updateReadout(); }
+function fillDrum(innerId, options, currentVal, onChange){
+  const inner=document.getElementById(innerId); if(!inner) return;
+  inner.innerHTML='<div class=drum-spacer></div><div class=drum-spacer></div>'+
+    options.map(o=>`<div class="drum-opt${o.value===currentVal?' drum-active':''}" data-val="${o.value}">${o.label}</div>`).join('')+
+    '<div class=drum-spacer></div><div class=drum-spacer></div>';
+  const idx=Math.max(0,options.findIndex(o=>o.value===currentVal));
+  inner.scrollTop=19+idx*22;                                  // atlas scroll geometry (spacer=22)
+  let t; inner.onscroll=()=>{ clearTimeout(t); t=setTimeout(()=>{
+    const cIdx=Math.max(0,Math.min(options.length-1,Math.round((inner.scrollTop-19)/22)));
+    inner.querySelectorAll('.drum-opt').forEach((el,i)=>el.classList.toggle('drum-active',i===cIdx));
+    const nv=options[cIdx].value; if(nv!==inner._cur){ inner._cur=nv; onChange(nv); }
+  },80); };
+  inner._cur=currentVal;
+}
+function initDrums(){
+  const stageOpts=[{value:'ALL',label:'All'},{value:'Upstream',label:'Upstream'},{value:'Midstream',label:'Midstream'},{value:'Downstream',label:'Downstream'},{value:'Final Product',label:'Final'}];
+  fillDrum('drum-stage-inner',stageOpts,selStage,v=>{ selStage=v; selRole='ALL'; selCat='ALL'; selProduct=null; updateDrumRole(); updateDrumCat(); updateDrumProduct(); redrawAll(); });
+  updateDrumRole(); updateDrumCat(); updateDrumProduct();
+}
+function updateDrumRole(){
+  const roles=['ALL',...new Set(allProducts().filter(p=>selStage==='ALL'||p.stage===selStage).map(p=>p.role).filter(Boolean))];
+  fillDrum('drum-role-inner',roles.map(r=>({value:r,label:r==='ALL'?'All':r.replace(' Material','').replace(' Product','Prod.')})),selRole,
+    v=>{ selRole=v; selCat='ALL'; selProduct=null; updateDrumCat(); updateDrumProduct(); redrawAll(); });
+}
+function updateDrumCat(){
+  const base=allProducts().filter(p=>(selStage==='ALL'||p.stage===selStage)&&(selRole==='ALL'||p.role===selRole));
+  const cats=['ALL',...[...new Set(base.map(p=>p.cat||'Other'))].sort()];
+  fillDrum('drum-cat-inner',cats.map(ct=>({value:ct,label:ct==='ALL'?'All':ct.replace(' Materials','Mat.')})),selCat,
+    v=>{ selCat=v; selProduct=null; updateDrumProduct(); redrawAll(); });
+}
+function updateDrumProduct(){
+  const prods=allProducts().filter(p=>(selStage==='ALL'||p.stage===selStage)&&(selRole==='ALL'||p.role===selRole)&&(selCat==='ALL'||p.cat===selCat)).sort((a,b)=>b.v-a.v);
+  const opts=[{value:'ALL',label:'All'},...prods.map(p=>({value:p.code,label:`${p.code} — ${(p.name||'').substring(0,24)}`}))];
+  fillDrum('drum-product-inner',opts,selProduct||'ALL',v=>{ selProduct=(v==='ALL')?null:v; redrawAll(); });
 }
 
 /* ── flat ⇄ globe ──────────────────────────────────────────────────────────── */
@@ -394,12 +482,12 @@ async function loadCase(tech,slug){
       : 'no data for '+id); return; }
   try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
   catch(e){ TD=null; }
-  selProduct=null;
+  selProduct=null; selStage='ALL'; selRole='ALL'; selCat='ALL';   // reset filters on new case
   zoomT=d3.zoomIdentity; if(zoomB) d3.select('#stage').call(zoomB.transform, d3.zoomIdentity);  // recenter on new focal
   globeRot=null; globeScale=1;   // globe recenters/​rezooms on the new focal country
   document.getElementById('tech-sel').value=tech;
   const cs=document.getElementById('country-sel'); if(cs) cs.value=slug;
-  drawFusion(); updateReadout();
+  drawFusion(); drawNav(); updateReadout(); initDrums();
 }
 
 // grouped country picker: <optgroup> per bloc, ★ marks focal countries
@@ -428,7 +516,7 @@ async function boot(){
   TECHS.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t.replace(/_/g,' ');ts.appendChild(o);});
   ts.value=TECH;
   ts.onchange=e=>loadCase(e.target.value,COUNTRY);
-  document.getElementById('sel-clear').onclick=()=>{selProduct=null;drawFusion();updateReadout();};
+  document.getElementById('sel-clear').onclick=()=>{selProduct=null;drawFusion();drawNav();updateReadout();};
   document.getElementById('mapmode').onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
   // country roster (bloc-grouped picker + click-to-refocus map) from the manifest
   try{ COUNTRIES=await (await fetch('data/_countries.json')).json();
@@ -441,9 +529,9 @@ async function boot(){
   zoomB=d3.zoom().scaleExtent([0.6,8]).on('zoom',ev=>{ zoomT=ev.transform; if(root) root.attr('transform',zoomT); });
   d3.select('#stage').call(zoomB).on('dblclick.zoom',null);
   await loadCase(TECH,COUNTRY);
-  const pp=q.get('product'); if(pp){ selProduct=pp; drawFusion(); updateReadout(); }
+  const pp=q.get('product'); if(pp){ selProduct=pp; drawFusion(); drawNav(); updateReadout(); }
   if(q.get('map')==='globe') setMapMode('globe');
-  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawFusion,150);});
+  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();},150);});
 }
 boot();
 </script>
