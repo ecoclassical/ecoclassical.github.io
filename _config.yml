@@ -157,7 +157,7 @@ include:
   - .htaccess
   - _pages
   - files
-  - projects/NZIPL/analysis/_proto_datadriven
+  - _proto_datadriven
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
