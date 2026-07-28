@@ -100,14 +100,20 @@ function chain(){
       let sx=0,sy=0; nb.forEach(c=>{sx+=Math.cos(ang.get(c));sy+=Math.sin(ang.get(c));});
       na.set(n.code, (sx||sy)?Math.atan2(sy,sx):ang.get(n.code)); });
     na.forEach((v,k)=>ang.set(k,v)); }
-  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code));
-    const minGap=(2*Math.PI)/Math.max(ns.length,1)*0.72;
-    for(let i=1;i<ns.length;i++){ if(ang.get(ns[i].code)-ang.get(ns[i-1].code)<minGap) ang.set(ns[i].code,ang.get(ns[i-1].code)+minGap); } });
+  // de-crowd: keep the relaxed ORDER (short edges) but place nodes at EVEN angular spacing
+  // around the full ring, rotated (phi) to best-fit the relaxed angles — so populous inner
+  // rings spread around the circle instead of bunching into one dense arc. (matches drawNav)
+  ringsBy.forEach(([s,ns])=>{ const n=ns.length; if(!n) return;
+    ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code));
+    const d=2*Math.PI/n; let sx=0,sy=0;
+    ns.forEach((nd,i)=>{ const a=ang.get(nd.code)-i*d; sx+=Math.cos(a); sy+=Math.sin(a); });
+    const phi=(sx||sy)?Math.atan2(sy,sx):0;
+    ns.forEach((nd,i)=>ang.set(nd.code, phi+i*d)); });
 
   // ── ring radius grows with the PRODUCT SPACE on each ring (clear concentric bands) ──
   const rAbs=[]; let acc=0;
   for(let s=0;s<=maxStep;s++){ const c=(ringsBy.find(g=>g[0]===s)||[0,[]])[1].length;
-    acc += 1 + 0.16*c; rAbs[s]=acc; }                 // more products on a ring → pushed further out
+    acc += 1 + 0.28*c; rAbs[s]=acc; }                 // more products on a ring → pushed further out
   const rMax=rAbs[maxStep]||1;
   const rNorm=s=>(rAbs[s]||0)/rMax;                    // 0 (final) … 1 (outermost)
   return {edges,nodes,step,maxStep,tv,ang,rNorm,size,useDeg};

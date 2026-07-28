@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NZIPL — Clean Trade Cockpit</title>
 <!--
-  fusion.html — the "Clean Trade Cockpit" (Phase 1 shell).
+  integrated_explorer.html — the "Clean Value Chain Explorer" / Integrated Explorer (Phase 1 shell).
 
   A single integrated visual fusing three atlas panes into one:
     ① focal-centered world map           (cockpit zoom on the focus country)
@@ -92,11 +92,16 @@
   #stats .row .k{color:var(--faint);} #stats .row .v{font-weight:700;font-variant-numeric:tabular-nums;}
   #stats .exp{color:#f97316;} #stats .imp{color:#3cb54a;}
 
-  #legend{position:fixed;bottom:14px;left:16px;z-index:5;background:var(--panel);border:1px solid var(--line);
-    border-radius:10px;padding:9px 12px;font-size:.7rem;color:var(--faint);backdrop-filter:blur(3px);line-height:1.7;}
+  /* legend folded into the top bar (was fixed bottom-left) */
+  #legend{display:flex;flex-direction:column;gap:2px;font-size:.6rem;color:var(--faint);
+    line-height:1.3;white-space:nowrap;padding-left:4px;border-left:1px solid var(--line);}
+  #legend .lrow{display:flex;align-items:center;gap:7px;}
   #legend b{color:var(--ink);font-weight:700;}
-  #legend .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle;}
-  #legend .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;opacity:.8;}
+  #legend .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:middle;}
+  #legend .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle;opacity:.85;}
+  #legend .srsw{cursor:pointer;padding:1px 5px;border-radius:10px;border:1px solid transparent;transition:.12s;}
+  #legend .srsw:hover{border-color:var(--line);background:rgba(255,255,255,.05);color:var(--ink);}
+  #legend .srsw.on{border-color:var(--accent);background:rgba(60,181,74,.14);color:var(--ink);}
   #phase{position:fixed;bottom:14px;right:16px;z-index:5;font-size:.64rem;color:rgba(226,232,240,.4);
     background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 9px;}
 
@@ -125,8 +130,19 @@
     <div class="drum-row"><span class="drum-lab">Category</span><div class="drum-wrap" id="drum-cat"><div class="drum-hl"></div><div class="drum-inner" id="drum-cat-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Product</span><div class="drum-wrap drum-product" id="drum-product"><div class="drum-hl"></div><div class="drum-inner" id="drum-product-inner"></div></div></div>
   </div>
+  <div id="legend">
+    <div class="lrow">
+      <span><span class="dot" style="background:#f97316"></span><b>Exports</b></span>
+      <span><span class="dot" style="background:#3cb54a"></span><b>Imports</b></span>
+      <span class="srsw" data-stage="Upstream" title="Filter to Upstream"><span class="sw" style="background:#c17a2e"></span>Up</span>
+      <span class="srsw" data-stage="Midstream" title="Filter to Midstream"><span class="sw" style="background:#22c55e"></span>Mid</span>
+      <span class="srsw" data-stage="Downstream" title="Filter to Downstream"><span class="sw" style="background:#4ade80"></span>Down</span>
+      <span class="srsw" data-stage="Final Product" title="Filter to Final Product"><span class="sw" style="background:#f97316"></span>Final</span>
+    </div>
+    <div class="lrow" style="opacity:.8;"><b>★</b> focal &nbsp; <b>◆</b> G30 &nbsp;·&nbsp; click a stage to filter both panels</div>
+  </div>
   <div id="sel-readout"><span class="chip" id="sel-chip">Whole technology</span>
-    <button id="sel-clear" style="display:none">clear</button></div>
+    <button id="sel-clear" style="display:none">✕ clear all</button></div>
 </div>
 
 <div id="stats">
@@ -137,11 +153,6 @@
   <div class="row"><span class="k">Firm sites</span><span class="v" id="s-firms">—</span></div>
 </div>
 
-<div id="legend">
-  <div><span class="dot" style="background:#f97316"></span><b>Export</b> destinations &nbsp; <span class="dot" style="background:#3cb54a"></span><b>Import</b> sources</div>
-  <div><span class="sw" style="background:#c17a2e"></span>Upstream <span class="sw" style="background:#22c55e"></span>Midstream <span class="sw" style="background:#4ade80"></span>Downstream <span class="sw" style="background:#f97316"></span>Final &nbsp;— firms &amp; dendrite by stage·role</div>
-  <div style="margin-top:3px;opacity:.85;">picker: <b>★</b> focal country · <b>◆</b> Group-of-Thirty member</div>
-</div>
 <div id="phase">Phase 1 shell · arrows are tech-level</div>
 
 <div id="tip"></div>
@@ -361,9 +372,17 @@ function drawNav(){
     nodes.forEach(n=>{ const nb=nbr.get(n.code).filter(c=>ang.has(c)); if(!nb.length){ na.set(n.code,ang.get(n.code)); return; }
       let sx=0,sy=0; nb.forEach(c=>{ sx+=Math.cos(ang.get(c)); sy+=Math.sin(ang.get(c)); }); na.set(n.code,(sx||sy)?Math.atan2(sy,sx):ang.get(n.code)); });
     na.forEach((v,k)=>ang.set(k,v)); }
-  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code)); const mg=(2*Math.PI)/Math.max(ns.length,1)*0.72;
-    for(let i=1;i<ns.length;i++){ if(ang.get(ns[i].code)-ang.get(ns[i-1].code)<mg) ang.set(ns[i].code,ang.get(ns[i-1].code)+mg); } });
-  const rAbs=[]; let acc=0; for(let s=0;s<=maxStep;s++){ const c=(ringsBy.find(g=>g[0]===s)||[0,[]])[1].length; acc+=1+0.16*c; rAbs[s]=acc; }
+  // de-crowd: keep the relaxed ORDER (connected nodes stay adjacent → short edges) but place
+  // nodes at EVEN angular spacing around the full ring, rotated (phi) to best-fit the relaxed
+  // angles — so populous inner rings spread around the circle instead of bunching into one arc.
+  ringsBy.forEach(([s,ns])=>{ const n=ns.length; if(!n) return;
+    ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code));
+    const d=2*Math.PI/n; let sx=0,sy=0;
+    ns.forEach((nd,i)=>{ const a=ang.get(nd.code)-i*d; sx+=Math.cos(a); sy+=Math.sin(a); });
+    const phi=(sx||sy)?Math.atan2(sy,sx):0;
+    ns.forEach((nd,i)=>ang.set(nd.code, phi+i*d)); });
+  // populous rings pushed outward more (bigger circumference → more room per planet)
+  const rAbs=[]; let acc=0; for(let s=0;s<=maxStep;s++){ const c=(ringsBy.find(g=>g[0]===s)||[0,[]])[1].length; acc+=1+0.28*c; rAbs[s]=acc; }
   const rMax=rAbs[maxStep]||1;
   const cx=W/2, cy=H/2+6, R0=Math.min(W,H)*0.09, maxR=Math.min(W,H)*0.44;
   const R=s=>R0+((rAbs[s]||0)/rMax)*(maxR-R0);
@@ -400,6 +419,11 @@ function drawNav(){
 function catMap(){ const m={}; ((D&&D.scatter)||[]).forEach(s=>{ if(s.code) m[s.code]=s.category||'Other'; }); return m; }
 function allProducts(){ const cm=catMap(); return ((D&&D.products)||[]).map(p=>({code:p.code,name:p.product_name||p.code,stage:p.stage,role:p.role,cat:cm[p.code]||'Other',v:p.v||0})); }
 function redrawAll(){ drawFusion(); drawNav(); updateReadout(); }
+// top-bar legend: click an SR-stage swatch to drive the same selStage filter as the Stage drum
+function pickStage(v){ selStage=(selStage===v)?'ALL':v; selRole='ALL'; selCat='ALL'; selProduct=null; initDrums(); redrawAll(); }
+function clearFilters(){ selStage='ALL'; selRole='ALL'; selCat='ALL'; selProduct=null; initDrums(); redrawAll(); }
+function anyFilter(){ return selProduct||selStage!=='ALL'||selRole!=='ALL'||selCat!=='ALL'; }
+function syncLegend(){ document.querySelectorAll('#legend .srsw').forEach(el=>el.classList.toggle('on', el.dataset.stage===selStage)); }
 function fillDrum(innerId, options, currentVal, onChange){
   const inner=document.getElementById(innerId); if(!inner) return;
   inner.innerHTML='<div class=drum-spacer></div><div class=drum-spacer></div>'+
@@ -468,8 +492,12 @@ function updateReadout(){
   ne.style.color=net>=0?'#4ade80':'#f87171';
   document.getElementById('s-firms').textContent=(D.firms||[]).length||'—';
   const chip=document.getElementById('sel-chip'), clr=document.getElementById('sel-clear');
-  if(selProduct){ chip.textContent=selName()+'  ·  HS '+selProduct; clr.style.display=''; }
-  else { chip.textContent='Whole technology'; clr.style.display='none'; }
+  const drumBits=[selStage,selRole,selCat].filter(x=>x&&x!=='ALL');
+  if(selProduct){ chip.textContent=selName()+'  ·  HS '+selProduct; }
+  else if(drumBits.length){ chip.textContent=drumBits.join(' · '); }
+  else { chip.textContent='Whole technology'; }
+  clr.style.display=anyFilter()?'':'none';
+  syncLegend();
 }
 
 /* ── loading ───────────────────────────────────────────────────────────────── */
@@ -516,8 +544,9 @@ async function boot(){
   TECHS.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t.replace(/_/g,' ');ts.appendChild(o);});
   ts.value=TECH;
   ts.onchange=e=>loadCase(e.target.value,COUNTRY);
-  document.getElementById('sel-clear').onclick=()=>{selProduct=null;drawFusion();drawNav();updateReadout();};
+  document.getElementById('sel-clear').onclick=clearFilters;   // clear all drum filters + selected product
   document.getElementById('mapmode').onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
+  document.getElementById('legend').addEventListener('click',e=>{ const s=e.target.closest('.srsw'); if(s) pickStage(s.dataset.stage); });
   // country roster (bloc-grouped picker + click-to-refocus map) from the manifest
   try{ COUNTRIES=await (await fetch('data/_countries.json')).json();
        ISO2SLUG=Object.fromEntries(COUNTRIES.map(c=>[c.iso,c.slug])); populateCountrySel(); }
@@ -530,7 +559,7 @@ async function boot(){
   d3.select('#stage').call(zoomB).on('dblclick.zoom',null);
   await loadCase(TECH,COUNTRY);
   const pp=q.get('product'); if(pp){ selProduct=pp; drawFusion(); drawNav(); updateReadout(); }
-  if(q.get('map')==='globe') setMapMode('globe');
+  if(q.get('map')!=='flat') setMapMode('globe');   // default to 3D globe (use ?map=flat for the flat map)
   let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();},150);});
 }
 boot();

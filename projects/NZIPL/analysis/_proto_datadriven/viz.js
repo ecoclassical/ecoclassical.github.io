@@ -311,7 +311,7 @@ function highlights(kind,d,td){
 }
 
 global.VIZ = {SR,CAT,fmtV,setTheme,initGeo,radar,scatter,timeline,treemap,map,firms,sankey,tree,solarsystem,highlights,
-  // additive exports for the fusion cockpit (fusion.html) — reuse the engine's
+  // additive exports for the integrated explorer (integrated_explorer.html) — reuse the engine's
   // focal projection + geo tables without duplicating them. Getters because CENT
   // and FEATS are populated by initGeo() after load.
   ISO3N, baseMap, dims, centroids:()=>CENT, feats:()=>FEATS};
