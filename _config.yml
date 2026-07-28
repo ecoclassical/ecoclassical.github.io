@@ -158,6 +158,9 @@ include:
   - _pages
   - files
   - _proto_datadriven
+  - _countries.json
+  - _index.json
+  - _tech_*.json
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
