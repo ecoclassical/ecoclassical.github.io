@@ -35,28 +35,65 @@
 <script src="viz.js"></script>
 <style>
   :root{ --bg:#0a1218; --ink:#e2e8f0; --faint:rgba(226,232,240,.6); --line:rgba(255,255,255,.1);
-         --panel:rgba(10,18,15,.82); --accent:#3cb54a; }
+         --panel:rgba(10,18,15,.82); --accent:#3cb54a; --panel-w:300px; --panel-h:440px;
+         --nav-w:360px; --nav-h:396px; }  /* Supply Chain Map: 120%/90% of the shared panel size */
   html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
     font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
-  #split{position:fixed;top:88px;left:0;right:0;bottom:0;display:flex;}
-  #left{position:relative;flex:0 0 66%;min-width:0;}
-  #right{position:relative;flex:1;min-width:0;border-left:1px solid rgba(255,255,255,.09);background:#08110c;}
+  #split{position:fixed;top:110px;left:0;right:0;bottom:0;display:flex;}
+  #left{position:relative;flex:1;min-width:0;}   /* globe/map now spans the full width */
+  /* map-mode + firm toggles: bottom-left corner of the globe panel */
+  #left #mapmode,#left #firmtoggle{position:absolute;left:14px;z-index:4;
+    background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 11px;
+    font:inherit;font-size:.76rem;cursor:pointer;white-space:nowrap;backdrop-filter:blur(3px);}
+  #left #mapmode{bottom:50px;}
+  #left #firmtoggle{bottom:12px;}
+  #left #mapmode:hover,#left #firmtoggle:hover{border-color:var(--accent);color:#fff;}
+  #left #firmtoggle.off{opacity:.55;}
   #stage{display:block;width:100%;height:100%;}
-  #nav{display:block;width:100%;height:100%;cursor:default;}
-  #nav-hd{position:absolute;top:0;left:0;right:0;padding:8px 12px;z-index:2;pointer-events:none;
-    background:linear-gradient(180deg,rgba(8,17,12,.92),transparent);}
-  #nav-hd b{font-size:.74rem;font-weight:800;color:var(--ink);}
+  /* Supply Chain Map (formerly "Process of Production") — top-right overlay panel, two view modes */
+  #nav-panel{position:fixed;top:122px;right:16px;z-index:5;width:var(--nav-w);height:var(--nav-h);
+    background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);border-radius:8px;
+    padding:10px 14px;backdrop-filter:blur(3px);display:flex;flex-direction:column;}
+  #nav-hd{flex:0 0 auto;padding-bottom:6px;}
+  #nav-hd b{font-size:.86rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.4px;}
   #nav-hd span{display:block;font-size:.63rem;color:var(--faint);margin-top:2px;}
+  .nav-toggle{display:flex;gap:4px;margin-top:5px;}
+  .nav-mode-btn{padding:2px 9px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:transparent;
+    cursor:pointer;color:rgba(255,255,255,.45);font-size:.62rem;font-family:inherit;transition:all .12s;}
+  .nav-mode-btn.active{background:rgba(60,181,74,.15);border-color:var(--accent);color:var(--accent);font-weight:600;}
+  #nav{display:block;width:100%;flex:1;min-height:0;cursor:default;}
 
-  /* ── top control bar ── */
-  #bar{position:fixed;top:0;left:0;right:0;height:88px;z-index:6;display:flex;align-items:center;gap:14px;
+  /* ── top control bar (125% of the original 88px = 110px) ── */
+  #bar{position:fixed;top:0;left:0;right:0;height:110px;z-index:6;display:flex;align-items:center;gap:16px;
     padding:0 16px;background:linear-gradient(180deg,rgba(10,18,24,.96),rgba(10,18,24,.82) 80%,rgba(10,18,24,.6));
-    backdrop-filter:blur(3px);border-bottom:1px solid rgba(255,255,255,.07);}
+    backdrop-filter:blur(3px);border-bottom:1px solid rgba(255,255,255,.07);overflow:hidden;}
+  /* three-line brand, left of the bar: CLEAN / VALUE CHAIN / Explorer */
+  .brand-2l{display:flex;flex-direction:column;white-space:nowrap;line-height:1.15;flex-shrink:0;gap:1px;}
+  .brand-2l .l1{font-size:.64rem;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.6);text-transform:uppercase;}
+  .brand-2l .l2{font-size:.86rem;font-weight:800;letter-spacing:.4px;color:#dfe8ee;text-transform:uppercase;}
+  .brand-2l .l3{font-size:1.08rem;font-weight:800;letter-spacing:.2px;color:#fff;text-transform:uppercase;}
+  #bar-sep{width:1px;align-self:stretch;margin:14px 0;background:rgba(255,255,255,.09);flex-shrink:0;}
+  .bar-sep2{width:1px;align-self:stretch;margin:16px 6px;background:rgba(255,255,255,.1);flex-shrink:0;}
+  /* tech + country selectors (row 1, side by side) + year slider (row 2, value at the right) —
+     one compact 2-row block instead of two separate side-by-side blocks */
+  .tcy-block{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+  .tcy-row1{display:flex;align-items:center;gap:14px;}
+  .tcy-item{display:flex;align-items:center;gap:6px;}
+  .tcy-lab{font-size:.56rem;text-transform:uppercase;letter-spacing:.5px;color:var(--faint);flex-shrink:0;}
+  .tcy-row2{display:flex;align-items:center;gap:8px;}
+  .yr-lab{font-size:.56rem;text-transform:uppercase;letter-spacing:.5px;color:var(--faint);flex-shrink:0;}
+  .yr-val{font-size:.86rem;font-weight:800;color:var(--ink);flex-shrink:0;min-width:2.4em;}
+  #year-slider{flex:1;min-width:110px;accent-color:var(--accent);cursor:pointer;}
+  /* atlas-style tech/country/year reference title — sits next to the brand, left of the selectors */
+  #bar-title{flex-shrink:0;line-height:1.22;white-space:nowrap;}
+  #bar-title .tech{font-size:1.3rem;font-weight:800;letter-spacing:.2px;}
+  #bar-title .country{font-size:.82rem;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase;}
+  #bar-title .year{font-size:.78rem;font-weight:600;letter-spacing:.4px;color:var(--faint);}
   /* ── drum-wheel selectors (Stage → Role → Category → Product), ported from the atlas ── */
-  .drums{display:flex;gap:8px;align-items:flex-end;}
-  .drum-row{display:flex;flex-direction:column;align-items:center;gap:1px;}
+  .drums{display:flex;gap:8px;align-items:flex-end;flex-shrink:0;padding-top:8px;}
+  .drum-row{display:flex;flex-direction:column;align-items:center;gap:3px;}
   .drum-lab{font-size:.54rem;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);}
-  .drum-wrap{height:72px;overflow:hidden;position:relative;width:84px;cursor:ns-resize;}
+  .drum-wrap{height:74px;overflow:hidden;position:relative;width:84px;cursor:ns-resize;}
   .drum-wrap.drum-product{width:172px;}
   .drum-wrap::before,.drum-wrap::after{content:"";position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none;}
   .drum-wrap::before{top:0;background:linear-gradient(rgba(11,18,26,.98),transparent);}
@@ -67,41 +104,63 @@
   .drum-opt{scroll-snap-align:center;height:22px;line-height:22px;padding:0 6px;font-size:.68rem;color:rgba(255,255,255,.3);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .drum-opt.drum-active{color:var(--accent);font-weight:700;font-size:.72rem;}
   .drum-spacer{height:22px;scroll-snap-align:none;}
-  #bar .brand{font-weight:800;letter-spacing:.3px;font-size:.86rem;color:#fff;white-space:nowrap;}
-  #bar .brand span{color:var(--accent);}
   #bar select{background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;
     padding:5px 8px;font:inherit;font-size:.78rem;cursor:pointer;}
-  #bar .focal{font-size:.8rem;color:var(--ink);}
-  #bar .focal b{color:var(--accent);}
-  #bar .hint{font-size:.68rem;color:var(--faint);}
-  #bar #mapmode{background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;
-    padding:5px 10px;font:inherit;font-size:.76rem;cursor:pointer;white-space:nowrap;}
-  #bar #mapmode:hover{border-color:var(--accent);color:#fff;}
-  #sel-readout{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.76rem;}
+  #sel-readout{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.76rem;flex-shrink:0;}
   #sel-readout .chip{background:rgba(60,181,74,.14);border:1px solid rgba(60,181,74,.4);border-radius:20px;
     padding:3px 10px;color:#eaffea;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #sel-readout .chip.chip-product{white-space:normal;text-overflow:clip;border-radius:10px;padding:4px 12px;
+    line-height:1.3;max-width:280px;}
+  #sel-readout .chip .chip-hs{display:block;font-size:.58rem;font-weight:700;color:rgba(234,255,234,.55);
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:1px;}
+  #sel-readout .chip .chip-desc{display:block;}
   #sel-readout button{background:#1a2430;color:var(--faint);border:1px solid var(--line);border-radius:6px;
     padding:3px 9px;font:inherit;font-size:.72rem;cursor:pointer;}
   #sel-readout button:hover{color:#fff;border-color:var(--accent);}
 
-  /* ── stats + legend panels ── */
-  #stats{position:fixed;top:100px;left:16px;z-index:5;background:var(--panel);border:1px solid var(--line);
-    border-radius:10px;padding:11px 13px;min-width:172px;backdrop-filter:blur(3px);}
-  #stats .t{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);margin-bottom:6px;}
-  #stats .row{display:flex;justify-content:space-between;gap:16px;font-size:.82rem;padding:2px 0;}
-  #stats .row .k{color:var(--faint);} #stats .row .v{font-weight:700;font-variant-numeric:tabular-nums;}
-  #stats .exp{color:#f97316;} #stats .imp{color:#3cb54a;}
+  /* ── stats panel (atlas-parity overlay, ported .ov-* from build_country_atlas.R) — same size as
+     #nav-panel (top-right) so the two overlays read as a matched pair either side of the globe ── */
+  #stats{position:fixed;top:122px;left:16px;z-index:5;background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);
+    border-radius:8px;padding:10px 14px;width:var(--panel-w);height:var(--panel-h);overflow-y:auto;
+    backdrop-filter:blur(3px);}
+  /* section headers, matching the "Supply Chain Map" / nav-panel title's weight+case */
+  .ov-section{font-size:.86rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.4px;margin:0 0 6px;}
+  .ov-section.second{margin-top:10px;border-top:1px solid rgba(255,255,255,.14);padding-top:8px;}
+  .ov-cols{display:flex;gap:10px;align-items:flex-start;margin-bottom:5px;}
+  .ov-col{display:flex;flex-direction:column;min-width:75px;}
+  .ov-col-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch;margin:0 2px;}
+  .ov-col-label{font-size:.64rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;font-weight:600;}
+  .ov-col-val{font-size:1.3rem;font-weight:800;color:#e2e8f0;line-height:1.1;white-space:nowrap;}
+  .ov-col-gdp{font-size:.63rem;color:rgba(255,255,255,.45);margin-top:2px;}
+  .ov-net{font-size:.7rem;margin-top:3px;font-weight:600;display:flex;align-items:center;gap:6px;}
+  .ov-stat-block{margin-top:5px;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;flex-direction:column;gap:2px;}
+  .ov-stat-row{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;}
+  .ov-stat-key{color:rgba(255,255,255,.4);font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;}
+  .ov-stat-vals{display:flex;gap:8px;align-items:center;}
+  .ov-stat-pct{color:rgba(255,255,255,.8);font-weight:600;}
+  .ov-stat-rank{color:#3cb54a;font-size:.58rem;font-weight:700;background:rgba(60,181,74,.1);border-radius:5px;padding:1px 5px;white-space:nowrap;}
+  .ov-part-title{font-size:.55rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.09em;margin:6px 0 2px;}
+  .ov-row{display:flex;align-items:center;gap:6px;padding:2px 0;border-top:1px solid rgba(255,255,255,.06);font-size:.67rem;}
+  .ov-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .ov-cname{color:rgba(255,255,255,.7);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .ov-cval{color:#3cb54a;font-weight:600;white-space:nowrap;}
+  /* growth arrows: green ▲ / red ▼ / gray flat — intensity graded by |growth%|, "--" past the last year */
+  .gr{font-size:.62rem;font-weight:700;white-space:nowrap;}
+  .gr-na{color:rgba(255,255,255,.3);font-weight:600;}
 
-  /* legend folded into the top bar (was fixed bottom-left) */
-  #legend{display:flex;flex-direction:column;gap:2px;font-size:.6rem;color:var(--faint);
-    line-height:1.3;white-space:nowrap;padding-left:4px;border-left:1px solid var(--line);}
-  #legend .lrow{display:flex;align-items:center;gap:7px;}
-  #legend b{color:var(--ink);font-weight:700;}
-  #legend .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:middle;}
-  #legend .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle;opacity:.85;}
-  #legend .srsw{cursor:pointer;padding:1px 5px;border-radius:10px;border:1px solid transparent;transition:.12s;}
-  #legend .srsw:hover{border-color:var(--line);background:rgba(255,255,255,.05);color:var(--ink);}
-  #legend .srsw.on{border-color:var(--accent);background:rgba(60,181,74,.14);color:var(--ink);}
+  /* atlas-style SR legend (ported from build_country_atlas.R buildFixedLegend/hleg-*), folded
+     into the top bar; a 3rd column adds the export/import direction colors Oriol asked for. */
+  #legend{flex:0 0 auto;display:flex;flex-direction:row;align-items:center;gap:0;overflow-x:auto;
+    scrollbar-width:none;min-width:0;}
+  .hleg-col{display:flex;flex-direction:column;gap:5px;padding-right:12px;border-right:1px solid rgba(255,255,255,.07);margin-right:10px;flex-shrink:0;}
+  .hleg-col:last-child{border-right:none;margin-right:0;}
+  .hleg-group{display:flex;flex-direction:column;gap:1px;}
+  .hleg-stage{font-size:.5rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1px;}
+  .hleg-item{display:flex;align-items:center;gap:4px;font-size:.62rem;color:rgba(255,255,255,.6);
+    transition:opacity .15s,color .15s;white-space:nowrap;line-height:1.35;cursor:pointer;}
+  .hleg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .hleg-item.hleg-active{color:rgba(255,255,255,.95);font-weight:700;}
+  .hleg-item.hleg-dim{opacity:.5;}
   #phase{position:fixed;bottom:14px;right:16px;z-index:5;font-size:.64rem;color:rgba(226,232,240,.4);
     background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 9px;}
 
@@ -112,46 +171,59 @@
 </head>
 <body>
 <div id="split">
-  <div id="left"><svg id="stage"></svg></div>
-  <div id="right">
-    <div id="nav-hd"><b>Value-Chain Solar System</b><span>final product at centre · rings = steps upstream · click a planet to trace it on the map</span></div>
-    <svg id="nav"></svg>
+  <div id="left">
+    <svg id="stage"></svg>
+    <button id="mapmode" title="Toggle flat map / 3D globe">🌐 Globe</button>
+    <button id="firmtoggle" title="Show/hide S&amp;P firm activity dots">🏭 Firms</button>
   </div>
 </div>
 
+<div id="nav-panel">
+  <div id="nav-hd">
+    <b>Supply Chain Map</b>
+    <div class="nav-toggle">
+      <button class="nav-mode-btn active" id="nav-mode-product" data-mode="product">By Product</button>
+      <button class="nav-mode-btn" id="nav-mode-sr" data-mode="sr">By Stage/Role</button>
+    </div>
+    <span id="nav-hd-sub">upstream → final product, left to right · click a node to trace it on the map</span>
+  </div>
+  <svg id="nav"></svg>
+</div>
+
 <div id="bar">
-  <div class="brand">CLEAN TRADE <span>COCKPIT</span></div>
-  <select id="tech-sel" title="Technology"></select>
-  <div class="focal">Focus: <select id="country-sel" title="Focus country (grouped by bloc)"></select></div>
-  <button id="mapmode" title="Toggle flat map / 3D globe">🌐 Globe</button>
+  <div class="brand-2l"><span class="l1">Clean</span><span class="l2">Value Chain</span><span class="l3">Explorer</span></div>
+  <div id="bar-sep"></div>
+  <div id="bar-title">
+    <div class="tech" id="bar-title-tech"></div>
+    <div class="country" id="bar-title-country"></div>
+    <div class="year" id="bar-title-year"></div>
+  </div>
+  <div id="bar-sep"></div>
+  <div class="tcy-block">
+    <div class="tcy-row1">
+      <span class="tcy-item"><span class="tcy-lab">Tech</span><select id="tech-sel" title="Technology"></select></span>
+      <span class="tcy-item"><span class="tcy-lab">Country</span><select id="country-sel" title="Focus country (grouped by bloc)"></select></span>
+    </div>
+    <div class="tcy-row2">
+      <span class="yr-lab">Year</span>
+      <input type="range" id="year-slider" min="2003" max="2024" step="1" value="2023"
+             title="Focal year for the stats panel — growth shown is this year → the next year">
+      <span class="yr-val" id="yr-val">2023</span>
+    </div>
+  </div>
+  <div class="bar-sep2"></div>
+  <div id="legend"></div>
   <div class="drums">
     <div class="drum-row"><span class="drum-lab">Stage</span><div class="drum-wrap" id="drum-stage"><div class="drum-hl"></div><div class="drum-inner" id="drum-stage-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Role</span><div class="drum-wrap" id="drum-role"><div class="drum-hl"></div><div class="drum-inner" id="drum-role-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Category</span><div class="drum-wrap" id="drum-cat"><div class="drum-hl"></div><div class="drum-inner" id="drum-cat-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Product</span><div class="drum-wrap drum-product" id="drum-product"><div class="drum-hl"></div><div class="drum-inner" id="drum-product-inner"></div></div></div>
   </div>
-  <div id="legend">
-    <div class="lrow">
-      <span><span class="dot" style="background:#f97316"></span><b>Exports</b></span>
-      <span><span class="dot" style="background:#3cb54a"></span><b>Imports</b></span>
-      <span class="srsw" data-stage="Upstream" title="Filter to Upstream"><span class="sw" style="background:#c17a2e"></span>Up</span>
-      <span class="srsw" data-stage="Midstream" title="Filter to Midstream"><span class="sw" style="background:#22c55e"></span>Mid</span>
-      <span class="srsw" data-stage="Downstream" title="Filter to Downstream"><span class="sw" style="background:#4ade80"></span>Down</span>
-      <span class="srsw" data-stage="Final Product" title="Filter to Final Product"><span class="sw" style="background:#f97316"></span>Final</span>
-    </div>
-    <div class="lrow" style="opacity:.8;"><b>★</b> focal &nbsp; <b>◆</b> G30 &nbsp;·&nbsp; click a stage to filter both panels</div>
-  </div>
   <div id="sel-readout"><span class="chip" id="sel-chip">Whole technology</span>
     <button id="sel-clear" style="display:none">✕ clear all</button></div>
 </div>
 
-<div id="stats">
-  <div class="t" id="stats-title">Solar · India</div>
-  <div class="row"><span class="k">Exports</span><span class="v exp" id="s-exp">—</span></div>
-  <div class="row"><span class="k">Imports</span><span class="v imp" id="s-imp">—</span></div>
-  <div class="row"><span class="k">Net</span><span class="v" id="s-net">—</span></div>
-  <div class="row"><span class="k">Firm sites</span><span class="v" id="s-firms">—</span></div>
-</div>
+<div id="stats"></div>
 
 <div id="phase">Phase 1 shell · arrows are tech-level</div>
 
@@ -168,6 +240,10 @@ const BLOC_ORDER = ["Factory North America","Factory Asia","Factory Europe",
                     "Supplier Eurasia","Other"];
 const TECHS = ["Solar","Wind","Batteries","Biofuel","Electrolyzers","Geothermal",
   "Heat_Pumps","Magnets","Nuclear","Transmission","EVs"];
+// canonical tech palette (CLAUDE.md) — drives the #bar-title reference readout
+const TECH_COLORS = {Solar:'#eab308',Nuclear:'#0ea5e9',Batteries:'#f59e0b',Transmission:'#06b6d4',
+  Wind:'#3b82f6',Biofuel:'#84cc16',Electrolyzers:'#a855f7',Geothermal:'#ef4444',
+  Heat_Pumps:'#f97316',Magnets:'#ec4899',EVs:'#14b8a6'};
 
 /* ── state ─────────────────────────────────────────────────────────────────── */
 let TECH="Solar", COUNTRY="India";
@@ -176,6 +252,13 @@ let selProduct=null;           // selected HS code (solar-system navigation)
 let selStage='ALL', selRole='ALL', selCat='ALL';   // drum filters (top-bar drumwheels)
 let root=null, zoomB=null, zoomT=d3.zoomIdentity;   // pan/zoom container + behavior + transform
 let mapMode='flat', globeRot=null, globeScale=1;    // flat map ⇄ 3D orthographic globe
+let showFirms=true;   // toggle for the S&P firm-activity dots layer
+// Phase D: stats-panel focal year. Growth is FORWARD-looking (selYear → selYear+1) — picking the
+// latest available year shows "--" for every growth field, since there's no next year to compare.
+let selYear=2023, YEAR_MIN=2003, YEAR_MAX=2024;
+let GDP=new Map();   // "iso3|year" -> gdp_mil_usd, shared across all techs (data/_gdp.json)
+const REGION_ABBR={"East Asia & Pacific":"EAP","Europe & Central Asia":"ECA","South Asia":"SAS",
+  "North America":"NAC","Latin America & Caribbean":"LCN","Middle East & North Africa":"MEA","Sub-Saharan Africa":"SSA"};
 
 /* ── tiny helpers ──────────────────────────────────────────────────────────── */
 const tipEl=()=>document.getElementById('tip');
@@ -186,14 +269,6 @@ function msg(t){ d3.select('#stage').selectAll('*').remove();
     .attr('fill','rgba(148,163,184,.7)').attr('font-size',13).text(t); }
 
 function hashCode(s){ let h=0; s=String(s); for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
-// ray from (cx,cy) toward (px,py) clamped to the inset rect [pad,W-pad]×[pad,H-pad]
-function edgePoint(cx,cy,px,py,W,H,pad){
-  const dx=px-cx, dy=py-cy; if(!dx&&!dy) return [cx,cy];
-  let t=Infinity;
-  if(dx>0) t=Math.min(t,(W-pad-cx)/dx); else if(dx<0) t=Math.min(t,(pad-cx)/dx);
-  if(dy>0) t=Math.min(t,(H-pad-cy)/dy); else if(dy<0) t=Math.min(t,(pad-cy)/dy);
-  return [cx+dx*Math.max(0,t), cy+dy*Math.max(0,t)];
-}
 function selSR(){
   if(!selProduct) return null;
   const p=(D.products||[]).find(x=>x.code===selProduct);
@@ -205,8 +280,8 @@ function selSR(){
 function selName(){
   if(!selProduct) return null;
   const e=((TD&&TD.tree)||[]).find(x=>x.from_code===selProduct||x.to_code===selProduct);
-  if(e) return e.from_code===selProduct?e.from_name:e.to_name;
-  const p=(D.products||[]).find(x=>x.code===selProduct); return p?p.product_name:selProduct;
+  if(e) return e.from_code===selProduct?(e.from_full||e.from_name):(e.to_full||e.to_name);
+  const p=(D.products||[]).find(x=>x.code===selProduct); return p?(p.desc_full||p.product_name):selProduct;
 }
 
 /* ── the cockpit render ────────────────────────────────────────────────────── */
@@ -235,25 +310,20 @@ function drawFusion(){
       .attr('fill',d=>iso4id(d.id)===D.iso?'#1c3d2c':'#12281c')
       .attr('stroke',d=>iso4id(d.id)===D.iso?'rgba(60,181,74,.85)':'rgba(255,255,255,.08)')
       .attr('stroke-width',d=>iso4id(d.id)===D.iso?1.1:0.4);
-    fc=[W/2,H/2];
+    fc=proj(c0)||[W/2,H/2];      // focal country's OWN projected position — tracks rotation/drag,
+                                  // rather than a fixed screen-center point (was the origin-doesn't-move bug)
   } else {
     root=svg.append('g').attr('class','zoom-root').attr('transform',zoomT);  // pan/zoom container
-    const b=VIZ.baseMap(root,W,H,D.iso);   // focal-centered flat land
+    const b=VIZ.baseMap(root,W,H,D.iso,'world');   // fixed whole-world fit (not zoomed to the focal country) —
+    // so every partner's true coordinates land inside the visible canvas, not just nearby ones
     if(!b){ msg('world map unavailable'); return; }
     proj=b.proj;
     fc = CENT[D.iso] ? proj(CENT[D.iso]) : [W/2,H/2];
   }
 
-  // ◆ highlight G30 member countries (gold), so they stand out as focus targets
-  const g30set=new Set(COUNTRIES.filter(c=>c.g30).map(c=>c.iso));
-  root.append('g').selectAll('path')
-    .data(FEATS.filter(f=>{const iso=iso4id(f.id);return g30set.has(iso)&&iso!==D.iso;})).join('path')
-    .attr('d',d3.geoPath(proj)).attr('fill','rgba(251,191,36,.11)')
-    .attr('stroke','rgba(251,191,36,.6)').attr('stroke-width',0.8).attr('pointer-events','none');
-
   // arrowhead markers
   const defs=root.append('defs');
-  [['dest','#f97316'],['src','#3cb54a']].forEach(([k,c])=>{
+  [['dest','#3cb54a'],['src','#f97316']].forEach(([k,c])=>{
     defs.append('marker').attr('id','ah-'+k).attr('viewBox','0 0 10 10').attr('refX',8).attr('refY',5)
       .attr('markerWidth',10).attr('markerHeight',10).attr('markerUnits','userSpaceOnUse')  // fixed size, not ∝ stroke
       .attr('orient','auto-start-reverse')
@@ -268,45 +338,67 @@ function drawFusion(){
     .on('mousemove',(e,d)=>{const iso=iso4id(d.id); if(iso&&ISO2SLUG[iso]) tip(e,'<b>'+ISO2SLUG[iso].replace(/_/g,' ')+'</b>'+(iso===D.iso?'<br>focal country':'<br>click to refocus')); else tipOut();})
     .on('mouseout',tipOut);
 
-  // ③ partner trade arrows — width ∝ log(value); great-circle arcs on the globe
-  const pad=26;
-  const dests=(D.partners||[]).filter(p=>p.dir==='dest'&&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
-  const srcs =(D.partners||[]).filter(p=>p.dir==='src' &&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
+  // ③ partner trade arrows — width ∝ sqrt(value); great-circle arcs on the globe. Filtered to the
+  // year slider (selYear) so the map stays consistent with the stats panel, rather than showing
+  // an all-time aggregate for a different implied period.
+  const yearParts=(D.partners_yearly||[]).filter(p=>p.year===selYear);
+  const dests=yearParts.filter(p=>p.dir==='dest'&&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
+  const srcs =yearParts.filter(p=>p.dir==='src' &&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
   const arr=[...dests,...srcs];
   const maxV=d3.max(arr,p=>p.v)||1;
   const minV=Math.max(1, d3.min(arr,p=>p.v)||1);
-  const wsc=d3.scaleLog().domain([minV, Math.max(maxV, minV*10)]).range([1,7]).clamp(true);  // log width
+  const wsc=d3.scaleSqrt().domain([minV, Math.max(maxV, minV+1)]).range([2,18]).clamp(true);  // wide, rank-legible width
   const rsc=d3.scaleSqrt().domain([0,maxV]).range([2.5,9]);
   const ag=root.append('g').attr('class','arrows');
   const gpArc=d3.geoPath(proj);
-  const focalLL=CENT[D.iso]||[0,0];
+  // Arrows are drawn full-length (centroid → partner) but MASKED to "everything outside the focal
+  // country's own silhouette" — a white full-canvas rect with the country's real path painted
+  // black on top (SVG <mask> luminance: white=visible, black=hidden). So the segment inside the
+  // country is invisible and the visible arrow starts exactly on the true coastline, for any
+  // shape. (Tried an evenodd clip-path rect-minus-country hole first — verified mathematically
+  // correct via isPointInFill sampling, but Chromium silently fails to rasterize it for a path
+  // this complex/high-vertex-count; the country shape alone clips fine, just not combined with
+  // the rect under evenodd. The mask/compositing approach sidesteps that renderer quirk entirely.)
+  const focalFeat=FEATS.find(f=>iso4id(f.id)===D.iso);
+  if(focalFeat){
+    const maskG=defs.append('mask').attr('id','mask-hide-focal');
+    maskG.append('rect').attr('x',0).attr('y',0).attr('width',W).attr('height',H).attr('fill','#fff');
+    maskG.append('path').attr('d',gpArc(focalFeat)).attr('fill','#000');
+    ag.attr('mask','url(#mask-hide-focal)');
+  }
   arr.forEach(p=>{
     const cll=CENT[p.partner]; if(!cll) return;
     if(mapMode==='globe' && !front(cll)) return;    // hide partners on the far side of the globe
     const tgt=proj(cll); if(!tgt) return;
-    const col=p.dir==='dest'?'#f97316':'#3cb54a', w=wsc(Math.max(1,p.v));
+    const col=p.dir==='dest'?'#3cb54a':'#f97316', w=wsc(Math.max(1,p.v));   // exports green, imports orange
+    const start=fc;   // true centroid — the mask (above) hides the in-country segment visually
     if(mapMode==='globe'){
-      // arc bowed PERPENDICULAR to the chord, on the side away from the globe centre → lifts off the sphere
-      const A=p.dir==='dest'?fc:tgt, B=p.dir==='dest'?tgt:fc;
-      const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2, cx=W/2, cy=H/2;
+      // arc bowed perpendicular to the chord. Fixed relative side (not "whichever is outward") —
+      // since A/B swap ends between dest/src, this alone bows exports and imports of the SAME
+      // partner to opposite sides, so they no longer overlap (e.g. China as both a big import
+      // source and export destination for many countries).
+      const A=p.dir==='dest'?start:tgt, B=p.dir==='dest'?tgt:start;
+      const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
       const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
-      const px=-dy/len, py=dx/len, bow=len*0.42+22;                             // perpendicular unit × curvature
-      const c1=[mx+px*bow,my+py*bow], c2=[mx-px*bow,my-py*bow];                 // two sides…
-      const ctrl=(Math.hypot(c1[0]-cx,c1[1]-cy)>Math.hypot(c2[0]-cx,c2[1]-cy))?c1:c2;  // …pick the outward one
+      const px=-dy/len, py=dx/len, bow=len*0.3+16;
+      const ctrl=[mx+px*bow, my+py*bow];
       ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
         .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.62)
         .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
     } else {
-      const inside=tgt[0]>=pad&&tgt[0]<=W-pad&&tgt[1]>=pad&&tgt[1]<=H-pad;
-      const end=inside?tgt:edgePoint(fc[0],fc[1],tgt[0],tgt[1],W,H,pad);
-      const [x1,y1,x2,y2]=p.dir==='dest'?[fc[0],fc[1],end[0],end[1]]:[end[0],end[1],fc[0],fc[1]];
-      ag.append('line').attr('x1',x1).attr('y1',y1).attr('x2',x2).attr('y2',y2)
-        .attr('stroke',col).attr('stroke-opacity',.5).attr('stroke-width',w).attr('marker-end','url(#ah-'+p.dir+')');
+      // fixed whole-world fit (see VIZ.baseMap 'world' mode above) means every partner's true
+      // coordinates already land inside the canvas — no more edge-clamping needed.
+      const A=p.dir==='dest'?start:tgt, B=p.dir==='dest'?tgt:start;
+      const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
+      const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
+      const px=-dy/len, py=dx/len, bow=len*0.12+8;
+      const ctrl=[mx+px*bow, my+py*bow];
+      ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
+        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.5)
+        .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
     }
-    // partner dot + label (globe: at the partner's true position; flat: at the clamped edge)
-    let dp=tgt;
-    if(mapMode!=='globe'){ const inside=tgt[0]>=pad&&tgt[0]<=W-pad&&tgt[1]>=pad&&tgt[1]<=H-pad;
-      dp=inside?tgt:edgePoint(fc[0],fc[1],tgt[0],tgt[1],W,H,pad); }
+    // partner dot + label — the partner's true projected position, on both the globe and the map
+    const dp=tgt;
     ag.append('circle').attr('cx',dp[0]).attr('cy',dp[1]).attr('r',rsc(p.v))
       .attr('fill',col).attr('fill-opacity',.45).attr('stroke',col).attr('stroke-width',1).attr('cursor','pointer')
       .on('mousemove',e=>tip(e,'<b>'+p.partner+'</b><br>'+(p.dir==='dest'?'export destination':'import source')+' · '+VIZ.fmtV(p.v))).on('mouseout',tipOut);
@@ -324,7 +416,7 @@ function drawFusion(){
     return true;
   };
   const anyFilter = !!sr || drumOn;
-  if(firms.length){
+  if(showFirms && firms.length){
     const maxN=d3.max(firms,f=>f.n)||1;
     const fr=d3.scaleSqrt().domain([0,maxN]).range([2.5,12]);
     const fg=root.append('g').attr('class','firms');
@@ -346,84 +438,236 @@ function drawFusion(){
   // (product navigator lives in the right-hand solar-system panel — see drawNav)
 }
 
-/* ── right panel: the value-chain solar system (product navigator) ───────────── */
-function drawNav(){
+/* ── Supply Chain Map — two view modes, toggled via #nav-mode-* buttons ───────── */
+let navMode='product';   // 'product' (per-HS-code dendrite) | 'sr' (7-lane stage/role sankey)
+let sankeyFocus=null;     // 'sr' mode: which country's flows are highlighted (click a node)
+function drawNav(){ navMode==='sr' ? drawNavSR() : drawNavProduct(); }
+function setNavMode(m){
+  if(navMode===m) return;
+  navMode=m;
+  document.getElementById('nav-mode-product').classList.toggle('active',m==='product');
+  document.getElementById('nav-mode-sr').classList.toggle('active',m==='sr');
+  document.getElementById('nav-hd-sub').textContent = m==='sr'
+    ? 'country-level flows across the 7 value-chain stages · click a country to trace its flows'
+    : 'upstream → final product, left to right · click a node to trace it on the map';
+  drawNav();
+}
+
+/* Process of Production (atlas-style linear step layout, ported from build_country_atlas.R
+   drawDendrite() — replaces the earlier orrery/solar-system design, which read as confusing
+   once de-crowded) — the "By Product" mode ───────────────────────────────────────────────── */
+function drawNavProduct(){
   const svg=d3.select('#nav'); svg.selectAll('*').remove();
   const {W,H}=VIZ.dims('#nav');
   const edges=(TD&&TD.tree)||[];
   if(!edges.length){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle')
     .attr('fill','rgba(255,255,255,.3)').attr('font-size',11).text('no value-chain data for this tech'); return; }
-  const nm=new Map(); const reg=(c,nn,st,ro)=>{ if(!nm.has(c)) nm.set(c,{code:c,name:nn,stage:st,role:ro,deg:0}); return nm.get(c); };
-  edges.forEach(e=>{ const a=reg(e.from_code,e.from_name,e.from_stage,e.from_role),b=reg(e.to_code,e.to_name,e.to_stage,e.to_role); a.deg++; b.deg++; });
+  // node identity = from_cn/to_cn ("HS code | process-step name"), NOT the bare HS code — many
+  // distinct process-of-production steps share one HS6 (e.g. Solar's 848620 covers 15 separate
+  // module/cell-line steps). Keying by code alone collapses them and fabricates cycles. Falls
+  // back to the bare code only for stale cached JSON predating this fix.
+  const cnOf=(code,cn)=>cn||code;
+  const nm=new Map(); const reg=(cn,c,nn,ff,st,ro)=>{ if(!nm.has(cn)) nm.set(cn,{cn,code:c,name:nn,full:ff,stage:st,role:ro}); return nm.get(cn); };
+  edges.forEach(e=>{
+    reg(cnOf(e.from_code,e.from_cn),e.from_code,e.from_name,e.from_full,e.from_stage,e.from_role);
+    reg(cnOf(e.to_code,e.to_cn),e.to_code,e.to_name,e.to_full,e.to_stage,e.to_role);
+  });
   const nodes=[...nm.values()];
-  // step = shortest distance to a final product (cycle-safe)
-  const hasOut=new Set(edges.map(e=>e.from_code));
-  const step=new Map(nodes.map(n=>[n.code, hasOut.has(n.code)?Infinity:0]));
-  for(let i=0;i<nodes.length;i++){ let ch=false; edges.forEach(e=>{ const d=step.get(e.to_code); if(d!==Infinity && step.get(e.from_code)>d+1){ step.set(e.from_code,d+1); ch=true; } }); if(!ch) break; }
-  let fm=0; step.forEach(v=>{ if(v!==Infinity&&v>fm) fm=v; }); step.forEach((v,k)=>{ if(v===Infinity) step.set(k,fm+1); });
-  const maxStep=d3.max([...step.values()])||1;
-  const ringsBy=d3.groups(nodes,n=>step.get(n.code)).sort((a,b)=>a[0]-b[0]);
-  // barycentric angle relaxation → short edges
-  const nbr=new Map(nodes.map(n=>[n.code,[]]));
-  edges.forEach(e=>{ nbr.get(e.from_code).push(e.to_code); nbr.get(e.to_code).push(e.from_code); });
-  const ang=new Map();
-  ringsBy.forEach(([s,ns])=>{ ns.sort((a,b)=>b.deg-a.deg); ns.forEach((n,i)=>ang.set(n.code,(i/ns.length)*2*Math.PI)); });
-  for(let it=0;it<60;it++){ const na=new Map();
-    nodes.forEach(n=>{ const nb=nbr.get(n.code).filter(c=>ang.has(c)); if(!nb.length){ na.set(n.code,ang.get(n.code)); return; }
-      let sx=0,sy=0; nb.forEach(c=>{ sx+=Math.cos(ang.get(c)); sy+=Math.sin(ang.get(c)); }); na.set(n.code,(sx||sy)?Math.atan2(sy,sx):ang.get(n.code)); });
-    na.forEach((v,k)=>ang.set(k,v)); }
-  // de-crowd: keep the relaxed ORDER (connected nodes stay adjacent → short edges) but place
-  // nodes at EVEN angular spacing around the full ring, rotated (phi) to best-fit the relaxed
-  // angles — so populous inner rings spread around the circle instead of bunching into one arc.
-  ringsBy.forEach(([s,ns])=>{ const n=ns.length; if(!n) return;
-    ns.sort((a,b)=>ang.get(a.code)-ang.get(b.code));
-    const d=2*Math.PI/n; let sx=0,sy=0;
-    ns.forEach((nd,i)=>{ const a=ang.get(nd.code)-i*d; sx+=Math.cos(a); sy+=Math.sin(a); });
-    const phi=(sx||sy)?Math.atan2(sy,sx):0;
-    ns.forEach((nd,i)=>ang.set(nd.code, phi+i*d)); });
-  // populous rings pushed outward more (bigger circumference → more room per planet)
-  const rAbs=[]; let acc=0; for(let s=0;s<=maxStep;s++){ const c=(ringsBy.find(g=>g[0]===s)||[0,[]])[1].length; acc+=1+0.28*c; rAbs[s]=acc; }
-  const rMax=rAbs[maxStep]||1;
-  const cx=W/2, cy=H/2+6, R0=Math.min(W,H)*0.09, maxR=Math.min(W,H)*0.44;
-  const R=s=>R0+((rAbs[s]||0)/rMax)*(maxR-R0);
-  const pos=c=>{ const a=ang.get(c)||0, r=R(step.get(c)||0); return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
-  // planet size ∝ focal-country trade value (fallback: connectivity)
+
+  // step = longest distance to a sink (a final product with no further downstream edge) —
+  // same topological-layering algorithm as the atlas dendrite: raw materials end up with the
+  // biggest step, final products at step 0.
+  const stepMap=new Map(nodes.map(n=>[n.cn,0]));
+  let changed=true;
+  for(let i=0;i<25&&changed;i++){ changed=false;
+    edges.forEach(e=>{ const fcn=cnOf(e.from_code,e.from_cn), tcn=cnOf(e.to_code,e.to_cn);
+      const ts=stepMap.get(tcn)||0, fs=stepMap.get(fcn)||0;
+      if(fs<ts+1){ stepMap.set(fcn,ts+1); changed=true; } }); }
+  const maxStep=Math.max(0,...stepMap.values());
+  const displayLv=s=>maxStep-s;                          // flip: raw material (left) → final product (right)
+  const stepToX=s=>W*0.08+(W*0.82)*displayLv(s)/(maxStep||1);
+
+  const buckets={};
+  nodes.forEach(n=>{ const s=stepMap.get(n.cn)||0; (buckets[s]=buckets[s]||[]).push(n); });
+  Object.values(buckets).forEach(ns=>ns.sort((a,b)=>(a.name||'').localeCompare(b.name||'')));
+  const pad={top:16,bottom:16};
+  const nodeY=new Map();
+  Object.values(buckets).forEach(ns=>{ const avail=H-pad.top-pad.bottom, stp=avail/ns.length;
+    ns.forEach((n,i)=>nodeY.set(n.cn,pad.top+stp*(i+0.5))); });
+  const pos=cn=>[stepToX(stepMap.get(cn)||0), nodeY.get(cn)||H/2];
+
+  // node size ∝ focal-country trade value (fallback: connectivity); trade value is per HS
+  // code, so sibling steps sharing one code also share its size — that's expected, not a bug
   const tv=new Map(((D&&D.products)||[]).map(p=>[p.code,p.v]));
-  const useDeg=!tv.size, sval=c=>useDeg?(nm.get(c)?.deg||0):(tv.get(c)||0);
-  const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,n=>sval(n.code))||1]).range([3.5,12]);
+  const deg=new Map(nodes.map(n=>[n.cn,0]));
+  edges.forEach(e=>{ const fcn=cnOf(e.from_code,e.from_cn), tcn=cnOf(e.to_code,e.to_cn);
+    deg.set(fcn,(deg.get(fcn)||0)+1); deg.set(tcn,(deg.get(tcn)||0)+1); });
+  const useDeg=!tv.size, sval=n=>useDeg?(deg.get(n.cn)||0):(tv.get(n.code)||0);
+  const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,sval)||1]).range([3,11]);
+
   const cm=catMap();
   const drumOn = selStage!=='ALL'||selRole!=='ALL'||selCat!=='ALL';
   const passDrum=n=>(selStage==='ALL'||n.stage===selStage)&&(selRole==='ALL'||n.role===selRole)&&(selCat==='ALL'||(cm[n.code]||'Other')===selCat);
   const isSel=e=>selProduct&&(e.from_code===selProduct||e.to_code===selProduct);
-  for(let s=1;s<=maxStep;s++) svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R(s))
-    .attr('fill','none').attr('stroke','rgba(255,255,255,.10)').attr('stroke-width',1);
-  svg.append('g').selectAll('path').data(edges).join('path')
-    .attr('d',e=>{ const a=pos(e.from_code),b=pos(e.to_code); return `M${a[0]},${a[1]}L${b[0]},${b[1]}`; })
-    .attr('fill','none').attr('stroke',e=>isSel(e)?'rgba(255,255,255,.85)':'rgba(255,255,255,.14)').attr('stroke-width',e=>isSel(e)?1.6:.6);
-  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R0*0.6+7).attr('fill','#f97316').attr('opacity',.15);
-  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',R0*0.5+5).attr('fill','#f59e0b').attr('stroke','#fbbf24').attr('stroke-width',1.1)
-    .on('mousemove',e=>tip(e,'Final product (centre)')).on('mouseout',tipOut);
+
+  svg.append('g').selectAll('line').data(edges).join('line')
+    .attr('x1',e=>pos(cnOf(e.from_code,e.from_cn))[0]).attr('y1',e=>pos(cnOf(e.from_code,e.from_cn))[1])
+    .attr('x2',e=>pos(cnOf(e.to_code,e.to_cn))[0]).attr('y2',e=>pos(cnOf(e.to_code,e.to_cn))[1])
+    .attr('stroke',e=>isSel(e)?'rgba(255,255,255,.85)':'rgba(255,255,255,.14)')
+    .attr('stroke-width',e=>isSel(e)?1.6:.6);
+
+  // no text labels, no dashed connectors — nodes speak for themselves (atlas convention)
   svg.append('g').selectAll('circle').data(nodes).join('circle')
-    .attr('cx',n=>pos(n.code)[0]).attr('cy',n=>pos(n.code)[1])
-    .attr('r',n=>{ const r=Math.max(3,rSc(sval(n.code))); return n.code===selProduct?r+2:r; })
+    .attr('cx',n=>pos(n.cn)[0]).attr('cy',n=>pos(n.cn)[1])
+    .attr('r',n=>{ const r=Math.max(3,rSc(sval(n))); return n.code===selProduct?r+2:r; })
     .attr('fill',n=>VIZ.SR[n.stage+'|'+n.role]||'#888')
-    .attr('stroke',n=>n.code===selProduct?'#fff':'rgba(255,255,255,.5)').attr('stroke-width',n=>n.code===selProduct?2.2:.7)
-    .attr('opacity',n=>{ if(selProduct) return n.code===selProduct?1:.45; if(drumOn) return passDrum(n)?.98:.14; return .96; })
+    .attr('stroke',n=>n.code===selProduct?'#fff':'rgba(0,0,0,.35)').attr('stroke-width',n=>n.code===selProduct?2.2:.6)
+    .attr('opacity',n=>{ if(selProduct) return n.code===selProduct?1:.35; if(drumOn) return passDrum(n)?.98:.14; return .92; })
     .attr('cursor','pointer')
     .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; drawFusion(); drawNav(); updateReadout(); })
-    .on('mousemove',(e,n)=>tip(e,'<b>'+(n.name||n.code)+'</b><br>HS '+n.code+'<br>'+n.stage+' · '+n.role+' · step '+step.get(n.code)+(tv.get(n.code)?'<br>'+VIZ.fmtV(tv.get(n.code)):'')))
+    .on('mousemove',(e,n)=>tip(e,'HS '+n.code+'<br><b>'+(n.full||n.name||n.code)+'</b><br>'+n.stage+' · '+n.role+' · step '+stepMap.get(n.cn)+(tv.get(n.code)?'<br>'+VIZ.fmtV(tv.get(n.code)):'')))
     .on('mouseout',tipOut);
+}
+
+/* Country-level value-chain flows, ported from build_country_atlas.R drawAtlasSankey() — the
+   same 7-lane (5-column) structure as the atlas's Trade Flows sankey. "By Stage/Role" mode. */
+function drawNavSR(){
+  const svg=d3.select('#nav'); svg.selectAll('*').remove();
+  const {W,H}=VIZ.dims('#nav');
+  const flows=(TD&&TD.sankey)||[];
+  if(!flows.length){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle')
+    .attr('fill','rgba(255,255,255,.3)').attr('font-size',11).text('no sankey data for this tech'); return; }
+  const LANE_SR=['Upstream|Raw Material','Midstream|Processed Material','Midstream|Process Equipment',
+    'Midstream|Product Component','Downstream|Product Component','Downstream|Process Equipment','Final Product|Final Product'];
+  const cname=iso=>(COUNTRIES.find(c=>c.iso===iso)||{}).name||iso;
+  // 5-column layout: lane0 | lane1 | lanes2+3(stacked) | lanes5+4(stacked) | lane6 — matches the atlas
+  const laneCol={0:0,1:1,2:2,3:2,4:3,5:3,6:4};
+  const COL_X=[0.07,0.27,0.5,0.73,0.93];
+  const COL_LAB=[['Raw Material',0],['Proc. Material',1],['Proc. Equip. / Comp.',2],['Proc. Equip. / Comp.',5],['Final Product',6]];
+  const P={t:14,b:4,l:6,r:6};
+  const iw=W-P.l-P.r, ih=H-P.t-P.b;
+  [0.17,0.615].forEach(xf=>{
+    svg.append('line').attr('x1',P.l+xf*iw).attr('x2',P.l+xf*iw).attr('y1',P.t).attr('y2',P.t+ih)
+      .attr('stroke','rgba(255,255,255,.12)').attr('stroke-width',0.8).attr('stroke-dasharray','4,4');
+  });
+  COL_LAB.forEach(([lbl,lane])=>{
+    svg.append('text').attr('x',P.l+COL_X[laneCol[lane]]*iw).attr('y',10).attr('text-anchor','middle')
+      .attr('fill',VIZ.SR[LANE_SR[lane]]||'#9ca3af').attr('font-size',6).attr('opacity',.7).text(lbl);
+  });
+  // Build node weight maps per lane
+  const laneM={};
+  flows.forEach(f=>{
+    [[f.from_label,+f.from_lane7],[f.to_label,+f.to_lane7]].forEach(([id,lane])=>{
+      if(!laneM[lane]) laneM[lane]=new Map();
+      laneM[lane].set(id,(laneM[lane].get(id)||0)+(+f.weight||0));
+    });
+  });
+  // Ensure the focal country appears in every lane, even if not among its top flows
+  const focIso=D.iso;
+  [0,1,2,3,4,5,6].forEach(lane=>{
+    if(!laneM[lane]) laneM[lane]=new Map();
+    const has=[...laneM[lane].keys()].some(k=>k.split(' | ')[0]===focIso);
+    if(!has) laneM[lane].set(focIso+' | (none)', d3.min([...laneM[lane].values()])||1);
+  });
+  const NW=8, GAP_NODE=2, GAP_ROLE=8;
+  const nPos=new Map();
+  function layoutLane(lane,yStart,yEnd){
+    const nm=laneM[lane]; if(!nm||!nm.size) return;
+    const ci=laneCol[lane];
+    const sorted=[...nm.entries()].sort((a,b)=>b[1]-a[1]);
+    const n=sorted.length;
+    const logWts=sorted.map(([,wt])=>Math.log1p(wt));
+    const sumLog=logWts.reduce((s,v)=>s+v,0)||1;
+    const availH=yEnd-yStart-GAP_NODE;
+    let y=yStart+GAP_NODE/2;
+    sorted.forEach(([id,wt],i)=>{
+      const h=Math.max(2.5,(availH-n*GAP_NODE)*(logWts[i]/sumLog));
+      nPos.set(id,{x:P.l+COL_X[ci]*iw-NW/2,y,h,w:NW,lane,iso:id.split(' | ')[0],wt});
+      y+=h+GAP_NODE;
+    });
+  }
+  const yT=P.t+2, yB=P.t+2+ih-4, yMid=(yT+yB)/2;
+  layoutLane(0,yT,yB); layoutLane(1,yT,yB);
+  layoutLane(2,yT,yMid-GAP_ROLE/2); layoutLane(3,yMid+GAP_ROLE/2,yB);
+  layoutLane(5,yT,yMid-GAP_ROLE/2); layoutLane(4,yMid+GAP_ROLE/2,yB);
+  layoutLane(6,yT,yB);
+  if(sankeyFocus===null) sankeyFocus=focIso;
+  const foc=sankeyFocus;
+  svg.on('click',()=>{ sankeyFocus=focIso; drawNavSR(); });   // click background → reset to focal country
+  const wVals=flows.map(f=>+f.weight).filter(v=>v>0);
+  const minW=d3.min(wVals)||1, maxW=d3.max(wVals)||1;
+  const swSc=d3.scaleLog().domain([minW,Math.max(maxW,minW*1.01)]).range([0.4,3]).clamp(true);
+  const lg=svg.append('g');
+  flows.forEach(f=>{
+    const src=nPos.get(f.from_label), tgt=nPos.get(f.to_label); if(!src||!tgt) return;
+    const active=f.from_country===foc||f.to_country===foc;
+    const col=VIZ.SR[LANE_SR[+f.from_lane7]]||'#9ca3af';
+    const x1=src.x+src.w,y1=src.y+src.h/2,x2=tgt.x,y2=tgt.y+tgt.h/2,cx=(x1+x2)/2;
+    lg.append('path').attr('d',`M${x1},${y1}C${cx},${y1} ${cx},${y2} ${x2},${y2}`)
+      .attr('fill','none').attr('stroke',col)
+      .attr('stroke-width',active?swSc(+f.weight||minW)*1.4:swSc(+f.weight||minW))
+      .attr('opacity',active?0.8:0.22)
+      .on('mousemove',ev=>tip(ev,cname(f.from_country)+' → '+cname(f.to_country)+'<br><b>'+VIZ.fmtV(f.weight)+'</b>'))
+      .on('mouseout',tipOut);
+  });
+  const ng=svg.append('g');
+  nPos.forEach((n,id)=>{
+    const active=n.iso===foc;
+    const col=VIZ.SR[LANE_SR[n.lane]]||'#9ca3af';
+    ng.append('rect').attr('x',n.x).attr('y',n.y).attr('width',n.w).attr('height',n.h)
+      .attr('fill',col).attr('rx',1.5).attr('opacity',active?0.96:0.4).attr('cursor','pointer')
+      .on('click',ev=>{ ev.stopPropagation(); sankeyFocus=n.iso; drawNavSR(); })
+      .on('mousemove',ev=>tip(ev,'<b>'+cname(n.iso)+'</b><br>'+VIZ.fmtV(n.wt)))
+      .on('mouseout',tipOut);
+    if(active) ng.append('rect').attr('x',n.x-1).attr('y',n.y-1).attr('width',n.w+2).attr('height',n.h+2)
+      .attr('fill','none').attr('stroke','#fff').attr('stroke-width',1.4).attr('rx',2).attr('opacity',.9);
+    if(n.h>=6) ng.append('text').attr('x',n.x+n.w/2).attr('y',n.y+n.h/2+1.6).attr('text-anchor','middle')
+      .attr('font-size',4.2).attr('fill',active?'#fff':'rgba(255,255,255,.8)').attr('font-weight',active?'700':'400')
+      .attr('pointer-events','none').text(n.iso);
+  });
 }
 
 /* ── drum-wheel selectors (Stage → Role → Category → Product) ─────────────────── */
 function catMap(){ const m={}; ((D&&D.scatter)||[]).forEach(s=>{ if(s.code) m[s.code]=s.category||'Other'; }); return m; }
 function allProducts(){ const cm=catMap(); return ((D&&D.products)||[]).map(p=>({code:p.code,name:p.product_name||p.code,stage:p.stage,role:p.role,cat:cm[p.code]||'Other',v:p.v||0})); }
 function redrawAll(){ drawFusion(); drawNav(); updateReadout(); }
-// top-bar legend: click an SR-stage swatch to drive the same selStage filter as the Stage drum
-function pickStage(v){ selStage=(selStage===v)?'ALL':v; selRole='ALL'; selCat='ALL'; selProduct=null; initDrums(); redrawAll(); }
 function clearFilters(){ selStage='ALL'; selRole='ALL'; selCat='ALL'; selProduct=null; initDrums(); redrawAll(); }
 function anyFilter(){ return selProduct||selStage!=='ALL'||selRole!=='ALL'||selCat!=='ALL'; }
-function syncLegend(){ document.querySelectorAll('#legend .srsw').forEach(el=>el.classList.toggle('on', el.dataset.stage===selStage)); }
+
+/* ── atlas-style SR legend (ported from build_country_atlas.R buildFixedLegend/hleg-*), plus a
+   3rd column for the export/import direction colors Oriol asked for. Clicking an item sets the
+   SAME selStage+selRole filter as the Stage/Role drums (richer than the old stage-only swatches). */
+function pickSR(stage,role){
+  if(selStage===stage&&selRole===role){ selStage='ALL'; selRole='ALL'; }
+  else { selStage=stage; selRole=role; }
+  selCat='ALL'; selProduct=null; initDrums(); redrawAll();
+}
+function buildLegend(){
+  const el=document.getElementById('legend'); if(!el) return;
+  const mkItem=([srKey,rn])=>
+    `<div class="hleg-item" data-sr="${srKey}"><div class="hleg-dot" style="background:${VIZ.SR[srKey]||'#9ca3af'}"></div>${rn}</div>`;
+  const mkGrp=(stage,items)=>`<div class="hleg-group"><div class="hleg-stage">${stage}</div>${items.map(mkItem).join('')}</div>`;
+  const mkCol=(groups)=>`<div class="hleg-col">${groups}</div>`;
+  // export/import colors live in the stats panel's Imports/Exports labels now — no separate
+  // Trade Flow legend column needed here.
+  el.innerHTML=
+    mkCol(mkGrp('UPSTREAM',[['Upstream|Raw Material','Raw Material']])+
+          mkGrp('MIDSTREAM',[['Midstream|Processed Material','Processed Material'],['Midstream|Process Equipment','Process Equipment'],['Midstream|Product Component','Product Component']]))+
+    mkCol(mkGrp('DOWNSTREAM',[['Downstream|Product Component','Product Component'],['Downstream|Process Equipment','Process Equipment']])+
+          mkGrp('FINAL',[['Final Product|Final Product','Final Product']]));
+  el.querySelectorAll('.hleg-item[data-sr]').forEach(item=>{
+    item.addEventListener('click',()=>{ const [st,ro]=item.dataset.sr.split('|'); pickSR(st,ro); });
+  });
+}
+function updateLegend(){
+  const hasFilter=selStage!=='ALL'||selRole!=='ALL';
+  document.querySelectorAll('#legend .hleg-item[data-sr]').forEach(item=>{
+    if(!hasFilter){ item.classList.remove('hleg-active','hleg-dim'); return; }
+    const [st,ro]=item.dataset.sr.split('|');
+    const active=(selStage==='ALL'||selStage===st)&&(selRole==='ALL'||selRole===ro);
+    item.classList.toggle('hleg-active',active); item.classList.toggle('hleg-dim',!active);
+  });
+}
 function fillDrum(innerId, options, currentVal, onChange){
   const inner=document.getElementById(innerId); if(!inner) return;
   inner.innerHTML='<div class=drum-spacer></div><div class=drum-spacer></div>'+
@@ -480,24 +724,111 @@ function setMapMode(m){
 }
 
 /* ── control-bar readouts ──────────────────────────────────────────────────── */
+// atlas-style "Tech / COUNTRY / year" reference title in the bar — kept in sync on case load
+// (updateReadout) and on every year-slider move (onYearChange)
+function syncBarTitle(){
+  const btTech=document.getElementById('bar-title-tech'), btCountry=document.getElementById('bar-title-country'),
+        btYear=document.getElementById('bar-title-year');
+  if(btTech){ btTech.textContent=TECH.replace(/_/g,' '); btTech.style.color=TECH_COLORS[TECH]||'#fff'; }
+  if(btCountry) btCountry.textContent=(COUNTRY||'').replace(/_/g,' ');
+  if(btYear) btYear.textContent=selYear;
+}
 function updateReadout(){
   const cs=document.getElementById('country-sel'); if(cs&&cs.value!==COUNTRY) cs.value=COUNTRY;
-  document.getElementById('stats-title').textContent=TECH.replace(/_/g,' ')+' · '+(COUNTRY||'').replace(/_/g,' ');
-  const exp=d3.sum((D.partners||[]).filter(p=>p.dir==='dest'),p=>p.v);
-  const imp=d3.sum((D.partners||[]).filter(p=>p.dir==='src'),p=>p.v);
-  const net=exp-imp;
-  document.getElementById('s-exp').textContent=VIZ.fmtV(exp);
-  document.getElementById('s-imp').textContent=VIZ.fmtV(imp);
-  const ne=document.getElementById('s-net'); ne.textContent=(net>=0?'+':'−')+VIZ.fmtV(Math.abs(net));
-  ne.style.color=net>=0?'#4ade80':'#f87171';
-  document.getElementById('s-firms').textContent=(D.firms||[]).length||'—';
+  syncBarTitle();
   const chip=document.getElementById('sel-chip'), clr=document.getElementById('sel-clear');
   const drumBits=[selStage,selRole,selCat].filter(x=>x&&x!=='ALL');
-  if(selProduct){ chip.textContent=selName()+'  ·  HS '+selProduct; }
-  else if(drumBits.length){ chip.textContent=drumBits.join(' · '); }
-  else { chip.textContent='Whole technology'; }
+  if(selProduct){
+    chip.classList.add('chip-product');
+    chip.innerHTML='<span class="chip-hs">HS '+selProduct+'</span><span class="chip-desc">'+(selName()||'')+'</span>';
+  } else {
+    chip.classList.remove('chip-product');
+    chip.textContent = drumBits.length ? drumBits.join(' · ') : 'Whole technology';
+  }
   clr.style.display=anyFilter()?'':'none';
-  syncLegend();
+  updateLegend();
+}
+
+/* ── Phase D: atlas-parity stats panel — year-selected headline $, %GDP, world/region
+   rank+share, top-5 partners, all with FORWARD-looking growth (selYear → selYear+1) ─────────── */
+function growthArrow(cur,next){
+  if(cur==null||next==null||!cur) return '<span class="gr gr-na">--</span>';
+  const pct=(next-cur)/cur*100, abs=Math.abs(pct);
+  if(abs<0.5) return `<span class="gr" style="color:rgba(148,163,184,.8)">— ${abs.toFixed(1)}%</span>`;
+  const mag=Math.min(1,abs/25), alpha=0.5+0.5*mag;                 // graded intensity, saturates at 25%+
+  const up=pct>0;
+  return `<span class="gr" style="color:rgba(${up?'74,222,128':'248,113,113'},${alpha})">${up?'▲':'▼'} ${abs.toFixed(1)}%</span>`;
+}
+function rankShare(rows,iso,valKey){    // rows: [{iso3,region,exports_kusd,imports_kusd}] for one year
+  const me=rows.find(r=>r.iso3===iso), val=me?(me[valKey]||0):0;
+  if(!val) return {share:0,rank:null};
+  const total=d3.sum(rows,r=>r[valKey]||0)||1;
+  const sorted=[...rows].filter(r=>(r[valKey]||0)>0).sort((a,b)=>b[valKey]-a[valKey]);
+  return {share:val/total*100, rank:sorted.findIndex(r=>r.iso3===iso)+1};
+}
+function gdpRankShare(rows,iso,valKey,year){
+  const withGDP=rows.map(r=>({iso3:r.iso3,val:r[valKey]||0,gdp:GDP.get(r.iso3+'|'+year)}))
+    .filter(r=>r.gdp>0).map(r=>({iso3:r.iso3,pct:r.val/r.gdp/10}));   // KUSD/MUSD/10 = %  (CLAUDE.md unit convention)
+  const me=withGDP.find(r=>r.iso3===iso), pct=me?me.pct:0;
+  if(!pct) return {pct:0,rank:null};
+  const sorted=[...withGDP].filter(r=>r.pct>0).sort((a,b)=>b.pct-a.pct);
+  return {pct, rank:sorted.findIndex(r=>r.iso3===iso)+1};
+}
+function renderStats(){
+  const el=document.getElementById('stats'); if(!el||!D) return;
+  const yrRow=y=>((D.yearly||[]).find(r=>r.year===y))||null;
+  const cur=yrRow(selYear), next=yrRow(selYear+1);
+  const exp=cur?cur.exports_kusd:0, imp=cur?cur.imports_kusd:0, net=exp-imp;
+  const expN=next?next.exports_kusd:null, impN=next?next.imports_kusd:null;
+  const gdp=GDP.get(D.iso+'|'+selYear);
+  const expGDPpct=(exp>0&&gdp)?(exp/gdp/10):0, impGDPpct=(imp>0&&gdp)?(imp/gdp/10):0;
+
+  const ranks=((TD&&TD.ranks)||[]).filter(r=>r.year===selYear);
+  const wExp=rankShare(ranks,D.iso,'exports_kusd'), wImp=rankShare(ranks,D.iso,'imports_kusd');
+  const region=(ranks.find(r=>r.iso3===D.iso)||{}).region||'';
+  const regAbbr=REGION_ABBR[region]||region||'Reg';
+  const regRows=ranks.filter(r=>r.region===region);
+  const rExp=rankShare(regRows,D.iso,'exports_kusd'), rImp=rankShare(regRows,D.iso,'imports_kusd');
+  const gExp=gdpRankShare(ranks,D.iso,'exports_kusd',selYear), gImp=gdpRankShare(ranks,D.iso,'imports_kusd',selYear);
+
+  const fmt1=v=>v>0?v.toFixed(v<1?2:1)+'%':'—';
+  const rk=r=>r&&r>0?`#${r}`:'—';
+  const py=(D.partners_yearly||[]);
+  const top=(dir)=>py.filter(p=>p.dir===dir&&p.year===selYear).sort((a,b)=>b.v-a.v).slice(0,5);
+  const partnerRow=(p,dir)=>{
+    const nextRow=py.find(q=>q.year===selYear+1&&q.dir===dir&&q.partner===p.partner);
+    const col=dir==='dest'?'#3cb54a':'#f97316';
+    return `<div class="ov-row"><span class="ov-dot" style="background:${col}"></span>
+      <span class="ov-cname">${p.partner}</span><span class="ov-cval">${VIZ.fmtV(p.v)}</span>
+      ${growthArrow(p.v, nextRow?nextRow.v:null)}</div>`;
+  };
+  const dests=top('dest'), srcs=top('src');
+
+  el.innerHTML =
+    `<div class="ov-section">Trade Flows</div>`+
+    `<div class="ov-cols">`+
+      `<div class="ov-col"><span class="ov-col-label" style="color:#f97316">Imports</span><span class="ov-col-val">${VIZ.fmtV(imp)}</span>`+
+        `<span class="ov-col-gdp">${impGDPpct>0?impGDPpct.toFixed(2)+'% GDP':''}</span>`+
+        `<div style="margin-top:3px">${growthArrow(imp,impN)}</div></div>`+
+      `<div class="ov-col-sep"></div>`+
+      `<div class="ov-col"><span class="ov-col-label" style="color:#3cb54a">Exports</span><span class="ov-col-val">${VIZ.fmtV(exp)}</span>`+
+        `<span class="ov-col-gdp">${expGDPpct>0?expGDPpct.toFixed(2)+'% GDP':''}</span>`+
+        `<div style="margin-top:3px">${growthArrow(exp,expN)}</div></div>`+
+    `</div>`+
+    `<div class="ov-net" style="color:${net>=0?'#4ade80':'#f87171'}">${net>=0?'+':'−'}${VIZ.fmtV(Math.abs(net))} net</div>`+
+    `<div class="ov-stat-block">`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">% of GDP</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(gImp.pct)} / ${fmt1(gExp.pct)}</span><span class="ov-stat-rank">${rk(gImp.rank)} / ${rk(gExp.rank)}</span></span></div>`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">World share</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(wImp.share)} / ${fmt1(wExp.share)}</span><span class="ov-stat-rank">${rk(wImp.rank)} / ${rk(wExp.rank)}</span></span></div>`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">${regAbbr} share</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(rImp.share)} / ${fmt1(rExp.share)}</span><span class="ov-stat-rank">${rk(rImp.rank)} / ${rk(rExp.rank)}</span></span></div>`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">Firm sites</span><span class="ov-stat-vals"><span class="ov-stat-pct">${(D.firms||[]).length||'—'}</span></span></div>`+
+    `</div>`+
+    (dests.length||srcs.length?`<div class="ov-section second">Top Partners</div>`:'')+
+    (dests.length?`<div class="ov-part-title">Top Export Destinations</div>${dests.map(p=>partnerRow(p,'dest')).join('')}`:'')+
+    (srcs.length?`<div class="ov-part-title">Top Import Sources</div>${srcs.map(p=>partnerRow(p,'src')).join('')}`:'');
+}
+function onYearChange(v){
+  selYear=+v; document.getElementById('yr-val').textContent=selYear;
+  syncBarTitle(); renderStats(); drawFusion();
 }
 
 /* ── loading ───────────────────────────────────────────────────────────────── */
@@ -511,14 +842,15 @@ async function loadCase(tech,slug){
   try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
   catch(e){ TD=null; }
   selProduct=null; selStage='ALL'; selRole='ALL'; selCat='ALL';   // reset filters on new case
+  sankeyFocus=null;   // "By Stage/Role" mode re-defaults to the new focal country
   zoomT=d3.zoomIdentity; if(zoomB) d3.select('#stage').call(zoomB.transform, d3.zoomIdentity);  // recenter on new focal
   globeRot=null; globeScale=1;   // globe recenters/​rezooms on the new focal country
   document.getElementById('tech-sel').value=tech;
   const cs=document.getElementById('country-sel'); if(cs) cs.value=slug;
-  drawFusion(); drawNav(); updateReadout(); initDrums();
+  drawFusion(); drawNav(); updateReadout(); initDrums(); renderStats();
 }
 
-// grouped country picker: <optgroup> per bloc, ★ marks focal countries
+// grouped country picker: <optgroup> per bloc, focal countries sorted first within each bloc
 function populateCountrySel(){
   const cs=document.getElementById('country-sel'); cs.innerHTML='';
   const byBloc=d3.groups(COUNTRIES,c=>c.bloc)
@@ -526,9 +858,7 @@ function populateCountrySel(){
   byBloc.forEach(([bloc,cs2])=>{
     const og=document.createElement('optgroup'); og.label=bloc;
     cs2.sort((a,b)=>(b.focal-a.focal)||a.name.localeCompare(b.name)).forEach(c=>{
-      const o=document.createElement('option'); o.value=c.slug;
-      // ★ = focal country · ◆ = Group-of-Thirty member
-      o.textContent=(c.focal?'★':'')+(c.g30?'◆':'')+((c.focal||c.g30)?' ':'')+c.name; og.appendChild(o); });
+      const o=document.createElement('option'); o.value=c.slug; o.textContent=c.name; og.appendChild(o); });
     cs.appendChild(og);
   });
   cs.value=COUNTRY;
@@ -546,11 +876,27 @@ async function boot(){
   ts.onchange=e=>loadCase(e.target.value,COUNTRY);
   document.getElementById('sel-clear').onclick=clearFilters;   // clear all drum filters + selected product
   document.getElementById('mapmode').onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
-  document.getElementById('legend').addEventListener('click',e=>{ const s=e.target.closest('.srsw'); if(s) pickStage(s.dataset.stage); });
+  const ft=document.getElementById('firmtoggle');
+  ft.onclick=()=>{ showFirms=!showFirms; ft.classList.toggle('off',!showFirms); ft.textContent=showFirms?'🏭 Firms':'🏭 Firms (hidden)'; drawFusion(); };
+  document.getElementById('nav-mode-product').onclick=()=>setNavMode('product');
+  document.getElementById('nav-mode-sr').onclick=()=>setNavMode('sr');
+  buildLegend();   // atlas-style SR legend (click an item to filter by stage+role)
   // country roster (bloc-grouped picker + click-to-refocus map) from the manifest
   try{ COUNTRIES=await (await fetch('data/_countries.json')).json();
        ISO2SLUG=Object.fromEntries(COUNTRIES.map(c=>[c.iso,c.slug])); populateCountrySel(); }
   catch(e){ console.warn('countries manifest',e); }
+  // Phase D: year bounds (from _index.json) + shared GDP table, for the year slider + stats panel
+  try{ const idx=await (await fetch('data/_index.json')).json();
+       if(idx.year_min) YEAR_MIN=idx.year_min; if(idx.year_max) YEAR_MAX=idx.year_max; }
+  catch(e){ console.warn('year index',e); }
+  try{ const gdpRows=await (await fetch('data/_gdp.json')).json();
+       gdpRows.forEach(r=>GDP.set(r.iso3+'|'+r.year, r.gdp_mil_usd)); }
+  catch(e){ console.warn('gdp',e); }
+  const ys=document.getElementById('year-slider');
+  ys.min=YEAR_MIN; ys.max=YEAR_MAX;
+  selYear=Math.min(Math.max(+(q.get('year')||2023), YEAR_MIN), YEAR_MAX);
+  ys.value=selYear; document.getElementById('yr-val').textContent=selYear;
+  ys.oninput=e=>onYearChange(e.target.value);
   // geo (inline for file://, fetch fallback)
   try{ VIZ.initGeo(window.__WORLD110 || await (await fetch('../lib/countries-110m.json')).json()); }
   catch(e){ console.warn('geo',e); }

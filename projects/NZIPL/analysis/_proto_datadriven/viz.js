@@ -135,13 +135,17 @@ function treemap(sel,prod){
     t.append('tspan').attr('x',4).attr('dy',lines?10:0).text(clip(line,cpl));
   });
 }
-function baseMap(svg,W,H,focalIso){
+function baseMap(svg,W,H,focalIso,fit){
   svg.selectAll('*').remove();
   if(!FEATS){ empty(svg,W,H,'world map unavailable'); return null; }
   const proj=d3.geoNaturalEarth1().rotate([-10,0,0]);
   const focalFeat=focalIso?FEATS.find(f=>parseInt(f.id)===ISO3N[focalIso]):null;
-  if(focalFeat){ proj.fitExtent([[W*0.16,H*0.16],[W*0.84,H*0.84]],focalFeat); }
-  else { proj.fitSize([W,H],{type:'FeatureCollection',features:FEATS}); }
+  // fit==='world': always fit the WHOLE world to the panel (fixed, country-independent view — so
+  // partner countries anywhere on Earth project to their true position). Default (no fit arg):
+  // zoom in tight on the focal country — kept for the small standalone trade_map/activity_map
+  // panels, which want country-level detail rather than world context.
+  if(focalFeat && fit!=='world'){ proj.fitExtent([[W*0.16,H*0.16],[W*0.84,H*0.84]],focalFeat); }
+  else { proj.fitExtent([[W*0.02,H*0.02],[W*0.98,H*0.98]],{type:'FeatureCollection',features:FEATS}); }
   svg.append('g').selectAll('path').data(FEATS).join('path').attr('d',d3.geoPath(proj))
     .attr('fill',d=>focalFeat&&d===focalFeat?T.focalLand:T.land)
     .attr('stroke',d=>focalFeat&&d===focalFeat?T.focalStroke:T.landStroke)
