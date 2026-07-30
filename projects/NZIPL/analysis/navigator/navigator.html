@@ -161,10 +161,25 @@
      category) is currently selected; the HS code sits inline with its description, not stacked.
      Bottom margin is the readout↔drums separation only — the padding that used to divide two
      panels is gone with the panel. ── */
-  #sel-title{display:flex;flex-direction:row;align-items:center;gap:10px;width:100%;
+  /* flex-start, not center: the readout box is now a fixed 40px regardless of how much text is in
+     it, so centering would leave "✕ clear all" floating ~11px below a one-line selection. Aligned
+     to the readout's FIRST line instead, which is where it sat when the box was one line tall. */
+  #sel-title{display:flex;flex-direction:row;align-items:flex-start;gap:10px;width:100%;
     margin:1px 0 9px;}
-  #sel-title .stx{font-size:.82rem;font-weight:800;color:var(--ink);line-height:1.32;flex:1;min-width:0;}
-  #sel-title .stx .stx-hs{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  /* FIXED BOX, VARIABLE TYPE. The readout used to do the opposite — fixed .82rem, free height —
+     so the panel grew from one line ("Upstream", 8 chars) to eight ("Machines and apparatus of a
+     kind used solely…", 249 chars) and every panel below it jumped. Height is pinned here and
+     fitSelTitle() (JS) shrinks the type to fit, the same measure-then-shrink pattern fitBarTitle()
+     uses for the tech name. 40px = two full lines at the base .82rem (2 x 17.32px) with slack, and
+     exactly three at the 0.62rem legibility floor (3 x 13.09px) — so the shrink buys a whole extra
+     line, not just tighter glyphs. -webkit-line-clamp is rewritten by JS to whatever whole line
+     count the box holds at the size it landed on; past the floor the last line ellipsizes and the
+     full string stays on the title attribute. */
+  #sel-title .stx{font-size:.82rem;font-weight:800;color:var(--ink);line-height:1.32;flex:1;min-width:0;
+    height:40px;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
+  /* em, not rem: .73em of the base .82rem is the .6rem this always was, but now the chip shrinks
+     with the description instead of creeping up to match it as fitSelTitle() scales the type down */
+  #sel-title .stx .stx-hs{font-size:.73em;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
     color:rgba(255,255,255,.45);display:inline;margin-right:6px;}
   #sel-title button{flex-shrink:0;background:#1a2430;color:var(--faint);border:1px solid var(--line);
     border-radius:6px;padding:2px 8px;font:inherit;font-size:.62rem;cursor:pointer;white-space:nowrap;}
@@ -432,6 +447,10 @@ const ARROW_MS=420;                // arrow tween — kept well under PLAY_MS so
 let animArrows=false;              // true only for a playback-driven drawFusion
 let prevArrows=new Map();          // "dir|partner" -> {w,o,r} as drawn for the previous year
 let GDP=new Map();   // "iso3|year" -> gdp_mil_usd, shared across all techs (data/_gdp.json)
+/* Decoder tables for the engine's compact fields, from data/_index.json (written by
+   scripts/proto/build_datadriven_proto.R). Empty until boot() has fetched the index — decodeBlk()
+   treats that as a hard error rather than a reason to improvise. */
+let LOOK={};
 const REGION_ABBR={"East Asia & Pacific":"EAP","Europe & Central Asia":"ECA","South Asia":"SAS",
   "North America":"NAC","Latin America & Caribbean":"LCN","Middle East & North Africa":"MEA","Sub-Saharan Africa":"SSA"};
 
@@ -444,6 +463,50 @@ function msg(t){ d3.select('#stage').selectAll('*').remove();
     .attr('fill','rgba(148,163,184,.7)').attr('font-size',13).text(t); }
 
 function hashCode(s){ let h=0; s=String(s); for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
+
+/* ── compact wire format → row objects ────────────────────────────────────────────────────────
+   NOTE (CLAUDE.md): declared at top-level scope on purpose.
+
+   D.partners_yearly_sr ships as {cols, rows} with rows as bare arrays and the stage/role/dir
+   columns as 0-based integer indices into LOOK — the same blk()/i0() encoding the Data Explorer
+   slices use (scripts/proto/build_data_explorer_slices.R). It is 598,775 rows across the 297
+   cases, so spelling out "Midstream"/"Product Component" and six key names on every one of them
+   was 59 MB of the engine's 94 MB.
+
+   Decoding happens HERE, once, at the point the case JSON lands — not at each of the four places
+   that read the field. Every consumer downstream (partnersAt, partnerSeries, and through them the
+   partner list, the sparklines and the map arrows) therefore sees exactly the row objects it saw
+   before, and cannot disagree with another consumer about how a code maps. It also costs less
+   memory than the strings did: all 598k decoded values are references to the same handful of
+   strings in the lookup array, where JSON parsing minted a fresh string per row.
+
+   An index with no entry in the lookup THROWS. Silently yielding `undefined` would file one
+   segment's trade under a segment that does not exist — invisible in the UI, which is the one
+   failure mode this encoding must not have. So does a coded column whose lookup never arrived:
+   CODED_COLS is what says a column is coded, deliberately NOT the presence of a key in LOOK —
+   keying off LOOK would mean a failed _index.json fetch quietly passes the raw integer through as
+   if it were the label, which is the same silent mislabel by a longer route. */
+const CODED_COLS={stage:1, role:1, dir:1};
+function decodeBlk(b){
+  if(!b) return [];
+  if(Array.isArray(b)) return b;            // already row objects (data built before the encoding)
+  const cols=b.cols||[], rows=b.rows||[];
+  if(!cols.length) return [];
+  const luk=cols.map(c=>CODED_COLS[c]?(LOOK[c]||null):null);   // null = carried verbatim (year, partner, v)
+  cols.forEach((c,i)=>{ if(CODED_COLS[c]&&!(luk[i]&&luk[i].length))
+    throw new Error('decodeBlk: no lookup for coded column "'+c+'" — data/_index.json missing or stale'); });
+  return rows.map(r=>{
+    const o={};
+    for(let i=0;i<cols.length;i++){
+      const L=luk[i];
+      if(!L){ o[cols[i]]=r[i]; continue; }
+      const s=L[r[i]];
+      if(s===undefined) throw new Error('decodeBlk: code '+r[i]+' out of range for "'+cols[i]+'"');
+      o[cols[i]]=s;
+    }
+    return o;
+  });
+}
 function selSR(){
   if(!selProduct) return null;
   const p=(D.products||[]).find(x=>x.code===selProduct);
@@ -504,6 +567,8 @@ function tlYear(y){
      · no stage/role filter → D.partners_yearly, read verbatim. It is the builder's top-8 per
        (year, dir) at the whole-technology level.
      · stage and/or role    → D.partners_yearly_sr, summed across the matching segments only.
+   (D.partners_yearly_sr is compact-encoded on disk and expanded back into these row objects once,
+   in loadCase — see decodeBlk. Nothing below this line sees the encoded form.)
    Summing ALL of partners_yearly_sr back up does NOT reproduce partners_yearly: the _sr series
    keeps a top-8 PER (year, dir, stage, role), so a partner that makes the overall top-8 while
    falling short inside each individual segment loses most of its value on the way up (measured
@@ -1019,6 +1084,33 @@ function fitLine(el,baseRem,minRem){
     rem=next; el.style.fontSize=rem.toFixed(3)+'rem';
   }
 }
+// Same idea as fitLine(), one axis over: a WRAPPING block in a fixed-height box. Used by the
+// selection readout, whose content runs from 8 characters ("Upstream") to 249 (a full HS
+// description) — the box stays put and the type gives way. Measured unclamped, because a live
+// -webkit-line-clamp truncates layout and scrollHeight would report the already-clipped height,
+// so the loop would think everything fits and never shrink anything.
+function fitBlock(el,baseRem,minRem){
+  if(!el) return baseRem;
+  const box=el.clientHeight;                   // fixed by CSS — this is the whole point
+  const disp=el.style.display;
+  el.style.display='block'; el.style.setProperty('-webkit-line-clamp','unset');
+  let rem=baseRem; el.style.fontSize=rem+'rem';
+  // step down rather than ratio-scale: wrapped height is quantised to whole lines, so a single
+  // proportional pass overshoots the floor on anything that needs one line less
+  for(let i=0;i<16 && box>0 && el.scrollHeight>box+0.5;i++){
+    const next=Math.max(minRem, rem-0.02);
+    if(next>=rem) break;                       // clamped at the floor — let it ellipsize
+    rem=next; el.style.fontSize=rem.toFixed(3)+'rem';
+  }
+  el.style.display=disp;                       // back to the clamped -webkit-box
+  const lh=parseFloat(getComputedStyle(el).lineHeight)||(rem*16*1.32);
+  el.style.setProperty('-webkit-line-clamp', String(Math.max(1,Math.floor((box+0.5)/lh))));
+  return rem;
+}
+// Re-run on EVERY selection change. Hooked at the tail of updateReadout(), which is the single
+// choke point for all of them: the four drums, the legend click, the dendrite node click, the
+// ?product= deep link, "✕ clear all", and case load — they all reach it via redrawAll().
+function fitSelTitle(){ fitBlock(document.getElementById('sel-stx'), 0.82, 0.62); }
 function fitBarTitle(){
   const t=document.getElementById('bar-title-tech');
   fitLine(t,1.2,0.72);
@@ -1038,9 +1130,13 @@ function updateReadout(){
   //    exact (or when the stage has only one role anyway: Upstream/Final Product).
   //  - Category: colored via the atlas's category palette.
   const stx=document.getElementById('sel-stx'), clr=document.getElementById('sel-clear');
+  //  - The readout box is a fixed height, so a long description is shrunk and finally ellipsized
+  //    by fitSelTitle() below; stx.title always carries the untruncated string, because this line
+  //    is the answer to "what am I looking at" and must never become unrecoverable.
   if(selProduct){
     stx.style.color='';   // plain white (var(--ink)) for the description
     stx.innerHTML='<span class="stx-hs" style="color:'+(TECH_COLORS[TECH]||'#e2e8f0')+'">HS '+selProduct+'</span>'+(selName()||'');
+    stx.title='HS '+selProduct+' · '+(selName()||'');
   } else if(selStage!=='ALL'||selRole!=='ALL'){
     let col=(selStage!=='ALL'&&selRole!=='ALL')?VIZ.SR[selStage+'|'+selRole]:null;
     if(!col&&selRole==='ALL'){
@@ -1048,15 +1144,17 @@ function updateReadout(){
       else if(selStage==='Final Product') col=VIZ.SR['Final Product|Final Product'];
     }
     stx.style.color=col||'#e2e8f0';
-    stx.innerHTML=[selStage,selRole].filter(x=>x!=='ALL').join(' · ');   // one line — the readout spans the full panel width
+    stx.innerHTML=stx.title=[selStage,selRole].filter(x=>x!=='ALL').join(' · ');   // one line — the readout spans the full panel width
   } else if(selCat!=='ALL'){
     stx.style.color=VIZ.CAT[selCat]||'#e2e8f0';
-    stx.innerHTML=selCat;
+    stx.innerHTML=stx.title=selCat;
   } else {
     stx.style.color='';
-    stx.innerHTML='Whole technology';
+    stx.innerHTML=stx.title='Whole technology';
   }
   clr.style.display=anyFilter()?'':'none';
+  fitSelTitle();   // AFTER the text is in the DOM and after the ✕ button's width is settled —
+                   // showing/hiding "✕ clear all" changes how much width the readout has to fit in
   updateLegend();
   updateScopeFlags();
 }
@@ -1445,6 +1543,11 @@ async function loadCase(tech,slug){
   catch(e){ msg(location.protocol==='file:'
       ? 'Open over HTTP, not file:// — browsers block fetch on file://. Run  python3 -m http.server  in the project root, then open the localhost URL.'
       : 'no data for '+id); return; }
+  // Compact fields → row objects, once, before anything reads them. A failure here is fatal on
+  // purpose: partnersAt() would otherwise compare a raw integer against 'Midstream' and just
+  // return an empty partner list, which looks like "no trade in this segment" rather than a bug.
+  try{ D.partners_yearly_sr=decodeBlk(D.partners_yearly_sr); }
+  catch(err){ console.error(err); msg(err.message); D=null; return; }
   try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
   catch(e){ TD=null; }
   selProduct=null; selStage='ALL'; selRole='ALL'; selCat='ALL';   // reset filters on new case
@@ -1492,8 +1595,11 @@ async function boot(){
        ISO2SLUG=Object.fromEntries(COUNTRIES.map(c=>[c.iso,c.slug])); populateCountrySel(); }
   catch(e){ console.warn('countries manifest',e); }
   // Phase D: year bounds (from _index.json) + shared GDP table, for the year slider + stats panel
-  try{ const idx=await (await fetch('data/_index.json')).json();
-       if(idx.year_min) YEAR_MIN=idx.year_min; if(idx.year_max) YEAR_MAX=idx.year_max; }
+  // ...and the decoder tables for the compact case fields (see decodeBlk). Fetched here, ahead of
+  // the first loadCase() below, because a case cannot be decoded without them.
+  try{ let idx=await (await fetch('data/_index.json')).json(); idx=Array.isArray(idx)?idx[0]:idx;
+       if(idx.year_min) YEAR_MIN=idx.year_min; if(idx.year_max) YEAR_MAX=idx.year_max;
+       if(idx.lookups) LOOK=idx.lookups; }
   catch(e){ console.warn('year index',e); }
   try{ const gdpRows=await (await fetch('data/_gdp.json')).json();
        gdpRows.forEach(r=>GDP.set(r.iso3+'|'+r.year, r.gdp_mil_usd)); }
@@ -1513,7 +1619,7 @@ async function boot(){
   await loadCase(TECH,COUNTRY);
   const pp=q.get('product'); if(pp){ selProduct=pp; redrawAll(); }
   if(q.get('map')!=='flat') setMapMode('globe');   // default to 3D globe (use ?map=flat for the flat map)
-  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();fitBarTitle();},150);});
+  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();fitBarTitle();fitSelTitle();},150);});
 }
 boot();
 </script>
