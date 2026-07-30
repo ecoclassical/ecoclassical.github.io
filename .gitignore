@@ -26,3 +26,22 @@ projects/NZIPL/docs/data/
 projects/NZIPL/docs/slides.html
 projects/NZIPL/docs/receipts/
 projects/NZIPL/docs/Solar India Report.zip
+
+# ── Internal drafts, correspondence and financials must never publish ─────────
+# 2026-07-30 incident: five internal drafts (a co-director email covering expense
+# reimbursement and contract, an expense breakdown, two bio drafts) plus the full
+# research-expenses workbook were found publicly readable here.
+#
+# ROOT CAUSE: the CVCE repo's scripts/deploy/deploy_pages.sh runs
+#   rsync -a docs/ "$PAGES/docs/"
+# rsync copies the FILESYSTEM and ignores .gitignore, so a file merely PRESENT in
+# the source docs/ folder lands here — tracked or not. THIS file is the effective
+# guard, because publishing happens at git add/commit/push in this repo.
+projects/NZIPL/docs/*.txt
+projects/NZIPL/docs/*.eml
+projects/NZIPL/docs/*_email_*
+projects/NZIPL/docs/*_draft*
+projects/NZIPL/docs/*expense*
+projects/NZIPL/docs/*Expense*
+projects/NZIPL/docs/*receipt*
+projects/NZIPL/docs/*invoice*
