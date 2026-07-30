@@ -169,9 +169,50 @@ async function loadFlow(dir) {
   return STATE.flowCache[dir];
 }
 
+/* ── Header reference panels ────────────────────────────────────────────── */
+/* The RAW/DERIVED/MODEL legend and the chain-overlap caution are reference
+ * material, not content: they stay on the page verbatim but collapsed, so the
+ * table starts near the top. Open/closed survives a reload, because a reader
+ * who wants the provenance legend up wants it up on every view.
+ * All three functions are TOP-LEVEL by design — see ground rule 1. */
+const PANELS = [
+  {btn: 'tg-prov',    panel: 'panel-prov',    key: 'cscde.panel.prov'},
+  {btn: 'tg-overlap', panel: 'panel-overlap', key: 'cscde.panel.overlap'}
+];
+
+function readPanelPref(key) {
+  try { return localStorage.getItem(key) === '1'; } catch (e) { return false; }
+}
+function writePanelPref(key, open) {
+  try { localStorage.setItem(key, open ? '1' : '0'); } catch (e) { /* private mode */ }
+}
+
+function setPanel(cfg, open, persist) {
+  const btn = document.getElementById(cfg.btn);
+  const panel = document.getElementById(cfg.panel);
+  if (!btn || !panel) return;
+  panel.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (persist) writePanelPref(cfg.key, open);
+}
+
+function wirePanels() {
+  PANELS.forEach(cfg => {
+    const btn = document.getElementById(cfg.btn);
+    if (!btn) return;
+    setPanel(cfg, readPanelPref(cfg.key), false);
+    btn.onclick = () =>
+      setPanel(cfg, btn.getAttribute('aria-expanded') !== 'true', true);
+  });
+}
+
 /* ── Boot ───────────────────────────────────────────────────────────────── */
 
 async function boot() {
+  /* Before the data load, so the reference panels work even if the slices do
+   * not (the error message below is itself something a reader may want the
+   * provenance legend next to). */
+  wirePanels();
   const sum = document.getElementById('summary');
   try {
     STATE.idx = await loadJSON('_index.json');
@@ -311,11 +352,10 @@ function viewChains() {
     C.pct('share', `Share of all chains ${STATE.y1}`, 'derived', SRC_CALC, '= (World trade of this chain) / (All chains total), both shown.')
   ];
   STATE.rows = rows;
-  STATE.notes = [
-    `Chains overlap: a code such as <code>260400</code> (nickel ore) belongs to eight
-     baskets and is counted at full value in each. The &ldquo;all chains&rdquo; total is
-     therefore a sum of baskets, not a de-duplicated world figure.`
-  ];
+  /* The chain-overlap caution is not a per-view note any more: it lives in the
+   * ⚠ Overlap header panel (#panel-overlap), verbatim and always reachable,
+   * instead of pushing the table down on every load of this view. */
+  STATE.notes = [];
   return `<span class="k">${rows.length}</span> supply chains · combined world trade
           <span class="k">${fmtV(tot)}</span> in ${STATE.y1}`;
 }

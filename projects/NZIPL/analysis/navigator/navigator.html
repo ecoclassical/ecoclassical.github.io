@@ -94,9 +94,16 @@
   @media (prefers-reduced-motion:reduce){
     .pnl-bd,.chev{transition:none;}
   }
-  /* the fixed (never-collapsible) title panel at the head of the left stack */
-  #p-title{padding:10px 12px 11px;display:flex;flex-direction:column;gap:7px;}
-  #p-title .title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+  /* the fixed (never-collapsible) title panel at the head of the left stack.
+     HORIZONTAL split: brand identity on the left, the tech/country/year readout on the right,
+     separated by a 1px rule that runs the full height of the taller column (align-items:stretch
+     + border-left on the right half). The Data Explorer link sits under the brand, occupying the
+     slack the shorter left column would otherwise waste — so the panel stays 3 text lines tall. */
+  #p-title{padding:9px 12px 10px;}
+  #p-title .title-split{display:flex;align-items:stretch;gap:9px;}
+  #p-title .brand-2l{flex:0 0 auto;}
+  #p-title #bar-title{flex:1 1 0;min-width:0;border-left:1px solid rgba(255,255,255,.14);
+    padding-left:9px;display:flex;flex-direction:column;justify-content:center;}
 
   /* Supply Chain Map (formerly "Process of Production") — bottom of the right stack, two view modes */
   .nav-toggle{display:flex;gap:4px;margin:2px 0 3px;}
@@ -112,11 +119,12 @@
            font-size:.56rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
            border:1px solid rgba(255,255,255,.18);white-space:nowrap;align-self:flex-start;}
   .de-link:hover{background:var(--accent);color:#04210a;border-color:var(--accent);}
-  /* three-line brand at the head of the left stack: CLEAN SUPPLY CHAIN / ATLAS / NAVIGATOR */
+  /* two-line brand at the head of the left stack: CLEAN SUPPLY CHAIN / ATLAS NAVIGATOR
+     (the product name stays on ONE line — it is a name, not two words to be stacked) */
   .brand-2l{display:flex;flex-direction:column;white-space:nowrap;line-height:1.15;flex-shrink:0;gap:1px;}
-  .brand-2l .l1{font-size:.6rem;font-weight:700;letter-spacing:.5px;color:var(--accent);text-transform:uppercase;}
-  .brand-2l .l2{font-size:.8rem;font-weight:800;letter-spacing:.4px;color:#dfe8ee;text-transform:uppercase;}
-  .brand-2l .l3{font-size:1rem;font-weight:800;letter-spacing:.2px;color:#fff;text-transform:uppercase;}
+  .brand-2l .l1{font-size:.58rem;font-weight:700;letter-spacing:.4px;color:var(--accent);text-transform:uppercase;}
+  .brand-2l .l2{font-size:.8rem;font-weight:800;letter-spacing:.2px;color:#fff;text-transform:uppercase;}
+  .brand-2l .de-link{margin-top:6px;}
   /* tech + country selectors (row 1, side by side) + year slider (row 2, value at the right) */
   .tcy-block{display:flex;flex-direction:column;gap:8px;padding-top:5px;}
   .tcy-row1{display:flex;align-items:center;gap:10px;}
@@ -129,8 +137,19 @@
   .yr-val{font-size:.92rem;font-weight:800;color:var(--ink);flex-shrink:0;min-width:2.4em;
     text-align:right;align-self:flex-end;line-height:1.4;}
   #year-slider{width:100%;min-width:0;accent-color:var(--accent);cursor:pointer;}
-  /* atlas-style tech/country/year reference readout — inside the fixed title panel */
-  #bar-title{flex-shrink:0;line-height:1.22;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* year playback: ▶ steps the slider forward one year per PLAY_MS, ⏸ stops it */
+  .yr-play{flex:0 0 auto;width:24px;height:24px;padding:0;display:flex;align-items:center;
+    justify-content:center;background:#0e1a22;color:var(--ink);border:1px solid var(--line);
+    border-radius:50%;font:inherit;font-size:.68rem;line-height:1;cursor:pointer;align-self:flex-end;
+    margin-bottom:1px;transition:color .12s,border-color .12s,background .12s;}
+  .yr-play:hover{border-color:var(--accent);color:#fff;}
+  .yr-play:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .yr-play.playing{border-color:var(--accent);color:var(--accent);background:rgba(60,181,74,.15);}
+  /* atlas-style tech/country/year reference readout — right half of the fixed title panel.
+     Each line is independently nowrap/ellipsis; fitBarTitle() (JS) shrinks the tech and country
+     type just enough for long names (Electrolyzers, UNITED KINGDOM) to fit the narrow column. */
+  #bar-title{line-height:1.22;white-space:nowrap;overflow:hidden;}
+  #bar-title>div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   #bar-title .tech{font-size:1.2rem;font-weight:800;letter-spacing:.2px;}
   #bar-title .country{font-size:.78rem;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase;}
   #bar-title .year{font-size:.74rem;font-weight:600;letter-spacing:.4px;color:var(--faint);}
@@ -195,15 +214,18 @@
 
   /* atlas-style SR legend (ported from build_country_atlas.R buildFixedLegend/hleg-*), now in its
      own collapsible panel with markedly more breathing room than the cramped top-bar version. */
-  #legend{display:flex;flex-direction:row;align-items:flex-start;gap:0;padding:4px 2px 2px;
+  /* VERTICAL rhythm cut ~60% from the first pass (row gap 4→2, group gap 11→4, stage margin 3→1,
+     leading 1.6→1.24 — i.e. 40% of the leading over 1.0). The COLUMN gutter (18px padding/margin
+     either side of the divider) and the horizontal padding are deliberately untouched. */
+  #legend{display:flex;flex-direction:row;align-items:flex-start;gap:0;padding:2px 2px 1px;
     overflow-x:auto;scrollbar-width:none;min-width:0;}
   #legend::-webkit-scrollbar{display:none;}
-  .hleg-col{display:flex;flex-direction:column;gap:11px;padding-right:18px;border-right:1px solid rgba(255,255,255,.09);margin-right:18px;flex-shrink:0;}
+  .hleg-col{display:flex;flex-direction:column;gap:4px;padding-right:18px;border-right:1px solid rgba(255,255,255,.09);margin-right:18px;flex-shrink:0;}
   .hleg-col:last-child{border-right:none;margin-right:0;padding-right:0;}
-  .hleg-group{display:flex;flex-direction:column;gap:4px;}
-  .hleg-stage{font-size:.53rem;color:rgba(255,255,255,.34);text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px;}
-  .hleg-item{display:flex;align-items:center;gap:7px;font-size:.66rem;color:rgba(255,255,255,.62);
-    transition:opacity .15s,color .15s;white-space:nowrap;line-height:1.6;cursor:pointer;}
+  .hleg-group{display:flex;flex-direction:column;gap:2px;}
+  .hleg-stage{font-size:.53rem;color:rgba(255,255,255,.34);text-transform:uppercase;letter-spacing:.09em;margin-bottom:1px;line-height:1.2;}
+  .hleg-item{display:flex;align-items:center;gap:5px;font-size:.66rem;color:rgba(255,255,255,.62);
+    transition:opacity .15s,color .15s;white-space:nowrap;line-height:1.24;cursor:pointer;}
   .hleg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
   .hleg-item.hleg-active{color:rgba(255,255,255,.95);font-weight:700;}
   .hleg-item.hleg-dim{opacity:.5;}
@@ -228,14 +250,16 @@
 <div id="lstack" class="stack">
 
   <div class="pnl pnl-fixed" id="p-title">
-    <div class="title-row">
-      <div class="brand-2l"><span class="l1">Clean Supply Chain</span><span class="l2">Atlas</span><span class="l3">Navigator</span></div>
-      <a class="de-link" href="data_explorer.html" title="Open the numeric companion: raw BACI trade data, HS-6 codes in line, everything downloadable">Data&nbsp;Explorer&nbsp;&rarr;</a>
-    </div>
-    <div id="bar-title">
-      <div class="tech" id="bar-title-tech"></div>
-      <div class="country" id="bar-title-country"></div>
-      <div class="year" id="bar-title-year"></div>
+    <div class="title-split">
+      <div class="brand-2l">
+        <span class="l1">Clean Supply Chain</span><span class="l2">Atlas&nbsp;Navigator</span>
+        <a class="de-link" href="data_explorer.html" title="Open the numeric companion: raw BACI trade data, HS-6 codes in line, everything downloadable">Data&nbsp;Explorer&nbsp;&rarr;</a>
+      </div>
+      <div id="bar-title">
+        <div class="tech" id="bar-title-tech"></div>
+        <div class="country" id="bar-title-country"></div>
+        <div class="year" id="bar-title-year"></div>
+      </div>
     </div>
   </div>
 
@@ -249,6 +273,8 @@
           <span class="tcy-item"><span class="tcy-lab">Country</span><select id="country-sel" title="Focus country (grouped by bloc)"></select></span>
         </div>
         <div class="tcy-row2">
+          <button type="button" id="yr-play" class="yr-play" title="Play the year forward"
+                  aria-label="Play the year forward">&#9654;</button>
           <span class="yr-track">
             <span class="yr-lab">Year</span>
             <input type="range" id="year-slider" min="2003" max="2024" step="1" value="2023"
@@ -300,7 +326,7 @@
     </div></div>
   </div>
 
-  <div class="pnl" id="p-legend" style="--bh:190px">
+  <div class="pnl" id="p-legend" style="--bh:120px">
     <button class="pnl-hd" type="button" data-pnl="p-legend" aria-expanded="true" aria-controls="p-legend-bd">
       <span class="pnl-t">Legend · Stage &amp; Role</span><span class="chev" aria-hidden="true">▾</span></button>
     <div class="pnl-bd" id="p-legend-bd"><div class="pnl-in"><div id="legend"></div></div></div>
@@ -352,6 +378,15 @@ let showFirms=true;   // toggle for the S&P firm-activity dots layer
 // Phase D: stats-panel focal year. Growth is FORWARD-looking (selYear → selYear+1) — picking the
 // latest available year shows "--" for every growth field, since there's no next year to compare.
 let selYear=2023, YEAR_MIN=2003, YEAR_MAX=2024;
+/* year playback (the ▶ button next to the slider). A CHAINED setTimeout, not setInterval: every
+   redraw is synchronous, so the next step is scheduled only once the current one has painted and
+   rapid stepping can never queue overlapping redraws. animArrows/prevArrows let drawFusion tween
+   each trade arrow from last year's width to this year's instead of hard-cutting. */
+let playing=false, playTimer=null;
+const PLAY_MS=820;                 // one year per ~0.8s
+const ARROW_MS=420;                // arrow tween — kept well under PLAY_MS so it always lands
+let animArrows=false;              // true only for a playback-driven drawFusion
+let prevArrows=new Map();          // "dir|partner" -> {w,o,r} as drawn for the previous year
 let GDP=new Map();   // "iso3|year" -> gdp_mil_usd, shared across all techs (data/_gdp.json)
 const REGION_ABBR={"East Asia & Pacific":"EAP","Europe & Central Asia":"ECA","South Asia":"SAS",
   "North America":"NAC","Latin America & Caribbean":"LCN","Middle East & North Africa":"MEA","Sub-Saharan Africa":"SSA"};
@@ -462,45 +497,49 @@ function drawFusion(){
     maskG.append('path').attr('d',gpArc(focalFeat)).attr('fill','#000');
     ag.attr('mask','url(#mask-hide-focal)');
   }
+  const nextArrows=new Map();   // this year's arrow geometry, keyed dir|partner (see prevArrows)
   arr.forEach(p=>{
     const cll=CENT[p.partner]; if(!cll) return;
     if(mapMode==='globe' && !front(cll)) return;    // hide partners on the far side of the globe
     const tgt=proj(cll); if(!tgt) return;
     const col=p.dir==='dest'?'#3cb54a':'#f97316', w=wsc(Math.max(1,p.v));   // exports green, imports orange
     const start=fc;   // true centroid — the mask (above) hides the in-country segment visually
-    if(mapMode==='globe'){
-      // arc bowed perpendicular to the chord. Fixed relative side (not "whichever is outward") —
-      // since A/B swap ends between dest/src, this alone bows exports and imports of the SAME
-      // partner to opposite sides, so they no longer overlap (e.g. China as both a big import
-      // source and export destination for many countries).
-      const A=p.dir==='dest'?start:tgt, B=p.dir==='dest'?tgt:start;
-      const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
-      const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
-      const px=-dy/len, py=dx/len, bow=len*0.3+16;
-      const ctrl=[mx+px*bow, my+py*bow];
-      ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
-        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.7)
-        .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
-    } else {
-      // fixed whole-world fit (see VIZ.baseMap 'world' mode above) means every partner's true
-      // coordinates already land inside the canvas — no more edge-clamping needed.
-      const A=p.dir==='dest'?start:tgt, B=p.dir==='dest'?tgt:start;
-      const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
-      const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
-      const px=-dy/len, py=dx/len, bow=len*0.12+8;
-      const ctrl=[mx+px*bow, my+py*bow];
-      ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
-        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.62)
-        .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
-    }
+    // arc bowed perpendicular to the chord. Fixed relative side (not "whichever is outward") —
+    // since A/B swap ends between dest/src, this alone bows exports and imports of the SAME
+    // partner to opposite sides, so they no longer overlap (e.g. China as both a big import
+    // source and export destination for many countries). On the flat map the fixed whole-world
+    // fit (see VIZ.baseMap 'world' mode above) already lands every partner inside the canvas,
+    // so no edge-clamping is needed — only the bow and the opacity differ between the modes.
+    const A=p.dir==='dest'?start:tgt, B=p.dir==='dest'?tgt:start;
+    const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
+    const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
+    const nx=-dy/len, ny=dx/len;
+    const bow = mapMode==='globe' ? len*0.3+16 : len*0.12+8;
+    const op  = mapMode==='globe' ? .7 : .62;
+    const ctrl=[mx+nx*bow, my+ny*bow];
+    const r=rsc(p.v), key=p.dir+'|'+p.partner, prev=animArrows?prevArrows.get(key):null;
+    const pth=ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
+      .attr('fill','none').attr('stroke',col).attr('stroke-opacity',op)
+      .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
     // partner dot + label — the partner's true projected position, on both the globe and the map
     const dp=tgt;
-    ag.append('circle').attr('cx',dp[0]).attr('cy',dp[1]).attr('r',rsc(p.v))
+    const cir=ag.append('circle').attr('cx',dp[0]).attr('cy',dp[1]).attr('r',r)
       .attr('fill',col).attr('fill-opacity',.45).attr('stroke',col).attr('stroke-width',1).attr('cursor','pointer')
       .on('mousemove',e=>tip(e,'<b>'+p.partner+'</b><br>'+(p.dir==='dest'?'export destination':'import source')+' · '+VIZ.fmtV(p.v))).on('mouseout',tipOut);
-    ag.append('text').attr('x',dp[0]).attr('y',dp[1]-rsc(p.v)-3).attr('text-anchor','middle')
+    ag.append('text').attr('x',dp[0]).attr('y',dp[1]-r-3).attr('text-anchor','middle')
       .attr('font-size','9px').attr('fill',col).attr('font-weight','700').attr('pointer-events','none').text(p.partner);
+    // playback only: tween width/opacity/radius from last year's values (0 for a new partner), so
+    // stepping through the years reads as flows swelling and shrinking rather than as a slideshow.
+    if(animArrows){
+      pth.attr('stroke-width',prev?prev.w:0.4).attr('stroke-opacity',prev?prev.o:0)
+         .transition().duration(ARROW_MS).ease(d3.easeCubicOut)
+         .attr('stroke-width',w).attr('stroke-opacity',op);
+      cir.attr('r',prev?prev.r:0)
+         .transition().duration(ARROW_MS).ease(d3.easeCubicOut).attr('r',r);
+    }
+    nextArrows.set(key,{w,o:op,r});
   });
+  prevArrows=nextArrows;
 
   // ② domestic firms inside the focal country
   const firms=D.firms||[]; const sr=selSR();
@@ -797,6 +836,31 @@ function syncBarTitle(){
   if(btTech){ btTech.textContent=TECH.replace(/_/g,' '); btTech.style.color=TECH_COLORS[TECH]||'#fff'; }
   if(btCountry) btCountry.textContent=(COUNTRY||'').replace(/_/g,' ');
   if(btYear) btYear.textContent=selYear;
+  fitBarTitle();
+}
+// The readout now shares the title panel with the brand block, so its column is narrow. Shrink a
+// line's type only as far as it must go to fit (long techs like Electrolyzers, long countries like
+// United Kingdom); everything shorter keeps the atlas's own sizes untouched.
+function fitLine(el,baseRem,minRem){
+  if(!el) return;
+  let rem=baseRem; el.style.fontSize=rem+'rem';
+  // iterate: letter-spacing is a fixed px value, so the width is not exactly proportional to the
+  // font size and a single ratio pass can still leave a pixel or two of overflow
+  for(let i=0;i<4 && el.clientWidth>0 && el.scrollWidth>el.clientWidth;i++){
+    const next=Math.max(minRem, rem*el.clientWidth/el.scrollWidth - 0.005);
+    if(next>=rem) break;                       // clamped at the floor — let it ellipsize
+    rem=next; el.style.fontSize=rem.toFixed(3)+'rem';
+  }
+}
+function fitBarTitle(){
+  const t=document.getElementById('bar-title-tech');
+  fitLine(t,1.2,0.72);
+  // whatever the tech line had to give up, the two lines under it give up too — otherwise a long
+  // tech (Electrolyzers, Transmission) would end up set smaller than its own country line
+  const tr=(t&&parseFloat(t.style.fontSize))||1.2;
+  fitLine(document.getElementById('bar-title-country'), Math.min(0.78, tr*0.85), 0.54);
+  const y=document.getElementById('bar-title-year');
+  if(y) y.style.fontSize=Math.min(0.74, tr*0.8).toFixed(3)+'rem';
 }
 function updateReadout(){
   const cs=document.getElementById('country-sel'); if(cs&&cs.value!==COUNTRY) cs.value=COUNTRY;
@@ -914,6 +978,43 @@ function onYearChange(v){
   syncBarTitle(); renderStats(); drawFusion(); drawNav();   // both nav-panel node sizes are year-specific now
 }
 
+/* ── year playback ─────────────────────────────────────────────────────────────
+   NOTE (CLAUDE.md): every one of these is declared at top-level scope on purpose — a function
+   declared inside an if-block is invisible globally and fails silently at call time. */
+function setPlayIcon(){
+  const b=document.getElementById('yr-play'); if(!b) return;
+  b.textContent = playing ? '⏸' : '▶';
+  b.classList.toggle('playing', playing);
+  const lab = playing ? 'Pause the year playback' : 'Play the year forward';
+  b.title=lab; b.setAttribute('aria-label',lab);
+}
+// pause: called by the button, by dragging the slider, and by loadCase (so switching tech,
+// switching country or clicking a new focal country on the map all stop playback)
+function stopPlay(){
+  if(playTimer){ clearTimeout(playTimer); playTimer=null; }
+  if(playing){ playing=false; setPlayIcon(); }
+}
+// onYearChange (and therefore drawFusion) is fully synchronous, so toggling animArrows around it
+// is enough to scope the arrow tween to playback steps only
+function setYear(y,anim){
+  const ys=document.getElementById('year-slider'); if(ys) ys.value=y;
+  animArrows=!!anim; onYearChange(y); animArrows=false;
+}
+function playStep(){
+  playTimer=null;
+  if(!playing) return;
+  const y=Math.min(YEAR_MAX, selYear+1);
+  setYear(y,true);
+  if(y>=YEAR_MAX){ stopPlay(); return; }                 // stop at the last year, reset to ▶
+  playTimer=setTimeout(playStep, PLAY_MS);               // chained, never overlapping
+}
+function togglePlay(){
+  if(playing){ stopPlay(); return; }
+  playing=true; setPlayIcon();
+  if(selYear>=YEAR_MAX) setYear(YEAR_MIN,true);          // ▶ on the final year restarts from the first
+  playTimer=setTimeout(playStep, PLAY_MS);
+}
+
 /* ── collapsible overlay panels ────────────────────────────────────────────────
    Every .pnl (except the fixed title panel) has a <button class="pnl-hd"> header. Clicking or
    pressing Enter/Space on it toggles .pnl-closed, which animates the body's max-height/opacity
@@ -957,6 +1058,7 @@ function initPanels(){
 
 /* ── loading ───────────────────────────────────────────────────────────────── */
 async function loadCase(tech,slug){
+  stopPlay();   // a new tech/country/focal country always pauses the year playback
   TECH=tech; COUNTRY=slug;
   const id=tech.replace(/ /g,'_')+'_'+slug;
   try{ D=await (await fetch('data/'+id+'.json')).json(); D=Array.isArray(D)?D[0]:D; }
@@ -1020,7 +1122,8 @@ async function boot(){
   ys.min=YEAR_MIN; ys.max=YEAR_MAX;
   selYear=Math.min(Math.max(+(q.get('year')||2023), YEAR_MIN), YEAR_MAX);
   ys.value=selYear; document.getElementById('yr-val').textContent=selYear;
-  ys.oninput=e=>onYearChange(e.target.value);
+  ys.oninput=e=>{ stopPlay(); onYearChange(e.target.value); };   // dragging the slider pauses playback
+  const pb=document.getElementById('yr-play'); if(pb){ pb.onclick=togglePlay; setPlayIcon(); }
   // geo (inline for file://, fetch fallback)
   try{ VIZ.initGeo(window.__WORLD110 || await (await fetch('../lib/countries-110m.json')).json()); }
   catch(e){ console.warn('geo',e); }
@@ -1030,7 +1133,7 @@ async function boot(){
   await loadCase(TECH,COUNTRY);
   const pp=q.get('product'); if(pp){ selProduct=pp; drawFusion(); drawNav(); updateReadout(); }
   if(q.get('map')!=='flat') setMapMode('globe');   // default to 3D globe (use ?map=flat for the flat map)
-  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();},150);});
+  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();fitBarTitle();},150);});
 }
 boot();
 </script>

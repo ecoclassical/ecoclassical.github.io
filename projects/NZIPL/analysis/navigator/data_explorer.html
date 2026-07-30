@@ -15,6 +15,7 @@
   --raw:#073309; --derived:#1d4ed8; --model:#7c3aed;
   --warn-bg:#fffbeb; --warn-line:#fcd34d; --warn-fg:#78350f;
   --flag:#b45309;
+  --hdr-field:#ffffff; --hdr-field-fg:#111827;
 }
 @media (prefers-color-scheme:dark){
  :root{
@@ -23,6 +24,7 @@
   --raw:#4ba055; --derived:#7aa2ff; --model:#c4a0ff;
   --warn-bg:#241d0c; --warn-line:#6b5518; --warn-fg:#f3d99a;
   --flag:#e0a458;
+  --hdr-field:#0e1a10; --hdr-field-fg:#e8ece9;
  }
 }
 :root[data-theme="light"]{
@@ -30,12 +32,14 @@
   --line:#e5e7eb; --line2:#f1f3f2;
   --raw:#073309; --derived:#1d4ed8; --model:#7c3aed;
   --warn-bg:#fffbeb; --warn-line:#fcd34d; --warn-fg:#78350f; --flag:#b45309;
+  --hdr-field:#ffffff; --hdr-field-fg:#111827;
 }
 :root[data-theme="dark"]{
   --bg:#0b100c; --panel:#121a13; --fg:#e8ece9; --mut:#9aa5a0;
   --line:#222e25; --line2:#1a231c;
   --raw:#4ba055; --derived:#7aa2ff; --model:#c4a0ff;
   --warn-bg:#241d0c; --warn-line:#6b5518; --warn-fg:#f3d99a; --flag:#e0a458;
+  --hdr-field:#0e1a10; --hdr-field-fg:#e8ece9;
 }
 
 *{box-sizing:border-box}
@@ -43,53 +47,89 @@ html,body{max-width:100%}
 body{margin:0;font:14px/1.5 Archivo,system-ui,-apple-system,sans-serif;
      color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased}
 
-/* ── Header ───────────────────────────────────────────────────────────── */
-header{background:var(--brand);color:#fff;padding:16px 22px 14px;
-       display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-header h1{font-size:19px;margin:0;font-weight:700;letter-spacing:-.01em}
-header .sub{font-size:11px;opacity:.72;letter-spacing:.02em}
+/* ── Header ───────────────────────────────────────────────────────────────
+   One line: title | selectors | actions. The two long prose blocks that used
+   to sit here (the RAW/DERIVED/MODEL legend and the chain-overlap caution)
+   are still on the page, verbatim, but behind the two header toggles — they
+   are reference material and must not push the table below the fold. */
+header{background:var(--brand);color:#fff;padding:9px 22px 10px;
+       display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;gap:1px;line-height:1.15;padding-bottom:1px}
+.brand .kick{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+             color:var(--accent);white-space:nowrap}
+.brand h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-.01em;color:#fff;
+          white-space:nowrap;text-transform:uppercase}
+.hrule{width:1px;align-self:stretch;background:rgba(255,255,255,.14);margin:0 4px;
+       flex:0 0 1px}
 .nav-chip{color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
           border-radius:5px;padding:5px 11px;text-decoration:none;font-size:12px;font-weight:600;
           white-space:nowrap;transition:background .12s}
 .nav-chip:hover{background:rgba(255,255,255,.28)}
 .spacer{margin-left:auto}
+.hactions{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 
-/* ── Provenance legend ────────────────────────────────────────────────── */
-.legend{padding:11px 22px;font-size:12px;color:var(--mut);background:var(--panel);
-        border-bottom:1px solid var(--line);line-height:1.85}
-.legend b{color:var(--fg);font-weight:600}
-.legend .sep{color:var(--line);margin:0 6px}
-
-/* ── Controls ─────────────────────────────────────────────────────────── */
-.bar{display:flex;gap:14px;padding:13px 22px;border-bottom:1px solid var(--line);
-     flex-wrap:wrap;align-items:flex-end}
-.ctl label{font-size:10px;color:var(--mut);display:block;text-transform:uppercase;
-           letter-spacing:.07em;font-weight:600;margin-bottom:3px}
-select,input[type=number]{font:13px Archivo,system-ui,sans-serif;padding:6px 8px;
+/* ── Controls (now inside the header) ─────────────────────────────────── */
+.ctl label{font-size:9.5px;color:rgba(255,255,255,.6);display:block;text-transform:uppercase;
+           letter-spacing:.07em;font-weight:600;margin-bottom:2px}
+select,input[type=number]{font:13px Archivo,system-ui,sans-serif;padding:5px 7px;
      border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);
      max-width:100%}
+header select,header input[type=number]{background:var(--hdr-field);color:var(--hdr-field-fg);
+     border:1px solid rgba(255,255,255,.24)}
+header select option{background:var(--hdr-field);color:var(--hdr-field-fg)}
 select:disabled,input:disabled{opacity:.38;cursor:not-allowed}
+/* Same "does not apply here" signal, a touch stronger: the header is dark, so
+   .38 reads as invisible rather than as greyed out. */
+header select:disabled,header input:disabled{opacity:.5}
 .ctl.off label{opacity:.45}
-#sel-country{max-width:280px}
-#sel-seg{max-width:250px}
-#sel-tech{min-width:150px}
+#sel-country{max-width:230px}
+#sel-seg{max-width:200px}
+#sel-tech{min-width:140px}
 
-/* Downloads sit at the far end of the control bar: the file is the point of
-   the tool, so it is a peer of the filters, not an afterthought in a menu. */
-.ctl.dl{margin-left:auto}
-.dlbtn{cursor:pointer;border:1px solid var(--brand);background:var(--brand);color:#fff;
-       border-radius:5px;padding:6px 13px;font:600 12px Archivo,system-ui,sans-serif;
-       transition:opacity .12s}
-.dlbtn+.dlbtn{margin-left:6px}
+/* Downloads stay a peer of the filters: the file is the point of the tool,
+   not an afterthought in a menu. */
+.dlbtn{cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:#06210a;
+       border-radius:5px;padding:5px 11px;font:600 12px Archivo,system-ui,sans-serif;
+       transition:opacity .12s;white-space:nowrap}
 .dlbtn:hover{opacity:.85}
-@media (prefers-color-scheme:dark){.dlbtn{background:var(--accent);border-color:var(--accent);color:#06210a}}
-:root[data-theme="dark"] .dlbtn{background:var(--accent);border-color:var(--accent);color:#06210a}
+
+/* ── Header toggles → collapsible reference panels ────────────────────── */
+.hbtn{cursor:pointer;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.1);
+      color:#fff;border-radius:5px;padding:5px 11px;white-space:nowrap;
+      font:600 12px Archivo,system-ui,sans-serif;transition:background .12s,border-color .12s}
+.hbtn:hover{background:rgba(255,255,255,.2)}
+.hbtn[aria-expanded="true"]{background:#fff;color:var(--brand);border-color:#fff}
+.hbtn.warn{color:#f3d99a;border-color:rgba(243,217,154,.34)}
+.hbtn.warn:hover{background:rgba(243,217,154,.18)}
+/* Pressed state is a fixed amber, not var(--warn-line): the header is always
+   dark green, so it must read the same in both themes. */
+.hbtn.warn[aria-expanded="true"]{background:#fcd34d;color:#3b2708;border-color:#fcd34d}
+
+/* Collapsed to a true zero height (grid 0fr + inner overflow:hidden) so a
+   closed panel costs the table no vertical space at all. */
+.hpanel{display:grid;grid-template-rows:0fr;opacity:0;visibility:hidden;
+        background:var(--panel);border-bottom:0 solid transparent;
+        transition:grid-template-rows .18s ease,opacity .18s ease,visibility .18s}
+.hpanel>.in{overflow:hidden;min-height:0}
+.hpanel>.in>.pad{padding:11px 22px;font-size:12px;color:var(--mut);line-height:1.85}
+.hpanel.open{grid-template-rows:1fr;opacity:1;visibility:visible;
+             border-bottom:1px solid var(--line)}
+.hpanel b{color:var(--fg);font-weight:600}
+.hpanel .sep{color:var(--line);margin:0 6px}
+.hpanel .metaline{display:block;margin-top:7px;font-size:11px;opacity:.8;letter-spacing:.02em}
+/* The overlap caution is a warning, not a note: it keeps the amber skin. */
+.hpanel.warn{background:var(--warn-bg)}
+.hpanel.warn>.in>.pad{color:var(--warn-fg);line-height:1.65}
+.hpanel.warn b{color:var(--warn-fg);font-weight:700}
+.hpanel.warn.open{border-bottom:1px solid var(--warn-line)}
+.hpanel code{font:600 11px ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-reduced-motion:reduce){.hpanel{transition:none}}
 
 /* ── Presets ──────────────────────────────────────────────────────────── */
-.presets{display:flex;gap:8px;padding:12px 22px;flex-wrap:wrap;
+.presets{display:flex;gap:8px;padding:9px 22px;flex-wrap:wrap;
          border-bottom:1px solid var(--line)}
 .preset{cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg);
-        border-radius:5px;padding:8px 13px;font:600 12px Archivo,system-ui,sans-serif;
+        border-radius:5px;padding:7px 12px;font:600 12px Archivo,system-ui,sans-serif;
         transition:background .12s,border-color .12s}
 .preset:hover{border-color:var(--accent)}
 .preset.on{background:var(--brand);color:#fff;border-color:var(--brand)}
@@ -102,7 +142,7 @@ select:disabled,input:disabled{opacity:.38;cursor:not-allowed}
 .note b{font-weight:700}
 .note code{font:600 11px ui-monospace,SFMono-Regular,Menlo,monospace}
 
-#summary{padding:13px 22px;background:var(--panel);border-bottom:1px solid var(--line);
+#summary{padding:10px 22px;background:var(--panel);border-bottom:1px solid var(--line);
          font-size:13px;font-weight:500}
 #summary .k{font-weight:700}
 
@@ -163,13 +203,41 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
 <body>
 
 <header>
-  <h1>Clean Supply Chain Data Explorer</h1>
-  <span class="sub" id="meta-line"></span>
-  <span class="spacer"></span>
-  <a class="nav-chip" href="navigator.html">&larr;&nbsp;Atlas Navigator</a>
+  <div class="brand">
+    <span class="kick">Clean Supply Chain</span>
+    <h1>Data Explorer</h1>
+  </div>
+  <div class="hrule" aria-hidden="true"></div>
+
+  <div class="ctl" id="ctl-tech"><label for="sel-tech">Supply chain</label>
+    <select id="sel-tech"><option value="ALL">All 10 chains</option></select></div>
+  <div class="ctl" id="ctl-seg"><label for="sel-seg">Segment</label>
+    <select id="sel-seg"><option value="ALL">All segments</option></select></div>
+  <div class="ctl" id="ctl-country"><label for="sel-country">Country</label>
+    <select id="sel-country"><option value="ALL">World (all countries)</option></select></div>
+  <div class="ctl"><label for="y0">From</label>
+    <input type="number" id="y0" min="1995" max="2024" step="1" value="2015" style="width:74px"></div>
+  <div class="ctl"><label for="y1">To</label>
+    <input type="number" id="y1" min="1995" max="2024" step="1" value="2024" style="width:74px"></div>
+
+  <div class="hactions">
+    <button class="hbtn" id="tg-prov" type="button" aria-expanded="false"
+            aria-controls="panel-prov"
+            title="Where every number on this page comes from: RAW / DERIVED / MODEL.">&#9432;&nbsp;Provenance</button>
+    <button class="hbtn warn" id="tg-overlap" type="button" aria-expanded="false"
+            aria-controls="panel-overlap"
+            title="Chain baskets share HS-6 codes, so chain totals overlap.">&#9888;&nbsp;Overlap</button>
+    <button class="dlbtn" id="dl-csv" title="Comma-separated values — exactly the rows and columns on screen, with raw unrounded numbers and a notes block naming every source and formula.">&darr;&nbsp;CSV</button>
+    <button class="dlbtn" id="dl-xlsx" title="Excel workbook (SpreadsheetML) with two sheets: Notes (sources, units, formulas, caveats) and Data (exactly the table on screen, as numbers).">&darr;&nbsp;Excel</button>
+    <a class="nav-chip" href="navigator.html">&larr;&nbsp;Atlas Navigator</a>
+  </div>
 </header>
 
-<div class="legend">
+<!-- Reference panels. Closed by default; state persisted in localStorage.
+     Neither message may be deleted: the provenance legend is the promise that
+     nothing here is black-boxed, and the overlap caution prevents a real
+     misreading of the chain totals. -->
+<div class="hpanel" id="panel-prov"><div class="in"><div class="pad">
   <b>Every column is labelled with where its number comes from.</b><br>
   <span class="cls raw">RAW</span> as recorded in the source files &mdash; no arithmetic
   applied on this page
@@ -182,23 +250,14 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
   <span class="sep">|</span>
   Click any column heading to sort. Open <b>Column dictionary</b> below the table for the
   exact source file and formula behind each column.
-</div>
+  <span class="metaline" id="meta-line"></span>
+</div></div></div>
 
-<div class="bar">
-  <div class="ctl" id="ctl-tech"><label for="sel-tech">Supply chain</label>
-    <select id="sel-tech"><option value="ALL">All 10 chains</option></select></div>
-  <div class="ctl" id="ctl-seg"><label for="sel-seg">Segment</label>
-    <select id="sel-seg"><option value="ALL">All segments</option></select></div>
-  <div class="ctl" id="ctl-country"><label for="sel-country">Country</label>
-    <select id="sel-country"><option value="ALL">World (all countries)</option></select></div>
-  <div class="ctl"><label for="y0">From year</label>
-    <input type="number" id="y0" min="1995" max="2024" step="1" value="2015" style="width:88px"></div>
-  <div class="ctl"><label for="y1">To year</label>
-    <input type="number" id="y1" min="1995" max="2024" step="1" value="2024" style="width:88px"></div>
-  <div class="ctl dl"><label>Download this table</label>
-    <button class="dlbtn" id="dl-csv" title="Comma-separated values — exactly the rows and columns on screen, with raw unrounded numbers and a notes block naming every source and formula.">&darr;&nbsp;CSV</button>
-    <button class="dlbtn" id="dl-xlsx" title="Excel workbook (SpreadsheetML) with two sheets: Notes (sources, units, formulas, caveats) and Data (exactly the table on screen, as numbers).">&darr;&nbsp;Excel</button></div>
-</div>
+<div class="hpanel warn" id="panel-overlap"><div class="in"><div class="pad">
+  Chains overlap: a code such as <code>260400</code> (nickel ore) belongs to eight
+  baskets and is counted at full value in each. The &ldquo;all chains&rdquo; total is
+  therefore a sum of baskets, not a de-duplicated world figure.
+</div></div></div>
 
 <div class="presets">
   <button class="preset" data-preset="chains">Q1 &middot; Are the chains growing?</button>
