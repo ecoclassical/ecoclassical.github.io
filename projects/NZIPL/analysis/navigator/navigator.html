@@ -153,12 +153,16 @@
   #bar-title .tech{font-size:1.2rem;font-weight:800;letter-spacing:.2px;}
   #bar-title .country{font-size:.78rem;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase;}
   #bar-title .year{font-size:.74rem;font-weight:600;letter-spacing:.4px;color:var(--faint);}
-  /* ── Selection text: its own collapsible panel, directly BELOW the drums that produce it and
-     ABOVE the (stable, reference-only) legend. Text is colored with the atlas's own SR/category
-     palette, so the title itself signals what kind of thing (product / stage·role / category) is
-     currently selected. WIDER AND SHORTER than the old bar column: it spans the full right-stack
-     width and lays the HS code out inline with its description instead of stacking them. ── */
-  #sel-title{display:flex;flex-direction:row;align-items:center;gap:10px;width:100%;}
+  /* ── Selection readout: lives INSIDE the Supply Chain Selector panel, directly under the panel
+     title and above the drums that produce it (it used to be a separate "Selection" panel — a
+     header that only restated what the text already says). Kept at statement weight, not label
+     weight: it is the answer to "what am I looking at". Text is colored with the atlas's own
+     SR/category palette, so the line itself signals what kind of thing (product / stage·role /
+     category) is currently selected; the HS code sits inline with its description, not stacked.
+     Bottom margin is the readout↔drums separation only — the padding that used to divide two
+     panels is gone with the panel. ── */
+  #sel-title{display:flex;flex-direction:row;align-items:center;gap:10px;width:100%;
+    margin:1px 0 9px;}
   #sel-title .stx{font-size:.82rem;font-weight:800;color:var(--ink);line-height:1.32;flex:1;min-width:0;}
   #sel-title .stx .stx-hs{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
     color:rgba(255,255,255,.45);display:inline;margin-right:6px;}
@@ -190,19 +194,33 @@
   /* section headers, kept for parity though the panel headers now carry the titles */
   .ov-section{font-size:.86rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.4px;margin:0 0 6px;}
   .ov-section.second{margin-top:10px;border-top:1px solid rgba(255,255,255,.14);padding-top:8px;}
-  .ov-cols{display:flex;gap:10px;align-items:flex-start;margin-bottom:5px;}
-  .ov-col{display:flex;flex-direction:column;min-width:75px;}
-  .ov-col-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch;margin:0 2px;}
+  /* Imports | Exports: a 3-track grid, NOT flex. Two equal minmax(0,1fr) tracks with the 1px rule
+     as the middle track puts the rule on the exact centre line of the block whatever the strings
+     are ("$17.9B" vs "$5.4B") — under the old flex+min-width:75px both columns packed left and the
+     rule sat ~27px left of centre. minmax(0,·) rather than a bare 1fr so the nowrap headline value
+     cannot push its own track wider than half. */
+  .ov-cols{display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 10px;
+    align-items:start;margin-bottom:5px;}
+  .ov-col{display:flex;flex-direction:column;min-width:0;}
+  .ov-col-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch;justify-self:center;margin:0;}
   .ov-col-label{font-size:.64rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;font-weight:600;}
   .ov-col-val{font-size:1.3rem;font-weight:800;color:#e2e8f0;line-height:1.1;white-space:nowrap;}
   .ov-col-gdp{font-size:.63rem;color:rgba(255,255,255,.45);margin-top:2px;}
   .ov-net{font-size:.7rem;margin-top:3px;font-weight:600;display:flex;align-items:center;gap:6px;}
   .ov-stat-block{margin-top:5px;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;flex-direction:column;gap:2px;}
-  .ov-stat-row{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;}
-  .ov-stat-key{color:rgba(255,255,255,.4);font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;}
-  .ov-stat-vals{display:flex;gap:8px;align-items:center;}
-  .ov-stat-pct{color:rgba(255,255,255,.8);font-weight:600;}
-  .ov-stat-rank{color:#3cb54a;font-size:.58rem;font-weight:700;background:rgba(60,181,74,.1);border-radius:5px;padding:1px 5px;white-space:nowrap;}
+  /* Gaps trimmed (8→4 inside the value group, 5→4 on the rank chip) to buy back the width the
+     sparkline takes. The row content box is 229px and in the worst year the label ("World share",
+     75px) plus the value pair plus the rank chip already spend nearly all of it — so THE DRAWING
+     is the elastic element here, not the words or the numbers. .spk gets flex:1 with a 42px cap,
+     takes whatever is left, and is measured at draw time; below ~20px it draws nothing at all and
+     the row keeps its numbers intact. Labels and figures never clip. */
+  .ov-stat-row{display:flex;align-items:center;font-size:.62rem;gap:3px;}
+  .ov-stat-key{color:rgba(255,255,255,.4);font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;
+    flex:0 0 auto;white-space:nowrap;}
+  .ov-stat-vals{display:flex;gap:4px;align-items:center;flex:1 1 auto;min-width:0;justify-content:flex-end;}
+  .ov-stat-vals .spk{flex:1 1 0;min-width:0;max-width:42px;justify-content:flex-end;}
+  .ov-stat-pct{color:rgba(255,255,255,.8);font-weight:600;flex:0 0 auto;}
+  .ov-stat-rank{color:#3cb54a;font-size:.58rem;font-weight:700;background:rgba(60,181,74,.1);border-radius:5px;padding:1px 4px;white-space:nowrap;flex:0 0 auto;}
   .ov-part-title{font-size:.55rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.09em;margin:6px 0 2px;}
   .ov-row{display:flex;align-items:center;gap:6px;padding:2px 0;border-top:1px solid rgba(255,255,255,.06);font-size:.67rem;}
   .ov-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
@@ -211,6 +229,34 @@
   /* growth arrows: green ▲ / red ▼ / gray flat — intensity graded by |growth%|, "--" past the last year */
   .gr{font-size:.62rem;font-weight:700;white-space:nowrap;}
   .gr-na{color:rgba(255,255,255,.3);font-weight:600;}
+
+  /* ── sparklines ──────────────────────────────────────────────────────────────
+     The growth arrow is FORWARD-looking (selYear → selYear+1), so on the last year of the series it
+     can only read "--". A sparkline sidesteps that entirely: it shows the whole 22-year series no
+     matter which year the slider sits on, with a dot marking where you are. Sized to slot into an
+     existing row without widening the 255px panel. Fixed 42px in a Top Partners row, where the
+     3-letter ISO code leaves room; elastic in a stats row, where it does not (see .ov-stat-vals
+     .spk above and flushSparks() in the script). */
+  .spk{display:inline-flex;align-items:center;line-height:0;flex:0 0 auto;overflow:hidden;}
+  .spk svg{display:block;}
+
+  /* ── filter-scope markers ────────────────────────────────────────────────────
+     The Supply Chain Selector can only be honoured by a series that actually carries the selected
+     dimension. Rather than let an unfiltered number sit silently under an active filter, every
+     block states its own scope: green ▣ = this number responds to your selection, amber ◌ = it
+     does not, and why. Blocks that cannot respond are ALSO held at reduced contrast while a filter
+     is on, so the split is legible before a single word is read — "at a glance, without hovering".
+     Nothing is ever hidden: a labelled number beats a vanished one. */
+  .flt-note{font-size:.575rem;line-height:1.32;letter-spacing:.02em;margin:0 0 4px;display:block;}
+  .flt-on{color:#3cb54a;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+  .flt-off{color:#f59e0b;font-weight:600;}
+  .flt-stale{opacity:.6;}
+  .pnl-flag{flex-shrink:0;font-size:.5rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+    border-radius:4px;padding:1px 5px;white-space:nowrap;margin-left:auto;line-height:1.5;}
+  .pnl-flag:empty{display:none;}
+  .pnl-flag.f-on{color:#3cb54a;background:rgba(60,181,74,.14);border:1px solid rgba(60,181,74,.45);}
+  .pnl-flag.f-off{color:#f59e0b;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);}
+  #phase.phase-warn{color:#f59e0b;border-color:rgba(245,158,11,.38);}
 
   /* atlas-style SR legend (ported from build_country_atlas.R buildFixedLegend/hleg-*), now in its
      own collapsible panel with markedly more breathing room than the cramped top-bar version. */
@@ -286,43 +332,41 @@
     </div></div>
   </div>
 
-  <div class="pnl" id="p-flows" style="--bh:175px">
+  <div class="pnl" id="p-flows" style="--bh:222px">
     <button class="pnl-hd" type="button" data-pnl="p-flows" aria-expanded="true" aria-controls="p-flows-bd">
-      <span class="pnl-t">Trade Flows</span><span class="chev" aria-hidden="true">▾</span></button>
+      <span class="pnl-t">Trade Flows</span><span class="pnl-flag" id="flag-flows"></span><span class="chev" aria-hidden="true">▾</span></button>
     <div class="pnl-bd" id="p-flows-bd"><div class="pnl-in"><div id="stats"></div></div></div>
   </div>
 
-  <div class="pnl" id="p-partners" style="--bh:210px">
+  <!-- 240px, not 228: the per-partner sparklines add ~1px to each of the ten rows, which pushed the
+       unfiltered content to 230px and put a scrollbar on a panel that had none. -->
+  <div class="pnl" id="p-partners" style="--bh:240px">
     <button class="pnl-hd" type="button" data-pnl="p-partners" aria-expanded="true" aria-controls="p-partners-bd">
-      <span class="pnl-t">Top Partners</span><span class="chev" aria-hidden="true">▾</span></button>
+      <span class="pnl-t">Top Partners</span><span class="pnl-flag" id="flag-partners"></span><span class="chev" aria-hidden="true">▾</span></button>
     <div class="pnl-bd" id="p-partners-bd"><div class="pnl-in"><div id="partners"></div></div></div>
   </div>
 
 </div>
 
-<!-- ══ RIGHT STACK — keeps the drum/dendrite column width (--nav-w). All four panels collapse.
-     Order: drums → selection text (the consequence of the drums) → legend → supply chain map. ══ -->
+<!-- ══ RIGHT STACK — keeps the drum/dendrite column width (--nav-w). All three panels collapse.
+     Order: selector (readout + drums) → legend → supply chain map.
+     The readout used to be its own "Selection" panel; it now lives inside the selector, directly
+     under the title and above the drums that produce it — the control and its consequence in one
+     box, one fewer header to read. ══ -->
 <div id="rstack" class="stack">
 
-  <div class="pnl" id="p-drums" style="--bh:112px">
+  <div class="pnl" id="p-drums" style="--bh:170px">
     <button class="pnl-hd" type="button" data-pnl="p-drums" aria-expanded="true" aria-controls="p-drums-bd">
       <span class="pnl-t">Supply Chain Selector</span><span class="chev" aria-hidden="true">▾</span></button>
     <div class="pnl-bd" id="p-drums-bd"><div class="pnl-in">
+      <div id="sel-title"><span class="stx" id="sel-stx">Whole technology</span>
+        <button id="sel-clear" type="button" style="display:none">✕ clear all</button></div>
       <div class="drums">
         <div class="drum-row"><span class="drum-lab">Stage</span><div class="drum-wrap" id="drum-stage"><div class="drum-hl"></div><div class="drum-inner" id="drum-stage-inner"></div></div></div>
         <div class="drum-row"><span class="drum-lab">Role</span><div class="drum-wrap" id="drum-role"><div class="drum-hl"></div><div class="drum-inner" id="drum-role-inner"></div></div></div>
         <div class="drum-row"><span class="drum-lab">Category</span><div class="drum-wrap" id="drum-cat"><div class="drum-hl"></div><div class="drum-inner" id="drum-cat-inner"></div></div></div>
         <div class="drum-row drum-row-product"><span class="drum-lab">Product</span><div class="drum-wrap drum-product" id="drum-product"><div class="drum-hl"></div><div class="drum-inner" id="drum-product-inner"></div></div></div>
       </div>
-    </div></div>
-  </div>
-
-  <div class="pnl" id="p-sel" style="--bh:74px">
-    <button class="pnl-hd" type="button" data-pnl="p-sel" aria-expanded="true" aria-controls="p-sel-bd">
-      <span class="pnl-t">Selection</span><span class="chev" aria-hidden="true">▾</span></button>
-    <div class="pnl-bd" id="p-sel-bd"><div class="pnl-in">
-      <div id="sel-title"><span class="stx" id="sel-stx">Whole technology</span>
-        <button id="sel-clear" type="button" style="display:none">✕ clear all</button></div>
     </div></div>
   </div>
 
@@ -415,6 +459,99 @@ function selName(){
   const p=(D.products||[]).find(x=>x.code===selProduct); return p?(p.desc_full||p.product_name):selProduct;
 }
 
+/* ── Supply Chain Selector → what each series can actually honour ─────────────────────────────
+   NOTE (CLAUDE.md): every function below is declared at top-level scope on purpose — a function
+   declared inside an if-block is invisible globally and fails silently at call time.
+
+   D.timeline is year × stage × role × flow × value, so STAGE and ROLE are real, exact filters on
+   the headline trade numbers (its rows re-sum to D.yearly). D.partners_yearly_sr is the same story
+   one grain finer — year × dir × stage × role × partner — so the partner list and the map arrows
+   now honour stage and role too (see partnersAt()). Neither series carries an HS-code dimension,
+   so CATEGORY (defined per HS code via D.scatter) and a single PRODUCT cannot be resolved against
+   either; and the world/regional rank+share rows are precomputed across all countries at the
+   whole-technology level. Those are reported as NOT APPLIED — never silently passed off as
+   filtered. ────────────────────────────────────────────────────────────────────────────────── */
+function srPass(stage,role){
+  return (selStage==='ALL'||stage===selStage)&&(selRole==='ALL'||role===selRole);
+}
+function srOn(){ return selStage!=='ALL'||selRole!=='ALL'; }
+function flowScope(){
+  const applied=[], ignored=[];
+  if(selStage!=='ALL') applied.push(selStage);
+  if(selRole!=='ALL')  applied.push(selRole);
+  if(selCat!=='ALL')   ignored.push(selCat.toLowerCase()+' category');
+  if(selProduct)       ignored.push('HS '+selProduct);
+  return {applied, ignored, on:srOn()};
+}
+/* Exports/imports for one year under the ACTIVE stage/role filter, summed straight from
+   D.timeline. Returns null when the year is absent from the series, so growthArrow() prints "--"
+   past the last year exactly as it does on the unfiltered path. */
+function tlYear(y){
+  if(!D||!D.timeline) return null;
+  let exp=0, imp=0, has=false;
+  D.timeline.forEach(t=>{
+    if(t.year!==y) return;
+    has=true;                                   // the YEAR exists even if this stage/role has no trade in it
+    if(!srPass(t.stage,t.role)) return;
+    if(t.flow==='exp') exp+=(+t.v||0); else if(t.flow==='imp') imp+=(+t.v||0);
+  });
+  return has?{exp,imp}:null;
+}
+/* Partners for one direction in one year, descending by value, under the ACTIVE stage/role filter.
+   Feeds BOTH the Top Partners list and the map arrows, so the two can never disagree.
+
+   Two sources, and they are never mixed nor derived from one another:
+     · no stage/role filter → D.partners_yearly, read verbatim. It is the builder's top-8 per
+       (year, dir) at the whole-technology level.
+     · stage and/or role    → D.partners_yearly_sr, summed across the matching segments only.
+   Summing ALL of partners_yearly_sr back up does NOT reproduce partners_yearly: the _sr series
+   keeps a top-8 PER (year, dir, stage, role), so a partner that makes the overall top-8 while
+   falling short inside each individual segment loses most of its value on the way up (measured
+   across 104,297 rows: the re-sum lands at or below the whole-tech figure 74.5% of the time —
+   EVs/Germany 2011 AUT is 1,331,751 re-summed against 4,784,312 whole-tech). Hence the unfiltered
+   path stays on the unfiltered series, byte-for-byte what this panel printed before.
+   Zero-value rows are dropped so a partner with no trade in the selected segments draws no arrow
+   rather than a hairline one. */
+function partnersAt(dir,year){
+  if(!D) return [];
+  if(!srOn()){
+    return (D.partners_yearly||[]).filter(p=>p.dir===dir&&p.year===year)
+      .map(p=>({dir,partner:p.partner,v:+p.v||0})).sort((a,b)=>b.v-a.v);
+  }
+  const m=new Map();
+  (D.partners_yearly_sr||[]).forEach(p=>{
+    if(p.dir!==dir||p.year!==year||!srPass(p.stage,p.role)) return;
+    m.set(p.partner,(m.get(p.partner)||0)+(+p.v||0));
+  });
+  return [...m].map(([partner,v])=>({dir,partner,v})).filter(p=>p.v>0).sort((a,b)=>b.v-a.v);
+}
+/* Panel-header chips + the map's corner note. Green = responds to the selection, amber = does
+   not. Kept out of the innerHTML rebuilds so the chips survive a collapsed panel.
+   Top Partners and the arrows sit on the same stage/role-aware series as Trade Flows now, so they
+   carry the same chip; only the dimensions nothing can honour (category, single HS code) still
+   raise an amber flag. */
+function updateScopeFlags(){
+  const sc=flowScope(), filtered=anyFilter();
+  const chip=el=>{ if(!el) return;
+    el.className='pnl-flag'+(sc.on?' f-on':(filtered?' f-off':''));
+    el.textContent = sc.on ? 'filtered' : (filtered ? 'whole tech' : '');
+  };
+  chip(document.getElementById('flag-flows'));
+  chip(document.getElementById('flag-partners'));
+  const ph=document.getElementById('phase');
+  if(ph){
+    // The arrows honour exactly what the partner series can: stage and role. The amber warning is
+    // therefore tied to sc.ignored (category / single product) — NOT to "any filter at all", which
+    // would now be crying wolf over a selection the arrows do apply.
+    ph.classList.toggle('phase-warn',sc.ignored.length>0);
+    ph.textContent = sc.ignored.length
+      ? (sc.on ? `arrows filtered · ${sc.applied.join(' · ')} — ${sc.ignored.join(' and ')} not applied`
+               : 'filter active · map arrows stay whole-technology')
+      : (sc.on ? `arrows filtered · ${sc.applied.join(' · ')}`
+               : 'Phase 1 shell · arrows are tech-level');
+  }
+}
+
 /* ── the cockpit render ────────────────────────────────────────────────────── */
 function drawFusion(){
   if(!D) return;
@@ -471,10 +608,12 @@ function drawFusion(){
 
   // ③ partner trade arrows — width ∝ sqrt(value); great-circle arcs on the globe. Filtered to the
   // year slider (selYear) so the map stays consistent with the stats panel, rather than showing
-  // an all-time aggregate for a different implied period.
-  const yearParts=(D.partners_yearly||[]).filter(p=>p.year===selYear);
-  const dests=yearParts.filter(p=>p.dir==='dest'&&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
-  const srcs =yearParts.filter(p=>p.dir==='src' &&CENT[p.partner]).sort((a,b)=>b.v-a.v).slice(0,8);
+  // an all-time aggregate for a different implied period — and routed through partnersAt(), so a
+  // stage/role selection resizes them from that segment's values and drops any partner that does
+  // no trade inside it. Category / single-product selections cannot reach this series; the #phase
+  // readout says so when one is active.
+  const dests=partnersAt('dest',selYear).filter(p=>CENT[p.partner]).slice(0,8);
+  const srcs =partnersAt('src', selYear).filter(p=>CENT[p.partner]).slice(0,8);
   const arr=[...dests,...srcs];
   const maxV=d3.max(arr,p=>p.v)||1;
   const minV=Math.max(1, d3.min(arr,p=>p.v)||1);
@@ -645,25 +784,39 @@ function drawNavProduct(){
   const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,sval)||1]).range([3,11]);
 
   const cm=catMap();
-  const drumOn = selStage!=='ALL'||selRole!=='ALL'||selCat!=='ALL';
-  const passDrum=n=>(selStage==='ALL'||n.stage===selStage)&&(selRole==='ALL'||n.role===selRole)&&(selCat==='ALL'||(cm[n.code]||'Other')===selCat);
+  const drumOn = srOn()||selCat!=='ALL';
+  const passDrum=n=>srPass(n.stage,n.role)&&(selCat==='ALL'||(cm[n.code]||'Other')===selCat);
+  const isProd=n=>!!selProduct&&n.code===selProduct;
+  // By Product and By Stage/Role are EQUAL-STATUS selections: picking a stage and/or role gives
+  // its nodes the same emphasis the by-product path gets — size bump, white stroke, full opacity —
+  // rather than only dimming everything else.
+  const emph=n=>selProduct?isProd(n):(drumOn&&passDrum(n));
   const isSel=e=>selProduct&&(e.from_code===selProduct||e.to_code===selProduct);
+  // an edge is "in the selection" when BOTH of its endpoints are — so a stage/role pick traces the
+  // sub-chain, not a spray of half-connected stubs
+  const srEdge=e=>!selProduct&&drumOn
+    &&passDrum({stage:e.from_stage,role:e.from_role,code:e.from_code})
+    &&passDrum({stage:e.to_stage,role:e.to_role,code:e.to_code});
 
   svg.append('g').selectAll('line').data(edges).join('line')
     .attr('x1',e=>pos(cnOf(e.from_code,e.from_cn))[0]).attr('y1',e=>pos(cnOf(e.from_code,e.from_cn))[1])
     .attr('x2',e=>pos(cnOf(e.to_code,e.to_cn))[0]).attr('y2',e=>pos(cnOf(e.to_code,e.to_cn))[1])
-    .attr('stroke',e=>isSel(e)?'rgba(255,255,255,.85)':'rgba(255,255,255,.14)')
-    .attr('stroke-width',e=>isSel(e)?1.6:.6);
+    .attr('stroke',e=>isSel(e)?'rgba(255,255,255,.85)':srEdge(e)?'rgba(255,255,255,.6)'
+      :(drumOn||selProduct)?'rgba(255,255,255,.07)':'rgba(255,255,255,.14)')
+    .attr('stroke-width',e=>isSel(e)?1.6:srEdge(e)?1.3:.6);
 
   // no text labels, no dashed connectors — nodes speak for themselves (atlas convention)
   svg.append('g').selectAll('circle').data(nodes).join('circle')
     .attr('cx',n=>pos(n.cn)[0]).attr('cy',n=>pos(n.cn)[1])
-    .attr('r',n=>{ const r=Math.max(3,rSc(sval(n))); return n.code===selProduct?r+2:r; })
+    .attr('r',n=>{ const r=Math.max(3,rSc(sval(n))); return emph(n)?r+2:r; })
     .attr('fill',n=>VIZ.SR[n.stage+'|'+n.role]||'#888')
-    .attr('stroke',n=>n.code===selProduct?'#fff':'rgba(0,0,0,.35)').attr('stroke-width',n=>n.code===selProduct?2.2:.6)
-    .attr('opacity',n=>{ if(selProduct) return n.code===selProduct?1:.35; if(drumOn) return passDrum(n)?.98:.14; return .92; })
+    .attr('stroke',n=>emph(n)?'#fff':'rgba(0,0,0,.35)')
+    .attr('stroke-width',n=>emph(n)?(isProd(n)?2.2:1.8):.6)
+    .attr('opacity',n=>{ if(selProduct) return isProd(n)?1:.3; if(drumOn) return passDrum(n)?1:.12; return .92; })
     .attr('cursor','pointer')
-    .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; drawFusion(); drawNav(); updateReadout(); })
+    // redrawAll (not the bare draw trio) so the Trade Flows panel re-states its scope: a product
+    // is a filter the trade series cannot honour, and the panel has to say so
+    .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; redrawAll(); })
     .on('mousemove',(e,n)=>tip(e,'HS '+n.code+'<br><b>'+(n.full||n.name||n.code)+'</b><br>'+n.stage+' · '+n.role+' · step '+stepMap.get(n.cn)+(sval(n)?'<br>'+VIZ.fmtV(sval(n))+' · '+selYear:'')))
     .on('mouseout',tipOut);
 }
@@ -715,18 +868,29 @@ function drawNavSR(){
       .attr('stroke','rgba(255,255,255,.4)').attr('stroke-width',1.8).attr('marker-end','url(#sr-ah)');
   });
 
+  // Highlighting is symmetric with the By-Product view. A stage-ONLY or role-only pick lights every
+  // lane it covers (srPass), not just an exact stage+role pair — so scrolling the Stage drum to
+  // "Midstream" emphasises all three midstream lanes. A selected PRODUCT lights the lane it sits
+  // in (selSR()), so the By-Product selection is legible in this mode too.
+  const psr=selSR(), lit=srOn()||!!psr;
+  const isLit=key=>psr?(key===psr):srPass(key.split('|')[0],key.split('|')[1]);
   const ng=svg.append('g');
   pos.forEach(n=>{
-    const [nSt,nRo]=n.key.split('|'), active=selStage===nSt&&selRole===nRo;
+    const [nSt,nRo]=n.key.split('|'), active=lit&&isLit(n.key);
     const col=VIZ.SR[n.key]||'#9ca3af';
-    ng.append('circle').attr('cx',n.x).attr('cy',n.y).attr('r',n.r)
-      .attr('fill',col).attr('opacity',active?0.98:0.82)
-      .attr('stroke',active?'#fff':'rgba(255,255,255,.25)').attr('stroke-width',active?1.8:.8)
+    ng.append('circle').attr('cx',n.x).attr('cy',n.y).attr('r',active?n.r+2:n.r)
+      .attr('fill',col).attr('opacity',lit?(active?1:0.14):0.82)
+      .attr('stroke',active?'#fff':'rgba(255,255,255,.25)').attr('stroke-width',active?2.2:.8)
+      // clicking a node here SELECTS that stage+role, mirroring how clicking a node in Product
+      // mode selects the product (a second click on the same node clears it — see pickSR)
       .attr('cursor','pointer').on('click',()=>pickSR(nSt,nRo))
-      .on('mousemove',ev=>tip(ev,'<b>'+n.key.replace('|',' · ')+'</b><br>'+VIZ.fmtV(n.v)+' · '+selYear))
+      .on('mousemove',ev=>tip(ev,'<b>'+n.key.replace('|',' · ')+'</b><br>'+VIZ.fmtV(n.v)+' · '+selYear
+        +'<br><span style="opacity:.6">click to filter by this stage · role</span>'))
       .on('mouseout',tipOut);
-    svg.append('text').attr('x',n.x).attr('y',n.y+n.r+11).attr('text-anchor','middle')
-      .attr('font-size',7).attr('fill','rgba(255,255,255,.55)').attr('pointer-events','none')
+    svg.append('text').attr('x',n.x).attr('y',n.y+(active?n.r+2:n.r)+11).attr('text-anchor','middle')
+      .attr('font-size',7).attr('fill',active?'rgba(255,255,255,.95)':'rgba(255,255,255,.55)')
+      .attr('font-weight',active?700:400)
+      .attr('opacity',lit?(active?1:0.3):1).attr('pointer-events','none')
       .text(LANE_LABEL[n.lane]);
   });
 }
@@ -734,7 +898,10 @@ function drawNavSR(){
 /* ── drum-wheel selectors (Stage → Role → Category → Product) ─────────────────── */
 function catMap(){ const m={}; ((D&&D.scatter)||[]).forEach(s=>{ if(s.code) m[s.code]=s.category||'Other'; }); return m; }
 function allProducts(){ const cm=catMap(); return ((D&&D.products)||[]).map(p=>({code:p.code,name:p.product_name||p.code,stage:p.stage,role:p.role,cat:cm[p.code]||'Other',v:p.v||0})); }
-function redrawAll(){ drawFusion(); drawNav(); updateReadout(); }
+// renderStats() is part of every filter-driven redraw now: the Trade Flows headline is computed
+// from the drum selection, so leaving it out here is exactly what made the panel show
+// whole-technology totals under an active filter.
+function redrawAll(){ drawFusion(); drawNav(); updateReadout(); renderStats(); }
 function clearFilters(){ selStage='ALL'; selRole='ALL'; selCat='ALL'; selProduct=null; initDrums(); redrawAll(); }
 function anyFilter(){ return selProduct||selStage!=='ALL'||selRole!=='ALL'||selCat!=='ALL'; }
 
@@ -865,7 +1032,7 @@ function fitBarTitle(){
 function updateReadout(){
   const cs=document.getElementById('country-sel'); if(cs&&cs.value!==COUNTRY) cs.value=COUNTRY;
   syncBarTitle();
-  // Selection title: what's picked right now.
+  // Selection readout (#sel-stx, inside the Supply Chain Selector panel): what's picked right now.
   //  - Product: HS code colored by the TECH's own color, description in plain white below it.
   //  - Stage/Role: "Stage · Role" on one line — colored via the atlas's SR palette when both are
   //    exact (or when the stage has only one role anyway: Upstream/Final Product).
@@ -881,7 +1048,7 @@ function updateReadout(){
       else if(selStage==='Final Product') col=VIZ.SR['Final Product|Final Product'];
     }
     stx.style.color=col||'#e2e8f0';
-    stx.innerHTML=[selStage,selRole].filter(x=>x!=='ALL').join(' · ');   // one line — the panel is wide and short now
+    stx.innerHTML=[selStage,selRole].filter(x=>x!=='ALL').join(' · ');   // one line — the readout spans the full panel width
   } else if(selCat!=='ALL'){
     stx.style.color=VIZ.CAT[selCat]||'#e2e8f0';
     stx.innerHTML=selCat;
@@ -891,6 +1058,7 @@ function updateReadout(){
   }
   clr.style.display=anyFilter()?'':'none';
   updateLegend();
+  updateScopeFlags();
 }
 
 /* ── Phase D: atlas-parity stats panel — year-selected headline $, %GDP, world/region
@@ -918,14 +1086,171 @@ function gdpRankShare(rows,iso,valKey,year){
   const sorted=[...withGDP].filter(r=>r.pct>0).sort((a,b)=>b.pct-a.pct);
   return {pct, rank:sorted.findIndex(r=>r.iso3===iso)+1};
 }
+
+/* ── sparklines ───────────────────────────────────────────────────────────────────────────────
+   NOTE (CLAUDE.md): every function below is declared at TOP-LEVEL scope on purpose — a function
+   declared inside an if-block or another function is invisible globally and fails silently.
+
+   Why these exist: growth here is forward-looking (selYear → selYear+1), so on the last year of
+   the series every arrow can only print "--". The sparkline shows the whole series regardless of
+   where the slider sits, and marks the selected year with a dot.
+
+   Rendering: renderStats() rebuilds both panels with innerHTML, so the SVGs cannot be built
+   inline. Each row emits an empty <span class="spk" data-spk="ID"> placeholder and queues its
+   series in SPK_JOBS; flushSparks() draws into the placeholders once the HTML is in the DOM. The
+   whole-innerHTML rebuild is also what keeps the node count flat across playback — the previous
+   year's SVGs are dropped with the markup that held them, never accumulated.
+
+   Fixed vs elastic width: a Top Partners row spends its width on a 3-letter ISO code, so the full
+   42px is always free there. A stats row is not so lucky — it has to seat a two-value string AND a
+   rank chip next to a label as long as "World share", and across a sweep of 8 tech×country cases ×
+   22 years that combination leaves anywhere from ~8px to ~40px over. So stat sparklines pass w=0,
+   meaning "measure the row and use what is left" — the DRAWING gives way, never the label or the
+   figures. */
+const SPK_W=42, SPK_MIN=20, SPK_H=13;
+let SPK_JOBS=[];
+function spkTag(id){ return `<span class="spk" data-spk="${id}"></span>`; }
+function spkQueue(id,lines,w){ SPK_JOBS.push({id,lines,w:(w===undefined?SPK_W:w)}); return spkTag(id); }
+/* lines: [{pts:[{y,v}], color}] — v===null means "no datum for that year", which is NOT zero. */
+function drawSpark(el,lines,selY,width){
+  if(!el) return;
+  const vals=[];
+  lines.forEach(L=>L.pts.forEach(p=>{ if(p.v!=null&&isFinite(p.v)) vals.push(p.v); }));
+  if(vals.length<2) return;                       // a single point is not a trend; draw nothing
+  const w=width||SPK_W, h=SPK_H, pad=2;
+  const xs=d3.scaleLinear().domain([YEAR_MIN,YEAR_MAX]).range([pad,w-pad]);
+  const hi=d3.max(vals), lo=Math.min(0,d3.min(vals));
+  const ys=d3.scaleLinear().domain([lo, hi>lo?hi:lo+1]).range([h-pad,pad]);
+  const svg=d3.select(el).append('svg').attr('width',w).attr('height',h)
+    .attr('viewBox',`0 0 ${w} ${h}`).attr('aria-hidden','true');
+  // Where you are on the slider. Drawn first so the series sits on top of it, and kept inset and
+  // faint so on a sparse series it reads as a backdrop rather than competing with the two or three
+  // real observations in front of it.
+  svg.append('line').attr('x1',xs(selY)).attr('x2',xs(selY)).attr('y1',1).attr('y2',h-1)
+    .attr('stroke','rgba(255,255,255,.16)').attr('stroke-width',1);
+  const ln=d3.line().defined(p=>p.v!=null&&isFinite(p.v)).x(p=>xs(p.y)).y(p=>ys(p.v));
+  lines.forEach(L=>{
+    svg.append('path').attr('d',ln(L.pts)||'').attr('fill','none').attr('stroke',L.color)
+      .attr('stroke-width',1).attr('stroke-linejoin','round').attr('stroke-linecap','round')
+      .attr('opacity',.85);
+    // A year present with both neighbours missing draws no line segment at all, so it would vanish
+    // silently. Give it a dot — an isolated observation is still an observation.
+    L.pts.forEach((p,i)=>{
+      if(p.v==null||!isFinite(p.v)) return;
+      const a=L.pts[i-1], b=L.pts[i+1];
+      if((!a||a.v==null)&&(!b||b.v==null))
+        svg.append('circle').attr('cx',xs(p.y)).attr('cy',ys(p.v)).attr('r',1)
+          .attr('fill',L.color).attr('opacity',.85);
+    });
+    const cur=L.pts.find(p=>p.y===selY);
+    if(cur&&cur.v!=null&&isFinite(cur.v))
+      svg.append('circle').attr('cx',xs(cur.y)).attr('cy',ys(cur.v)).attr('r',1.8)
+        .attr('fill',L.color).attr('stroke','#060d08').attr('stroke-width',.7);
+  });
+}
+function flushSparks(){
+  SPK_JOBS.forEach(j=>{
+    const el=document.querySelector('[data-spk="'+j.id+'"]');
+    if(!el) return;
+    // w===0 means elastic: the placeholder is a flex:1 box, so its measured width IS the space the
+    // row has left once the label, the values and the rank chip have taken theirs. Measuring here
+    // rather than at queue time is the whole point — the markup is already in the DOM and laid out.
+    const w = j.w || Math.floor(el.getBoundingClientRect().width);
+    if(w<SPK_MIN){ el.style.flex='0 0 auto'; return; }   // too narrow to say anything; give the space back
+    drawSpark(el,j.lines,selYear,Math.min(w,SPK_W));
+  });
+  SPK_JOBS=[];
+}
+
+/* Per-year world share, regional share and % of GDP for the focal country.
+   TD.ranks carries EVERY year (≈155 countries × 22 years), not just the selected one, so these
+   three rows genuinely have a series and get a sparkline. Firm sites does NOT: D.firms has no year
+   field at all, so any "series" there would have to be invented — it stays a bare count.
+   Memoised per tech+country: the series depends on neither selYear nor the drum filters (the world
+   and regional totals are whole-technology, which is exactly what the amber note above them says). */
+let SHARE_CACHE={key:null,series:null};
+function shareSeries(){
+  const key=TECH+'|'+(D?D.iso:'');
+  if(SHARE_CACHE.key===key&&SHARE_CACHE.series) return SHARE_CACHE.series;
+  const rows=((TD&&TD.ranks)||[]), iso=D?D.iso:'';
+  const byYear=d3.group(rows,r=>r.year);
+  const region=(rows.find(r=>r.iso3===iso)||{}).region||'';
+  const out={gdpImp:[],gdpExp:[],wImp:[],wExp:[],rImp:[],rExp:[]};
+  for(let y=YEAR_MIN;y<=YEAR_MAX;y++){
+    const yr=byYear.get(y), me=yr?yr.find(r=>r.iso3===iso):null;
+    if(!me){ Object.keys(out).forEach(k=>out[k].push({y,v:null})); continue; }
+    const reg=yr.filter(r=>r.region===region), gdpY=GDP.get(iso+'|'+y);
+    out.wImp.push({y,v:rankShare(yr,iso,'imports_kusd').share});
+    out.wExp.push({y,v:rankShare(yr,iso,'exports_kusd').share});
+    out.rImp.push({y,v:rankShare(reg,iso,'imports_kusd').share});
+    out.rExp.push({y,v:rankShare(reg,iso,'exports_kusd').share});
+    // no GDP for that year → null, not 0: a missing denominator is not a zero ratio
+    out.gdpImp.push({y,v:gdpY>0?gdpRankShare(yr,iso,'imports_kusd',y).pct:null});
+    out.gdpExp.push({y,v:gdpY>0?gdpRankShare(yr,iso,'exports_kusd',y).pct:null});
+  }
+  SHARE_CACHE={key,series:out};
+  return out;
+}
+
+/* One partner's 22-year series, from the SAME source the row's headline value came from: the
+   whole-tech partners_yearly with no filter, the matching segments of partners_yearly_sr under a
+   stage/role filter. A filtered row must not be given an unfiltered picture of itself. Cached per
+   tech+country+stage+role so switching drums rebuilds it.
+   Either series only stores each year's TOP partners, so a year in which a partner is absent means
+   "outside that year's top list" — it does NOT mean zero trade. Those years stay null and d3's
+   .defined() BREAKS the line there. Interpolating across the gap or plotting a 0 would both assert
+   something the data does not say. (This is why MYS and VNM read "--": they drop out of the top
+   list rather than out of trade.) Filtering makes those gaps MORE common, not fewer — the _sr top-8
+   is per segment — and they are shown as gaps just the same. */
+let PY_CACHE={key:null,map:null};
+function partnerSeries(dir,partner){
+  const key=TECH+'|'+COUNTRY+'|'+selStage+'|'+selRole;
+  if(PY_CACHE.key!==key||!PY_CACHE.map){
+    const m=new Map();
+    if(srOn()){
+      ((D&&D.partners_yearly_sr)||[]).forEach(p=>{
+        if(!srPass(p.stage,p.role)) return;
+        const k=p.dir+'|'+p.partner+'|'+p.year;
+        m.set(k,(m.get(k)||0)+(+p.v||0));
+      });
+    } else {
+      ((D&&D.partners_yearly)||[]).forEach(p=>m.set(p.dir+'|'+p.partner+'|'+p.year,+p.v||0));
+    }
+    PY_CACHE={key,map:m};
+  }
+  const m=PY_CACHE.map, pts=[];
+  for(let y=YEAR_MIN;y<=YEAR_MAX;y++){
+    const k=dir+'|'+partner+'|'+y;
+    pts.push({y, v:m.has(k)?m.get(k):null});
+  }
+  return pts;
+}
+
 function renderStats(){
   // two independently collapsible panels now: #stats (Trade Flows) and #partners (Top Partners)
   const el=document.getElementById('stats'), pel=document.getElementById('partners');
+  SPK_JOBS=[];                       // dropped on an early return too — never carried into the next call
   if(!el||!pel||!D) return;
+  // ── headline: filtered by the Supply Chain Selector where the data allows it ──────────────
+  // With a stage and/or role picked, exports/imports (and therefore net, %GDP and the growth
+  // arrows) are re-summed from D.timeline, which is keyed year × stage × role × flow.
+  // With NO stage/role filter we deliberately keep reading the precomputed D.yearly series
+  // instead of re-summing the whole of D.timeline: the two agree, but the builder rounds each
+  // stage·role row independently, so a full re-sum can land ±2 KUSD off D.yearly. Falling back
+  // keeps the unfiltered panel byte-identical to what it printed before the drums were wired in.
+  const scope=flowScope();
   const yrRow=y=>((D.yearly||[]).find(r=>r.year===y))||null;
-  const cur=yrRow(selYear), next=yrRow(selYear+1);
-  const exp=cur?cur.exports_kusd:0, imp=cur?cur.imports_kusd:0, net=exp-imp;
-  const expN=next?next.exports_kusd:null, impN=next?next.imports_kusd:null;
+  let exp,imp,expN,impN;
+  if(scope.on){
+    const c=tlYear(selYear), n=tlYear(selYear+1);
+    exp=c?c.exp:0; imp=c?c.imp:0;
+    expN=n?n.exp:null; impN=n?n.imp:null;
+  } else {
+    const cur=yrRow(selYear), next=yrRow(selYear+1);
+    exp=cur?cur.exports_kusd:0; imp=cur?cur.imports_kusd:0;
+    expN=next?next.exports_kusd:null; impN=next?next.imports_kusd:null;
+  }
+  const net=exp-imp;
   const gdp=GDP.get(D.iso+'|'+selYear);
   const expGDPpct=(exp>0&&gdp)?(exp/gdp/10):0, impGDPpct=(imp>0&&gdp)?(imp/gdp/10):0;
 
@@ -939,18 +1264,50 @@ function renderStats(){
 
   const fmt1=v=>v>0?v.toFixed(v<1?2:1)+'%':'—';
   const rk=r=>r&&r>0?`#${r}`:'—';
-  const py=(D.partners_yearly||[]);
-  const top=(dir)=>py.filter(p=>p.dir===dir&&p.year===selYear).sort((a,b)=>b.v-a.v).slice(0,5);
+  // Top Partners: partnersAt() picks the whole-tech series or the stage/role-segmented one, so the
+  // list, its sparklines and the map arrows all move together under the drums.
+  const top=(dir)=>partnersAt(dir,selYear).slice(0,5);
   const partnerRow=(p,dir)=>{
-    const nextRow=py.find(q=>q.year===selYear+1&&q.dir===dir&&q.partner===p.partner);
+    const nextRow=partnersAt(dir,selYear+1).find(q=>q.partner===p.partner);
     const col=dir==='dest'?'#3cb54a':'#f97316';
+    const spk=spkQueue('pt-'+dir+'-'+p.partner, [{pts:partnerSeries(dir,p.partner), color:col}]);
+    // The sparkline replaces the "--" rather than sitting next to it: a row must not carry both a
+    // shrug and a picture of the same thing. A real percentage is still worth its space, so rows
+    // that have a next year keep the arrow AND gain the series.
+    const gr=nextRow?growthArrow(p.v,nextRow.v):'';
     return `<div class="ov-row"><span class="ov-dot" style="background:${col}"></span>
       <span class="ov-cname">${p.partner}</span><span class="ov-cval">${VIZ.fmtV(p.v)}</span>
-      ${growthArrow(p.v, nextRow?nextRow.v:null)}</div>`;
+      ${spk}${gr}</div>`;
   };
   const dests=top('dest'), srcs=top('src');
 
+  // ── scope notes ───────────────────────────────────────────────────────────────────────────
+  // ▣ green: which drum dimensions the headline above actually applied.
+  // ◌ amber: which ones it could not, and why — stated, never silently dropped.
+  const filtered=anyFilter();
+  const scopeOn = scope.on
+    ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
+  const scopeOff = scope.ignored.length
+    ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the trade series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+  const rankNote = filtered
+    ? `<div class="flt-note flt-off">◌ whole technology — world &amp; regional totals are not split by stage · role</div>` : '';
+  // Top Partners reads the same two dimensions the headline does, so it gets the same pair of
+  // notes. What it still cannot do is category / single HS code — and only that now earns amber.
+  const partnerOn = scope.on
+    ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
+  const partnerOff = scope.ignored.length
+    ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the partner series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+
+  // Sparkline series for the three share rows. IMP is amber and EXP green on one shared y-scale,
+  // matching the Imports/Exports labels above and keeping the pair directly comparable.
+  const SS=shareSeries(), CI='#f97316', CE='#3cb54a';
+  const pair=(id,a,b)=>spkQueue(id,[{pts:a,color:CI},{pts:b,color:CE}],0);   // 0 = elastic, see flushSparks
+  const spkGDP=pair('st-gdp',SS.gdpImp,SS.gdpExp);
+  const spkWorld=pair('st-world',SS.wImp,SS.wExp);
+  const spkReg=pair('st-reg',SS.rImp,SS.rExp);
+
   el.innerHTML =
+    scopeOn + scopeOff +
     `<div class="ov-cols">`+
       `<div class="ov-col"><span class="ov-col-label" style="color:#f97316">Imports</span><span class="ov-col-val">${VIZ.fmtV(imp)}</span>`+
         `<span class="ov-col-gdp">${impGDPpct>0?impGDPpct.toFixed(2)+'% GDP':''}</span>`+
@@ -961,17 +1318,28 @@ function renderStats(){
         `<div style="margin-top:3px">${growthArrow(exp,expN)}</div></div>`+
     `</div>`+
     `<div class="ov-net" style="color:${net>=0?'#4ade80':'#f87171'}">${net>=0?'+':'−'}${VIZ.fmtV(Math.abs(net))} net</div>`+
-    `<div class="ov-stat-block">`+
-      `<div class="ov-stat-row"><span class="ov-stat-key">% of GDP</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(gImp.pct)} / ${fmt1(gExp.pct)}</span><span class="ov-stat-rank">${rk(gImp.rank)} / ${rk(gExp.rank)}</span></span></div>`+
-      `<div class="ov-stat-row"><span class="ov-stat-key">World share</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(wImp.share)} / ${fmt1(wExp.share)}</span><span class="ov-stat-rank">${rk(wImp.rank)} / ${rk(wExp.rank)}</span></span></div>`+
-      `<div class="ov-stat-row"><span class="ov-stat-key">${regAbbr} share</span><span class="ov-stat-vals"><span class="ov-stat-pct">${fmt1(rImp.share)} / ${fmt1(rExp.share)}</span><span class="ov-stat-rank">${rk(rImp.rank)} / ${rk(rExp.rank)}</span></span></div>`+
+    rankNote+
+    `<div class="ov-stat-block${filtered?' flt-stale':''}">`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">% of GDP</span><span class="ov-stat-vals">${spkGDP}<span class="ov-stat-pct">${fmt1(gImp.pct)} / ${fmt1(gExp.pct)}</span><span class="ov-stat-rank">${rk(gImp.rank)} / ${rk(gExp.rank)}</span></span></div>`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">World share</span><span class="ov-stat-vals">${spkWorld}<span class="ov-stat-pct">${fmt1(wImp.share)} / ${fmt1(wExp.share)}</span><span class="ov-stat-rank">${rk(wImp.rank)} / ${rk(wExp.rank)}</span></span></div>`+
+      `<div class="ov-stat-row"><span class="ov-stat-key">${regAbbr} share</span><span class="ov-stat-vals">${spkReg}<span class="ov-stat-pct">${fmt1(rImp.share)} / ${fmt1(rExp.share)}</span><span class="ov-stat-rank">${rk(rImp.rank)} / ${rk(rExp.rank)}</span></span></div>`+
+      // Firm sites deliberately has NO sparkline: D.firms carries lat/lon/stage/role/n and no year
+      // at all, so there is no series to draw. A flat line would be a fabrication.
       `<div class="ov-stat-row"><span class="ov-stat-key">Firm sites</span><span class="ov-stat-vals"><span class="ov-stat-pct">${(D.firms||[]).length||'—'}</span></span></div>`+
     `</div>`;
 
-  pel.innerHTML =
+  // The partner panel is never hidden under a filter — a hidden panel is worse than a labelled
+  // one. It is held back in contrast only when it is genuinely stale, i.e. when a filter is on and
+  // NONE of it reached this list (category / product alone). Under a stage/role selection the list
+  // is live and reads at full strength.
+  pel.innerHTML = partnerOn + partnerOff +
+    `<div class="${(!scope.on&&filtered)?'flt-stale':''}">`+
     (dests.length?`<div class="ov-part-title">Top Export Destinations</div>${dests.map(p=>partnerRow(p,'dest')).join('')}`:'')+
     (srcs.length?`<div class="ov-part-title">Top Import Sources</div>${srcs.map(p=>partnerRow(p,'src')).join('')}`:'')+
-    ((!dests.length&&!srcs.length)?`<div class="ov-part-title">no partner data for ${selYear}</div>`:'');
+    ((!dests.length&&!srcs.length)?`<div class="ov-part-title">no partner data for ${selYear}${scope.on?' · '+scope.applied.join(' · '):''}</div>`:'')+
+    `</div>`;
+  flushSparks();          // both panels are in the DOM now — draw into the queued placeholders
+  updateScopeFlags();
 }
 function onYearChange(v){
   selYear=+v; document.getElementById('yr-val').textContent=selYear;
@@ -1023,10 +1391,21 @@ function togglePlay(){
    NOTE (CLAUDE.md): all of these are declared at top-level scope on purpose. A function declared
    inside an if-block is invisible globally and fails silently at call time. */
 const PNL_KEY='navigator.panels.v1';
+// Panels that no longer exist. 'p-sel' (the old "Selection" panel) was dissolved into p-drums —
+// a returning user can still have {"p-sel":false} in storage. Nothing reads it any more (initPanels
+// only walks live headers), but it is stripped on load so the stored layout stays a truthful
+// description of the UI and can never resurrect a hidden readout.
+const PNL_RETIRED=['p-sel'];
 function pnlState(){
-  try{ return JSON.parse(localStorage.getItem(PNL_KEY)||'{}')||{}; }catch(e){ return {}; }
+  try{
+    const st=JSON.parse(localStorage.getItem(PNL_KEY)||'{}')||{};
+    PNL_RETIRED.forEach(k=>{ delete st[k]; });
+    return st;
+  }catch(e){ return {}; }
 }
 function pnlSave(st){ try{ localStorage.setItem(PNL_KEY, JSON.stringify(st)); }catch(e){} }
+// one-shot migration: rewrite storage without the retired keys, so the stale entry is gone for good
+function pnlPrune(){ pnlSave(pnlState()); }
 function pnlIsOpen(id){ const st=pnlState(); return st[id]!==false; }
 // Panels holding an SVG must be redrawn on expand: while collapsed their box is 0-height, so
 // anything drawn then would be laid out against VIZ.dims()'s fallback size.
@@ -1046,6 +1425,7 @@ function pnlToggle(id){
   pnlApply(id,open,true);
 }
 function initPanels(){
+  pnlPrune();   // drop retired panel keys before restoring the persisted layout
   document.querySelectorAll('.pnl-hd[data-pnl]').forEach(hd=>{
     const id=hd.dataset.pnl;
     // native <button> semantics: click fires for mouse AND for Enter/Space, so one listener
@@ -1131,7 +1511,7 @@ async function boot(){
   zoomB=d3.zoom().scaleExtent([0.6,8]).on('zoom',ev=>{ zoomT=ev.transform; if(root) root.attr('transform',zoomT); });
   d3.select('#stage').call(zoomB).on('dblclick.zoom',null);
   await loadCase(TECH,COUNTRY);
-  const pp=q.get('product'); if(pp){ selProduct=pp; drawFusion(); drawNav(); updateReadout(); }
+  const pp=q.get('product'); if(pp){ selProduct=pp; redrawAll(); }
   if(q.get('map')!=='flat') setMapMode('globe');   // default to 3D globe (use ?map=flat for the flat map)
   let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFusion();drawNav();fitBarTitle();},150);});
 }
