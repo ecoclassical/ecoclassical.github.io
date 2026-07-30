@@ -39,7 +39,7 @@
          --nav-w:360px; --nav-h:396px; }  /* Supply Chain Map: 120%/90% of the shared panel size */
   html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
     font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
-  #split{position:fixed;top:110px;left:0;right:0;bottom:0;display:flex;}
+  #split{position:fixed;top:144px;left:0;right:0;bottom:0;display:flex;}
   #left{position:relative;flex:1;min-width:0;}   /* globe/map now spans the full width */
   /* map-mode + firm toggles: bottom-left corner of the globe panel */
   #left #mapmode,#left #firmtoggle{position:absolute;left:14px;z-index:4;
@@ -51,7 +51,7 @@
   #left #firmtoggle.off{opacity:.55;}
   #stage{display:block;width:100%;height:100%;}
   /* Supply Chain Map (formerly "Process of Production") — top-right overlay panel, two view modes */
-  #nav-panel{position:fixed;top:122px;right:16px;z-index:5;width:var(--nav-w);height:var(--nav-h);
+  #nav-panel{position:fixed;top:156px;right:16px;z-index:5;width:var(--nav-w);height:var(--nav-h);
     background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);border-radius:8px;
     padding:10px 14px;backdrop-filter:blur(3px);display:flex;flex-direction:column;}
   #nav-hd{flex:0 0 auto;padding-bottom:6px;}
@@ -64,12 +64,12 @@
   #nav{display:block;width:100%;flex:1;min-height:0;cursor:default;}
 
   /* ── top control bar (125% of the original 88px = 110px) ── */
-  #bar{position:fixed;top:0;left:0;right:0;height:110px;z-index:6;display:flex;align-items:center;gap:16px;
+  #bar{position:fixed;top:0;left:0;right:0;height:144px;z-index:6;display:flex;align-items:center;gap:16px;
     padding:0 16px;background:linear-gradient(180deg,rgba(10,18,24,.96),rgba(10,18,24,.82) 80%,rgba(10,18,24,.6));
     backdrop-filter:blur(3px);border-bottom:1px solid rgba(255,255,255,.07);overflow:hidden;}
   /* three-line brand, left of the bar: CLEAN / VALUE CHAIN / Explorer */
   .brand-2l{display:flex;flex-direction:column;white-space:nowrap;line-height:1.15;flex-shrink:0;gap:1px;}
-  .brand-2l .l1{font-size:.64rem;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.6);text-transform:uppercase;}
+  .brand-2l .l1{font-size:.64rem;font-weight:700;letter-spacing:.5px;color:var(--accent);text-transform:uppercase;}
   .brand-2l .l2{font-size:.86rem;font-weight:800;letter-spacing:.4px;color:#dfe8ee;text-transform:uppercase;}
   .brand-2l .l3{font-size:1.08rem;font-weight:800;letter-spacing:.2px;color:#fff;text-transform:uppercase;}
   #bar-sep{width:1px;align-self:stretch;margin:14px 0;background:rgba(255,255,255,.09);flex-shrink:0;}
@@ -89,12 +89,23 @@
   #bar-title .tech{font-size:1.3rem;font-weight:800;letter-spacing:.2px;}
   #bar-title .country{font-size:.82rem;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase;}
   #bar-title .year{font-size:.78rem;font-weight:600;letter-spacing:.4px;color:var(--faint);}
-  /* ── drum-wheel selectors (Stage → Role → Category → Product), ported from the atlas ── */
-  .drums{display:flex;gap:8px;align-items:flex-end;flex-shrink:0;padding-top:8px;}
+  /* ── Selection title: its own column, styled like #bar-title (the "Solar / BRAZIL / 2023"
+     block) — sits to the LEFT of the legend, with the legend and the 4 drum wheels (Stage/Role/
+     Category/Product, contiguous — Product is just the 4th wheel) following it in the same row.
+     Text is colored with the atlas's own SR/category palette, so the title itself signals what
+     kind of thing (product / stage·role / category) is currently selected. ── */
+  #sel-title{display:flex;flex-direction:column;gap:2px;flex-shrink:0;max-width:260px;}
+  #sel-title .stx{font-size:.86rem;font-weight:800;color:var(--ink);line-height:1.3;}
+  #sel-title .stx .stx-hs{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    color:rgba(255,255,255,.45);display:block;}
+  #sel-title button{align-self:flex-start;background:#1a2430;color:var(--faint);border:1px solid var(--line);
+    border-radius:6px;padding:2px 8px;font:inherit;font-size:.62rem;cursor:pointer;margin-top:1px;}
+  #sel-title button:hover{color:#fff;border-color:var(--accent);}
+  .drums{display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
   .drum-row{display:flex;flex-direction:column;align-items:center;gap:3px;}
   .drum-lab{font-size:.54rem;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);}
   .drum-wrap{height:74px;overflow:hidden;position:relative;width:84px;cursor:ns-resize;}
-  .drum-wrap.drum-product{width:172px;}
+  .drum-wrap.drum-product{width:150px;}
   .drum-wrap::before,.drum-wrap::after{content:"";position:absolute;left:0;right:0;height:18px;z-index:2;pointer-events:none;}
   .drum-wrap::before{top:0;background:linear-gradient(rgba(11,18,26,.98),transparent);}
   .drum-wrap::after{bottom:0;background:linear-gradient(transparent,rgba(11,18,26,.98));}
@@ -106,21 +117,10 @@
   .drum-spacer{height:22px;scroll-snap-align:none;}
   #bar select{background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;
     padding:5px 8px;font:inherit;font-size:.78rem;cursor:pointer;}
-  #sel-readout{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.76rem;flex-shrink:0;}
-  #sel-readout .chip{background:rgba(60,181,74,.14);border:1px solid rgba(60,181,74,.4);border-radius:20px;
-    padding:3px 10px;color:#eaffea;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  #sel-readout .chip.chip-product{white-space:normal;text-overflow:clip;border-radius:10px;padding:4px 12px;
-    line-height:1.3;max-width:280px;}
-  #sel-readout .chip .chip-hs{display:block;font-size:.58rem;font-weight:700;color:rgba(234,255,234,.55);
-    text-transform:uppercase;letter-spacing:.05em;margin-bottom:1px;}
-  #sel-readout .chip .chip-desc{display:block;}
-  #sel-readout button{background:#1a2430;color:var(--faint);border:1px solid var(--line);border-radius:6px;
-    padding:3px 9px;font:inherit;font-size:.72rem;cursor:pointer;}
-  #sel-readout button:hover{color:#fff;border-color:var(--accent);}
 
   /* ── stats panel (atlas-parity overlay, ported .ov-* from build_country_atlas.R) — same size as
      #nav-panel (top-right) so the two overlays read as a matched pair either side of the globe ── */
-  #stats{position:fixed;top:122px;left:16px;z-index:5;background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);
+  #stats{position:fixed;top:156px;left:16px;z-index:5;background:rgba(6,13,8,.93);border:1px solid rgba(60,181,74,.2);
     border-radius:8px;padding:10px 14px;width:var(--panel-w);height:var(--panel-h);overflow-y:auto;
     backdrop-filter:blur(3px);}
   /* section headers, matching the "Supply Chain Map" / nav-panel title's weight+case */
@@ -212,14 +212,16 @@
     </div>
   </div>
   <div class="bar-sep2"></div>
-  <div id="legend"></div>
   <div class="drums">
     <div class="drum-row"><span class="drum-lab">Stage</span><div class="drum-wrap" id="drum-stage"><div class="drum-hl"></div><div class="drum-inner" id="drum-stage-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Role</span><div class="drum-wrap" id="drum-role"><div class="drum-hl"></div><div class="drum-inner" id="drum-role-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Category</span><div class="drum-wrap" id="drum-cat"><div class="drum-hl"></div><div class="drum-inner" id="drum-cat-inner"></div></div></div>
     <div class="drum-row"><span class="drum-lab">Product</span><div class="drum-wrap drum-product" id="drum-product"><div class="drum-hl"></div><div class="drum-inner" id="drum-product-inner"></div></div></div>
   </div>
-  <div id="sel-readout"><span class="chip" id="sel-chip">Whole technology</span>
+  <div class="bar-sep2"></div>
+  <div id="legend"></div>
+  <div class="bar-sep2"></div>
+  <div id="sel-title"><span class="stx" id="sel-stx">Whole technology</span>
     <button id="sel-clear" style="display:none">✕ clear all</button></div>
 </div>
 
@@ -325,7 +327,7 @@ function drawFusion(){
   const defs=root.append('defs');
   [['dest','#3cb54a'],['src','#f97316']].forEach(([k,c])=>{
     defs.append('marker').attr('id','ah-'+k).attr('viewBox','0 0 10 10').attr('refX',8).attr('refY',5)
-      .attr('markerWidth',10).attr('markerHeight',10).attr('markerUnits','userSpaceOnUse')  // fixed size, not ∝ stroke
+      .attr('markerWidth',16).attr('markerHeight',16).attr('markerUnits','userSpaceOnUse')  // fixed size, not ∝ stroke
       .attr('orient','auto-start-reverse')
       .append('path').attr('d','M0,0 L10,5 L0,10 z').attr('fill',c);
   });
@@ -347,8 +349,8 @@ function drawFusion(){
   const arr=[...dests,...srcs];
   const maxV=d3.max(arr,p=>p.v)||1;
   const minV=Math.max(1, d3.min(arr,p=>p.v)||1);
-  const wsc=d3.scaleSqrt().domain([minV, Math.max(maxV, minV+1)]).range([2,18]).clamp(true);  // wide, rank-legible width
-  const rsc=d3.scaleSqrt().domain([0,maxV]).range([2.5,9]);
+  const wsc=d3.scaleSqrt().domain([minV, Math.max(maxV, minV+1)]).range([3,28]).clamp(true);  // wide, rank-legible width
+  const rsc=d3.scaleSqrt().domain([0,maxV]).range([3,11]);
   const ag=root.append('g').attr('class','arrows');
   const gpArc=d3.geoPath(proj);
   // Arrows are drawn full-length (centroid → partner) but MASKED to "everything outside the focal
@@ -383,7 +385,7 @@ function drawFusion(){
       const px=-dy/len, py=dx/len, bow=len*0.3+16;
       const ctrl=[mx+px*bow, my+py*bow];
       ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
-        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.62)
+        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.7)
         .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
     } else {
       // fixed whole-world fit (see VIZ.baseMap 'world' mode above) means every partner's true
@@ -394,7 +396,7 @@ function drawFusion(){
       const px=-dy/len, py=dx/len, bow=len*0.12+8;
       const ctrl=[mx+px*bow, my+py*bow];
       ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
-        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.5)
+        .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.62)
         .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
     }
     // partner dot + label — the partner's true projected position, on both the globe and the map
@@ -439,8 +441,7 @@ function drawFusion(){
 }
 
 /* ── Supply Chain Map — two view modes, toggled via #nav-mode-* buttons ───────── */
-let navMode='product';   // 'product' (per-HS-code dendrite) | 'sr' (7-lane stage/role sankey)
-let sankeyFocus=null;     // 'sr' mode: which country's flows are highlighted (click a node)
+let navMode='product';   // 'product' (per-HS-code dendrite) | 'sr' (7-node stage/role network)
 function drawNav(){ navMode==='sr' ? drawNavSR() : drawNavProduct(); }
 function setNavMode(m){
   if(navMode===m) return;
@@ -448,7 +449,7 @@ function setNavMode(m){
   document.getElementById('nav-mode-product').classList.toggle('active',m==='product');
   document.getElementById('nav-mode-sr').classList.toggle('active',m==='sr');
   document.getElementById('nav-hd-sub').textContent = m==='sr'
-    ? 'country-level flows across the 7 value-chain stages · click a country to trace its flows'
+    ? 'value chain by stage · role — node size = this country’s trade value · click to filter'
     : 'upstream → final product, left to right · click a node to trace it on the map';
   drawNav();
 }
@@ -496,13 +497,18 @@ function drawNavProduct(){
     ns.forEach((n,i)=>nodeY.set(n.cn,pad.top+stp*(i+0.5))); });
   const pos=cn=>[stepToX(stepMap.get(cn)||0), nodeY.get(cn)||H/2];
 
-  // node size ∝ focal-country trade value (fallback: connectivity); trade value is per HS
-  // code, so sibling steps sharing one code also share its size — that's expected, not a bug
-  const tv=new Map(((D&&D.products)||[]).map(p=>[p.code,p.v]));
+  // node size ∝ focal-country export+import trade value AT THE SELECTED YEAR (fallback: all-time
+  // total, then connectivity) — same sqrt-scale transformation as the map's trade-flow arrows/dots
+  // (VIZ arrows use d3.scaleSqrt so visual AREA, not radius, is linear in value — the standard fix
+  // for circles/line-widths, since eyes compare areas). Trade value is per HS code, so sibling
+  // steps sharing one code also share its size — that's expected, not a bug.
+  const tvY=new Map(((D&&D.products_yearly)||[]).filter(p=>p.year===selYear).map(p=>[p.code,p.v]));
+  const tvAll=new Map(((D&&D.products)||[]).map(p=>[p.code,p.v]));
   const deg=new Map(nodes.map(n=>[n.cn,0]));
   edges.forEach(e=>{ const fcn=cnOf(e.from_code,e.from_cn), tcn=cnOf(e.to_code,e.to_cn);
     deg.set(fcn,(deg.get(fcn)||0)+1); deg.set(tcn,(deg.get(tcn)||0)+1); });
-  const useDeg=!tv.size, sval=n=>useDeg?(deg.get(n.cn)||0):(tv.get(n.code)||0);
+  const useYear=!!tvY.size, useAll=!useYear&&!!tvAll.size;
+  const sval=n=>useYear?(tvY.get(n.code)||0):useAll?(tvAll.get(n.code)||0):(deg.get(n.cn)||0);
   const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,sval)||1]).range([3,11]);
 
   const cm=catMap();
@@ -525,105 +531,70 @@ function drawNavProduct(){
     .attr('opacity',n=>{ if(selProduct) return n.code===selProduct?1:.35; if(drumOn) return passDrum(n)?.98:.14; return .92; })
     .attr('cursor','pointer')
     .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; drawFusion(); drawNav(); updateReadout(); })
-    .on('mousemove',(e,n)=>tip(e,'HS '+n.code+'<br><b>'+(n.full||n.name||n.code)+'</b><br>'+n.stage+' · '+n.role+' · step '+stepMap.get(n.cn)+(tv.get(n.code)?'<br>'+VIZ.fmtV(tv.get(n.code)):'')))
+    .on('mousemove',(e,n)=>tip(e,'HS '+n.code+'<br><b>'+(n.full||n.name||n.code)+'</b><br>'+n.stage+' · '+n.role+' · step '+stepMap.get(n.cn)+(sval(n)?'<br>'+VIZ.fmtV(sval(n))+' · '+selYear:'')))
     .on('mouseout',tipOut);
 }
 
 /* Country-level value-chain flows, ported from build_country_atlas.R drawAtlasSankey() — the
    same 7-lane (5-column) structure as the atlas's Trade Flows sankey. "By Stage/Role" mode. */
+/* "By Stage/Role" mode: the value chain as a 7-NODE network (one node per stage·role, not per
+   country and not per HS code) — same left-to-right topology the old country-ribbon sankey used
+   (raw material → processed material → {process equipment, product component} at midstream →
+   same split carried into downstream → final product), but drawn as a plain node-link diagram
+   like the By-Product view above, so the two modes read as parallel "network" views of the same
+   value chain at two different levels of granularity. */
 function drawNavSR(){
   const svg=d3.select('#nav'); svg.selectAll('*').remove();
   const {W,H}=VIZ.dims('#nav');
-  const flows=(TD&&TD.sankey)||[];
-  if(!flows.length){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle')
-    .attr('fill','rgba(255,255,255,.3)').attr('font-size',11).text('no sankey data for this tech'); return; }
   const LANE_SR=['Upstream|Raw Material','Midstream|Processed Material','Midstream|Process Equipment',
     'Midstream|Product Component','Downstream|Product Component','Downstream|Process Equipment','Final Product|Final Product'];
-  const cname=iso=>(COUNTRIES.find(c=>c.iso===iso)||{}).name||iso;
-  // 5-column layout: lane0 | lane1 | lanes2+3(stacked) | lanes5+4(stacked) | lane6 — matches the atlas
-  const laneCol={0:0,1:1,2:2,3:2,4:3,5:3,6:4};
-  const COL_X=[0.07,0.27,0.5,0.73,0.93];
-  const COL_LAB=[['Raw Material',0],['Proc. Material',1],['Proc. Equip. / Comp.',2],['Proc. Equip. / Comp.',5],['Final Product',6]];
-  const P={t:14,b:4,l:6,r:6};
-  const iw=W-P.l-P.r, ih=H-P.t-P.b;
-  [0.17,0.615].forEach(xf=>{
-    svg.append('line').attr('x1',P.l+xf*iw).attr('x2',P.l+xf*iw).attr('y1',P.t).attr('y2',P.t+ih)
-      .attr('stroke','rgba(255,255,255,.12)').attr('stroke-width',0.8).attr('stroke-dasharray','4,4');
+  const LANE_LABEL=['Raw Material','Processed Material','Process Equipment','Product Component','Product Component','Process Equipment','Final Product'];
+  const EDGES_SR=[[0,1],[1,2],[1,3],[2,5],[3,4],[5,6],[4,6]];
+  const COLX=[0.09,0.30,0.51,0.51,0.72,0.72,0.91];        // x-fraction per lane (2&3 share a column; 5&4 share a column)
+  const VSLOT=['full','full','top','bottom','bottom','top','full'];  // vertical half within that shared column
+
+  // Node size ∝ the FOCAL COUNTRY's own export+import trade value for that stage·role AT THE
+  // SELECTED YEAR (from D.timeline: already year × stage × role × flow) — same sqrt-scale
+  // transformation the map's trade-flow arrows/dots use: encoding value as radius ∝ √value makes
+  // the visual AREA (what the eye actually compares) linear in value, not the radius itself.
+  const tlY=((D&&D.timeline)||[]).filter(t=>t.year===selYear);
+  const srVal=new Map();
+  tlY.forEach(t=>{ const k=t.stage+'|'+t.role; srVal.set(k,(srVal.get(k)||0)+(+t.v||0)); });
+  const vals=LANE_SR.map(k=>srVal.get(k)||0);
+  const rSc=d3.scaleSqrt().domain([0,d3.max(vals)||1]).range([5,26]);
+
+  const P={t:14,b:16,l:10,r:10};
+  const iw=W-P.l-P.r, ih=H-P.t-P.b, yT=P.t, yB=P.t+ih, yMid=(yT+yB)/2;
+  const yFor=slot=>slot==='full'?yMid:slot==='top'?(yT+yMid)/2:(yMid+yB)/2;
+  const pos=LANE_SR.map((k,i)=>({key:k,lane:i,x:P.l+COLX[i]*iw,y:yFor(VSLOT[i]),r:rSc(vals[i]),v:vals[i]}));
+
+  const defs=svg.append('defs');
+  defs.append('marker').attr('id','sr-ah').attr('viewBox','0 0 10 10').attr('refX',8).attr('refY',5)
+    .attr('markerWidth',9).attr('markerHeight',9).attr('markerUnits','userSpaceOnUse').attr('orient','auto')
+    .append('path').attr('d','M0,0 L10,5 L0,10 z').attr('fill','rgba(255,255,255,.45)');
+
+  const eg=svg.append('g');
+  EDGES_SR.forEach(([a,b])=>{
+    const A=pos[a], B=pos[b];
+    const dx=B.x-A.x, dy=B.y-A.y, len=Math.hypot(dx,dy)||1, ux=dx/len, uy=dy/len;
+    eg.append('line').attr('x1',A.x+ux*(A.r+2)).attr('y1',A.y+uy*(A.r+2))
+      .attr('x2',B.x-ux*(B.r+6)).attr('y2',B.y-uy*(B.r+6))
+      .attr('stroke','rgba(255,255,255,.4)').attr('stroke-width',1.8).attr('marker-end','url(#sr-ah)');
   });
-  COL_LAB.forEach(([lbl,lane])=>{
-    svg.append('text').attr('x',P.l+COL_X[laneCol[lane]]*iw).attr('y',10).attr('text-anchor','middle')
-      .attr('fill',VIZ.SR[LANE_SR[lane]]||'#9ca3af').attr('font-size',6).attr('opacity',.7).text(lbl);
-  });
-  // Build node weight maps per lane
-  const laneM={};
-  flows.forEach(f=>{
-    [[f.from_label,+f.from_lane7],[f.to_label,+f.to_lane7]].forEach(([id,lane])=>{
-      if(!laneM[lane]) laneM[lane]=new Map();
-      laneM[lane].set(id,(laneM[lane].get(id)||0)+(+f.weight||0));
-    });
-  });
-  // Ensure the focal country appears in every lane, even if not among its top flows
-  const focIso=D.iso;
-  [0,1,2,3,4,5,6].forEach(lane=>{
-    if(!laneM[lane]) laneM[lane]=new Map();
-    const has=[...laneM[lane].keys()].some(k=>k.split(' | ')[0]===focIso);
-    if(!has) laneM[lane].set(focIso+' | (none)', d3.min([...laneM[lane].values()])||1);
-  });
-  const NW=8, GAP_NODE=2, GAP_ROLE=8;
-  const nPos=new Map();
-  function layoutLane(lane,yStart,yEnd){
-    const nm=laneM[lane]; if(!nm||!nm.size) return;
-    const ci=laneCol[lane];
-    const sorted=[...nm.entries()].sort((a,b)=>b[1]-a[1]);
-    const n=sorted.length;
-    const logWts=sorted.map(([,wt])=>Math.log1p(wt));
-    const sumLog=logWts.reduce((s,v)=>s+v,0)||1;
-    const availH=yEnd-yStart-GAP_NODE;
-    let y=yStart+GAP_NODE/2;
-    sorted.forEach(([id,wt],i)=>{
-      const h=Math.max(2.5,(availH-n*GAP_NODE)*(logWts[i]/sumLog));
-      nPos.set(id,{x:P.l+COL_X[ci]*iw-NW/2,y,h,w:NW,lane,iso:id.split(' | ')[0],wt});
-      y+=h+GAP_NODE;
-    });
-  }
-  const yT=P.t+2, yB=P.t+2+ih-4, yMid=(yT+yB)/2;
-  layoutLane(0,yT,yB); layoutLane(1,yT,yB);
-  layoutLane(2,yT,yMid-GAP_ROLE/2); layoutLane(3,yMid+GAP_ROLE/2,yB);
-  layoutLane(5,yT,yMid-GAP_ROLE/2); layoutLane(4,yMid+GAP_ROLE/2,yB);
-  layoutLane(6,yT,yB);
-  if(sankeyFocus===null) sankeyFocus=focIso;
-  const foc=sankeyFocus;
-  svg.on('click',()=>{ sankeyFocus=focIso; drawNavSR(); });   // click background → reset to focal country
-  const wVals=flows.map(f=>+f.weight).filter(v=>v>0);
-  const minW=d3.min(wVals)||1, maxW=d3.max(wVals)||1;
-  const swSc=d3.scaleLog().domain([minW,Math.max(maxW,minW*1.01)]).range([0.4,3]).clamp(true);
-  const lg=svg.append('g');
-  flows.forEach(f=>{
-    const src=nPos.get(f.from_label), tgt=nPos.get(f.to_label); if(!src||!tgt) return;
-    const active=f.from_country===foc||f.to_country===foc;
-    const col=VIZ.SR[LANE_SR[+f.from_lane7]]||'#9ca3af';
-    const x1=src.x+src.w,y1=src.y+src.h/2,x2=tgt.x,y2=tgt.y+tgt.h/2,cx=(x1+x2)/2;
-    lg.append('path').attr('d',`M${x1},${y1}C${cx},${y1} ${cx},${y2} ${x2},${y2}`)
-      .attr('fill','none').attr('stroke',col)
-      .attr('stroke-width',active?swSc(+f.weight||minW)*1.4:swSc(+f.weight||minW))
-      .attr('opacity',active?0.8:0.22)
-      .on('mousemove',ev=>tip(ev,cname(f.from_country)+' → '+cname(f.to_country)+'<br><b>'+VIZ.fmtV(f.weight)+'</b>'))
-      .on('mouseout',tipOut);
-  });
+
   const ng=svg.append('g');
-  nPos.forEach((n,id)=>{
-    const active=n.iso===foc;
-    const col=VIZ.SR[LANE_SR[n.lane]]||'#9ca3af';
-    ng.append('rect').attr('x',n.x).attr('y',n.y).attr('width',n.w).attr('height',n.h)
-      .attr('fill',col).attr('rx',1.5).attr('opacity',active?0.96:0.4).attr('cursor','pointer')
-      .on('click',ev=>{ ev.stopPropagation(); sankeyFocus=n.iso; drawNavSR(); })
-      .on('mousemove',ev=>tip(ev,'<b>'+cname(n.iso)+'</b><br>'+VIZ.fmtV(n.wt)))
+  pos.forEach(n=>{
+    const [nSt,nRo]=n.key.split('|'), active=selStage===nSt&&selRole===nRo;
+    const col=VIZ.SR[n.key]||'#9ca3af';
+    ng.append('circle').attr('cx',n.x).attr('cy',n.y).attr('r',n.r)
+      .attr('fill',col).attr('opacity',active?0.98:0.82)
+      .attr('stroke',active?'#fff':'rgba(255,255,255,.25)').attr('stroke-width',active?1.8:.8)
+      .attr('cursor','pointer').on('click',()=>pickSR(nSt,nRo))
+      .on('mousemove',ev=>tip(ev,'<b>'+n.key.replace('|',' · ')+'</b><br>'+VIZ.fmtV(n.v)+' · '+selYear))
       .on('mouseout',tipOut);
-    if(active) ng.append('rect').attr('x',n.x-1).attr('y',n.y-1).attr('width',n.w+2).attr('height',n.h+2)
-      .attr('fill','none').attr('stroke','#fff').attr('stroke-width',1.4).attr('rx',2).attr('opacity',.9);
-    if(n.h>=6) ng.append('text').attr('x',n.x+n.w/2).attr('y',n.y+n.h/2+1.6).attr('text-anchor','middle')
-      .attr('font-size',4.2).attr('fill',active?'#fff':'rgba(255,255,255,.8)').attr('font-weight',active?'700':'400')
-      .attr('pointer-events','none').text(n.iso);
+    svg.append('text').attr('x',n.x).attr('y',n.y+n.r+11).attr('text-anchor','middle')
+      .attr('font-size',7).attr('fill','rgba(255,255,255,.55)').attr('pointer-events','none')
+      .text(LANE_LABEL[n.lane]);
   });
 }
 
@@ -736,14 +707,30 @@ function syncBarTitle(){
 function updateReadout(){
   const cs=document.getElementById('country-sel'); if(cs&&cs.value!==COUNTRY) cs.value=COUNTRY;
   syncBarTitle();
-  const chip=document.getElementById('sel-chip'), clr=document.getElementById('sel-clear');
-  const drumBits=[selStage,selRole,selCat].filter(x=>x&&x!=='ALL');
+  // Selection title: what's picked right now.
+  //  - Product: HS code colored by the TECH's own color, description in plain white below it.
+  //  - Stage/Role: stage on its own line, role on the next (uses the bar's height instead of a
+  //    "Stage · Role" single line) — colored via the atlas's SR palette when both are exact
+  //    (or when the stage has only one role anyway: Upstream/Final Product).
+  //  - Category: colored via the atlas's category palette.
+  const stx=document.getElementById('sel-stx'), clr=document.getElementById('sel-clear');
   if(selProduct){
-    chip.classList.add('chip-product');
-    chip.innerHTML='<span class="chip-hs">HS '+selProduct+'</span><span class="chip-desc">'+(selName()||'')+'</span>';
+    stx.style.color='';   // plain white (var(--ink)) for the description
+    stx.innerHTML='<span class="stx-hs" style="color:'+(TECH_COLORS[TECH]||'#e2e8f0')+'">HS '+selProduct+'</span>'+(selName()||'');
+  } else if(selStage!=='ALL'||selRole!=='ALL'){
+    let col=(selStage!=='ALL'&&selRole!=='ALL')?VIZ.SR[selStage+'|'+selRole]:null;
+    if(!col&&selRole==='ALL'){
+      if(selStage==='Upstream') col=VIZ.SR['Upstream|Raw Material'];
+      else if(selStage==='Final Product') col=VIZ.SR['Final Product|Final Product'];
+    }
+    stx.style.color=col||'#e2e8f0';
+    stx.innerHTML=[selStage,selRole].filter(x=>x!=='ALL').join('<br>');
+  } else if(selCat!=='ALL'){
+    stx.style.color=VIZ.CAT[selCat]||'#e2e8f0';
+    stx.innerHTML=selCat;
   } else {
-    chip.classList.remove('chip-product');
-    chip.textContent = drumBits.length ? drumBits.join(' · ') : 'Whole technology';
+    stx.style.color='';
+    stx.innerHTML='Whole technology';
   }
   clr.style.display=anyFilter()?'':'none';
   updateLegend();
@@ -828,7 +815,7 @@ function renderStats(){
 }
 function onYearChange(v){
   selYear=+v; document.getElementById('yr-val').textContent=selYear;
-  syncBarTitle(); renderStats(); drawFusion();
+  syncBarTitle(); renderStats(); drawFusion(); drawNav();   // both nav-panel node sizes are year-specific now
 }
 
 /* ── loading ───────────────────────────────────────────────────────────────── */
@@ -842,7 +829,6 @@ async function loadCase(tech,slug){
   try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
   catch(e){ TD=null; }
   selProduct=null; selStage='ALL'; selRole='ALL'; selCat='ALL';   // reset filters on new case
-  sankeyFocus=null;   // "By Stage/Role" mode re-defaults to the new focal country
   zoomT=d3.zoomIdentity; if(zoomB) d3.select('#stage').call(zoomB.transform, d3.zoomIdentity);  // recenter on new focal
   globeRot=null; globeScale=1;   // globe recenters/​rezooms on the new focal country
   document.getElementById('tech-sel').value=tech;

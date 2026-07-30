@@ -158,8 +158,10 @@ include:
   - _pages
   - files
   - _proto_datadriven
+  - navigator
   - _countries.json
   - _index.json
+  - _gdp.json
   - _tech_*.json
 exclude:
   - "*.sublime-project"

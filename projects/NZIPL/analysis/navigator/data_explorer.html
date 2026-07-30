@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clean Supply Chain Data Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#073309; --accent:#3cb54a;
+  --bg:#ffffff; --panel:#f8faf8; --fg:#111827; --mut:#6b7280;
+  --line:#e5e7eb; --line2:#f1f3f2;
+  --raw:#073309; --derived:#1d4ed8; --model:#7c3aed;
+  --warn-bg:#fffbeb; --warn-line:#fcd34d; --warn-fg:#78350f;
+  --flag:#b45309;
+}
+@media (prefers-color-scheme:dark){
+ :root{
+  --bg:#0b100c; --panel:#121a13; --fg:#e8ece9; --mut:#9aa5a0;
+  --line:#222e25; --line2:#1a231c;
+  --raw:#4ba055; --derived:#7aa2ff; --model:#c4a0ff;
+  --warn-bg:#241d0c; --warn-line:#6b5518; --warn-fg:#f3d99a;
+  --flag:#e0a458;
+ }
+}
+:root[data-theme="light"]{
+  --bg:#ffffff; --panel:#f8faf8; --fg:#111827; --mut:#6b7280;
+  --line:#e5e7eb; --line2:#f1f3f2;
+  --raw:#073309; --derived:#1d4ed8; --model:#7c3aed;
+  --warn-bg:#fffbeb; --warn-line:#fcd34d; --warn-fg:#78350f; --flag:#b45309;
+}
+:root[data-theme="dark"]{
+  --bg:#0b100c; --panel:#121a13; --fg:#e8ece9; --mut:#9aa5a0;
+  --line:#222e25; --line2:#1a231c;
+  --raw:#4ba055; --derived:#7aa2ff; --model:#c4a0ff;
+  --warn-bg:#241d0c; --warn-line:#6b5518; --warn-fg:#f3d99a; --flag:#e0a458;
+}
+
+*{box-sizing:border-box}
+html,body{max-width:100%}
+body{margin:0;font:14px/1.5 Archivo,system-ui,-apple-system,sans-serif;
+     color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+header{background:var(--brand);color:#fff;padding:16px 22px 14px;
+       display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0;font-weight:700;letter-spacing:-.01em}
+header .sub{font-size:11px;opacity:.72;letter-spacing:.02em}
+.nav-chip{color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+          border-radius:5px;padding:5px 11px;text-decoration:none;font-size:12px;font-weight:600;
+          white-space:nowrap;transition:background .12s}
+.nav-chip:hover{background:rgba(255,255,255,.28)}
+.spacer{margin-left:auto}
+
+/* ── Provenance legend ────────────────────────────────────────────────── */
+.legend{padding:11px 22px;font-size:12px;color:var(--mut);background:var(--panel);
+        border-bottom:1px solid var(--line);line-height:1.85}
+.legend b{color:var(--fg);font-weight:600}
+.legend .sep{color:var(--line);margin:0 6px}
+
+/* ── Controls ─────────────────────────────────────────────────────────── */
+.bar{display:flex;gap:14px;padding:13px 22px;border-bottom:1px solid var(--line);
+     flex-wrap:wrap;align-items:flex-end}
+.ctl label{font-size:10px;color:var(--mut);display:block;text-transform:uppercase;
+           letter-spacing:.07em;font-weight:600;margin-bottom:3px}
+select,input[type=number]{font:13px Archivo,system-ui,sans-serif;padding:6px 8px;
+     border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);
+     max-width:100%}
+select:disabled,input:disabled{opacity:.38;cursor:not-allowed}
+.ctl.off label{opacity:.45}
+#sel-country{max-width:280px}
+#sel-seg{max-width:250px}
+#sel-tech{min-width:150px}
+
+/* Downloads sit at the far end of the control bar: the file is the point of
+   the tool, so it is a peer of the filters, not an afterthought in a menu. */
+.ctl.dl{margin-left:auto}
+.dlbtn{cursor:pointer;border:1px solid var(--brand);background:var(--brand);color:#fff;
+       border-radius:5px;padding:6px 13px;font:600 12px Archivo,system-ui,sans-serif;
+       transition:opacity .12s}
+.dlbtn+.dlbtn{margin-left:6px}
+.dlbtn:hover{opacity:.85}
+@media (prefers-color-scheme:dark){.dlbtn{background:var(--accent);border-color:var(--accent);color:#06210a}}
+:root[data-theme="dark"] .dlbtn{background:var(--accent);border-color:var(--accent);color:#06210a}
+
+/* ── Presets ──────────────────────────────────────────────────────────── */
+.presets{display:flex;gap:8px;padding:12px 22px;flex-wrap:wrap;
+         border-bottom:1px solid var(--line)}
+.preset{cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg);
+        border-radius:5px;padding:8px 13px;font:600 12px Archivo,system-ui,sans-serif;
+        transition:background .12s,border-color .12s}
+.preset:hover{border-color:var(--accent)}
+.preset.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+@media (prefers-color-scheme:dark){.preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
+:root[data-theme="dark"] .preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
+
+/* ── Notes / banners ──────────────────────────────────────────────────── */
+.note{margin:0;padding:11px 22px;background:var(--warn-bg);color:var(--warn-fg);
+      border-bottom:1px solid var(--warn-line);font-size:12px;line-height:1.65}
+.note b{font-weight:700}
+.note code{font:600 11px ui-monospace,SFMono-Regular,Menlo,monospace}
+
+#summary{padding:13px 22px;background:var(--panel);border-bottom:1px solid var(--line);
+         font-size:13px;font-weight:500}
+#summary .k{font-weight:700}
+
+/* ── Table ────────────────────────────────────────────────────────────── */
+#tablewrap{overflow-x:auto;padding:0 22px 8px;max-width:100%}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;
+      font-size:13px;min-width:640px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line2);text-align:right;
+      white-space:nowrap;vertical-align:top}
+th.tl,td.tl{text-align:left;white-space:normal}
+th.tl{min-width:96px}
+th.tl.w,td.tl.w{min-width:190px;max-width:290px}
+td.tl.w{font-size:12.5px;color:var(--mut)}
+.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+       overflow:hidden;line-height:1.35}
+td.tl.desc{min-width:220px;max-width:340px;white-space:normal;line-height:1.35;
+           font-size:12.5px;color:var(--mut)}
+th{position:sticky;top:0;z-index:2;background:var(--bg);font-size:10.5px;
+   text-transform:uppercase;letter-spacing:.05em;font-weight:700;
+   border-bottom:2px solid var(--brand);cursor:pointer;vertical-align:bottom;
+   padding-bottom:7px}
+@media (prefers-color-scheme:dark){th{border-bottom-color:var(--accent)}}
+:root[data-theme="dark"] th{border-bottom-color:var(--accent)}
+th:hover{color:var(--accent)}
+th .lab{display:block}
+tbody tr:hover{background:var(--panel)}
+td.num0{color:var(--mut)}
+.cls{display:inline-block;font:700 8.5px/1.5 Archivo,system-ui,sans-serif;padding:1px 5px;
+     border-radius:3px;color:#fff;letter-spacing:.06em;margin-top:3px}
+.cls.raw{background:var(--raw)} .cls.derived{background:var(--derived)}
+.cls.model{background:var(--model)}
+@media (prefers-color-scheme:dark){.cls{color:#0b100c}}
+:root[data-theme="dark"] .cls{color:#0b100c}
+.flag{color:var(--flag);font-weight:700;cursor:help;margin-left:3px}
+.hs{font:600 12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ── Column dictionary ────────────────────────────────────────────────── */
+details.dict{margin:4px 22px 20px;border:1px solid var(--line);border-radius:6px;
+             background:var(--panel)}
+details.dict>summary{cursor:pointer;padding:10px 14px;font:600 12px Archivo,system-ui,sans-serif;
+             list-style:none}
+details.dict>summary::-webkit-details-marker{display:none}
+details.dict>summary::before{content:"▸ ";color:var(--accent)}
+details.dict[open]>summary::before{content:"▾ "}
+.dictwrap{overflow-x:auto;padding:0 14px 12px}
+table.dicttbl{font-size:12px;min-width:520px}
+table.dicttbl th{position:static;border-bottom:1px solid var(--line);text-transform:none;
+             letter-spacing:0;cursor:default;font-size:11px}
+table.dicttbl th,table.dicttbl td{text-align:left;white-space:normal;padding:5px 8px}
+table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--mut)}
+
+footer{padding:18px 22px 28px;font-size:11.5px;color:var(--mut);
+       border-top:1px solid var(--line);line-height:1.75;background:var(--panel)}
+footer b{color:var(--fg)}
+footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Clean Supply Chain Data Explorer</h1>
+  <span class="sub" id="meta-line"></span>
+  <span class="spacer"></span>
+  <a class="nav-chip" href="navigator.html">&larr;&nbsp;Atlas Navigator</a>
+</header>
+
+<div class="legend">
+  <b>Every column is labelled with where its number comes from.</b><br>
+  <span class="cls raw">RAW</span> as recorded in the source files &mdash; no arithmetic
+  applied on this page
+  <span class="sep">|</span>
+  <span class="cls derived">DERIVED</span> computed in your browser from operands that are
+  themselves shown as columns, so every figure can be reproduced by hand
+  <span class="sep">|</span>
+  <span class="cls model">MODEL</span> output of an external machine-learning model &mdash;
+  <b>not</b> recomputable from this page.
+  <span class="sep">|</span>
+  Click any column heading to sort. Open <b>Column dictionary</b> below the table for the
+  exact source file and formula behind each column.
+</div>
+
+<div class="bar">
+  <div class="ctl" id="ctl-tech"><label for="sel-tech">Supply chain</label>
+    <select id="sel-tech"><option value="ALL">All 10 chains</option></select></div>
+  <div class="ctl" id="ctl-seg"><label for="sel-seg">Segment</label>
+    <select id="sel-seg"><option value="ALL">All segments</option></select></div>
+  <div class="ctl" id="ctl-country"><label for="sel-country">Country</label>
+    <select id="sel-country"><option value="ALL">World (all countries)</option></select></div>
+  <div class="ctl"><label for="y0">From year</label>
+    <input type="number" id="y0" min="1995" max="2024" step="1" value="2015" style="width:88px"></div>
+  <div class="ctl"><label for="y1">To year</label>
+    <input type="number" id="y1" min="1995" max="2024" step="1" value="2024" style="width:88px"></div>
+  <div class="ctl dl"><label>Download this table</label>
+    <button class="dlbtn" id="dl-csv" title="Comma-separated values — exactly the rows and columns on screen, with raw unrounded numbers and a notes block naming every source and formula.">&darr;&nbsp;CSV</button>
+    <button class="dlbtn" id="dl-xlsx" title="Excel workbook (SpreadsheetML) with two sheets: Notes (sources, units, formulas, caveats) and Data (exactly the table on screen, as numbers).">&darr;&nbsp;Excel</button></div>
+</div>
+
+<div class="presets">
+  <button class="preset" data-preset="chains">Q1 &middot; Are the chains growing?</button>
+  <button class="preset" data-preset="segments">Q2 &middot; Which segments?</button>
+  <button class="preset" data-preset="exporters">Q3 &middot; Who exports?</button>
+  <button class="preset" data-preset="importers">Q4 &middot; Who imports?</button>
+  <button class="preset" data-preset="products">HS-6 product detail</button>
+</div>
+
+<p class="note" id="caveat" hidden></p>
+<p class="note" id="revnote" hidden></p>
+<div id="summary">Loading&hellip;</div>
+<div id="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+
+<details class="dict" id="dict">
+  <summary>Column dictionary &mdash; source and formula for every column shown</summary>
+  <div class="dictwrap"><table class="dicttbl"><thead><tr>
+    <th style="width:22%">Column</th><th style="width:11%">Class</th>
+    <th style="width:33%">Source</th><th style="width:34%">How it is produced</th>
+  </tr></thead><tbody id="dictbody"></tbody></table></div>
+</details>
+
+<footer id="prov"></footer>
+
+<script src="de.js"></script>
+<script>boot();</script>
+</body>
+</html>

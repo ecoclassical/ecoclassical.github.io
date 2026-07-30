@@ -330,36 +330,59 @@ section:last-of-type { padding-bottom: 88px; }
 </header>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     ★ — CLEAN VALUE CHAIN EXPLORER  (Atlas + Intelligence Report — Integrated Explorer)
-     Hand-authored flagship section. Links to the data-driven integrated-explorer engine at
-     analysis/_proto_datadriven/integrated_explorer.html — served over HTTP (fetches case JSON).
+     ★ — CLEAN VALUE CHAIN EXPLORER  (Atlas Navigator + Data Explorer)
+     Hand-authored flagship section. Links to the data-driven engine at
+     analysis/navigator/navigator.html and the table-first
+     analysis/navigator/data_explorer.html — both served over HTTP (they fetch JSON).
+     analysis/_proto_datadriven/ is a FROZEN backup kept deployed so its historical
+     public URL keeps resolving — do not link it from this page.
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="cockpit">
   <div class="wrap">
     <div class="section-label"><span class="sl-num">★ —</span> Clean Value Chain Explorer
       <span style="font-size:9px;font-weight:700;color:#3cb54a;background:rgba(60,181,74,.12);border:1px solid rgba(60,181,74,.4);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">NEW · EXPLORER</span>
     </div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:18px;">One integrated view fusing the <b style="color:var(--text)">Atlas</b> and the <b style="color:var(--text)">Intelligence Report</b>: a focus country on the world map, its domestic S&amp;P firm activity inside, external trade arrows to the top import sources &amp; export destinations, and the process-of-production dendrite overlaid as a live navigator radiating from the country. Two ways to drive it — <b style="color:var(--text)">navigate the map</b> to change the focus country, or <b style="color:var(--text)">walk the dendrite</b> from product to product, updating the map beneath. Data-driven across 27 countries × 11 technologies.</p>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:18px;">Two complementary entry points. The <b style="color:var(--text)">Atlas Navigator</b> is one integrated view fusing the <b style="color:var(--text)">Atlas</b> and the <b style="color:var(--text)">Intelligence Report</b>: a focus country on the world map, its domestic S&amp;P firm activity inside, external trade arrows to the top import sources &amp; export destinations, and the process-of-production dendrite overlaid as a live navigator radiating from the country. Two ways to drive it — <b style="color:var(--text)">navigate the map</b> to change the focus country, or <b style="color:var(--text)">walk the dendrite</b> from product to product, updating the map beneath. The <b style="color:var(--text)">Data Explorer</b> is the table-first route into the same BACI evidence base. Data-driven across 27 countries × 11 technologies.</p>
 
-    <div class="flagship-card">
-      <div class="a-header">
-        <div class="a-badge green">★ Flagship · Atlas + Intelligence Report — Integrated Explorer</div>
-        <div class="a-title" style="margin-top:8px;">Clean Value Chain Explorer</div>
-        <div class="a-desc">Focus-country cockpit: world map + domestic firm activity + edge-clamped trade arrows for the selected product + a radial supply-chain dendrite that doubles as the product navigator. Click a country to refocus; click a supply-chain node to trace that product across suppliers, buyers, and domestic firms.</div>
-      </div>
-      <div class="a-body">
-        <div class="a-sub">Quick launch</div>
-        <div class="cases-grid compact">
-          <a class="case-chip" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Solar&amp;country=India"><span class="chip-tech" style="color:var(--solar)">Solar</span><span class="chip-country">India</span></a>
-          <a class="case-chip" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Batteries&amp;country=South_Korea"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">South Korea</span></a>
-          <a class="case-chip" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Wind&amp;country=Japan"><span class="chip-tech" style="color:var(--wind)">Wind</span><span class="chip-country">Japan</span></a>
-          <a class="case-chip" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Magnets&amp;country=Japan"><span class="chip-tech" style="color:var(--magnets)">Magnets</span><span class="chip-country">Japan</span></a>
-          <a class="case-chip" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Nuclear&amp;country=Japan"><span class="chip-tech" style="color:var(--nuclear)">Nuclear</span><span class="chip-country">Japan</span></a>
-          <a class="case-chip" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Transmission&amp;country=Vietnam"><span class="chip-tech" style="color:var(--transmission)">Transmission</span><span class="chip-country">Vietnam</span></a>
+    <div class="atlas-2col">
+
+      <!-- ATLAS NAVIGATOR -->
+      <div class="flagship-card">
+        <div class="a-header">
+          <div class="a-badge green">★ Flagship · Atlas + Intelligence Report — Atlas Navigator</div>
+          <div class="a-title" style="margin-top:8px;">Clean Supply Chain Atlas Navigator</div>
+          <div class="a-desc">Focus-country cockpit: world map + domestic firm activity + edge-clamped trade arrows for the selected product + a radial supply-chain dendrite that doubles as the product navigator. Click a country to refocus; click a supply-chain node to trace that product across suppliers, buyers, and domestic firms.</div>
+        </div>
+        <div class="a-body">
+          <div class="a-sub">Quick launch</div>
+          <div class="cases-grid compact">
+            <a class="case-chip" href="analysis/navigator/navigator.html?tech=Solar&amp;country=India"><span class="chip-tech" style="color:var(--solar)">Solar</span><span class="chip-country">India</span></a>
+            <a class="case-chip" href="analysis/navigator/navigator.html?tech=Batteries&amp;country=South_Korea"><span class="chip-tech" style="color:var(--batteries)">Batteries</span><span class="chip-country">South Korea</span></a>
+            <a class="case-chip" href="analysis/navigator/navigator.html?tech=Wind&amp;country=Japan"><span class="chip-tech" style="color:var(--wind)">Wind</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/navigator/navigator.html?tech=Magnets&amp;country=Japan"><span class="chip-tech" style="color:var(--magnets)">Magnets</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/navigator/navigator.html?tech=Nuclear&amp;country=Japan"><span class="chip-tech" style="color:var(--nuclear)">Nuclear</span><span class="chip-country">Japan</span></a>
+            <a class="case-chip" href="analysis/navigator/navigator.html?tech=Transmission&amp;country=Vietnam"><span class="chip-tech" style="color:var(--transmission)">Transmission</span><span class="chip-country">Vietnam</span></a>
+          </div>
+        </div>
+        <div class="a-footer">
+          <a class="a-link" href="analysis/navigator/navigator.html?tech=Solar&amp;country=India">Open the Navigator →</a>
         </div>
       </div>
-      <div class="a-footer">
-        <a class="a-link" href="analysis/_proto_datadriven/integrated_explorer.html?tech=Solar&amp;country=India">Open the Explorer →</a>
+
+      <!-- DATA EXPLORER -->
+      <div class="flagship-card">
+        <div class="a-header">
+          <div class="a-badge green">Table-first · BACI trade data</div>
+          <div class="a-title" style="margin-top:8px;">Clean Supply Chain Data Explorer</div>
+          <div class="a-desc">Table-first access to the underlying BACI trade data. HS-6 codes in line with official BACI descriptions, every ratio shown alongside the values it was computed from, and CSV/XLSX export of exactly what is on screen.</div>
+        </div>
+        <div class="a-body">
+          <div class="a-sub">What you get</div>
+          <p style="font-size:11px;color:var(--muted);line-height:1.65;margin:0;">Five views over the same evidence base — products, exporters, importers, bilateral flows, and predicted-competitiveness scores. Every column is labelled <b style="color:var(--text)">RAW</b>, <b style="color:var(--text)">DERIVED</b>, or <b style="color:var(--text)">MODEL</b> so it is always clear what is measured, what is computed, and what is estimated. Downloads reproduce the visible table exactly.</p>
+        </div>
+        <div class="a-footer">
+          <a class="a-link" href="analysis/navigator/data_explorer.html">Open the Data Explorer →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -967,32 +990,32 @@ Rscript scripts/build_data/08d_build_sp_firms.R
     <div id="sk-India" class="sk-country">
       <div class="rp-sub">India · All Selections</div>
       <div class="tech-grid">
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Solar&country=India&panel=sankey" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Batteries&country=India&panel=sankey" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Wind&country=India&panel=sankey" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Nuclear&country=India&panel=sankey" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Transmission&country=India&panel=sankey" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Biofuel&country=India&panel=sankey" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Electrolyzers&country=India&panel=sankey" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Geothermal&country=India&panel=sankey" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Heat_Pumps&country=India&panel=sankey" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>India · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Magnets&country=India&panel=sankey" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Solar&country=India&panel=sankey" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Batteries&country=India&panel=sankey" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Wind&country=India&panel=sankey" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Nuclear&country=India&panel=sankey" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Transmission&country=India&panel=sankey" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Biofuel&country=India&panel=sankey" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Electrolyzers&country=India&panel=sankey" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Geothermal&country=India&panel=sankey" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Heat_Pumps&country=India&panel=sankey" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>India · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Magnets&country=India&panel=sankey" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>India · All products</span></div></a>
       </div>
     </div>
 
     <div id="sk-Brazil" class="sk-country" style="display:none">
       <div class="rp-sub">Brazil · All Selections</div>
       <div class="tech-grid">
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Solar&country=Brazil&panel=sankey" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Batteries&country=Brazil&panel=sankey" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Wind&country=Brazil&panel=sankey" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Nuclear&country=Brazil&panel=sankey" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Transmission&country=Brazil&panel=sankey" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Biofuel&country=Brazil&panel=sankey" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Electrolyzers&country=Brazil&panel=sankey" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Geothermal&country=Brazil&panel=sankey" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Heat_Pumps&country=Brazil&panel=sankey" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>Brazil · All products</span></div></a>
-        <a class="tech-thumb" href="analysis/_proto_datadriven/embed.html?tech=Magnets&country=Brazil&panel=sankey" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Solar&country=Brazil&panel=sankey" style="border-color:rgba(234,179,8,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.03));border-bottom:2px solid var(--solar)"><span style="color:var(--solar)">SOLAR</span></div><div class="tech-thumb-label">Solar<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Batteries&country=Brazil&panel=sankey" style="border-color:rgba(245,158,11,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03));border-bottom:2px solid var(--batteries)"><span style="color:var(--batteries)">BATTERIES</span></div><div class="tech-thumb-label">Batteries<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Wind&country=Brazil&panel=sankey" style="border-color:rgba(59,130,246,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.03));border-bottom:2px solid var(--wind)"><span style="color:var(--wind)">WIND</span></div><div class="tech-thumb-label">Wind<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Nuclear&country=Brazil&panel=sankey" style="border-color:rgba(14,165,233,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.03));border-bottom:2px solid var(--nuclear)"><span style="color:var(--nuclear)">NUCLEAR</span></div><div class="tech-thumb-label">Nuclear<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Transmission&country=Brazil&panel=sankey" style="border-color:rgba(6,182,212,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(6,182,212,.03));border-bottom:2px solid var(--transmission)"><span style="color:var(--transmission)">TRANSMISSION</span></div><div class="tech-thumb-label">Transmission<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Biofuel&country=Brazil&panel=sankey" style="border-color:rgba(132,204,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(132,204,22,.12),rgba(132,204,22,.03));border-bottom:2px solid var(--biofuel)"><span style="color:var(--biofuel)">BIOFUEL</span></div><div class="tech-thumb-label">Biofuel<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Electrolyzers&country=Brazil&panel=sankey" style="border-color:rgba(168,85,247,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-bottom:2px solid var(--electrolyzers)"><span style="color:var(--electrolyzers)">ELECTROLYZERS</span></div><div class="tech-thumb-label">Electrolyzers<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Geothermal&country=Brazil&panel=sankey" style="border-color:rgba(239,68,68,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.03));border-bottom:2px solid var(--geothermal)"><span style="color:var(--geothermal)">GEOTHERMAL</span></div><div class="tech-thumb-label">Geothermal<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Heat_Pumps&country=Brazil&panel=sankey" style="border-color:rgba(249,115,22,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.03));border-bottom:2px solid var(--heatpumps)"><span style="color:var(--heatpumps)">HEAT PUMPS</span></div><div class="tech-thumb-label">Heat Pumps<span>Brazil · All products</span></div></a>
+        <a class="tech-thumb" href="analysis/navigator/embed.html?tech=Magnets&country=Brazil&panel=sankey" style="border-color:rgba(236,72,153,.25)"><div class="tech-thumb-banner" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.03));border-bottom:2px solid var(--magnets)"><span style="color:var(--magnets)">MAGNETS</span></div><div class="tech-thumb-label">Magnets<span>Brazil · All products</span></div></a>
       </div>
     </div>
   </div>
@@ -1139,7 +1162,7 @@ function buildPath(mod, tech, country) {
   var ENGINE = {radar:1, pc_scatter:1, trade_timeline:1, trade_composition:1,
                 trade_map:1, activity_map:1, sankey:1, tech_tree:1, solar_system:1};
   if(ENGINE[mod]) {
-    return 'analysis/_proto_datadriven/embed.html?tech=' + encodeURIComponent(tech)
+    return 'analysis/navigator/embed.html?tech=' + encodeURIComponent(tech)
          + '&country=' + encodeURIComponent(country) + '&panel=' + mod;
   }
   // pre-rendered fallback for any non-engine module

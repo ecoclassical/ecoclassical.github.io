@@ -210,7 +210,7 @@ function available(mod, techSlug, countrySlug){
 const CASE_SLICE = { radar:'radar', pc_scatter:'scatter', trade_timeline:'timeline',
                      trade_composition:'products', trade_map:'partners', activity_map:'firms' };
 const TECH_SLICE = { sankey:'sankey', tech_tree:'tree', solar_system:'tree' };   // from _tech_<Tech>.json
-const DATA_DIR   = '../_proto_datadriven/data/';
+const DATA_DIR   = '../navigator/data/';
 
 function dataAvailable(modId, techSlug, countrySlug){
   if(TECH_SLICE[modId]) return DATATECHS.has(techSlug);
@@ -223,7 +223,7 @@ function dataAvailable(modId, techSlug, countrySlug){
 // per-file HTML. Non-engine modules fall back to the pre-rendered path.
 function engineCovers(modId){ return !!(CASE_SLICE[modId] || TECH_SLICE[modId]); }
 function embedPath(modId, techSlug, countrySlug){
-  return '../_proto_datadriven/embed.html?tech=' + encodeURIComponent(techSlug)
+  return '../navigator/embed.html?tech=' + encodeURIComponent(techSlug)
        + '&country=' + encodeURIComponent(countrySlug) + '&panel=' + modId;
 }
 function visPath(mod, techSlug, countrySlug){
@@ -633,7 +633,7 @@ function printReport(){
                 sankey:'sankey', tech_tree:'tree', solar_system:'solarsystem'};
   const vis = selVis.map(id=>VMAP[id]).filter(Boolean);
   if(!tech || !country || !vis.length){ alert('Pick a technology, a country, and at least one visual first.'); return; }
-  const url = '../_proto_datadriven/report.html?tech=' + encodeURIComponent(techName)
+  const url = '../navigator/report.html?tech=' + encodeURIComponent(techName)
             + '&country=' + encodeURIComponent(country) + '&vis=' + vis.join(',');
   window.open(url, '_blank');   // clean landscape slides → File ▸ Print ▸ Save as PDF
 }
