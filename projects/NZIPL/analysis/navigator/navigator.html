@@ -52,13 +52,17 @@
   #split{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;}
   #left{position:relative;flex:1;min-width:0;}   /* globe/map now spans the full width */
   /* map-mode + firm toggles: bottom-left corner of the globe panel */
-  #left #mapmode,#left #firmtoggle{position:absolute;left:14px;z-index:4;
+  #left #mapmode,#left #firmtoggle,#left #mutoggle{position:absolute;left:14px;z-index:4;
     background:#0e1a22;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 11px;
     font:inherit;font-size:.76rem;cursor:pointer;white-space:nowrap;backdrop-filter:blur(3px);}
-  #left #mapmode{bottom:50px;}
-  #left #firmtoggle{bottom:12px;}
-  #left #mapmode:hover,#left #firmtoggle:hover{border-color:var(--accent);color:#fff;}
+  #left #mapmode{bottom:88px;}
+  #left #firmtoggle{bottom:50px;}
+  #left #mutoggle{bottom:12px;}
+  #left #mapmode:hover,#left #firmtoggle:hover,#left #mutoggle:hover{border-color:var(--accent);color:#fff;}
   #left #firmtoggle.off{opacity:.55;}
+  /* The corrected basis is a non-default state that changes every number on screen — it gets a
+     filled chip, not a hover tint, so it is obvious at a glance which basis a screenshot is on. */
+  #left #mutoggle.mu-on{background:var(--accent);border-color:var(--accent);color:#04120a;font-weight:600;}
   #stage{display:block;width:100%;height:100%;}
   /* ── collapsible overlay panel stacks ──────────────────────────────────────────
      Two vertical columns of panels floating over the full-bleed map. The stack itself is
@@ -304,6 +308,7 @@
     <svg id="stage"></svg>
     <button id="mapmode" title="Toggle flat map / 3D globe">🌐 Globe</button>
     <button id="firmtoggle" title="Show/hide S&amp;P firm activity dots">🏭 Firms</button>
+    <button id="mutoggle" title="Raw trade vs multi-use corrected (EXIOBASE direct use shares) — corrects for the fact that most copper, aluminium and steel trade never reaches this technology">⚖️ Raw</button>
   </div>
 </div>
 
@@ -454,6 +459,59 @@ let LOOK={};
 const REGION_ABBR={"East Asia & Pacific":"EAP","Europe & Central Asia":"ECA","South Asia":"SAS",
   "North America":"NAC","Latin America & Caribbean":"LCN","Middle East & North Africa":"MEA","Sub-Saharan Africa":"SSA"};
 
+/* ── multi-use correction (raw ⇄ corrected) ──────────────────────────────────────────────────
+   Trade data counts a copper cathode as copper, whatever it ends up in. A country's "solar"
+   upstream is therefore mostly trade that never reaches a panel. EXIOBASE direct_use_share is the
+   fraction of a product's trade that plausibly serves THIS technology, so the corrected view is
+   raw x share, per HS code, per tech.
+
+   TWO MECHANISMS, because the engine's fields differ in what they still carry:
+     · fields that keep a `code`  (products, products_yearly) → corrected HERE, muShare() x value.
+     · fields that summed the product dimension away (yearly, timeline, partners_yearly,
+       partners_yearly_sr, the per-tech ranks) → the builder ships the corrected value alongside
+       the raw one and muV() picks the active side. No client-side multiply can recover a
+       per-product correction from a total that no longer has products in it.
+   Partner rankings are NOT stable under the correction — it re-ranks them, so partners_yearly_c
+   is its own independently-ranked top-8 and partners_yearly_sr carries the UNION of both top-8s.
+   Never scale a raw ranking and call it corrected.
+
+   WHERE THE SHARE IS 1.0 IT IS A REASON, NOT A GAP. Only raw and processed materials carry a
+   measurement; components, equipment and final products are assumed already tech-specific and
+   keep their raw value. That is a modelling decision, and the UI says so rather than implying
+   a measurement nobody made. Techs absent from EXIOBASE (EVs) are uncorrected throughout. */
+let muOn=false;                  // false = raw (the default, and what every earlier build showed)
+let USE_SHARES={}, MU_ROLES=[], MU_NOTE='', MU_YEAR=null;   // from data/_index.json
+let PROD_ROLE=new Map();         // HS code -> role, rebuilt per case (products_yearly has no role)
+/* Share for one HS code in the ACTIVE tech. Returns 1 in raw mode, for a tech with no EXIOBASE
+   mapping, for a downstream role, and for a code the parquet never measured — four different
+   reasons for the same number, all of them "leave this value alone". */
+function muShare(code, role){
+  if(!muOn) return 1;
+  if(MU_ROLES.indexOf(role)<0) return 1;
+  const t=USE_SHARES[TECH]; if(!t) return 1;
+  const s=t[code];
+  return (s===undefined) ? 1 : s;
+}
+/* Active-side value of a row the builder gave a corrected twin. */
+const muV = r => muOn ? (+r.v_c||0) : (+r.v||0);
+/* Column name for the same choice on the per-tech ranks table. */
+const muKey = k => muOn ? k+'_c' : k;
+/* True when the active tech has no EXIOBASE shares at all, so "corrected" is showing raw
+   numbers under a corrected label — the one case the toggle must actively disclose. */
+function muUnmapped(){ return muOn && !USE_SHARES[TECH]; }
+/* Flip the basis and redraw everything that carries a value. PY_CACHE is invalidated through its
+   key (see partnerSeries), so the only thing to reset here is the label. */
+function setMuMode(){
+  muOn=!muOn;
+  const b=document.getElementById('mutoggle');
+  if(b){ b.classList.toggle('mu-on',muOn);
+         b.textContent = muOn ? '⚖️ Corrected' : '⚖️ Raw';
+         b.title = muOn
+           ? 'Showing multi-use corrected trade — raw x EXIOBASE direct use share'+(MU_YEAR?' ('+MU_YEAR+')':'')+'. Click for raw.'
+           : 'Showing raw trade, as reported. Click to correct for multi-use.'; }
+  drawFusion(); drawNav(); renderStats(); updateReadout();
+}
+
 /* ── tiny helpers ──────────────────────────────────────────────────────────── */
 const tipEl=()=>document.getElementById('tip');
 function tip(e,h){ const t=tipEl(); t.style.opacity=1; t.style.left=(e.clientX+13)+'px'; t.style.top=(e.clientY+13)+'px'; t.innerHTML=h; }
@@ -556,7 +614,7 @@ function tlYear(y){
     if(t.year!==y) return;
     has=true;                                   // the YEAR exists even if this stage/role has no trade in it
     if(!srPass(t.stage,t.role)) return;
-    if(t.flow==='exp') exp+=(+t.v||0); else if(t.flow==='imp') imp+=(+t.v||0);
+    if(t.flow==='exp') exp+=muV(t); else if(t.flow==='imp') imp+=muV(t);
   });
   return has?{exp,imp}:null;
 }
@@ -580,13 +638,19 @@ function tlYear(y){
 function partnersAt(dir,year){
   if(!D) return [];
   if(!srOn()){
-    return (D.partners_yearly||[]).filter(p=>p.dir===dir&&p.year===year)
+    // Corrected mode reads its OWN top-8, ranked on corrected value by the builder. Scaling the
+    // raw eight would keep whichever partners raw trade favoured: for Solar/Brazil 2023 the
+    // corrected list drops CHN, POL, SWE and BGR and gains CHE, ARG, PRY and MEX.
+    const src=(muOn ? D.partners_yearly_c : D.partners_yearly)||[];
+    return src.filter(p=>p.dir===dir&&p.year===year)
       .map(p=>({dir,partner:p.partner,v:+p.v||0})).sort((a,b)=>b.v-a.v);
   }
+  // The segmented series carries the union of the raw and corrected top-8s, so taking the active
+  // side and sorting yields an exact ranking either way — no second block, no approximation.
   const m=new Map();
   (D.partners_yearly_sr||[]).forEach(p=>{
     if(p.dir!==dir||p.year!==year||!srPass(p.stage,p.role)) return;
-    m.set(p.partner,(m.get(p.partner)||0)+(+p.v||0));
+    m.set(p.partner,(m.get(p.partner)||0)+muV(p));
   });
   return [...m].map(([partner,v])=>({dir,partner,v})).filter(p=>p.v>0).sort((a,b)=>b.v-a.v);
 }
@@ -839,8 +903,13 @@ function drawNavProduct(){
   // (VIZ arrows use d3.scaleSqrt so visual AREA, not radius, is linear in value — the standard fix
   // for circles/line-widths, since eyes compare areas). Trade value is per HS code, so sibling
   // steps sharing one code also share its size — that's expected, not a bug.
-  const tvY=new Map(((D&&D.products_yearly)||[]).filter(p=>p.year===selYear).map(p=>[p.code,p.v]));
-  const tvAll=new Map(((D&&D.products)||[]).map(p=>[p.code,p.v]));
+  // By-Product sizing is the one surface that still has an HS code in hand, so it is corrected
+  // here rather than by the builder: raw value x muShare(). products_yearly carries no role, so
+  // the role comes from PROD_ROLE (built off D.products in loadCase) — the share only applies to
+  // raw and processed materials.
+  const tvY=new Map(((D&&D.products_yearly)||[]).filter(p=>p.year===selYear)
+    .map(p=>[p.code,(+p.v||0)*muShare(p.code,PROD_ROLE.get(p.code))]));
+  const tvAll=new Map(((D&&D.products)||[]).map(p=>[p.code,(+p.v||0)*muShare(p.code,p.role)]));
   const deg=new Map(nodes.map(n=>[n.cn,0]));
   edges.forEach(e=>{ const fcn=cnOf(e.from_code,e.from_cn), tcn=cnOf(e.to_code,e.to_cn);
     deg.set(fcn,(deg.get(fcn)||0)+1); deg.set(tcn,(deg.get(tcn)||0)+1); });
@@ -910,7 +979,7 @@ function drawNavSR(){
   // the visual AREA (what the eye actually compares) linear in value, not the radius itself.
   const tlY=((D&&D.timeline)||[]).filter(t=>t.year===selYear);
   const srVal=new Map();
-  tlY.forEach(t=>{ const k=t.stage+'|'+t.role; srVal.set(k,(srVal.get(k)||0)+(+t.v||0)); });
+  tlY.forEach(t=>{ const k=t.stage+'|'+t.role; srVal.set(k,(srVal.get(k)||0)+muV(t)); });
   const vals=LANE_SR.map(k=>srVal.get(k)||0);
   const rSc=d3.scaleSqrt().domain([0,d3.max(vals)||1]).range([5,26]);
 
@@ -962,7 +1031,9 @@ function drawNavSR(){
 
 /* ── drum-wheel selectors (Stage → Role → Category → Product) ─────────────────── */
 function catMap(){ const m={}; ((D&&D.scatter)||[]).forEach(s=>{ if(s.code) m[s.code]=s.category||'Other'; }); return m; }
-function allProducts(){ const cm=catMap(); return ((D&&D.products)||[]).map(p=>({code:p.code,name:p.product_name||p.code,stage:p.stage,role:p.role,cat:cm[p.code]||'Other',v:p.v||0})); }
+// v is corrected here too: the product drum orders by it, so under the corrected basis the drum
+// leads with the products that actually serve this tech rather than the biggest commodity flows.
+function allProducts(){ const cm=catMap(); return ((D&&D.products)||[]).map(p=>({code:p.code,name:p.product_name||p.code,stage:p.stage,role:p.role,cat:cm[p.code]||'Other',v:(p.v||0)*muShare(p.code,p.role)})); }
 // renderStats() is part of every filter-driven redraw now: the Trade Flows headline is computed
 // from the drum selection, so leaving it out here is exactly what made the panel show
 // whole-technology totals under an active filter.
@@ -1302,17 +1373,20 @@ function shareSeries(){
    is per segment — and they are shown as gaps just the same. */
 let PY_CACHE={key:null,map:null};
 function partnerSeries(dir,partner){
-  const key=TECH+'|'+COUNTRY+'|'+selStage+'|'+selRole;
+  // muOn belongs in the cache key: flipping the toggle changes every point in every series, and a
+  // stale cache would leave the sparklines drawing the other basis under the new numbers.
+  const key=TECH+'|'+COUNTRY+'|'+selStage+'|'+selRole+'|'+(muOn?'c':'r');
   if(PY_CACHE.key!==key||!PY_CACHE.map){
     const m=new Map();
     if(srOn()){
       ((D&&D.partners_yearly_sr)||[]).forEach(p=>{
         if(!srPass(p.stage,p.role)) return;
         const k=p.dir+'|'+p.partner+'|'+p.year;
-        m.set(k,(m.get(k)||0)+(+p.v||0));
+        m.set(k,(m.get(k)||0)+muV(p));
       });
     } else {
-      ((D&&D.partners_yearly)||[]).forEach(p=>m.set(p.dir+'|'+p.partner+'|'+p.year,+p.v||0));
+      (((D&&(muOn?D.partners_yearly_c:D.partners_yearly)))||[])
+        .forEach(p=>m.set(p.dir+'|'+p.partner+'|'+p.year,+p.v||0));
     }
     PY_CACHE={key,map:m};
   }
@@ -1345,20 +1419,24 @@ function renderStats(){
     expN=n?n.exp:null; impN=n?n.imp:null;
   } else {
     const cur=yrRow(selYear), next=yrRow(selYear+1);
-    exp=cur?cur.exports_kusd:0; imp=cur?cur.imports_kusd:0;
-    expN=next?next.exports_kusd:null; impN=next?next.imports_kusd:null;
+    const EK=muKey('exports_kusd'), IK=muKey('imports_kusd');
+    exp=cur?cur[EK]:0; imp=cur?cur[IK]:0;
+    expN=next?next[EK]:null; impN=next?next[IK]:null;
   }
   const net=exp-imp;
   const gdp=GDP.get(D.iso+'|'+selYear);
   const expGDPpct=(exp>0&&gdp)?(exp/gdp/10):0, impGDPpct=(imp>0&&gdp)?(imp/gdp/10):0;
 
   const ranks=((TD&&TD.ranks)||[]).filter(r=>r.year===selYear);
-  const wExp=rankShare(ranks,D.iso,'exports_kusd'), wImp=rankShare(ranks,D.iso,'imports_kusd');
+  // Rank and share follow the toggle too. They sit beside the headline in this same panel, and a
+  // corrected total next to a raw world rank is the kind of unlabelled mismatch this page exists
+  // to avoid — the builder ranks all PC countries on both bases for exactly this reason.
+  const wExp=rankShare(ranks,D.iso,muKey('exports_kusd')), wImp=rankShare(ranks,D.iso,muKey('imports_kusd'));
   const region=(ranks.find(r=>r.iso3===D.iso)||{}).region||'';
   const regAbbr=REGION_ABBR[region]||region||'Reg';
   const regRows=ranks.filter(r=>r.region===region);
-  const rExp=rankShare(regRows,D.iso,'exports_kusd'), rImp=rankShare(regRows,D.iso,'imports_kusd');
-  const gExp=gdpRankShare(ranks,D.iso,'exports_kusd',selYear), gImp=gdpRankShare(ranks,D.iso,'imports_kusd',selYear);
+  const rExp=rankShare(regRows,D.iso,muKey('exports_kusd')), rImp=rankShare(regRows,D.iso,muKey('imports_kusd'));
+  const gExp=gdpRankShare(ranks,D.iso,muKey('exports_kusd'),selYear), gImp=gdpRankShare(ranks,D.iso,muKey('imports_kusd'),selYear);
 
   const fmt1=v=>v>0?v.toFixed(v<1?2:1)+'%':'—';
   const rk=r=>r&&r>0?`#${r}`:'—';
@@ -1395,6 +1473,14 @@ function renderStats(){
     ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
   const partnerOff = scope.ignored.length
     ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the partner series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+  // ── multi-use basis note ──────────────────────────────────────────────────────────────────
+  // Shown only in corrected mode: raw is the basis every earlier build used, and labelling the
+  // default would be noise. Amber when the active tech has no EXIOBASE mapping at all, because
+  // then "corrected" is displaying raw numbers and that must not pass silently.
+  const muNote = !muOn ? ''
+    : muUnmapped()
+      ? `<div class="flt-note flt-off">◌ ${TECH} is not in EXIOBASE — these figures are uncorrected raw trade</div>`
+      : `<div class="flt-note flt-on">▣ multi-use corrected · raw × EXIOBASE direct use share${MU_YEAR?' ('+MU_YEAR+')':''} — ${MU_NOTE}</div>`;
 
   // Sparkline series for the three share rows. IMP is amber and EXP green on one shared y-scale,
   // matching the Imports/Exports labels above and keeping the pair directly comparable.
@@ -1405,7 +1491,7 @@ function renderStats(){
   const spkReg=pair('st-reg',SS.rImp,SS.rExp);
 
   el.innerHTML =
-    scopeOn + scopeOff +
+    muNote + scopeOn + scopeOff +
     `<div class="ov-cols">`+
       `<div class="ov-col"><span class="ov-col-label" style="color:#f97316">Imports</span><span class="ov-col-val">${VIZ.fmtV(imp)}</span>`+
         `<span class="ov-col-gdp">${impGDPpct>0?impGDPpct.toFixed(2)+'% GDP':''}</span>`+
@@ -1430,7 +1516,7 @@ function renderStats(){
   // one. It is held back in contrast only when it is genuinely stale, i.e. when a filter is on and
   // NONE of it reached this list (category / product alone). Under a stage/role selection the list
   // is live and reads at full strength.
-  pel.innerHTML = partnerOn + partnerOff +
+  pel.innerHTML = muNote + partnerOn + partnerOff +
     `<div class="${(!scope.on&&filtered)?'flt-stale':''}">`+
     (dests.length?`<div class="ov-part-title">Top Export Destinations</div>${dests.map(p=>partnerRow(p,'dest')).join('')}`:'')+
     (srcs.length?`<div class="ov-part-title">Top Import Sources</div>${srcs.map(p=>partnerRow(p,'src')).join('')}`:'')+
@@ -1548,6 +1634,9 @@ async function loadCase(tech,slug){
   // return an empty partner list, which looks like "no trade in this segment" rather than a bug.
   try{ D.partners_yearly_sr=decodeBlk(D.partners_yearly_sr); }
   catch(err){ console.error(err); msg(err.message); D=null; return; }
+  // HS code -> role, for the fields that carry a code but not a role (products_yearly). Rebuilt
+  // per case because the role of a code is a property of the TECH, not of the code alone.
+  PROD_ROLE=new Map(((D&&D.products)||[]).map(p=>[p.code,p.role]));
   try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
   catch(e){ TD=null; }
   selProduct=null; selStage='ALL'; selRole='ALL'; selCat='ALL';   // reset filters on new case
@@ -1586,6 +1675,7 @@ async function boot(){
   document.getElementById('mapmode').onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
   const ft=document.getElementById('firmtoggle');
   ft.onclick=()=>{ showFirms=!showFirms; ft.classList.toggle('off',!showFirms); ft.textContent=showFirms?'🏭 Firms':'🏭 Firms (hidden)'; drawFusion(); };
+  document.getElementById('mutoggle').onclick=setMuMode;
   document.getElementById('nav-mode-product').onclick=()=>setNavMode('product');
   document.getElementById('nav-mode-sr').onclick=()=>setNavMode('sr');
   initPanels();    // collapsible overlay panels (restores the persisted open/closed layout)
@@ -1599,7 +1689,12 @@ async function boot(){
   // the first loadCase() below, because a case cannot be decoded without them.
   try{ let idx=await (await fetch('data/_index.json')).json(); idx=Array.isArray(idx)?idx[0]:idx;
        if(idx.year_min) YEAR_MIN=idx.year_min; if(idx.year_max) YEAR_MAX=idx.year_max;
-       if(idx.lookups) LOOK=idx.lookups; }
+       if(idx.lookups) LOOK=idx.lookups;
+       // Multi-use shares ride in the same index, for the same reason as the decoder tables: one
+       // fetch at boot, not a copy in all 297 case files.
+       if(idx.use_shares) USE_SHARES=idx.use_shares;
+       MU_ROLES=idx.use_share_measured_roles||[];
+       MU_NOTE=idx.use_share_note||''; MU_YEAR=idx.use_share_source_year||null; }
   catch(e){ console.warn('year index',e); }
   try{ const gdpRows=await (await fetch('data/_gdp.json')).json();
        gdpRows.forEach(r=>GDP.set(r.iso3+'|'+r.year, r.gdp_mil_usd)); }
