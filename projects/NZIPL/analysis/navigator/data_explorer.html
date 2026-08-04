@@ -7,6 +7,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- THEME. Runs before first paint so the page never flashes the wrong colours.
+     The page used to follow the OS setting only, which meant a reader on a dark
+     desktop got a dark data table with no way to change it. Light is now the
+     default for everyone; dark is opt-in and remembered. Every rule below that
+     used to key off `prefers-color-scheme` is guarded with `:root:not([data-theme])`
+     so it still works if this script does not run, and never fights the attribute
+     when it does. -->
+<script>
+(function(){try{
+  var t=localStorage.getItem('de-theme');
+  document.documentElement.setAttribute('data-theme', t==='dark'?'dark':'light');
+}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+</script>
+
 <style>
 :root{
   --brand:#073309; --accent:#3cb54a;
@@ -18,7 +33,7 @@
   --hdr-field:#ffffff; --hdr-field-fg:#111827;
 }
 @media (prefers-color-scheme:dark){
- :root{
+ :root:not([data-theme]){
   --bg:#0b100c; --panel:#121a13; --fg:#e8ece9; --mut:#9aa5a0;
   --line:#222e25; --line2:#1a231c;
   --raw:#4ba055; --derived:#7aa2ff; --model:#c4a0ff;
@@ -133,7 +148,7 @@ header select:disabled,header input:disabled{opacity:.5}
         transition:background .12s,border-color .12s}
 .preset:hover{border-color:var(--accent)}
 .preset.on{background:var(--brand);color:#fff;border-color:var(--brand)}
-@media (prefers-color-scheme:dark){.preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
 :root[data-theme="dark"] .preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
 
 /* ── Data / Visual toggle (in the header, beside the filters) ──────────── */
@@ -154,7 +169,7 @@ header select:disabled,header input:disabled{opacity:.5}
       display:inline-flex;align-items:center;transition:border-color .12s,background .12s}
 .chip:hover{border-color:var(--accent)}
 .chip.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
-@media (prefers-color-scheme:dark){.chip.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .chip.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
 :root[data-theme="dark"] .chip.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
 .chip .dot{width:8px;height:8px;border-radius:50%;margin-right:7px;flex:0 0 8px}
 
@@ -182,7 +197,7 @@ header select:disabled,header input:disabled{opacity:.5}
 .cx-zero{stroke:var(--mut);stroke-width:1;stroke-dasharray:3 3}
 .cx-line{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
 .cx-area{stroke:#fff;stroke-width:.75;stroke-opacity:.5}
-@media (prefers-color-scheme:dark){.cx-area{stroke:#0b100c}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .cx-area{stroke:#0b100c}}
 :root[data-theme="dark"] .cx-area{stroke:#0b100c}
 .cx-cap{fill:var(--mut);font:500 11px Archivo,system-ui,sans-serif}
 .cx-legend{display:flex;flex-wrap:wrap;gap:5px 14px;padding:4px 22px 0;
@@ -203,7 +218,7 @@ header select:disabled,header input:disabled{opacity:.5}
 .ar:last-of-type{border-radius:0 5px 5px 0;border-right-width:1px}
 .ar:hover{border-color:var(--accent)}
 .ar.on{background:var(--brand);color:#fff;border-color:var(--brand)}
-@media (prefers-color-scheme:dark){.ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
 :root[data-theme="dark"] .ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
 .arith[hidden]{display:none}
 
@@ -260,17 +275,39 @@ th{position:sticky;top:0;z-index:2;background:var(--bg);font-size:10.5px;
    text-transform:uppercase;letter-spacing:.05em;font-weight:700;
    border-bottom:2px solid var(--brand);cursor:pointer;vertical-align:bottom;
    padding-bottom:7px}
-@media (prefers-color-scheme:dark){th{border-bottom-color:var(--accent)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) th{border-bottom-color:var(--accent)}}
 :root[data-theme="dark"] th{border-bottom-color:var(--accent)}
 th:hover{color:var(--accent)}
 th .lab{display:block}
 tbody tr:hover{background:var(--panel)}
 td.num0{color:var(--mut)}
+
+/* ── Trend sparklines ───────────────────────────────────────────────────────
+   A small drawing of the year cells in the same row — the Atlas Navigator idea,
+   ported to a table. It carries no number of its own, which is why the column
+   is inert: `th.novs` is not sortable (sorting a picture means nothing; sort by
+   CAGR instead, which is the same series as a rate) and it is dropped from the
+   CSV and Excel downloads, where the year columns it draws are already present.
+
+   Colours are variables, never literals, so the line follows the light/dark
+   theme like everything else on the page. */
+th.novs{cursor:default}
+th.novs:hover{color:inherit}
+td.spkcell{padding-top:2px;padding-bottom:0;width:1%;white-space:nowrap}
+.spk{display:inline-flex;align-items:center;line-height:0}
+.spk svg{display:block;overflow:visible}
+.spk-ln{fill:none;stroke:var(--accent);stroke-width:1.2;
+        stroke-linejoin:round;stroke-linecap:round}
+.spk-dot{fill:var(--accent)}
+/* The zero line only appears when the series crosses it — in year-on-year mode
+   the sign change is the whole point, and in $ mode it never draws. */
+.spk-zero{stroke:var(--mut);stroke-width:.75;opacity:.45}
+.spk-na{color:var(--mut);opacity:.6}
 .cls{display:inline-block;font:700 8.5px/1.5 Archivo,system-ui,sans-serif;padding:1px 5px;
      border-radius:3px;color:#fff;letter-spacing:.06em;margin-top:3px}
 .cls.raw{background:var(--raw)} .cls.derived{background:var(--derived)}
 .cls.model{background:var(--model)}
-@media (prefers-color-scheme:dark){.cls{color:#0b100c}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .cls{color:#0b100c}}
 :root[data-theme="dark"] .cls{color:#0b100c}
 .flag{color:var(--flag);font-weight:700;cursor:help;margin-left:3px}
 .hs{font:600 12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -282,7 +319,7 @@ td.num0{color:var(--mut)}
           grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
 .ref{border:1px solid var(--line);border-left:3px solid var(--brand);
      border-radius:6px;background:var(--panel);padding:11px 14px}
-@media (prefers-color-scheme:dark){.ref{border-left-color:var(--accent)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .ref{border-left-color:var(--accent)}}
 :root[data-theme="dark"] .ref{border-left-color:var(--accent)}
 .ref.warn{background:var(--warn-bg);border-color:var(--warn-line);
           border-left-color:var(--warn-line)}
@@ -351,6 +388,8 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
             title="What the corrected columns are, and why only two roles carry a measurement.">&#9878;&nbsp;Multi-use</button>
     <button class="dlbtn" id="dl-csv" title="Comma-separated values — exactly the rows and columns on screen, with raw unrounded numbers and a notes block naming every source and formula.">&darr;&nbsp;CSV</button>
     <button class="dlbtn" id="dl-xlsx" title="Excel workbook (SpreadsheetML) with two sheets: Notes (sources, units, formulas, caveats) and Data (exactly the table on screen, as numbers).">&darr;&nbsp;Excel</button>
+    <button class="hbtn" id="tg-theme" type="button" aria-pressed="false"
+            title="Switch between the light and dark colour scheme. Remembered on this browser.">&#9789;&nbsp;Dark</button>
     <a class="nav-chip" href="navigator.html">&larr;&nbsp;Atlas Navigator</a>
   </div>
 </header>
@@ -368,7 +407,8 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
   <b>Raw Material</b> and <b>Processed Material</b> carry a measurement; for every other
   role the share is 1.0 <b>by assumption &mdash; no correction applied: downstream inputs
   are already tech-specific</b> (marked &#8801;). That is a modelling decision, not missing
-  data. The correction reaches the raw trade columns only: CAGR, basket shares, RCA and
+  data. The correction reaches the raw trade columns only: CAGR (compound annual growth
+  rate), basket shares, RCA and
   market share are computed on raw values, and the Q1&ndash;Q4 headline views sum the HS-6
   dimension away, so they cannot be corrected in the browser.
   <span class="metaline" id="mu-note"></span>
@@ -465,5 +505,30 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
 
 <script src="de.js"></script>
 <script>boot();</script>
+
+<!-- Theme toggle. Deliberately NOT in de.js: de.js owns the data and the draw
+     code, and a colour-scheme switch must keep working even if a slice fails to
+     load. The attribute is already set by the head script; this only flips it,
+     relabels the button and remembers the choice. Charts are drawn from CSS
+     variables, so nothing has to be redrawn. -->
+<script>
+(function(){
+  var btn=document.getElementById('tg-theme'), root=document.documentElement;
+  function paint(){
+    var dark=root.getAttribute('data-theme')==='dark';
+    btn.innerHTML=dark?'☼ Light':'☽ Dark';
+    btn.setAttribute('aria-pressed',dark?'true':'false');
+    btn.title=dark?'Switch to the light colour scheme. Remembered on this browser.'
+                  :'Switch to the dark colour scheme. Remembered on this browser.';
+  }
+  btn.addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme',dark?'light':'dark');
+    try{localStorage.setItem('de-theme',dark?'light':'dark');}catch(e){}
+    paint();
+  });
+  paint();
+})();
+</script>
 </body>
 </html>

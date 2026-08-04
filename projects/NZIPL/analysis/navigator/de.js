@@ -206,8 +206,80 @@ const C = {
   num: (key, label, cls, src, how, d) =>
     ({key, label, cls: cls || 'raw', src, how, fmt: v => fmtN(v, d)}),
   pct: (key, label, cls, src, how) =>
-    ({key, label, cls: cls || 'derived', src, how, fmt: fmtPct})
+    ({key, label, cls: cls || 'derived', src, how, fmt: fmtPct}),
+  /* A drawing of the year cells already in the row — no new number. `viz`
+   * marks it so paintTable() emits SVG instead of escaped text, sortBy()
+   * refuses it, and buildExportRows() leaves it out of the file: a picture
+   * cannot go in a CSV cell, and the columns it draws are already there. */
+  spark: (key, label, how) =>
+    ({key, label, cls: 'derived', src: SRC_CALC, how, viz: true, fmt: v => v})
 };
+
+/* ── Sparklines ─────────────────────────────────────────────────────────────
+ * Ported in spirit from navigator.html (search "drawSpark" there), but built as
+ * an SVG STRING with no d3 — this page has no d3, and paintTable() writes the
+ * whole tbody with innerHTML in one pass, so there is no element to draw into
+ * afterwards.
+ *
+ * What it draws: the row's own year cells, exactly as the "Read as" toggle
+ * leaves them. In $ mode that is the level series, in YoY mode the growth
+ * series, in index mode the rebased series. It therefore CANNOT disagree with
+ * the numbers beside it — which is the same rule the Visual mode follows:
+ * nothing is computed differently, only drawn.
+ *
+ * Scale: the row's own min/max, not a shared one. A sparkline shows shape; the
+ * magnitude is in the cells it sits next to. When the series spans zero (any
+ * YoY row with a contraction in it) a zero line is drawn, because the sign
+ * change is the thing worth seeing.
+ *
+ * Colour comes from CSS variables so it follows the light/dark theme. */
+const SPK_W = 58, SPK_H = 16, SPK_PAD = 2;
+
+function sparkSVG(vals, years) {
+  if (!Array.isArray(vals) || vals.length < 2) return '';
+  const pts = vals.map((v, i) => ({
+    i, v: (v === null || v === undefined || !isFinite(v)) ? null : v
+  }));
+  const real = pts.filter(p => p.v !== null);
+  /* One observation is not a trend. Say so rather than drawing a dot that
+   * reads as a flat line. */
+  if (real.length < 2) {
+    return `<span class="spk-na" title="Fewer than two years with data in this window — nothing to draw.">&middot;</span>`;
+  }
+  const w = SPK_W, h = SPK_H, pad = SPK_PAD, n = pts.length;
+  const X = i => pad + (n < 2 ? (w - 2 * pad) / 2 : i * (w - 2 * pad) / (n - 1));
+  let lo = Math.min(...real.map(p => p.v));
+  let hi = Math.max(...real.map(p => p.v));
+  if (hi === lo) { hi = lo + 1; lo = lo - 1; }          // a flat series draws flat, mid-height
+  const Y = v => h - pad - (v - lo) * (h - 2 * pad) / (hi - lo);
+
+  /* Gaps are breaks, not zeros — a missing year must not be drawn as a plunge
+   * to the axis. Each run of consecutive real points is its own polyline. */
+  const runs = [];
+  let run = [];
+  pts.forEach(p => {
+    if (p.v === null) { if (run.length) runs.push(run); run = []; }
+    else run.push(p);
+  });
+  if (run.length) runs.push(run);
+
+  let svg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">`;
+  if (lo < 0 && hi > 0) {
+    svg += `<line class="spk-zero" x1="0" x2="${w}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/>`;
+  }
+  runs.forEach(r => {
+    if (r.length < 2) return;
+    svg += `<polyline class="spk-ln" points="${
+      r.map(p => `${X(p.i).toFixed(1)},${Y(p.v).toFixed(1)}`).join(' ')}"/>`;
+  });
+  const last = real[real.length - 1];
+  svg += `<circle class="spk-dot" cx="${X(last.i).toFixed(1)}" cy="${Y(last.v).toFixed(1)}" r="1.7"/>`;
+  svg += '</svg>';
+
+  const y0 = years && years[real[0].i], y1 = years && years[last.i];
+  const ttl = (y0 && y1) ? `${y0}–${y1}, drawn from the year cells in this row` : '';
+  return `<span class="spk" title="${esc(ttl)}">${svg}</span>`;
+}
 
 /* ── Loaders ────────────────────────────────────────────────────────────── */
 
@@ -874,6 +946,7 @@ async function viewChains() {
     const vals = applyArith(s, years, STATE.arith, STATE.y0);
     const r = {chain: s.label, _last: s.byYear[STATE.y1] || 0};
     years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r._spark = vals;
     r.cagr = cagr(s.byYear[STATE.y0], s.byYear[STATE.y1], yearsSel());
     return r;
   });
@@ -889,7 +962,9 @@ async function viewChains() {
     C.txt('chain', 'Supply chain', 'raw', SRC_GD,
       'The ten technology baskets defined by the NZIPL green dictionary.'),
     ...yearCols(years),
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+    C.spark('_spark', 'Trend',
+      `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
+    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC,
       `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
     C.pct('share', `Share of all chains ${STATE.y1}`, 'derived', SRC_CALC,
       `= (this chain’s ${STATE.y1} trade) / (all chains ${STATE.y1} total). The total is in the summary line above the table.`)
@@ -910,6 +985,11 @@ async function viewChains() {
 /* Which views render as one row per entity and one column per year. Q2/Q3/Q4
  * join this in Tasks 4 and 5. */
 const MATRIX_VIEWS = new Set(['chains', 'segments', 'exporters', 'importers']);
+/* Views carrying a year column per year. Deliberately WIDER than MATRIX_VIEWS:
+ * the HS-6 detail view gained a year matrix, but 302 product series cannot be
+ * drawn as a chart, so it takes the "Read as" toggle without taking Visual
+ * mode. Keeping the two sets apart is what lets one grow without the other. */
+const YEARCOL_VIEWS = new Set([...MATRIX_VIEWS, 'products']);
 /* The four-panel view is charts only — the Data/Visual toggle does not apply. */
 const PANEL_VIEW = 'panels';
 
@@ -953,7 +1033,7 @@ function arithSuffix() {
 function syncArith() {
   const grp = document.getElementById('arith-grp');
   if (!grp) return;
-  grp.hidden = !(MATRIX_VIEWS.has(STATE.preset) || STATE.preset === PANEL_VIEW);
+  grp.hidden = !(YEARCOL_VIEWS.has(STATE.preset) || STATE.preset === PANEL_VIEW);
   const ix = document.getElementById('ar-index');
   if (ix) ix.textContent = `${STATE.y0}=100`;
   grp.querySelectorAll('.ar').forEach(b =>
@@ -976,6 +1056,7 @@ async function viewSegments() {
     const r = {segment: s.label, stage: s.stage, role: s.role,
                _last: s.byYear[STATE.y1] || 0};
     years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r._spark = vals;
     r.cagr = cagr(s.byYear[STATE.y0], s.byYear[STATE.y1], yearsSel());
     return r;
   });
@@ -987,7 +1068,9 @@ async function viewSegments() {
     C.txt('segment', 'Segment (stage · role)', 'raw', SRC_GD,
       'Value-chain stage (Upstream → Midstream → Downstream → Final Product) and product role (Raw Material / Processed Material / Product Component / Process Equipment / Final Product), as assigned in the green dictionary.'),
     ...yearCols(years),
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+    C.spark('_spark', 'Trend',
+      `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
+    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC,
       `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
     C.pct('share', `Share ${STATE.y1}`, 'derived', SRC_CALC,
       `= (this segment’s ${STATE.y1} trade) / (all segments ${STATE.y1} total). The total is in the summary line above the table.`)
@@ -1061,6 +1144,7 @@ async function viewFlow(dir) {
     const vals = applyArith(s, years, STATE.arith, STATE.y0);
     const r = {iso3: s.iso3 || s.key, country: s.label, _last: s.byYear[STATE.y1] || 0};
     years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r._spark = vals;
     r.w1 = world[STATE.y1] || 0;
     r.sh1 = r.w1 ? r._last / r.w1 : null;
     const a = s.byYear[STATE.y0] || 0;
@@ -1083,7 +1167,9 @@ async function viewFlow(dir) {
       `= (${lab} ${STATE.y1}) / (World ${lab.toLowerCase()} ${STATE.y1}), both shown.`),
     C.pct('shDelta', 'Share change', 'derived', SRC_CALC,
       `= (World share ${STATE.y1}) − (World share ${STATE.y0}), in percentage points.`),
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+    C.spark('_spark', 'Trend',
+      `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
+    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC,
       `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`)
   ];
   STATE.rows = shown;
@@ -1153,15 +1239,26 @@ async function viewProducts() {
    * us whether a code was renumbered mid-window. */
   const prod = decode(prodAll).filter(d => d.tech === ti);
   const world = {}, span = {};
+  /* The window years are kept per code, not just the two endpoints. This view
+   * used to hold v0 and v1 only, which is why it was the one view with no year
+   * columns; the loop already visits every year to compute `span`, so carrying
+   * the series costs one object per code. v0/v1 are still derived here and
+   * still rendered, because RCA, market share and the corrected twins are all
+   * defined on the endpoints and every operand must stay on screen. */
+  const wy = STATE.y0, wy1 = STATE.y1;
   prod.forEach(d => {
     if (d.v > 0) {
       const s = span[d.code] || (span[d.code] = {a: d.year, b: d.year});
       if (d.year < s.a) s.a = d.year;
       if (d.year > s.b) s.b = d.year;
     }
-    if (d.year !== STATE.y0 && d.year !== STATE.y1) return;
-    const w = world[d.code] || (world[d.code] = {v0: 0, v1: 0});
-    if (d.year === STATE.y0) w.v0 += d.v; else w.v1 += d.v;
+    /* Built FULL-WIDTH, not clipped to the window: asYoY() reads the year
+     * before the first one on screen, so a clipped series would blank the
+     * leading growth cell — the same reason seriesFor() builds full-width. */
+    const w = world[d.code] || (world[d.code] = {v0: 0, v1: 0, by: {}});
+    w.by[d.year] = (w.by[d.year] || 0) + d.v;
+    if (d.year === wy) w.v0 += d.v;
+    else if (d.year === wy1) w.v1 += d.v;
   });
 
   /* Country drill-down. The slice covers the top 30 exporters per chain, so
@@ -1176,9 +1273,10 @@ async function viewProducts() {
   if (isCountry) {
     pbc.forEach(d => {
       if (d.iso !== ci) return;
-      if (d.year !== STATE.y0 && d.year !== STATE.y1) return;
-      const k = ctry[d.code] || (ctry[d.code] = {v0: 0, v1: 0});
-      if (d.year === STATE.y0) k.v0 += d.v; else k.v1 += d.v;
+      const k = ctry[d.code] || (ctry[d.code] = {v0: 0, v1: 0, by: {}});
+      k.by[d.year] = (k.by[d.year] || 0) + d.v;
+      if (d.year === wy) k.v0 += d.v;
+      else if (d.year === wy1) k.v1 += d.v;
     });
   }
   /* Basket denominators: the country's / the world's total for THIS chain in
@@ -1187,16 +1285,26 @@ async function viewProducts() {
   const wTot1 = Object.values(world).reduce((s, r) => s + r.v1, 0);
 
   const tn = techName(ti);
+  const pyears = windowYears();
   const rows = codes.map(c => {
-    const w = world[c.code] || {v0: 0, v1: 0};
-    const k = ctry[c.code] || {v0: 0, v1: 0};
+    const w = world[c.code] || {v0: 0, v1: 0, by: {}};
+    const k = ctry[c.code] || {v0: 0, v1: 0, by: {}};
     const sp = span[c.code] || null;
     const mu = muShare(tn, L.code[c.code], c.role);
     const cShare = (isCountry && cTot1) ? k.v1 / cTot1 : null;
     const wShare = wTot1 ? w.v1 / wTot1 : null;
     const rca = (cShare !== null && wShare) ? cShare / wShare : null;
     const brk = sp ? ((sp.a > STATE.y0 ? 1 : 0) | (sp.b < STATE.y1 ? 2 : 0)) : 0;
-    return {
+    /* The row's headline series: the selected country's when one is chosen,
+     * the world's otherwise — the same series its endpoint columns and its
+     * CAGR are already computed on, so the line, the cells and the rate cannot
+     * tell three different stories. */
+    const hy = (isCountry ? k : w).by || {};
+    const vals = applyArith({byYear: hy}, pyears, STATE.arith, STATE.y0);
+    const yr = {};
+    pyears.forEach((y, i) => { yr['y' + y] = vals[i]; });
+    return Object.assign(yr, {
+      _spark: vals,
       hs6: L.code[c.code], desc: c.desc, informal_tag: c.informal_tag,
       role: c.role, stage: c.stage, cat: L.cat[c.cat], rev: c.rev || '',
       mode2: (String(c.role).indexOf(' | ') >= 0 || String(c.stage).indexOf(' | ') >= 0) ? 1 : 0,
@@ -1214,7 +1322,7 @@ async function viewProducts() {
       mktShare: (isCountry && w.v1) ? k.v1 / w.v1 : null,
       cagr: cagr(isCountry ? k.v0 : w.v0, isCountry ? k.v1 : w.v1, yearsSel()),
       shap: shapBy[c.code] === undefined ? null : shapBy[c.code]
-    };
+    });
   }).sort((a, b) => isCountry ? (b.c1 - a.c1) || (b.w1 - a.w1) : b.w1 - a.w1);
 
   const howW = `Sum of every bilateral BACI flow on this HS-6 code, worldwide. The same value appears under every chain that shares the code — no split_weight apportionment is applied anywhere in this tool.`;
@@ -1250,8 +1358,25 @@ async function viewProducts() {
       C.pct('mktShare', 'World market share', 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) / (World trade ${STATE.y1}), both shown.`)
     );
   }
+  /* The year matrix, same as Q1–Q4 — this view used to show two endpoint years
+   * and nothing between them. It carries the series the row's endpoints and its
+   * CAGR are already computed on: the selected country's exports when a country
+   * is chosen, world trade otherwise. In $ mode the first and last cells
+   * therefore repeat the endpoint columns above, and that repetition is the
+   * point — those columns are the operands of RCA and of the corrected twins,
+   * and every operand stays on screen. The correction is NOT applied here: only
+   * a column that names its own use share beside it can be reconciled by hand,
+   * which is exactly what the endpoint pairs do. */
   STATE.cols.push(
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC, `= (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1, on the ${isCountry ? L.iso[ci] + ' export' : 'world trade'} columns. −100.0% means the series reaches zero — check the HS revision first.`),
+    ...yearCols(pyears).map(c => Object.assign(c, {
+      how: c.how + (isCountry
+        ? ` Sum of BACI flows on this code with ${isoLabel(L.iso[ci])} as exporter.`
+        : ' World trade on this code, all exporters.') +
+        ' Raw — the multi-use correction is applied in the endpoint columns, which show the use share next to them.'
+    })),
+    C.spark('_spark', 'Trend',
+      `A drawing of this row's year cells, ${pyears[0]}–${pyears[pyears.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
+    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC, `The average rate at which this series grew per year, compounding — not the sum of the yearly changes. = (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1, on the ${isCountry ? L.iso[ci] + ' export' : 'world trade'} columns. −100.0% means the series reaches zero — check the HS revision first.`),
     C.num('shap', 'SHAP mean |z|', 'model', SRC_SHAP, 'Mean absolute standardised SHAP value from the predicted-competitiveness random forest. Measures how much this code drives the model’s competitiveness prediction. It is a model output and cannot be recomputed from this page.', 3),
     Object.assign(
       C.txt('informal_tag', 'informal_tag (internal label — NOT official)', 'raw', SRC_GD, 'The researcher’s working shorthand for the sub-component. Shown for traceability against internal spreadsheets only. It is never used as a product identifier here.'),
@@ -1259,6 +1384,7 @@ async function viewProducts() {
   );
 
   STATE.rows = rows;
+  STATE.years = pyears;
   STATE.notes = [];
 
   const nBrk = rows.filter(r => r.brk).length;
@@ -1406,13 +1532,16 @@ function paintTable() {
 
   thead.innerHTML = '<tr>' + STATE.cols.map(c => {
     const arrow = STATE.sortKey === c.key ? (STATE.sortDir < 0 ? ' ▾' : ' ▴') : '';
-    return `<th data-k="${esc(c.key)}" class="${c.align === 'l' ? 'tl' : ''}${c.wide ? ' w' : ''}" ` +
+    return `<th data-k="${esc(c.key)}" class="${c.align === 'l' ? 'tl' : ''}${c.wide ? ' w' : ''}${c.viz ? ' novs' : ''}" ` +
            `title="${esc(c.src)} — ${esc(c.how)}">` +
            `<span class="lab">${c.label}${arrow}</span>` +
            `<span class="cls ${c.cls}">${c.cls.toUpperCase()}</span></th>`;
   }).join('') + '</tr>';
 
   tbody.innerHTML = STATE.rows.map(r => '<tr>' + STATE.cols.map(c => {
+    /* A viz column is drawn, not written: esc() would render the SVG as text
+     * and the numeric branches below do not apply to an array. */
+    if (c.viz) return `<td class="spkcell">${sparkSVG(r[c.key], STATE.years)}</td>`;
     let cell = esc(c.fmt(r[c.key]));
     let cls = (c.align === 'l' ? 'tl' : '') + (c.wide ? ' w' : '');
     if (c.key === 'desc') cls = 'tl desc';
@@ -1439,6 +1568,9 @@ function paintTable() {
   }).join('') + '</tr>').join('');
 
   thead.querySelectorAll('th').forEach(th => {
+    /* Sorting a drawing is meaningless — the Trend column is deliberately
+     * inert. Sort by CAGR, which is the same series expressed as a number. */
+    if (th.classList.contains('novs')) return;
     th.onclick = () => sortBy(th.dataset.k);
   });
 }
@@ -1491,7 +1623,9 @@ function paintProvenance() {
     (downstream inputs are already tech-specific). Q1&ndash;Q4 aggregate away the HS-6
     dimension and are raw throughout.<br>
     <b>Formulas.</b> share = value / total, both shown &middot;
-    CAGR = (v<sub>1</sub> / v<sub>0</sub>)<sup>1/years</sup> &minus; 1 &middot;
+    <b>CAGR</b> (<b>c</b>ompound <b>a</b>nnual <b>g</b>rowth <b>r</b>ate &mdash; the average
+    rate the series grew per year, compounding, not the sum of the yearly changes)
+    = (v<sub>1</sub> / v<sub>0</sub>)<sup>1/years</sup> &minus; 1 &middot;
     RCA (within basket) = (country share of basket) / (world share of basket), all four
     operands shown as columns.<br>
     <b>Scope.</b> ${m.techs.length} supply chains
@@ -1523,8 +1657,11 @@ const VIEW_NAMES = {
 };
 
 function buildExportRows() {
-  const header = STATE.cols.map(c => `${c.label} [${c.cls.toUpperCase()}]`);
-  const rows = STATE.rows.map(r => STATE.cols.map(c => {
+  /* Drawings do not go in a file: the Trend column is a picture of the year
+   * columns, which are exported in full right next to it. */
+  const cols = STATE.cols.filter(c => !c.viz);
+  const header = cols.map(c => `${c.label} [${c.cls.toUpperCase()}]`);
+  const rows = STATE.rows.map(r => cols.map(c => {
     const v = r[c.key];
     return (v === null || v === undefined || (typeof v === 'number' && Number.isNaN(v)))
       ? '' : v;
@@ -1593,7 +1730,9 @@ function preamble() {
     [],
     ['— Formulas —'],
     ['share', 'value / total (both operands are columns in this file)'],
-    ['CAGR', '(v1 / v0)^(1/years) − 1 (both endpoints are columns in this file). ' +
+    ['CAGR', 'Compound annual growth rate: the average rate the series grew per ' +
+             'year, compounding — NOT the sum or the average of the yearly changes. ' +
+             '= (v1 / v0)^(1/years) − 1 (both endpoints are columns in this file). ' +
              '−1 means the series reaches zero — check the HS revision column first.'],
     ['RCA (within basket)', '(country share of basket) / (world share of basket); all 4 ' +
                             'operands are columns in this file'],
