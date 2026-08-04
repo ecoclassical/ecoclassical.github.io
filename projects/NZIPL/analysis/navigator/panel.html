@@ -29,6 +29,12 @@
   .leg{display:flex;flex-wrap:wrap;gap:7px;font-size:9px;color:rgba(255,255,255,.5);margin-top:8px;}
   .tip{position:fixed;background:rgba(6,13,8,.95);border:1px solid rgba(60,181,74,.3);border-radius:5px;
     padding:5px 9px;font-size:11px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:99;}
+  /* The basis line is static markup, not drawn by load() — a page that fails to
+     load its case JSON must still say what basis its (absent) numbers are on. */
+  .basis{font-size:11px;line-height:1.6;color:rgba(255,255,255,.62);background:rgba(234,179,8,.07);
+    border:1px solid rgba(234,179,8,.28);border-radius:6px;padding:8px 12px;margin-bottom:16px;}
+  .basis b{color:#eab308;}
+  .basis a{color:#3cb54a;}
 </style>
 </head>
 <body>
@@ -42,13 +48,24 @@
   <span class="badge" id="h-meta"></span>
 </div>
 
+<div class="basis">
+  ◌ <b>Uncorrected raw trade.</b> Every figure on this page is raw BACI value. The multi-use
+  correction is <b>not</b> applied here, so upstream figures include trade in copper, aluminium
+  and steel that never reaches this technology. The corrected basis — raw × EXIOBASE direct use
+  share, measured for raw and processed materials only — is available in the
+  <a href="navigator.html">Atlas Navigator</a> (the ⚖️ toggle, bottom left) and column-by-column
+  in the <a href="data_explorer.html">Data Explorer</a>. This prototype is deliberately raw-only:
+  it carries its own copy of the draw code, and a second implementation of the correction would
+  drift from the Navigator's.
+</div>
+
 <div class="grid">
   <div class="card"><h3>Capability Radar <span class="fam">SHAP × RCA</span></h3><svg id="radar" width="100%" height="300"></svg><div class="leg" id="radar-leg"></div></div>
   <div class="card"><h3>PC Scatter <span class="fam">SHAP × trade value</span></h3><svg id="scatter" width="100%" height="300"></svg></div>
   <div class="card wide"><h3>Trade Timeline <span class="fam">exports by value-chain position</span></h3><svg id="tl" width="100%" height="300"></svg><div class="leg" id="tl-leg"></div></div>
   <div class="card wide"><h3>Trade Composition <span class="fam">treemap · top products by position</span></h3><svg id="tm" width="100%" height="320"></svg></div>
-  <div class="card"><h3>Top export destinations</h3><div id="dest"></div></div>
-  <div class="card"><h3>Top import sources</h3><div id="src"></div></div>
+  <div class="card"><h3>Top export destinations <span class="fam" id="dest-yr"></span></h3><div id="dest"></div></div>
+  <div class="card"><h3>Top import sources <span class="fam" id="src-yr"></span></h3><div id="src"></div></div>
   <div class="card wide"><h3>Trade Map <span class="fam">suppliers & buyers</span></h3><svg id="map" width="100%" height="360"></svg><div class="leg" id="map-leg"></div></div>
   <div class="card wide"><h3>Value-Chain Sankey <span class="fam">7-lane flows · latest year</span></h3><svg id="sk" width="100%" height="340"></svg></div>
   <div class="card wide"><h3>Tech Tree <span class="fam">production process · by stage</span></h3><svg id="tree" width="100%" height="360"></svg></div>
@@ -116,8 +133,21 @@ async function load(){
   drawRadar(d.radar); drawScatter(d.scatter);
   drawTimeline(d.timeline.filter(r=>r.flow==='exp'));
   drawTreemap(d.products);
-  partners('dest',d.partners.filter(r=>r.dir==='dest')); partners('src',d.partners.filter(r=>r.dir==='src'));
-  drawMap(d.partners, d.iso);
+  // The engine replaced the flat `partners` array with a per-year top-8 series
+  // (partners_yearly). navigator.html followed; this inline copy did not, so
+  // `d.partners` has been undefined since the rebuild and the TypeError killed
+  // the rest of load() — the map, tree, sankey and firm layer never drew. That
+  // is register B-2 (two copies of the draw code) doing exactly what it does.
+  // Raw side only: partners_yearly_c holds the corrected ranking, and this page
+  // is deliberately raw-only — see the basis line under the header.
+  const py = d.partners_yearly || [];
+  const pyr = py.length ? Math.max(...py.map(r => +r.year)) : null;
+  const parts = py.filter(r => +r.year === pyr)
+                  .map(r => ({dir: r.dir, partner: r.partner, v: +r.v || 0}));
+  document.getElementById('dest-yr').textContent = pyr ? String(pyr) : '';
+  document.getElementById('src-yr').textContent  = pyr ? String(pyr) : '';
+  partners('dest',parts.filter(r=>r.dir==='dest')); partners('src',parts.filter(r=>r.dir==='src'));
+  drawMap(parts, d.iso);
   drawFirms(d.firms||[], d.iso);
   // country-independent per-tech visuals (tree + sankey)
   const tk = CUR.tech.replace(/ /g,'_');

@@ -32,11 +32,15 @@ const SRC_HS   = 'Official BACI HS-6 product text (green_dictionary.product_desc
 const SRC_GD   = 'data/green_dict/green_dictionary.csv (NZIPL value-chain classification)';
 const SRC_SHAP = 'data/pc/pc_features.csv (external ML model; SHAP mean |z|)';
 const SRC_CALC = 'Computed in this page from the columns shown';
+const SRC_EXIO = 'EXIOBASE direct use share, via analysis/navigator/data/_index.json (use_shares[chain][HS-6 code])';
 
 const STATE = {
   tech: 'ALL', segment: 'ALL', country: 'ALL',
   y0: 2015, y1: 2024, preset: 'chains',
   idx: null, products: null,
+  /* Multi-use correction lookup, from the ENGINE's data/_index.json (shared
+   * with the Atlas Navigator), fetched at boot — see muShare() below. */
+  muShares: {}, muRoles: [], muNote: '', muYear: null,
   techCache: {}, flowCache: {}, decCache: new WeakMap(),
   rows: [], cols: [], notes: [],
   sortKey: null, sortDir: -1,
@@ -125,6 +129,29 @@ function cagr(v0, v1, years) {
 }
 function yearsSel() { return Math.max(1, STATE.y1 - STATE.y0); }
 function techName(i) { return STATE.idx.meta.techs[i]; }
+
+/* ── Multi-use correction ───────────────────────────────────────────────
+ * Ported from navigator.html (search "let muOn" there for the reference
+ * implementation); the same three rules:
+ * 1. The share is per (chain, HS-6 code), never per code alone — aluminium
+ *    ore 260600 is 0.529 for Batteries and 0.0019 for Biofuel.
+ * 2. Only Raw Material and Processed Material carry a measurement. Every
+ *    other role is 1.0 BY ASSUMPTION — no correction applied: downstream
+ *    inputs are already tech-specific. A reason, not missing data.
+ * 3. Only a field that still carries an HS code can be corrected here
+ *    (raw × share). The Q1–Q4 headline views sum the code dimension away,
+ *    so they stay raw; the corrected columns live in the HS-6 detail view.
+ * `why` distinguishes the four ways share ends up 1.0, so the page can
+ * label the assumption case rather than implying a measurement was made. */
+function muShare(tech, code, role) {
+  const t = STATE.muShares[tech] || STATE.muShares[String(tech).replace(/ /g, '_')];
+  if (!t) return {share: 1, why: 'unmapped'};
+  const measured = String(role === null || role === undefined ? '' : role)
+    .split(' | ').some(r => STATE.muRoles.indexOf(r) >= 0);
+  if (!measured) return {share: 1, why: 'assumption'};
+  const s = t[code];
+  return s === undefined ? {share: 1, why: 'unmeasured'} : {share: s, why: 'measured'};
+}
 
 /* ── Column constructors ────────────────────────────────────────────────── */
 /* cls is authoritative: it paints the badge and (in Task 11) annotates export
@@ -220,6 +247,21 @@ async function boot() {
     sum.textContent = 'Could not load data_explorer/_index.json — serve this page over ' +
       'HTTP, not file://. (' + e.message + ')';
     return;
+  }
+  /* Multi-use correction lookup: the ENGINE's index, one directory up from
+   * the slices — the same file and keys navigator.html reads at boot
+   * (use_shares[chain][code], use_share_measured_roles, use_share_note).
+   * A failure here must not take the page down: every share degrades to 1.0
+   * and the corrected columns simply equal the raw ones. */
+  try {
+    let eidx = await (await fetch('data/_index.json')).json();
+    eidx = Array.isArray(eidx) ? eidx[0] : eidx;
+    STATE.muShares = eidx.use_shares || {};
+    STATE.muRoles = eidx.use_share_measured_roles || [];
+    STATE.muNote = eidx.use_share_note || '';
+    STATE.muYear = eidx.use_share_source_year || null;
+  } catch (e) {
+    console.warn('multi-use shares', e);
   }
   const m = STATE.idx.meta, L = STATE.idx.lookups;
 
@@ -506,10 +548,12 @@ async function viewProducts() {
   const cTot1 = Object.values(ctry).reduce((s, r) => s + r.v1, 0);
   const wTot1 = Object.values(world).reduce((s, r) => s + r.v1, 0);
 
+  const tn = techName(ti);
   const rows = codes.map(c => {
     const w = world[c.code] || {v0: 0, v1: 0};
     const k = ctry[c.code] || {v0: 0, v1: 0};
     const sp = span[c.code] || null;
+    const mu = muShare(tn, L.code[c.code], c.role);
     const cShare = (isCountry && cTot1) ? k.v1 / cTot1 : null;
     const wShare = wTot1 ? w.v1 / wTot1 : null;
     const rca = (cShare !== null && wShare) ? cShare / wShare : null;
@@ -521,8 +565,12 @@ async function viewProducts() {
       traded: c.traded,
       span: sp ? (sp.a === sp.b ? String(sp.a) : `${sp.a}–${sp.b}`) : 'no BACI trade',
       brk,
+      ushare: mu.share, ushareWhy: mu.why,
       w0: w.v0, w1: w.v1,
+      w0c: w.v0 * mu.share, w1c: w.v1 * mu.share,
       c0: isCountry ? k.v0 : null, c1: isCountry ? k.v1 : null,
+      c0c: isCountry ? k.v0 * mu.share : null,
+      c1c: isCountry ? k.v1 * mu.share : null,
       cTot: isCountry ? cTot1 : null, wTot: wTot1,
       cShare, wShare, rca,
       mktShare: (isCountry && w.v1) ? k.v1 / w.v1 : null,
@@ -531,8 +579,8 @@ async function viewProducts() {
     };
   }).sort((a, b) => isCountry ? (b.c1 - a.c1) || (b.w1 - a.w1) : b.w1 - a.w1);
 
-  const tn = techName(ti);
   const howW = `Sum of every bilateral BACI flow on this HS-6 code, worldwide. The same value appears under every chain that shares the code — no split_weight apportionment is applied anywhere in this tool.`;
+  const howShare = 'EXIOBASE direct use share for this (chain, HS-6 code): the fraction of the code’s trade that plausibly serves THIS chain. Only Raw Material and Processed Material carry a measurement; every other role is 1.0 by assumption — no correction applied: downstream inputs are already tech-specific. A modelling decision, not missing data.';
   STATE.cols = [
     C.txt('hs6', 'HS-6 code', 'raw', SRC_BACI, 'Harmonised System 6-digit product code as recorded by BACI.'),
     C.txt('desc', 'Official BACI description', 'raw', SRC_HS, 'The official HS text for the code. This is the only product identifier used in this tool.'),
@@ -541,14 +589,21 @@ async function viewProducts() {
     C.txt('cat', 'HS category', 'raw', SRC_GD, 'The HS category used as a feature group by the competitiveness model.'),
     C.txt('rev', 'HS revision', 'raw', SRC_GD, 'The canonical HS revision the code was mapped from (green_dictionary.hs_rev_canonical). HS-6 codes are renumbered between revisions.'),
     C.txt('span', 'BACI trade years', 'derived', SRC_CALC, 'First and last year in which this code records any world trade, across the full 1995–' + STATE.idx.meta.year_max + ' series. A span that stops short of your window is flagged ⚠ — see the note above the table.'),
+    Object.assign(
+      C.num('ushare', 'Use share', 'raw', SRC_EXIO, howShare, 6),
+      {fmt: v => (v === null || v === undefined || Number.isNaN(v)) ? '' : (v === 1 ? '1' : v.toFixed(6))}),
     C.val('w0', `World trade ${STATE.y0}`, 'raw', SRC_BACI, howW),
-    C.val('w1', `World trade ${STATE.y1}`, 'raw', SRC_BACI, howW)
+    C.val('w0c', `World trade ${STATE.y0} corrected`, 'derived', SRC_CALC, `= (World trade ${STATE.y0}) × (Use share), both shown.`),
+    C.val('w1', `World trade ${STATE.y1}`, 'raw', SRC_BACI, howW),
+    C.val('w1c', `World trade ${STATE.y1} corrected`, 'derived', SRC_CALC, `= (World trade ${STATE.y1}) × (Use share), both shown.`)
   ];
   if (isCountry) {
     const nm = isoLabel(L.iso[ci]);
     STATE.cols.push(
       C.val('c0', `${L.iso[ci]} exports ${STATE.y0}`, 'raw', SRC_BACI, `Sum of BACI flows on this code with ${nm} as exporter.`),
+      C.val('c0c', `${L.iso[ci]} exports ${STATE.y0} corrected`, 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y0}) × (Use share), both shown.`),
       C.val('c1', `${L.iso[ci]} exports ${STATE.y1}`, 'raw', SRC_BACI, `Sum of BACI flows on this code with ${nm} as exporter.`),
+      C.val('c1c', `${L.iso[ci]} exports ${STATE.y1} corrected`, 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) × (Use share), both shown.`),
       C.val('cTot', `${L.iso[ci]} ${tn} basket ${STATE.y1}`, 'derived', SRC_CALC, `Sum of the ${L.iso[ci]} exports column over every code in the ${tn} basket. RCA denominator — shown so RCA is reproducible.`),
       C.val('wTot', `World ${tn} basket ${STATE.y1}`, 'derived', SRC_CALC, `Sum of the world trade column over every code in the ${tn} basket. RCA denominator — shown so RCA is reproducible.`),
       C.pct('cShare', 'Country share of basket', 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) / (${L.iso[ci]} ${tn} basket ${STATE.y1}), both shown.`),
@@ -580,6 +635,29 @@ async function viewProducts() {
     `<b>${nT} code${nT > 1 ? 's are' : ' is'} in the ${esc(tn)} dictionary but record no BACI
      trade</b> in any year (marked &#8709;). They are listed rather than dropped so the
      basket definition stays visible.`);
+  STATE.notes.push(
+    `<b>&#9878; Multi-use correction.</b> BACI counts a copper cathode as copper whatever
+     it ends up in, so a chain&rsquo;s upstream is mostly trade that never reaches the
+     technology. The <b>Use share</b> column is the EXIOBASE direct use share for this
+     (chain, HS-6 code)${STATE.muYear ? ` (${STATE.muYear})` : ''} — the fraction of the
+     code&rsquo;s trade that plausibly serves THIS chain — and each <b>corrected</b>
+     column is raw &times; use share, reconcilable by hand from the columns shown. Only
+     <b>Raw Material</b> and <b>Processed Material</b> carry a measurement; for every
+     other role the share is 1.0 <b>by assumption — no correction applied: downstream
+     inputs are already tech-specific</b> (marked &#8801;). That is a modelling decision,
+     not missing data. The correction reaches the raw trade columns only: CAGR, basket
+     shares, RCA and market share are computed on raw values, and the Q1–Q4 headline
+     views sum the HS-6 dimension away, so they cannot be corrected in the browser.` +
+    (STATE.muNote ? `<br><br>${esc(STATE.muNote)}` : ''));
+  STATE.notes.push(
+    `<b>The country drill-down is capped at the top 30 exporters per chain</b>
+     (<code>TOP_EXPORTERS = 30</code> in the slice builder), so the country selector in
+     this view lists only those 30. The four headline views Q1–Q4 are
+     <b>uncapped</b> — every BACI reporter is included.`);
+  STATE.notes.push(
+    `<b>Electric vehicles (EVs) are not part of this tool</b> — the explorer covers 10 of
+     the 11 chains — and EVs have no EXIOBASE use shares either, so they receive no
+     corrected figures for two independent reasons.`);
 
   return `<span class="k">${rows.length}</span> HS-6 codes · ${esc(tn)}`
        + (segLabel ? ` · ${esc(segLabel)}` : '')
@@ -688,6 +766,9 @@ function paintTable() {
       if (r.mode2) cell += `<span class="flag" title="This code carries more than one stage/role within this chain. Canonical assignment is pending co-director sign-off.">&#9673;</span>`;
       if (r.traded === 0) cell += `<span class="flag" title="In the dictionary, but no BACI trade recorded for this code in any year.">&#8709;</span>`;
     }
+    if (c.key === 'ushare' && r.ushareWhy === 'assumption') {
+      cell += `<span class="flag" title="No correction applied: downstream inputs are already tech-specific — use share 1.0 by assumption, not by measurement.">&#8801;</span>`;
+    }
     const zero = (typeof r[c.key] === 'number' && r[c.key] === 0) ? ' num0' : '';
     /* Wide free-text columns (informal_tag) are clamped to three lines so one
      * long internal label cannot blow up the row height; the full value stays
@@ -745,6 +826,12 @@ function paintProvenance() {
     <b>Apportionment.</b> None. <code>split_weight</code> is not applied anywhere in this
     tool, so a code shared by two chains shows the same full BACI value in both, by design.
     Chain totals therefore overlap and must not be added together as a world figure.<br>
+    <b>Multi-use correction.</b> The HS-6 product detail view shows every raw trade value
+    beside its corrected twin: raw &times; EXIOBASE direct use share for that
+    (chain, HS-6 code), the share itself shown as a column. Only Raw Material and
+    Processed Material carry a measured share; every other role is 1.0 by assumption
+    (downstream inputs are already tech-specific). Q1&ndash;Q4 aggregate away the HS-6
+    dimension and are raw throughout.<br>
     <b>Formulas.</b> share = value / total, both shown &middot;
     CAGR = (v<sub>1</sub> / v<sub>0</sub>)<sup>1/years</sup> &minus; 1 &middot;
     RCA (within basket) = (country share of basket) / (world share of basket), all four
@@ -853,6 +940,24 @@ function preamble() {
                      'HS96·1996–2001 · HS02·2002–2006 · HS07·2007–2011 · HS12·2012–2016 · ' +
                      'HS17·2017–2021 · HS22·2022+). A single code can stop or start at a ' +
                      'revision boundary while the trade continues under a different number.'],
+    [],
+    ['— Multi-use correction —'],
+    ['Use share', 'EXIOBASE direct use share per (supply chain, HS-6 code), via ' +
+                  'analysis/navigator/data/_index.json (use_shares[chain][code]). Only ' +
+                  'Raw Material and Processed Material carry a measurement; every other ' +
+                  'role is 1.0 by assumption — no correction applied: downstream inputs ' +
+                  'are already tech-specific. A modelling decision, not missing data.'],
+    ['Corrected columns', STATE.preset === 'products'
+      ? 'raw × use share; both operands are columns in this file. CAGR, basket shares, ' +
+        'RCA and market share are computed on RAW values.'
+      : 'absent from this view — Q1–Q4 totals aggregate away the HS-6 dimension and ' +
+        'cannot be corrected in the browser, so every value in this file is raw.'],
+    ['Top-30 cap', 'The country-level HS-6 drill-down (product detail view) covers the ' +
+                   'top 30 exporters per chain only (TOP_EXPORTERS = 30). Q1–Q4 are ' +
+                   'uncapped: every BACI reporter is included.'],
+    ['EVs', 'Electric vehicles are not part of this tool (10 of 11 chains) and have no ' +
+            'EXIOBASE use shares — no corrected figures exist for them, for two ' +
+            'independent reasons.'],
     [],
     ['— Scope —'],
     ['Chains', `${m.techs.length}: ${m.techs.join(', ')}. Electric vehicles are not part of this tool.`],
