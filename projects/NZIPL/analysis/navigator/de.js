@@ -37,11 +37,22 @@ const SRC_EXIO = 'EXIOBASE direct use share, via analysis/navigator/data/_index.
 const STATE = {
   tech: 'ALL', segment: 'ALL', country: 'ALL',
   y0: 2015, y1: 2024, preset: 'chains',
+  /* 'levels' | 'yoy' | 'index' — how the year columns are read. One series,
+   * three arithmetics; see ARITH_META. */
+  arith: 'levels',
+  /* Q3/Q4 show TOP_N countries unless asked for the tail. */
+  showAll: false,
+  /* 'data' | 'visual' — the same numbers as a table or as a chart. */
+  viewMode: 'data',
+  /* The year list the current view painted; the chart reads it back. */
+  years: [],
   idx: null, products: null,
   /* Multi-use correction lookup, from the ENGINE's data/_index.json (shared
    * with the Atlas Navigator), fetched at boot — see muShare() below. */
   muShares: {}, muRoles: [], muNote: '', muYear: null,
   techCache: {}, flowCache: {}, decCache: new WeakMap(),
+  /* tech·code → stage||role keys, built once by codeSegmentIndex(). */
+  segIdx: null,
   rows: [], cols: [], notes: [],
   sortKey: null, sortDir: -1,
   /* Bumped once per completed render. Views load their slices asynchronously,
@@ -57,18 +68,49 @@ window.STATE = STATE;
 /* Which controls actually change the numbers in each view. Anything that does
  * not is disabled with an explanation, so a filter can never look applied when
  * it is not. */
-const APPLIC = {
-  chains:    {tech: false, seg: false, country: false},
-  segments:  {tech: true,  seg: false, country: false},
-  exporters: {tech: true,  seg: false, country: false},
-  importers: {tech: true,  seg: false, country: false},
-  products:  {tech: true,  seg: true,  country: true}
-};
+/* Which controls change the numbers in each view. Two of these used to be flat
+ * `false` with a message explaining that the slices could not support them.
+ * They can: `_index.json.codes` maps tech·code → stage|role and each per-tech
+ * file carries products_by_country at code × iso × year, so the cross-filters
+ * are derivable in the browser. What is still genuinely impossible is stated
+ * below, and only that.
+ *
+ * A function, not a constant, because two of the answers depend on whether a
+ * single chain is selected — the per-tech files are per tech, so "all 10
+ * chains" plus a country would mean fetching ten of them (~11 MB). */
+function applicFor(preset) {
+  const oneChain = STATE.tech !== 'ALL';
+  switch (preset) {
+    case 'panels':    return {tech: true,  seg: false, country: false};
+    case 'chains':    return {tech: false, seg: false, country: false};
+    case 'segments':  return {tech: true,  seg: false, country: oneChain};
+    /* Exports can be segment-filtered; imports cannot. products_by_country.iso
+     * is the EXPORTER (verified: it reproduces exporters.json exactly and
+     * importers.json not at all), and no code × importer × year source exists
+     * in these slices. */
+    case 'exporters': return {tech: true,  seg: oneChain, country: false};
+    case 'importers': return {tech: true,  seg: false, country: false};
+    default:          return {tech: true,  seg: true,  country: true};
+  }
+}
 const WHY_OFF = {
   tech:    'This view has one row per supply chain, so the chain filter does not apply.',
-  seg:     'This view is aggregated over all value-chain segments. The segment filter applies only to the HS-6 product detail view, which is the only slice carrying stage and role per code.',
-  country: 'This view is either a world total or already one row per country. The country filter applies only to the HS-6 product detail view.'
+  seg_isSegments: 'This view already has one row per segment — filtering to a single segment would leave one row. Use the chain and country filters instead.',
+  seg_needsChain: 'Filtering by segment needs the per-chain HS-6 detail, which is stored one file per chain. Choose a single supply chain above and this becomes available.',
+  seg_importsOnly: 'Segment detail exists per exporting country only — the per-chain HS-6 slice records who ships each code, not who buys it. Q3 · Who exports? can be filtered by segment; this view cannot.',
+  country_isFlow: 'This view is already one row per country. Use the chain and segment filters instead.',
+  country_needsChain: 'Filtering by country needs the per-chain HS-6 detail, which is stored one file per chain — filtering all ten at once would fetch about 11 MB. Choose a single supply chain above and this becomes available.'
 };
+function whyOff(preset, ctl) {
+  if (ctl === 'tech') return WHY_OFF.tech;
+  if (ctl === 'seg') {
+    if (preset === 'segments') return WHY_OFF.seg_isSegments;
+    if (preset === 'importers') return WHY_OFF.seg_importsOnly;
+    return WHY_OFF.seg_needsChain;
+  }
+  return (preset === 'exporters' || preset === 'importers')
+    ? WHY_OFF.country_isFlow : WHY_OFF.country_needsChain;
+}
 
 /* ── Decoding ───────────────────────────────────────────────────────────── */
 
@@ -202,9 +244,13 @@ async function loadFlow(dir) {
  * table starts near the top. Open/closed survives a reload, because a reader
  * who wants the provenance legend up wants it up on every view.
  * All three functions are TOP-LEVEL by design — see ground rule 1. */
+/* Only the multi-use explanation stays a header toggle: it is the one piece of
+ * reference a reader consults WHILE reading a row, because it explains a column
+ * they are looking at. Provenance, the overlap caution and the coverage caps are
+ * standing text that belongs after the numbers, and now render below the table
+ * in #refnotes — always open, nothing to discover. */
 const PANELS = [
-  {btn: 'tg-prov',    panel: 'panel-prov',    key: 'cscde.panel.prov'},
-  {btn: 'tg-overlap', panel: 'panel-overlap', key: 'cscde.panel.overlap'}
+  {btn: 'tg-mu', panel: 'panel-mu', key: 'cscde.panel.mu'}
 ];
 
 function readPanelPref(key) {
@@ -263,6 +309,7 @@ async function boot() {
   } catch (e) {
     console.warn('multi-use shares', e);
   }
+  fillStandingPanels();
   const m = STATE.idx.meta, L = STATE.idx.lookups;
 
   document.getElementById('meta-line').textContent =
@@ -307,6 +354,12 @@ function wireControls() {
   document.querySelectorAll('.preset').forEach(b => {
     b.onclick = () => setPreset(b.dataset.preset);
   });
+  document.querySelectorAll('.vm').forEach(b => {
+    b.onclick = () => { STATE.viewMode = b.dataset.vmode; render(); };
+  });
+  document.querySelectorAll('.ar').forEach(b => {
+    b.onclick = () => { STATE.arith = b.dataset.arith; STATE.sortKey = null; render(); };
+  });
   document.getElementById('dl-csv').onclick = downloadCSV;
   document.getElementById('dl-xlsx').onclick = downloadXLSX;
 }
@@ -338,7 +391,8 @@ async function setPreset(p) {
 
 /* Disable the controls that do not affect the current view, and say why. */
 function syncControls() {
-  const a = APPLIC[STATE.preset] || APPLIC.chains;
+  const p = STATE.preset;
+  const a = applicFor(p);
   const set = (ctlId, selId, on, why) => {
     const sel = document.getElementById(selId);
     const ctl = document.getElementById(ctlId);
@@ -347,11 +401,30 @@ function syncControls() {
     ctl.title = on ? '' : why;
     sel.title = on ? '' : why;
   };
-  set('ctl-tech', 'sel-tech', a.tech, WHY_OFF.tech);
-  set('ctl-seg', 'sel-seg', a.seg, WHY_OFF.seg);
-  set('ctl-country', 'sel-country', a.country, WHY_OFF.country);
+  set('ctl-tech', 'sel-tech', a.tech, whyOff(p, 'tech'));
+  set('ctl-seg', 'sel-seg', a.seg, whyOff(p, 'seg'));
+  set('ctl-country', 'sel-country', a.country, whyOff(p, 'country'));
+  /* A filter that is switched off must also stop applying, or the numbers keep
+   * a restriction the disabled control no longer shows. */
+  if (!a.seg && STATE.segment !== 'ALL') STATE.segment = 'ALL';
+  if (!a.country && STATE.country !== 'ALL') STATE.country = 'ALL';
   document.getElementById('sel-tech').value = STATE.tech;
   document.getElementById('sel-seg').value = STATE.segment;
+  syncArith();
+  syncVMode();
+}
+
+/* Which countries a per-tech payload actually holds, ranked by their value in
+ * the last year. Used by both the HS-6 view and the segments view, so the two
+ * offer exactly the same list. */
+function availCountries(t) {
+  const L = STATE.idx.lookups, lastYear = STATE.idx.meta.year_max;
+  const byIso = {};
+  decode(t.products_by_country).forEach(d => {
+    const e = byIso[d.iso] || (byIso[d.iso] = {i: d.iso, iso: L.iso[d.iso], last: 0});
+    if (d.year === lastYear) e.last += d.v;
+  });
+  return Object.values(byIso).sort((a, b) => b.last - a.last);
 }
 
 /* The HS-6 country drill-down slice covers the top 30 exporters per chain
@@ -369,117 +442,688 @@ function populateCountries(entries) {
   return ok || prev === 'ALL';
 }
 
-/* ── View: Q1, one row per supply chain ─────────────────────────────────── */
-function viewChains() {
-  const rows = [];
-  const ch = decode(STATE.idx.chains).filter(d => d.flow === 0);
-  STATE.idx.meta.techs.forEach((t, ti) => {
-    const a = ch.find(d => d.tech === ti && d.year === STATE.y0);
-    const b = ch.find(d => d.tech === ti && d.year === STATE.y1);
-    const v0 = a ? a.v : 0, v1 = b ? b.v : 0;
-    rows.push({chain: t, v0, v1, delta: v1 - v0, cagr: cagr(v0, v1, yearsSel())});
-  });
-  rows.sort((x, y) => y.v1 - x.v1);
-  const tot = rows.reduce((s, r) => s + r.v1, 0);
-  rows.forEach(r => { r.tot = tot; r.share = tot ? r.v1 / tot : null; });
+/* ── The year-series engine ─────────────────────────────────────────────────
+ * Every Q1–Q4 slice already carries the FULL 1995–2024 series — `chains` 600
+ * rows, `segments` 1,927, `exporters` 47,879, `importers` 60,798, each with a
+ * `year` column. The page used to read STATE.y0 and STATE.y1 and discard the
+ * other 28 years. These functions hand back the whole thing, so a view can be a
+ * matrix instead of two columns and a delta.
+ *
+ * The window (y0..y1) is a view ON the series, never a filter applied while
+ * building it: year-on-year growth for the first year in the window needs the
+ * year before it, which is outside the window. Building narrow would silently
+ * blank that column.
+ *
+ * Ground rule 2 still holds — every derived cell is reproducible from level
+ * cells that are themselves renderable, so nothing here hides its operands. */
 
-  const howSum = 'Sum of every bilateral BACI flow whose HS-6 code is in this chain’s green-dictionary basket. At BACI’s bilateral grain world exports and world imports are the same number.';
+function allYears() {
+  const m = STATE.idx.meta, out = [];
+  for (let y = m.year_min; y <= m.year_max; y++) out.push(y);
+  return out;
+}
+function windowYears() {
+  const out = [];
+  for (let y = STATE.y0; y <= STATE.y1; y++) out.push(y);
+  return out;
+}
+
+/* One row per entity, with its complete year → value map.
+ * `chains` and `segments` are synchronous off STATE.idx; `exporters` and
+ * `importers` need their slice fetched, so this is async throughout. */
+async function seriesFor(view) {
+  const L = STATE.idx.lookups;
+  const mk = (bucket, key, label) =>
+    bucket[key] || (bucket[key] = {key, label, byYear: {}});
+  const acc = {};
+
+  if (view === 'chains') {
+    /* flow === 0 is exports. At BACI's bilateral grain world exports and world
+     * imports are the same number, so one flow direction is the world total. */
+    decode(STATE.idx.chains).filter(d => d.flow === 0).forEach(d => {
+      const s = mk(acc, String(d.tech), STATE.idx.meta.techs[d.tech]);
+      s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+    });
+
+  } else if (view === 'segments') {
+    decode(STATE.idx.segments)
+      .filter(d => STATE.tech === 'ALL' || d.tech === +STATE.tech)
+      .forEach(d => {
+        const stage = L.stage[d.stage], role = L.role[d.role];
+        const s = mk(acc, `${stage}||${role}`, `${stage} · ${role}`);
+        s.stage = stage; s.role = role;
+        s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+      });
+
+  } else if (view === 'exporters' || view === 'importers') {
+    (await loadFlow(view))
+      .filter(d => STATE.tech === 'ALL' || d.tech === +STATE.tech)
+      .forEach(d => {
+        const iso = L.iso[d.iso];
+        const s = mk(acc, iso, ISO_NAME[iso] || iso);
+        s.iso3 = iso;
+        s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+      });
+
+  } else {
+    throw new Error(`seriesFor: no series for view "${view}"`);
+  }
+
+  return Object.values(acc);
+}
+
+/* The three arithmetic modes. Each is a pure function of one series and the
+ * years asked for — the toggle changes the arithmetic, never the data. */
+function asLevels(s, years) {
+  return years.map(y => (s.byYear[y] === undefined ? null : s.byYear[y]));
+}
+/* Growth against the PREVIOUS year, which may sit outside the window — that is
+ * why the series is built full-width. A year whose predecessor is zero or
+ * missing is null, not Infinity. */
+function asYoY(s, years) {
+  return years.map(y => {
+    const a = s.byYear[y - 1], b = s.byYear[y];
+    if (a === undefined || b === undefined || a === null || b === null) return null;
+    if (a <= 0) return null;
+    return b / a - 1;
+  });
+}
+/* Rebased to `base` = 100. Comparable across chains of very different size,
+ * which is what the levels chart cannot show. */
+function asIndex(s, years, base) {
+  const b0 = s.byYear[base];
+  if (!b0) return years.map(() => null);
+  return years.map(y => (s.byYear[y] === undefined ? null : 100 * s.byYear[y] / b0));
+}
+function applyArith(s, years, mode, base) {
+  if (mode === 'yoy')   return asYoY(s, years);
+  if (mode === 'index') return asIndex(s, years, base);
+  return asLevels(s, years);
+}
+
+/* tech·code → the stage||role keys that code carries, built once from
+ * _index.json.codes. A Mode-2 code carries several values pipe-separated and
+ * therefore lands in SEVERAL segments — the same reading viewProducts already
+ * uses for its segment filter, so the two cannot disagree.
+ * This is what makes the cross-filters possible without a slice rebuild. */
+function codeSegmentIndex() {
+  if (STATE.segIdx) return STATE.segIdx;
+  const idx = {};
+  decode(STATE.idx.codes).forEach(c => {
+    const keys = [];
+    String(c.stage).split(' | ').forEach(st =>
+      String(c.role).split(' | ').forEach(ro => keys.push(`${st}||${ro}`)));
+    idx[`${c.tech}|${c.code}`] = keys;
+  });
+  STATE.segIdx = idx;
+  return idx;
+}
+
+/* ── Visual mode ────────────────────────────────────────────────────────────
+ * Hand-rolled SVG. This page loads no charting library and does not acquire one
+ * here: the marks needed are lines and stacked areas, the offline build would
+ * have to inline any dependency, and a library in a page whose whole claim is
+ * "nothing is black-boxed" is the wrong trade.
+ *
+ * The chart reads STATE.rows and STATE.years — the SAME values the table paints,
+ * after the same arithmetic. A chart and a table that can disagree is the defect
+ * this design exists to make impossible.
+ *
+ * No <script>, no external URL, no fetch inside the SVG. Tooltips are native
+ * <title> elements. */
+
+const TECH_COLORS = {
+  Solar: '#eab308', Nuclear: '#0ea5e9', Batteries: '#f59e0b', Transmission: '#06b6d4',
+  Wind: '#3b82f6', Biofuel: '#84cc16', Electrolyzers: '#a855f7', Geothermal: '#ef4444',
+  'Heat Pumps': '#f97316', Magnets: '#ec4899', EVs: '#14b8a6'
+};
+const SR_COLORS = {
+  'Upstream|Raw Material': '#b45309', 'Upstream|Processed Material': '#c17a2e',
+  'Midstream|Processed Material': '#22c55e', 'Midstream|Process Equipment': '#65a30d',
+  'Midstream|Product Component': '#16a34a', 'Downstream|Product Component': '#4ade80',
+  'Downstream|Process Equipment': '#6b7280', 'Downstream|Final Product': '#f97316',
+  'Final Product|Final Product': '#f97316', 'Final Product|Product Component': '#fb923c',
+  'Downstream|Processed Material': '#86efac'
+};
+/* For countries, which have no canonical palette. Ten distinguishable hues, then
+ * grey — the tail is context, not a series anyone reads individually. */
+const CAT10 = ['#073309', '#3cb54a', '#2563eb', '#ef4444', '#7c3aed', '#f59e0b',
+               '#0891b2', '#db2777', '#65a30d', '#9a3412'];
+const GREY = '#9ca3af';
+
+function seriesColor(row, i) {
+  if (STATE.preset === 'chains') return TECH_COLORS[row.chain] || GREY;
+  if (STATE.preset === 'segments') {
+    return SR_COLORS[`${row.stage}|${row.role}`] || GREY;
+  }
+  return i < CAT10.length ? CAT10[i] : GREY;
+}
+
+const svgEsc = s => String(s === null || s === undefined ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/* Nice round tick values for an axis spanning lo..hi. */
+function ticks(lo, hi, n) {
+  if (!(hi > lo)) return [lo];
+  const raw = (hi - lo) / n;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw) || 10 * mag;
+  const out = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(v);
+  return out;
+}
+
+/* Build one chart as an SVG string. Extracted from paintChart so the four-panel
+ * view can call it four times with different data — same marks, same scales,
+ * same reading, whether it is one big chart or one of four small ones. */
+function chartSVG(cfg) {
+  const {rows, years, stacked, colorOf, labelOf, fmt, W, H, focus, maxLabels} = cfg;
+  if (!rows.length || !years.length) return '';
+  const mL = cfg.mL === undefined ? 62 : cfg.mL;
+  const mR = cfg.mR === undefined ? 176 : cfg.mR;
+  const mT = 14, mB = 30;
+  const iw = W - mL - mR, ih = H - mT - mB;
+  const x = i => mL + (years.length === 1 ? iw / 2 : iw * i / (years.length - 1));
+  const val = (r, y) => { const v = r['y' + y]; return (v === null || v === undefined) ? null : v; };
+
+  let lo = 0, hi = 0;
+  if (stacked) {
+    years.forEach(y => { hi = Math.max(hi, rows.reduce((s, r) => s + (val(r, y) || 0), 0)); });
+  } else {
+    let any = false;
+    rows.forEach(r => years.forEach(y => {
+      const v = val(r, y); if (v === null) return;
+      if (!any) { lo = hi = v; any = true; }
+      lo = Math.min(lo, v); hi = Math.max(hi, v);
+    }));
+    if (!any) return '';
+    if (cfg.zeroBase) lo = Math.min(0, lo);
+    if (lo === hi) hi = lo + 1;
+    const pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
+  }
+  const y = v => mT + ih - ih * ((v - lo) / (hi - lo || 1));
+
+  const parts = [];
+  ticks(lo, hi, cfg.nTicks || 5).forEach(t => {
+    const yy = y(t);
+    parts.push(`<line class="cx-grid" x1="${mL}" x2="${mL + iw}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}"/>`);
+    parts.push(`<text class="cx-axis" x="${mL - 7}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end">${svgEsc(fmt(t))}</text>`);
+  });
+  if (lo < 0 && hi > 0) parts.push(`<line class="cx-zero" x1="${mL}" x2="${mL + iw}" y1="${y(0).toFixed(1)}" y2="${y(0).toFixed(1)}"/>`);
+
+  const every = Math.max(1, Math.ceil(years.length / (cfg.nYearTicks || 12)));
+  years.forEach((yr, i) => {
+    if (i % every && i !== years.length - 1) return;
+    parts.push(`<text class="cx-axis" x="${x(i).toFixed(1)}" y="${H - 10}" text-anchor="middle">${yr}</text>`);
+  });
+
+  const ends = [];
+  if (stacked) {
+    const base = years.map(() => 0);
+    rows.slice().reverse().forEach((r, ri) => {
+      const top = years.map((yr, i) => base[i] + (val(r, yr) || 0));
+      const d = years.map((yr, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(top[i]).toFixed(1)}`).join('')
+        + years.map((yr, i) => `L${x(years.length - 1 - i).toFixed(1)},${y(base[years.length - 1 - i]).toFixed(1)}`).join('') + 'Z';
+      const i0 = rows.length - 1 - ri;
+      parts.push(`<path class="cx-area" d="${d}" fill="${colorOf(rows[i0], i0)}" fill-opacity=".9"><title>${svgEsc(labelOf(rows[i0]))}</title></path>`);
+      years.forEach((yr, i) => { base[i] = top[i]; });
+    });
+  } else {
+    /* Focused series are drawn LAST so they sit above the grey field — the
+     * Gilberto reading: context in grey, the thing you asked about in colour. */
+    const order = rows.map((r, i) => i).sort((a, b) => {
+      const fa = focus ? (labelOf(rows[a]) === focus ? 1 : 0) : 0;
+      const fb = focus ? (labelOf(rows[b]) === focus ? 1 : 0) : 0;
+      return fa - fb;
+    });
+    order.forEach(ri => {
+      const r = rows[ri];
+      let d = '', open = false, lastI = -1;
+      years.forEach((yr, i) => {
+        const v = val(r, yr);
+        if (v === null) { open = false; return; }
+        d += `${open ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`;
+        open = true; lastI = i;
+      });
+      if (!d) return;
+      const isFocus = focus ? labelOf(r) === focus : false;
+      const dim = focus && !isFocus;
+      const col = dim ? GREY : colorOf(r, ri);
+      parts.push(`<path class="cx-line" d="${d}" stroke="${col}" stroke-width="${isFocus ? 2.6 : 2}" stroke-opacity="${dim ? .5 : (ri < (maxLabels || 12) ? 1 : .45)}"><title>${svgEsc(labelOf(r))}</title></path>`);
+      if (lastI >= 0 && (isFocus || ri < (maxLabels || 12))) {
+        ends.push({y: y(val(r, years[lastI])), col, bold: isFocus,
+                   text: `${labelOf(r)} ${fmt(val(r, years[lastI]))}`});
+      }
+    });
+  }
+
+  /* End labels: de-collide downward, then, if the stack has run past the bottom
+     of the plot, shift the whole column back up. Without the clamp a crowded
+     panel writes its last few labels off the canvas. */
+  ends.sort((a, b) => a.y - b.y);
+  let prev = -Infinity;
+  const gapPx = cfg.labelGap || 13;
+  ends.forEach(e => { e.ty = Math.max(e.y, prev + gapPx); prev = e.ty; });
+  if (ends.length) {
+    const over = ends[ends.length - 1].ty - (mT + ih);
+    if (over > 0) {
+      const lift = Math.min(over, ends[0].ty - mT);
+      ends.forEach(e => { e.ty -= lift; });
+    }
+  }
+  ends.forEach(e => {
+    parts.push(`<line class="cx-grid" x1="${mL + iw}" x2="${mL + iw + 5}" y1="${e.y.toFixed(1)}" y2="${e.ty.toFixed(1)}" stroke="${e.col}"/>`);
+    parts.push(`<text class="cx-lab" x="${mL + iw + 8}" y="${(e.ty + 3.5).toFixed(1)}" fill="${e.col}"${e.bold ? ' font-weight="700"' : ''}>${svgEsc(e.text)}</text>`);
+  });
+
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid meet" `
+    + `aria-label="${svgEsc(cfg.aria || '')}">${parts.join('')}</svg>`;
+}
+
+function arithFmt() {
+  return STATE.arith === 'levels' ? fmtV : STATE.arith === 'yoy' ? fmtPct : (v => fmtN(v, 0));
+}
+
+function paintChart() {
+  const wrap = document.getElementById('chartwrap');
+  const leg = document.getElementById('chartlegend');
+  const tbl = document.getElementById('tablewrap');
+  const panels = document.getElementById('panels');
+  if (STATE.preset === PANEL_VIEW) {
+    tbl.hidden = true; wrap.hidden = true; leg.hidden = true; panels.hidden = false;
+    wrap.innerHTML = ''; leg.innerHTML = '';
+    return;
+  }
+  panels.hidden = true; panels.innerHTML = '';
+  const on = STATE.viewMode === 'visual' && MATRIX_VIEWS.has(STATE.preset);
+  tbl.hidden = on;
+  wrap.hidden = leg.hidden = !on;
+  if (!on) { wrap.innerHTML = ''; leg.innerHTML = ''; return; }
+
+  const years = STATE.years || [], rows = STATE.rows || [];
+  if (!years.length || !rows.length) { wrap.innerHTML = ''; leg.innerHTML = ''; return; }
+
+  const stacked = STATE.preset === 'segments' && STATE.arith === 'levels';
+  const labelOf = r => r.chain || r.segment || r.country || r.iso3 || '';
+  wrap.innerHTML = chartSVG({
+    rows, years, stacked, labelOf, fmt: arithFmt(),
+    colorOf: seriesColor, W: 1180, H: 470, zeroBase: STATE.arith === 'levels',
+    aria: document.getElementById('summary').textContent.trim()
+  });
+  leg.innerHTML = (stacked ? rows : rows.slice(0, 12)).map((r, i) =>
+    `<span><span class="sw" style="background:${seriesColor(r, i)}"></span>${esc(labelOf(r))}</span>`).join('')
+    + (!stacked && rows.length > 12
+        ? `<span><span class="sw" style="background:${GREY}"></span>${rows.length - 12} more (unlabelled)</span>` : '');
+}
+
+/* ── The four-panel view ────────────────────────────────────────────────────
+ * All four headline questions on one screen, the way Gilberto's atlas panel
+ * puts them, so a chain can be read across growth, segments, exporters and
+ * importers at once instead of four clicks apart. Clicking a chain chip focuses
+ * every panel: the chosen chain in colour, the field in grey.
+ *
+ * It draws from the same seriesFor() the tables use — no second pipeline. */
+const PANEL_DEFS = [
+  {n: '01', key: 'chains',    kicker: 'The chains',   title: 'against the field'},
+  {n: '02', key: 'segments',  kicker: 'The segments', title: 'Where the value sits'},
+  {n: '03', key: 'exporters', kicker: 'Top exporters', title: 'Who ships it'},
+  {n: '04', key: 'importers', kicker: 'Top importers', title: 'Who buys it'}
+];
+
+async function paintPanels() {
+  const host = document.getElementById('panels');
+  const years = windowYears();
+  const focusName = STATE.tech === 'ALL' ? null : techName(+STATE.tech);
+  const fmt = arithFmt();
+  const out = [];
+
+  for (const d of PANEL_DEFS) {
+    const series = await seriesFor(d.key);
+    let rows = series.map(s => {
+      const vals = applyArith(s, years, STATE.arith, STATE.y0);
+      const r = {_last: s.byYear[STATE.y1] || 0, chain: null, segment: null, country: null};
+      if (d.key === 'chains') r.chain = s.label;
+      else if (d.key === 'segments') { r.segment = s.label; r.stage = s.stage; r.role = s.role; }
+      else { r.country = s.label; r.iso3 = s.iso3; }
+      years.forEach((y, i) => { r['y' + y] = vals[i]; });
+      return r;
+    }).sort((a, b) => b._last - a._last);
+
+    /* Panels 03/04 are a top-10 read, as his are — the tail is noise at this size. */
+    if (d.key !== 'chains' && d.key !== 'segments') rows = rows.slice(0, 10);
+
+    const stacked = d.key === 'segments' && STATE.arith === 'levels';
+    const labelOf = r => r.chain || r.segment || r.country || r.iso3 || '';
+    const colorOf = (r, i) => {
+      if (d.key === 'chains') return TECH_COLORS[r.chain] || GREY;
+      if (d.key === 'segments') return SR_COLORS[`${r.stage}|${r.role}`] || GREY;
+      return i < 6 ? CAT10[i] : GREY;
+    };
+    const scope = focusName || 'all ten chains';
+    const svg = chartSVG({
+      rows, years, stacked, labelOf, colorOf, fmt,
+      W: 900, H: 380, mL: 56, mR: 150, nTicks: 4, nYearTicks: 6, labelGap: 14,
+      zeroBase: STATE.arith === 'levels',
+      focus: d.key === 'chains' ? focusName : null,
+      maxLabels: 10,
+      aria: `${d.kicker} — ${scope}, ${STATE.y0} to ${STATE.y1}`
+    });
+    const title = d.key === 'chains'
+      ? `${focusName || 'All ten chains'} ${d.title}`
+      : `${d.title} · ${scope}`;
+    out.push(`<figure class="pnl">
+      <figcaption><span class="pn">${d.n} &middot; ${esc(d.kicker.toUpperCase())}</span>
+        <span class="pt">${esc(title)}</span></figcaption>
+      <div class="pbody">${svg || '<p class="pempty">No data for this selection.</p>'}</div>
+    </figure>`);
+  }
+  host.innerHTML = out.join('');
+}
+
+/* Chain chips. They set the same STATE.tech the header selector does, so the
+ * two can never disagree. */
+function paintChips() {
+  const host = document.getElementById('chips');
+  if (!host) return;
+  const on = STATE.preset === 'panels';
+  host.hidden = !on;
+  if (!on) { host.innerHTML = ''; return; }
+  const chips = [`<button type="button" class="chip${STATE.tech === 'ALL' ? ' on' : ''}" data-tech="ALL">All ten chains</button>`]
+    .concat(STATE.idx.meta.techs.map((t, i) =>
+      `<button type="button" class="chip${STATE.tech === String(i) ? ' on' : ''}" data-tech="${i}">` +
+      `<span class="dot" style="background:${TECH_COLORS[t] || GREY}"></span>${esc(t)}</button>`));
+  host.innerHTML = chips.join('');
+  host.querySelectorAll('.chip').forEach(b => {
+    b.onclick = () => { STATE.tech = b.dataset.tech; STATE.sortKey = null; render(); };
+  });
+}
+
+function syncVMode() {
+  const grp = document.getElementById('vmode-grp');
+  if (!grp) return;
+  grp.hidden = !MATRIX_VIEWS.has(STATE.preset);
+  grp.querySelectorAll('.vm').forEach(b =>
+    b.classList.toggle('on', b.dataset.vmode === STATE.viewMode));
+}
+
+/* The four-panel view has no table: its content is the grid. It still returns a
+ * summary line, and still clears cols/rows so nothing stale paints under it. */
+async function viewPanels() {
+  STATE.cols = []; STATE.rows = []; STATE.notes = [];
+  STATE.years = windowYears();
+  const ch = await seriesFor('chains');
+  const one = STATE.tech === 'ALL' ? null : techName(+STATE.tech);
+  /* With a chain focused, quote THAT chain's trade. Quoting the ten-chain total
+   * beside the word "Batteries" reads as Batteries' number and is not. */
+  const tot = one
+    ? ((ch.find(x => x.label === one) || {byYear: {}}).byYear[STATE.y1] || 0)
+    : ch.reduce((s, x) => s + (x.byYear[STATE.y1] || 0), 0);
+  await paintPanels();
+  return `Four views, one question &middot; ${esc(one || 'all ten chains')}
+          &middot; ${STATE.y0}&ndash;${STATE.y1} &middot;
+          ${one ? 'world trade' : 'combined world trade'}
+          <span class="k">${fmtV(tot)}</span> in ${STATE.y1}` + arithSuffix();
+}
+
+/* ── View: Q1, one row per supply chain ─────────────────────────────────── */
+async function viewChains() {
+  const series = await seriesFor('chains');
+  const years = windowYears();
+
+  const rows = series.map(s => {
+    const vals = applyArith(s, years, STATE.arith, STATE.y0);
+    const r = {chain: s.label, _last: s.byYear[STATE.y1] || 0};
+    years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r.cagr = cagr(s.byYear[STATE.y0], s.byYear[STATE.y1], yearsSel());
+    return r;
+  });
+  /* Always ranked on the LEVEL in the end year, whatever the arithmetic on
+   * screen — otherwise the row order jumps when the toggle is pressed and the
+   * table stops being comparable to itself. */
+  rows.sort((x, y) => y._last - x._last);
+
+  const tot = rows.reduce((s, r) => s + r._last, 0);
+  rows.forEach(r => { r.share = tot ? r._last / tot : null; });
+
   STATE.cols = [
-    C.txt('chain', 'Supply chain', 'raw', SRC_GD, 'The ten technology baskets defined by the NZIPL green dictionary.'),
-    C.val('v0', `World trade ${STATE.y0}`, 'raw', SRC_BACI, howSum),
-    C.val('v1', `World trade ${STATE.y1}`, 'raw', SRC_BACI, howSum),
-    C.val('delta', 'Change', 'derived', SRC_CALC, `= (World trade ${STATE.y1}) − (World trade ${STATE.y0})`),
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC, `= (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1`),
-    C.val('tot', `All chains ${STATE.y1}`, 'derived', SRC_CALC, 'Sum of the column above over the ten chains. Shown so the share below is reproducible.'),
-    C.pct('share', `Share of all chains ${STATE.y1}`, 'derived', SRC_CALC, '= (World trade of this chain) / (All chains total), both shown.')
+    C.txt('chain', 'Supply chain', 'raw', SRC_GD,
+      'The ten technology baskets defined by the NZIPL green dictionary.'),
+    ...yearCols(years),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
+    C.pct('share', `Share of all chains ${STATE.y1}`, 'derived', SRC_CALC,
+      `= (this chain’s ${STATE.y1} trade) / (all chains ${STATE.y1} total). The total is in the summary line above the table.`)
   ];
   STATE.rows = rows;
+  STATE.years = years;
   /* The chain-overlap caution is not a per-view note any more: it lives in the
    * ⚠ Overlap header panel (#panel-overlap), verbatim and always reachable,
    * instead of pushing the table down on every load of this view. */
   STATE.notes = [];
-  return `<span class="k">${rows.length}</span> supply chains · combined world trade
-          <span class="k">${fmtV(tot)}</span> in ${STATE.y1}`;
+  return `<span class="k">${rows.length}</span> supply chains · ${years.length} years
+          (${STATE.y0}–${STATE.y1}) · combined world trade
+          <span class="k">${fmtV(tot)}</span> in ${STATE.y1}` + arithSuffix();
+}
+
+/* ── Matrix plumbing, shared by every year-matrix view ─────────────────── */
+
+/* Which views render as one row per entity and one column per year. Q2/Q3/Q4
+ * join this in Tasks 4 and 5. */
+const MATRIX_VIEWS = new Set(['chains', 'segments', 'exporters', 'importers']);
+/* The four-panel view is charts only — the Data/Visual toggle does not apply. */
+const PANEL_VIEW = 'panels';
+
+/* Default row cap for the two country views. 229 economies is a scroll, not a
+ * table; the count is always stated and "show all" is one click away. */
+const TOP_N = 15;
+const FLOW_VIEWS = new Set(['exporters', 'importers']);
+
+/* What a year column actually holds, for the exported Notes block. */
+const ARITH_EXPORT_NOTE = {
+  levels: 'Trade value in KUSD (thousands of USD), as recorded in BACI. Raw and unrounded.',
+  yoy:    'Year-on-year growth as a decimal fraction (0.025 = +2.5%), = (value in this year / value in the previous year) − 1. Switch “Read as” to $ on the page and re-download for the underlying levels.',
+  index:  'Index, first year of the selected window = 100, = 100 × (value in this year / value in the first year). Switch “Read as” to $ on the page and re-download for the underlying levels.'
+};
+
+const ARITH_META = {
+  levels: {cls: 'raw',     fmtOf: () => fmtV,
+           how: y => `Sum of every bilateral BACI flow in this basket in ${y}. At BACI’s bilateral grain world exports and world imports are the same number.`,
+           src: () => SRC_BACI, suffix: () => ' · values in US$'},
+  yoy:    {cls: 'derived', fmtOf: () => fmtPct,
+           how: y => `= (value ${y} / value ${y - 1}) − 1. Both operands are level cells; switch “Read as” to $ to see them.`,
+           src: () => SRC_CALC, suffix: () => ' · year-on-year growth'},
+  index:  {cls: 'derived', fmtOf: () => (v => fmtN(v, 1)),
+           how: y => `= 100 × (value ${y} / value ${STATE.y0}). Rebased so chains of different size are comparable.`,
+           src: () => SRC_CALC, suffix: () => ` · rebased ${STATE.y0} = 100`}
+};
+
+function yearCols(years) {
+  const m = ARITH_META[STATE.arith] || ARITH_META.levels;
+  return years.map(y => ({
+    key: 'y' + y, label: String(y), cls: m.cls, src: m.src(), how: m.how(y), fmt: m.fmtOf()
+  }));
+}
+function arithSuffix() {
+  return (ARITH_META[STATE.arith] || ARITH_META.levels).suffix();
+}
+
+/* Show the toggle only where it means something, and keep the index button
+ * labelled with the actual base year — a button reading "2015=100" when the
+ * window starts in 2003 is a lie. */
+function syncArith() {
+  const grp = document.getElementById('arith-grp');
+  if (!grp) return;
+  grp.hidden = !(MATRIX_VIEWS.has(STATE.preset) || STATE.preset === PANEL_VIEW);
+  const ix = document.getElementById('ar-index');
+  if (ix) ix.textContent = `${STATE.y0}=100`;
+  grp.querySelectorAll('.ar').forEach(b =>
+    b.classList.toggle('on', b.dataset.arith === STATE.arith));
 }
 
 /* ── View: Q2, one row per stage × role segment ─────────────────────────── */
-function viewSegments() {
-  const L = STATE.idx.lookups;
-  const sg = decode(STATE.idx.segments)
-    .filter(d => STATE.tech === 'ALL' || d.tech === +STATE.tech);
-  const agg = {};
-  sg.forEach(d => {
-    if (d.year !== STATE.y0 && d.year !== STATE.y1) return;
-    const k = `${d.stage}|${d.role}`;
-    agg[k] = agg[k] || {stage: L.stage[d.stage], role: L.role[d.role], v0: 0, v1: 0};
-    if (d.year === STATE.y0) agg[k].v0 += d.v; else agg[k].v1 += d.v;
-  });
-  const rows = Object.values(agg).map(r =>
-    Object.assign({}, r, {delta: r.v1 - r.v0, cagr: cagr(r.v0, r.v1, yearsSel())}));
-  rows.sort((a, b) => b.v1 - a.v1);
-  const tot = rows.reduce((s, r) => s + r.v1, 0);
-  rows.forEach(r => { r.tot = tot; r.share = tot ? r.v1 / tot : null; });
+async function viewSegments() {
+  const years = windowYears();
+  /* The country control is enabled for a single chain, so it must be populated
+   * with the countries that chain actually holds — offering all 231 would
+   * silently return zeros for the ~200 outside the top-30 slice. */
+  if (STATE.tech !== 'ALL') populateCountries(availCountries(await loadTech(+STATE.tech)));
+  const isCountry = STATE.tech !== 'ALL' && STATE.country !== 'ALL';
+  const series = isCountry ? await segmentsForCountry(+STATE.tech, +STATE.country)
+                           : await seriesFor('segments');
 
-  const howSeg = 'Sum of bilateral BACI flows whose HS-6 code carries this stage and role in the green dictionary.';
+  const rows = series.map(s => {
+    const vals = applyArith(s, years, STATE.arith, STATE.y0);
+    const r = {segment: s.label, stage: s.stage, role: s.role,
+               _last: s.byYear[STATE.y1] || 0};
+    years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r.cagr = cagr(s.byYear[STATE.y0], s.byYear[STATE.y1], yearsSel());
+    return r;
+  });
+  rows.sort((x, y) => y._last - x._last);
+  const tot = rows.reduce((s, r) => s + r._last, 0);
+  rows.forEach(r => { r.share = tot ? r._last / tot : null; });
+
   STATE.cols = [
-    C.txt('stage', 'Value-chain stage', 'raw', SRC_GD, 'Extraction → Processing → Manufacturing → Final Product, as assigned in the green dictionary.'),
-    C.txt('role', 'Product role', 'raw', SRC_GD, 'Raw Material / Processed Material / Product Component / Process Equipment / Final Product, as assigned in the green dictionary.'),
-    C.val('v0', `Trade ${STATE.y0}`, 'raw', SRC_BACI, howSeg),
-    C.val('v1', `Trade ${STATE.y1}`, 'raw', SRC_BACI, howSeg),
-    C.val('delta', 'Change', 'derived', SRC_CALC, `= (Trade ${STATE.y1}) − (Trade ${STATE.y0})`),
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC, `= (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1`),
-    C.val('tot', `All segments ${STATE.y1}`, 'derived', SRC_CALC, 'Sum of the column above over the segments listed. Shown so the share is reproducible.'),
-    C.pct('share', `Share ${STATE.y1}`, 'derived', SRC_CALC, '= (Segment trade) / (All segments total), both shown.')
+    C.txt('segment', 'Segment (stage · role)', 'raw', SRC_GD,
+      'Value-chain stage (Upstream → Midstream → Downstream → Final Product) and product role (Raw Material / Processed Material / Product Component / Process Equipment / Final Product), as assigned in the green dictionary.'),
+    ...yearCols(years),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
+    C.pct('share', `Share ${STATE.y1}`, 'derived', SRC_CALC,
+      `= (this segment’s ${STATE.y1} trade) / (all segments ${STATE.y1} total). The total is in the summary line above the table.`)
   ];
   STATE.rows = rows;
+  STATE.years = years;
   STATE.notes = [];
+  if (isCountry) STATE.notes.push(
+    `<b>This country view is built from the per-chain HS-6 detail</b>, which covers the
+     <b>top 30 exporting countries</b> for this chain, and the values are that country’s
+     <b>exports</b>. A code carrying more than one stage or role within the chain is
+     counted in each of them, so the segment rows can sum to more than the chain total —
+     the same convention the world view uses.`);
+
   const scope = STATE.tech === 'ALL' ? 'all 10 chains' : techName(+STATE.tech);
-  return `<span class="k">${rows.length}</span> stage × role segments ·
-          ${esc(scope)} · <span class="k">${fmtV(tot)}</span> in ${STATE.y1}`;
+  return `<span class="k">${rows.length}</span> stage × role segments · ${esc(scope)}`
+       + (isCountry ? ` · ${esc(isoLabel(STATE.idx.lookups.iso[+STATE.country]))} exports` : '')
+       + ` · <span class="k">${fmtV(tot)}</span> in ${STATE.y1}` + arithSuffix();
+}
+
+/* Segments for ONE chain and ONE country, derived in the browser: the per-tech
+ * file carries products_by_country at code × iso × year, and codeSegmentIndex()
+ * says which stage||role each code belongs to. Nothing in the slice builder
+ * changes — this is the cross-filter the page used to say was impossible.
+ *
+ * Only for a single chain: the source is one file per chain, so "all 10" would
+ * mean fetching ten (~11 MB). applicFor() disables the control there and says so. */
+async function segmentsForCountry(ti, ci) {
+  const t = await loadTech(ti);
+  const idx = codeSegmentIndex();
+  const acc = {};
+  decode(t.products_by_country).forEach(d => {
+    if (d.iso !== ci) return;
+    const keys = idx[`${ti}|${d.code}`];
+    if (!keys) return;
+    keys.forEach(k => {
+      const s = acc[k] || (acc[k] = {
+        key: k, label: k.replace('||', ' · '),
+        stage: k.split('||')[0], role: k.split('||')[1], byYear: {}
+      });
+      s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+    });
+  });
+  return Object.values(acc);
 }
 
 /* ── View: Q3 / Q4, one row per country ─────────────────────────────────── */
 async function viewFlow(dir) {
-  const L = STATE.idx.lookups;
-  const all = await loadFlow(dir);
-  const f = all.filter(d => STATE.tech === 'ALL' || d.tech === +STATE.tech);
-  const t0 = f.filter(d => d.year === STATE.y0), t1 = f.filter(d => d.year === STATE.y1);
-  const s0 = t0.reduce((s, d) => s + d.v, 0), s1 = t1.reduce((s, d) => s + d.v, 0);
-  const agg = {};
-  t0.forEach(d => { agg[d.iso] = agg[d.iso] || {iso: d.iso, v0: 0, v1: 0}; agg[d.iso].v0 += d.v; });
-  t1.forEach(d => { agg[d.iso] = agg[d.iso] || {iso: d.iso, v0: 0, v1: 0}; agg[d.iso].v1 += d.v; });
-
-  const rows = Object.values(agg).map(r => {
-    const sh0 = s0 ? r.v0 / s0 : null, sh1 = s1 ? r.v1 / s1 : null;
-    return {
-      iso3: L.iso[r.iso], country: ISO_NAME[L.iso[r.iso]] || L.iso[r.iso],
-      v0: r.v0, v1: r.v1, w0: s0, w1: s1,
-      sh0, sh1,
-      shDelta: (sh0 === null || sh1 === null) ? null : sh1 - sh0,
-      cagr: cagr(r.v0, r.v1, yearsSel())
-    };
-  }).sort((a, b) => b.v1 - a.v1);
-
+  const years = windowYears();
   const lab = dir === 'exporters' ? 'Exports' : 'Imports';
   const side = dir === 'exporters' ? 'exporter' : 'importer';
+
+  /* The segment filter is derivable for EXPORTS only. products_by_country.iso
+   * is the exporter — verified against exporters.json, which it reproduces
+   * exactly (overlap ratio 1.0000) where importers.json does not (0.5568).
+   * There is no code × importer × year source in these slices, so Q4 cannot
+   * carry it and applicFor() leaves the control off. */
+  const bySeg = dir === 'exporters' && STATE.tech !== 'ALL' && STATE.segment !== 'ALL';
+  if (dir === 'exporters' && STATE.tech !== 'ALL') await loadTech(+STATE.tech);
+  const series = bySeg ? await flowForSegment(+STATE.tech, STATE.segment)
+                       : await seriesFor(dir);
+
+  /* World totals per year, over every country in the series — the share
+   * denominator, and itself a rendered column so the share is reproducible. */
+  const world = {};
+  series.forEach(s => years.forEach(y => {
+    world[y] = (world[y] || 0) + (s.byYear[y] || 0);
+  }));
+
+  const all = series.map(s => {
+    const vals = applyArith(s, years, STATE.arith, STATE.y0);
+    const r = {iso3: s.iso3 || s.key, country: s.label, _last: s.byYear[STATE.y1] || 0};
+    years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r.w1 = world[STATE.y1] || 0;
+    r.sh1 = r.w1 ? r._last / r.w1 : null;
+    const a = s.byYear[STATE.y0] || 0;
+    r.shDelta = (world[STATE.y0] && r.w1) ? (r._last / r.w1) - (a / world[STATE.y0]) : null;
+    r.cagr = cagr(a, s.byYear[STATE.y1], yearsSel());
+    return r;
+  }).sort((x, y) => y._last - x._last);
+
+  const shown = STATE.showAll ? all : all.slice(0, TOP_N);
   const howC = `Sum of BACI bilateral flows for which this country is the ${side}, over the HS-6 codes in the selected chain(s).`;
   STATE.cols = [
     C.txt('iso3', 'ISO3', 'raw', SRC_BACI, 'BACI reporter code.'),
-    C.txt('country', 'Country', 'raw', 'ISO 3166 name for the BACI reporter code', 'Label only; it does not affect any number.'),
-    C.val('v0', `${lab} ${STATE.y0}`, 'raw', SRC_BACI, howC),
-    C.val('v1', `${lab} ${STATE.y1}`, 'raw', SRC_BACI, howC),
-    C.val('w0', `World ${lab.toLowerCase()} ${STATE.y0}`, 'derived', SRC_CALC, 'Sum of the country column over every country listed. Shown so the share is reproducible.'),
-    C.val('w1', `World ${lab.toLowerCase()} ${STATE.y1}`, 'derived', SRC_CALC, 'Sum of the country column over every country listed. Shown so the share is reproducible.'),
-    C.pct('sh0', `World share ${STATE.y0}`, 'derived', SRC_CALC, `= (${lab} ${STATE.y0}) / (World ${lab.toLowerCase()} ${STATE.y0}), both shown.`),
-    C.pct('sh1', `World share ${STATE.y1}`, 'derived', SRC_CALC, `= (${lab} ${STATE.y1}) / (World ${lab.toLowerCase()} ${STATE.y1}), both shown.`),
-    C.pct('shDelta', 'Share change', 'derived', SRC_CALC, `= (World share ${STATE.y1}) − (World share ${STATE.y0}), in percentage points.`),
-    C.pct('cagr', 'CAGR', 'derived', SRC_CALC, `= (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1`)
+    C.txt('country', 'Country', 'raw', 'ISO 3166 name for the BACI reporter code',
+      'Label only; it does not affect any number.'),
+    ...yearCols(years).map(c => Object.assign({}, c,
+      {how: STATE.arith === 'levels' ? howC : c.how})),
+    C.val('w1', `World ${lab.toLowerCase()} ${STATE.y1}`, 'derived', SRC_CALC,
+      'Sum of the country column over every country in this view — including any hidden by the row cap. Shown so the share is reproducible.'),
+    C.pct('sh1', `World share ${STATE.y1}`, 'derived', SRC_CALC,
+      `= (${lab} ${STATE.y1}) / (World ${lab.toLowerCase()} ${STATE.y1}), both shown.`),
+    C.pct('shDelta', 'Share change', 'derived', SRC_CALC,
+      `= (World share ${STATE.y1}) − (World share ${STATE.y0}), in percentage points.`),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`)
   ];
-  STATE.rows = rows;
+  STATE.rows = shown;
+  STATE.years = years;
   STATE.notes = [];
+  if (bySeg) STATE.notes.push(
+    `<b>Segment-filtered exports are derived from the per-chain HS-6 detail</b>, which covers
+     the <b>top 30 exporting countries</b> for this chain — so the world total on this view is
+     the sum over those 30, not every BACI reporter. Remove the segment filter for the
+     uncapped figures.`);
+
   const scope = STATE.tech === 'ALL' ? 'all 10 chains' : techName(+STATE.tech);
-  return `<span class="k">${rows.length}</span> countries · ${esc(scope)} · world
-          ${lab.toLowerCase()} <span class="k">${fmtV(s1)}</span> in ${STATE.y1}`;
+  return `<span class="k">${shown.length}</span> of ${all.length} countries`
+       + (all.length > shown.length
+            ? ` <button type="button" class="lnk" id="show-all">show all ${all.length}</button>`
+            : (all.length > TOP_N
+                 ? ` <button type="button" class="lnk" id="show-all">show top ${TOP_N}</button>`
+                 : ''))
+       + ` · ${esc(scope)}`
+       + (bySeg ? ` · ${esc(STATE.segment.replace('||', ' · '))}` : '')
+       + ` · world ${lab.toLowerCase()} <span class="k">${fmtV(world[STATE.y1] || 0)}</span>
+          in ${STATE.y1}` + arithSuffix();
+}
+
+/* Exports for one chain, restricted to the codes carrying one stage||role,
+ * aggregated by exporter and year. Same source and same index as
+ * segmentsForCountry(); capped at the top 30 exporters the slice holds. */
+async function flowForSegment(ti, segKey) {
+  const t = await loadTech(ti);
+  const L = STATE.idx.lookups, idx = codeSegmentIndex();
+  const acc = {};
+  decode(t.products_by_country).forEach(d => {
+    const keys = idx[`${ti}|${d.code}`];
+    if (!keys || keys.indexOf(segKey) < 0) return;
+    const iso = L.iso[d.iso];
+    const s = acc[iso] || (acc[iso] = {key: iso, iso3: iso,
+                                       label: ISO_NAME[iso] || iso, byYear: {}});
+    s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+  });
+  return Object.values(acc);
 }
 
 /* ── View: HS-6 detail — the traceable spine ────────────────────────────── */
@@ -524,13 +1168,7 @@ async function viewProducts() {
    * rebuild the selector from what is actually available. */
   const pbc = decode(t.products_by_country);
   const lastYear = STATE.idx.meta.year_max;
-  const byIso = {};
-  pbc.forEach(d => {
-    const e = byIso[d.iso] || (byIso[d.iso] = {i: d.iso, iso: L.iso[d.iso], last: 0});
-    if (d.year === lastYear) e.last += d.v;
-  });
-  const avail = Object.values(byIso).sort((a, b) => b.last - a.last);
-  populateCountries(avail);
+  populateCountries(availCountries(t));
 
   const isCountry = STATE.country !== 'ALL';
   const ci = isCountry ? +STATE.country : null;
@@ -588,7 +1226,7 @@ async function viewProducts() {
     C.txt('role', 'Role', 'raw', SRC_GD, 'NZIPL classification. A pipe-separated value means the code carries more than one role in this chain.'),
     C.txt('cat', 'HS category', 'raw', SRC_GD, 'The HS category used as a feature group by the competitiveness model.'),
     C.txt('rev', 'HS revision', 'raw', SRC_GD, 'The canonical HS revision the code was mapped from (green_dictionary.hs_rev_canonical). HS-6 codes are renumbered between revisions.'),
-    C.txt('span', 'BACI trade years', 'derived', SRC_CALC, 'First and last year in which this code records any world trade, across the full 1995–' + STATE.idx.meta.year_max + ' series. A span that stops short of your window is flagged ⚠ — see the note above the table.'),
+    C.txt('span', 'BACI trade years', 'derived', SRC_CALC, 'First and last year in which this code records any world trade, across the full 1995–' + STATE.idx.meta.year_max + ' series. A span that stops short of your window is flagged ⚠ — see the note below the table.'),
     Object.assign(
       C.num('ushare', 'Use share', 'raw', SRC_EXIO, howShare, 6),
       {fmt: v => (v === null || v === undefined || Number.isNaN(v)) ? '' : (v === 1 ? '1' : v.toFixed(6))}),
@@ -608,7 +1246,7 @@ async function viewProducts() {
       C.val('wTot', `World ${tn} basket ${STATE.y1}`, 'derived', SRC_CALC, `Sum of the world trade column over every code in the ${tn} basket. RCA denominator — shown so RCA is reproducible.`),
       C.pct('cShare', 'Country share of basket', 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) / (${L.iso[ci]} ${tn} basket ${STATE.y1}), both shown.`),
       C.pct('wShare', 'World share of basket', 'derived', SRC_CALC, `= (World trade ${STATE.y1}) / (World ${tn} basket ${STATE.y1}), both shown.`),
-      C.num('rca', 'RCA (within basket)', 'derived', SRC_CALC, '= (Country share of basket) / (World share of basket). NOT a Balassa RCA — see the note above the table.', 2),
+      C.num('rca', 'RCA (within basket)', 'derived', SRC_CALC, '= (Country share of basket) / (World share of basket). NOT a Balassa RCA — see the note below the table.', 2),
       C.pct('mktShare', 'World market share', 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) / (World trade ${STATE.y1}), both shown.`)
     );
   }
@@ -635,29 +1273,11 @@ async function viewProducts() {
     `<b>${nT} code${nT > 1 ? 's are' : ' is'} in the ${esc(tn)} dictionary but record no BACI
      trade</b> in any year (marked &#8709;). They are listed rather than dropped so the
      basket definition stays visible.`);
-  STATE.notes.push(
-    `<b>&#9878; Multi-use correction.</b> BACI counts a copper cathode as copper whatever
-     it ends up in, so a chain&rsquo;s upstream is mostly trade that never reaches the
-     technology. The <b>Use share</b> column is the EXIOBASE direct use share for this
-     (chain, HS-6 code)${STATE.muYear ? ` (${STATE.muYear})` : ''} — the fraction of the
-     code&rsquo;s trade that plausibly serves THIS chain — and each <b>corrected</b>
-     column is raw &times; use share, reconcilable by hand from the columns shown. Only
-     <b>Raw Material</b> and <b>Processed Material</b> carry a measurement; for every
-     other role the share is 1.0 <b>by assumption — no correction applied: downstream
-     inputs are already tech-specific</b> (marked &#8801;). That is a modelling decision,
-     not missing data. The correction reaches the raw trade columns only: CAGR, basket
-     shares, RCA and market share are computed on raw values, and the Q1–Q4 headline
-     views sum the HS-6 dimension away, so they cannot be corrected in the browser.` +
-    (STATE.muNote ? `<br><br>${esc(STATE.muNote)}` : ''));
-  STATE.notes.push(
-    `<b>The country drill-down is capped at the top 30 exporters per chain</b>
-     (<code>TOP_EXPORTERS = 30</code> in the slice builder), so the country selector in
-     this view lists only those 30. The four headline views Q1–Q4 are
-     <b>uncapped</b> — every BACI reporter is included.`);
-  STATE.notes.push(
-    `<b>Electric vehicles (EVs) are not part of this tool</b> — the explorer covers 10 of
-     the 11 chains — and EVs have no EXIOBASE use shares either, so they receive no
-     corrected figures for two independent reasons.`);
+  /* The multi-use explanation, the top-30 cap and the EVs exclusion used to be
+   * pushed here on every render. None of them varies with the selection, so they
+   * were a fixed ~20-line wall between the reader and the first row. They now
+   * live verbatim in the ⚖ Multi-use and ◉ Coverage header panels. Only the
+   * counts above — which do vary — remain as notes. */
 
   return `<span class="k">${rows.length}</span> HS-6 codes · ${esc(tn)}`
        + (segLabel ? ` · ${esc(segLabel)}` : '')
@@ -699,8 +1319,9 @@ async function render() {
   syncControls();
   let note = '';
   try {
-    if (STATE.preset === 'chains')          note = viewChains();
-    else if (STATE.preset === 'segments')   note = viewSegments();
+    if (STATE.preset === 'panels')          note = await viewPanels();
+    else if (STATE.preset === 'chains')     note = await viewChains();
+    else if (STATE.preset === 'segments')   note = await viewSegments();
     else if (STATE.preset === 'exporters')  note = await viewFlow('exporters');
     else if (STATE.preset === 'importers')  note = await viewFlow('importers');
     else                                    note = await viewProducts();
@@ -711,10 +1332,16 @@ async function render() {
     return;
   }
   sum.innerHTML = note;
+  /* The summary line is innerHTML'd on every render, so anything interactive in
+   * it has to be re-wired here rather than once at boot. */
+  const sa = document.getElementById('show-all');
+  if (sa) sa.onclick = () => { STATE.showAll = !STATE.showAll; render(); };
   syncControls();
   paintCaveat();
   paintNotes();
   paintTable();
+  paintChart();
+  paintChips();
   paintDict();
   paintProvenance();
   STATE.renderSeq++;
@@ -737,9 +1364,40 @@ function paintCaveat() {
 
 function paintNotes() {
   const el = document.getElementById('revnote');
-  if (!STATE.notes || !STATE.notes.length) { el.hidden = true; el.innerHTML = ''; return; }
-  el.hidden = false;
-  el.innerHTML = STATE.notes.join('<br><br>');
+  if (!STATE.notes || !STATE.notes.length) { el.hidden = true; el.innerHTML = ''; }
+  else { el.hidden = false; el.innerHTML = STATE.notes.join('<br><br>'); }
+  paintNoteMark();
+}
+
+/* The notes moved below the table, so something above it has to say they exist —
+ * otherwise this is not decluttering, it is hiding. Counts what actually applies
+ * to the current view and scrolls to it. */
+function paintNoteMark() {
+  const mark = document.getElementById('notemark');
+  if (!mark) return;
+  const rcaOn = !document.getElementById('caveat').hidden;
+  const n = (STATE.notes ? STATE.notes.length : 0) + (rcaOn ? 1 : 0);
+  if (!n) { mark.hidden = true; mark.textContent = ''; return; }
+  mark.hidden = false;
+  mark.innerHTML = `&#9888; ${n} note${n > 1 ? 's' : ''} on this view` +
+                   `<span class="arrow">jump to them &darr;</span>`;
+  mark.onclick = () => {
+    const t = rcaOn ? document.getElementById('caveat')
+                    : document.getElementById('revnote');
+    t.scrollIntoView({behavior: 'smooth', block: 'center'});
+    t.classList.add('flash');
+    setTimeout(() => t.classList.remove('flash'), 1600);
+  };
+}
+
+/* Fills the two header panels whose text is static markup in the HTML — only the
+ * EXIOBASE source year and the engine's own note are injected, so a failed slice
+ * load still leaves both texts readable on the page. */
+function fillStandingPanels() {
+  const y = document.getElementById('mu-year');
+  if (y) y.textContent = STATE.muYear ? ` (${STATE.muYear})` : '';
+  const n = document.getElementById('mu-note');
+  if (n) n.textContent = STATE.muNote || '';
 }
 
 function paintTable() {
@@ -761,8 +1419,8 @@ function paintTable() {
     if (c.key === 'hs6') {
       cls = 'tl';
       cell = `<span class="hs">${cell}</span>`;
-      if (r.brk & 1) cell += `<span class="flag" title="No BACI trade before ${esc(String(r.span).split('–')[0])}. HS-6 codes are renumbered between HS revisions (this code is mapped from ${esc(r.rev)}), so this may be a renumbering rather than a new market. See the note above the table.">&#9888;</span>`;
-      if (r.brk & 2) cell += `<span class="flag" title="No BACI trade after ${esc(String(r.span).split('–').pop())}. HS-6 codes are renumbered between HS revisions (this code is mapped from ${esc(r.rev)}), so this may be a renumbering rather than a collapse in trade. See the note above the table.">&#9888;</span>`;
+      if (r.brk & 1) cell += `<span class="flag" title="No BACI trade before ${esc(String(r.span).split('–')[0])}. HS-6 codes are renumbered between HS revisions (this code is mapped from ${esc(r.rev)}), so this may be a renumbering rather than a new market. See the note below the table.">&#9888;</span>`;
+      if (r.brk & 2) cell += `<span class="flag" title="No BACI trade after ${esc(String(r.span).split('–').pop())}. HS-6 codes are renumbered between HS revisions (this code is mapped from ${esc(r.rev)}), so this may be a renumbering rather than a collapse in trade. See the note below the table.">&#9888;</span>`;
       if (r.mode2) cell += `<span class="flag" title="This code carries more than one stage/role within this chain. Canonical assignment is pending co-director sign-off.">&#9673;</span>`;
       if (r.traded === 0) cell += `<span class="flag" title="In the dictionary, but no BACI trade recorded for this code in any year.">&#8709;</span>`;
     }
@@ -856,6 +1514,7 @@ function paintProvenance() {
  * has been emailed on, detached from this page, still explains itself. */
 
 const VIEW_NAMES = {
+  panels:    'Four views, one question (01 chains · 02 segments · 03 exporters · 04 importers)',
   chains:    'Q1 · Are the chains growing? (one row per supply chain)',
   segments:  'Q2 · Which segments? (one row per value-chain stage × role)',
   exporters: 'Q3 · Who exports? (one row per exporting country)',
@@ -877,7 +1536,7 @@ function buildExportRows() {
  * than as a selection, for the same reason syncControls() greys the control
  * out: a filter must never look applied when it is not. */
 function selLabel(kind) {
-  const a = APPLIC[STATE.preset] || APPLIC.chains;
+  const a = applicFor(STATE.preset);
   const L = STATE.idx.lookups;
   if (kind === 'tech') {
     if (!a.tech) return 'not applicable to this view (all 10 chains)';
@@ -906,6 +1565,13 @@ function preamble() {
     ['Segment', selLabel('seg')],
     ['Country', selLabel('country')],
     ['Years', `${STATE.y0}–${STATE.y1}`],
+    /* Without this line the file is unreadable away from the page: a column
+     * headed "2019" holding 114.5 is meaningless unless you know whether that
+     * is dollars, a growth rate or an index. */
+    ['Year columns read as', ARITH_EXPORT_NOTE[STATE.arith] || ARITH_EXPORT_NOTE.levels],
+    ['Rows', STATE.showAll || !FLOW_VIEWS.has(STATE.preset)
+      ? 'every row in this view'
+      : `top ${TOP_N} by ${STATE.y1} value — the view was capped; use “show all” on the page for the full list`],
     ['Sorted by', STATE.sortKey
       ? `${(STATE.cols.find(c => c.key === STATE.sortKey) || {}).label || STATE.sortKey}` +
         `, ${STATE.sortDir < 0 ? 'descending' : 'ascending'}`
@@ -1012,9 +1678,10 @@ function downloadXLSX() {
 /* SpreadsheetML must keep the .xls extension: Excel sniffs the content, but an
  * .xlsx extension on non-ZIP bytes makes it refuse the file outright. */
 function ext(e) {
-  const chain = STATE.tech === 'ALL' || !APPLIC[STATE.preset].tech
+  const a = applicFor(STATE.preset);
+  const chain = STATE.tech === 'ALL' || !a.tech
               ? 'all_chains' : techName(+STATE.tech).replace(/ /g, '_');
-  const ctry = STATE.country === 'ALL' || !APPLIC[STATE.preset].country
+  const ctry = STATE.country === 'ALL' || !a.country
              ? 'world' : STATE.idx.lookups.iso[+STATE.country];
   return `cscde_${STATE.preset}_${chain}_${ctry}_${STATE.y0}-${STATE.y1}.${e}`;
 }

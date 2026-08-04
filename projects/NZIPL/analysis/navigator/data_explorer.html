@@ -136,6 +136,77 @@ header select:disabled,header input:disabled{opacity:.5}
 @media (prefers-color-scheme:dark){.preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
 :root[data-theme="dark"] .preset.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
 
+/* ── Data / Visual toggle (in the header, beside the filters) ──────────── */
+.vmode{display:flex;gap:0;align-items:center}
+.vm{cursor:pointer;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);
+    color:#fff;padding:5px 13px;font:600 12px Archivo,system-ui,sans-serif;
+    border-right-width:0;transition:background .12s,color .12s}
+.vm:first-of-type{border-radius:5px 0 0 5px}
+.vm:last-of-type{border-radius:0 5px 5px 0;border-right-width:1px}
+.vm:hover{background:rgba(255,255,255,.2)}
+.vm.on{background:#fff;color:var(--brand);border-color:#fff}
+
+/* ── Chain chips + the four-panel grid ─────────────────────────────────── */
+.chips[hidden],.panels[hidden]{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:7px;padding:11px 22px 4px}
+.chip{cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg);
+      border-radius:999px;padding:6px 13px;font:500 12px Archivo,system-ui,sans-serif;
+      display:inline-flex;align-items:center;transition:border-color .12s,background .12s}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
+@media (prefers-color-scheme:dark){.chip.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
+:root[data-theme="dark"] .chip.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
+.chip .dot{width:8px;height:8px;border-radius:50%;margin-right:7px;flex:0 0 8px}
+
+.panels{display:grid;gap:12px;padding:8px 22px 4px;
+        grid-template-columns:repeat(2,minmax(0,1fr))}
+/* Two columns, always -- the point of this view is a 2x2 read. auto-fit gave a
+   3+1 layout on a wide screen, which is not the same thing. */
+@media (max-width:1000px){.panels{grid-template-columns:minmax(0,1fr)}}
+.pnl{margin:0;border:1px solid var(--line);border-radius:8px;background:var(--bg);
+     padding:12px 14px 8px;min-width:0}
+.pnl figcaption{display:flex;flex-direction:column;gap:2px;margin-bottom:4px}
+.pnl .pn{font:700 9.5px Archivo,system-ui,sans-serif;letter-spacing:.1em;color:var(--mut)}
+.pnl .pt{font:600 15px Archivo,system-ui,sans-serif;color:var(--fg);letter-spacing:-.01em}
+.pnl .pbody{min-width:0}
+.pnl svg{display:block;width:100%;height:auto}
+.pempty{font-size:12px;color:var(--mut);padding:24px 0}
+
+/* ── Chart ─────────────────────────────────────────────────────────────── */
+#chartwrap[hidden]{display:none}
+#chartwrap{padding:6px 22px 10px;max-width:100%;overflow-x:auto}
+#chartwrap svg{display:block;width:100%;height:auto;max-width:100%}
+.cx-grid{stroke:var(--line);stroke-width:1}
+.cx-axis{fill:var(--mut);font:500 10.5px Archivo,system-ui,sans-serif}
+.cx-lab{font:600 11px Archivo,system-ui,sans-serif}
+.cx-zero{stroke:var(--mut);stroke-width:1;stroke-dasharray:3 3}
+.cx-line{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.cx-area{stroke:#fff;stroke-width:.75;stroke-opacity:.5}
+@media (prefers-color-scheme:dark){.cx-area{stroke:#0b100c}}
+:root[data-theme="dark"] .cx-area{stroke:#0b100c}
+.cx-cap{fill:var(--mut);font:500 11px Archivo,system-ui,sans-serif}
+.cx-legend{display:flex;flex-wrap:wrap;gap:5px 14px;padding:4px 22px 0;
+           font:500 11.5px Archivo,system-ui,sans-serif;color:var(--mut)}
+.cx-legend .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;
+               vertical-align:-1px}
+
+/* ── Arithmetic toggle ────────────────────────────────────────────────────
+   Segmented control. It changes the ARITHMETIC applied to one series, never
+   the series — so all three readings are of the same numbers. */
+.arith{margin-left:auto;display:flex;align-items:center;gap:0}
+.arith .albl{font-size:9.5px;color:var(--mut);text-transform:uppercase;
+             letter-spacing:.07em;font-weight:600;margin-right:8px}
+.ar{cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg);
+    padding:6px 11px;font:600 11.5px Archivo,system-ui,sans-serif;
+    border-right-width:0;transition:background .12s,color .12s}
+.ar:first-of-type{border-radius:5px 0 0 5px}
+.ar:last-of-type{border-radius:0 5px 5px 0;border-right-width:1px}
+.ar:hover{border-color:var(--accent)}
+.ar.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+@media (prefers-color-scheme:dark){.ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
+:root[data-theme="dark"] .ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
+.arith[hidden]{display:none}
+
 /* ── Notes / banners ──────────────────────────────────────────────────── */
 .note{margin:0;padding:11px 22px;background:var(--warn-bg);color:var(--warn-fg);
       border-bottom:1px solid var(--warn-line);font-size:12px;line-height:1.65}
@@ -145,6 +216,25 @@ header select:disabled,header input:disabled{opacity:.5}
 #summary{padding:10px 22px;background:var(--panel);border-bottom:1px solid var(--line);
          font-size:13px;font-weight:500}
 #summary .k{font-weight:700}
+/* In-summary action (the row-cap toggle). A link, not a button, because it
+   belongs to the sentence stating how many rows you are looking at. */
+.lnk{cursor:pointer;border:0;background:none;padding:0 2px;font:600 13px Archivo,system-ui,sans-serif;
+     color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.lnk:hover{filter:brightness(1.15)}
+
+/* The pointer to the notes below. Deliberately quiet — it must not become a
+   second banner, which is the thing this task removed. */
+/* `display:block` beats the `hidden` attribute's UA `display:none`, so this
+   rule is required or an empty amber strip shows on every note-free view.
+   Headless checks read el.hidden and cannot see it — the screenshot did. */
+#notemark[hidden]{display:none}
+#notemark{display:block;width:100%;text-align:left;cursor:pointer;
+          padding:6px 22px;border:0;border-bottom:1px solid var(--warn-line);
+          background:var(--warn-bg);color:var(--warn-fg);
+          font:600 11.5px Archivo,system-ui,sans-serif;letter-spacing:.01em}
+#notemark:hover{filter:brightness(.97)}
+#notemark .arrow{float:right;opacity:.7}
+.note:target,.note.flash{outline:2px solid var(--warn-line);outline-offset:-2px}
 
 /* ── Table ────────────────────────────────────────────────────────────── */
 #tablewrap{overflow-x:auto;padding:0 22px 8px;max-width:100%}
@@ -154,6 +244,12 @@ th,td{padding:7px 10px;border-bottom:1px solid var(--line2);text-align:right;
       white-space:nowrap;vertical-align:top}
 th.tl,td.tl{text-align:left;white-space:normal}
 th.tl{min-width:96px}
+/* With 30 year columns the table scrolls sideways, so the row label has to stay
+   put — a matrix whose left edge scrolls away is unreadable. */
+th.tl:first-child,td.tl:first-child{position:sticky;left:0;z-index:1;
+  background:var(--bg);box-shadow:1px 0 0 var(--line)}
+th.tl:first-child{z-index:3}
+tbody tr:hover td.tl:first-child{background:var(--panel)}
 th.tl.w,td.tl.w{min-width:190px;max-width:290px}
 td.tl.w{font-size:12.5px;color:var(--mut)}
 .clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
@@ -178,6 +274,29 @@ td.num0{color:var(--mut)}
 :root[data-theme="dark"] .cls{color:#0b100c}
 .flag{color:var(--flag);font-weight:700;cursor:help;margin-left:3px}
 .hs{font:600 12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ── Standing reference, below the table ──────────────────────────────────
+   Always open. They sit after the numbers because that is when a reader wants
+   them; a toggle in the header only made them easy to miss. */
+#refnotes{display:grid;gap:10px;margin:14px 22px 4px;
+          grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.ref{border:1px solid var(--line);border-left:3px solid var(--brand);
+     border-radius:6px;background:var(--panel);padding:11px 14px}
+@media (prefers-color-scheme:dark){.ref{border-left-color:var(--accent)}}
+:root[data-theme="dark"] .ref{border-left-color:var(--accent)}
+.ref.warn{background:var(--warn-bg);border-color:var(--warn-line);
+          border-left-color:var(--warn-line)}
+.ref.warn,.ref.warn p{color:var(--warn-fg)}
+.ref h3{margin:0 0 6px;font-size:11px;font-weight:700;text-transform:uppercase;
+        letter-spacing:.06em;color:var(--fg)}
+.ref.warn h3{color:var(--warn-fg)}
+.ref p{margin:0 0 6px;font-size:12px;line-height:1.7;color:var(--mut)}
+.ref p:last-child{margin-bottom:0}
+.ref b{color:var(--fg);font-weight:600}
+.ref.warn b{color:var(--warn-fg)}
+.ref code{font:600 11px ui-monospace,SFMono-Regular,Menlo,monospace}
+.ref .sep{color:var(--line);margin:0 5px}
+.ref .metaline{font-size:11px;opacity:.85;letter-spacing:.02em}
 
 /* ── Column dictionary ────────────────────────────────────────────────── */
 details.dict{margin:4px 22px 20px;border:1px solid var(--line);border-radius:6px;
@@ -221,56 +340,118 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
     <input type="number" id="y1" min="1995" max="2024" step="1" value="2024" style="width:74px"></div>
 
   <div class="hactions">
-    <button class="hbtn" id="tg-prov" type="button" aria-expanded="false"
-            aria-controls="panel-prov"
-            title="Where every number on this page comes from: RAW / DERIVED / MODEL.">&#9432;&nbsp;Provenance</button>
-    <button class="hbtn warn" id="tg-overlap" type="button" aria-expanded="false"
-            aria-controls="panel-overlap"
-            title="Chain baskets share HS-6 codes, so chain totals overlap.">&#9888;&nbsp;Overlap</button>
+    <div class="vmode" id="vmode-grp">
+      <button class="vm on" type="button" data-vmode="data"
+              title="The numbers, as a table you can sort, download and check by hand.">Data</button>
+      <button class="vm" type="button" data-vmode="visual"
+              title="The same numbers as a chart. Nothing is computed differently — only drawn.">Visual</button>
+    </div>
+    <button class="hbtn" id="tg-mu" type="button" aria-expanded="false"
+            aria-controls="panel-mu"
+            title="What the corrected columns are, and why only two roles carry a measurement.">&#9878;&nbsp;Multi-use</button>
     <button class="dlbtn" id="dl-csv" title="Comma-separated values — exactly the rows and columns on screen, with raw unrounded numbers and a notes block naming every source and formula.">&darr;&nbsp;CSV</button>
     <button class="dlbtn" id="dl-xlsx" title="Excel workbook (SpreadsheetML) with two sheets: Notes (sources, units, formulas, caveats) and Data (exactly the table on screen, as numbers).">&darr;&nbsp;Excel</button>
     <a class="nav-chip" href="navigator.html">&larr;&nbsp;Atlas Navigator</a>
   </div>
 </header>
 
-<!-- Reference panels. Closed by default; state persisted in localStorage.
-     Neither message may be deleted: the provenance legend is the promise that
-     nothing here is black-boxed, and the overlap caution prevents a real
-     misreading of the chain totals. -->
-<div class="hpanel" id="panel-prov"><div class="in"><div class="pad">
-  <b>Every column is labelled with where its number comes from.</b><br>
-  <span class="cls raw">RAW</span> as recorded in the source files &mdash; no arithmetic
-  applied on this page
-  <span class="sep">|</span>
-  <span class="cls derived">DERIVED</span> computed in your browser from operands that are
-  themselves shown as columns, so every figure can be reproduced by hand
-  <span class="sep">|</span>
-  <span class="cls model">MODEL</span> output of an external machine-learning model &mdash;
-  <b>not</b> recomputable from this page.
-  <span class="sep">|</span>
-  Click any column heading to sort. Open <b>Column dictionary</b> below the table for the
-  exact source file and formula behind each column.
-  <span class="metaline" id="meta-line"></span>
-</div></div></div>
-
-<div class="hpanel warn" id="panel-overlap"><div class="in"><div class="pad">
-  Chains overlap: a code such as <code>260400</code> (nickel ore) belongs to eight
-  baskets and is counted at full value in each. The &ldquo;all chains&rdquo; total is
-  therefore a sum of baskets, not a de-duplicated world figure.
+<!-- The multi-use text is STATIC markup, not built in JS, for the same reason
+     panel.html's basis line is: it must survive a slice load that fails. Only the
+     source year and the engine's own note are injected at boot. -->
+<div class="hpanel" id="panel-mu"><div class="in"><div class="pad">
+  <b>&#9878; Multi-use correction.</b> BACI counts a copper cathode as copper whatever it
+  ends up in, so a chain&rsquo;s upstream is mostly trade that never reaches the technology.
+  The <b>Use share</b> column is the EXIOBASE direct use share for this
+  (chain, HS-6 code)<span id="mu-year"></span> &mdash; the fraction of the code&rsquo;s trade
+  that plausibly serves THIS chain &mdash; and each <b>corrected</b> column is
+  raw &times; use share, reconcilable by hand from the columns shown. Only
+  <b>Raw Material</b> and <b>Processed Material</b> carry a measurement; for every other
+  role the share is 1.0 <b>by assumption &mdash; no correction applied: downstream inputs
+  are already tech-specific</b> (marked &#8801;). That is a modelling decision, not missing
+  data. The correction reaches the raw trade columns only: CAGR, basket shares, RCA and
+  market share are computed on raw values, and the Q1&ndash;Q4 headline views sum the HS-6
+  dimension away, so they cannot be corrected in the browser.
+  <span class="metaline" id="mu-note"></span>
 </div></div></div>
 
 <div class="presets">
+  <button class="preset" data-preset="panels">&#9707;&nbsp;All four</button>
   <button class="preset" data-preset="chains">Q1 &middot; Are the chains growing?</button>
   <button class="preset" data-preset="segments">Q2 &middot; Which segments?</button>
   <button class="preset" data-preset="exporters">Q3 &middot; Who exports?</button>
   <button class="preset" data-preset="importers">Q4 &middot; Who imports?</button>
   <button class="preset" data-preset="products">HS-6 product detail</button>
+
+  <!-- One series, three readings. Hidden on views that are not a year matrix. -->
+  <div class="arith" id="arith-grp" hidden>
+    <span class="albl">Read as</span>
+    <button class="ar on" type="button" data-arith="levels"
+            title="Trade value in US dollars, as recorded in BACI.">$</button>
+    <button class="ar" type="button" data-arith="yoy"
+            title="Growth against the previous year. Computed from the two level cells, so it can be checked by hand.">YoY&nbsp;%</button>
+    <button class="ar" type="button" data-arith="index" id="ar-index"
+            title="Rebased to the first year of your window = 100. Comparable across chains of very different size.">=100</button>
+  </div>
 </div>
 
+<div id="summary">Loading&hellip;</div>
+
+<!-- A moved caveat must not become a hidden caveat. This marker stays above the
+     table, states how many notes apply to the current view, and scrolls to them. -->
+<button type="button" id="notemark" hidden></button>
+
+<div id="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+<div id="chips" class="chips" hidden></div>
+<div id="panels" class="panels" hidden></div>
+<div id="chartwrap" hidden></div>
+<div class="cx-legend" id="chartlegend" hidden></div>
+
+<!-- Notes live BELOW the table. They are per-view and volatile (counts that change
+     with the selection); the standing texts are in the header panels above. -->
 <p class="note" id="caveat" hidden></p>
 <p class="note" id="revnote" hidden></p>
-<div id="summary">Loading&hellip;</div>
-<div id="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+
+<!-- Standing reference, below the table and always open. These were header
+     toggles; they are reference the reader should meet after the numbers, not
+     controls competing with the filters. None may be deleted: the provenance
+     legend is the promise that nothing here is black-boxed, the overlap caution
+     prevents a real misreading of the chain totals, and the coverage block is
+     what stops a capped list being read as the whole world. -->
+<section id="refnotes">
+  <div class="ref">
+    <h3>Provenance &mdash; where every number comes from</h3>
+    <p><span class="cls raw">RAW</span> as recorded in the source files &mdash; no arithmetic
+    applied on this page
+    <span class="sep">|</span>
+    <span class="cls derived">DERIVED</span> computed in your browser from operands that are
+    themselves shown as columns, so every figure can be reproduced by hand
+    <span class="sep">|</span>
+    <span class="cls model">MODEL</span> output of an external machine-learning model &mdash;
+    <b>not</b> recomputable from this page.
+    <span class="sep">|</span>
+    Click any column heading to sort. The <b>Column dictionary</b> below gives the exact
+    source file and formula behind each column.</p>
+    <p class="metaline" id="meta-line"></p>
+  </div>
+
+  <div class="ref warn">
+    <h3>&#9888; Chain baskets overlap</h3>
+    <p>A code such as <code>260400</code> (nickel ore) belongs to eight baskets and is
+    counted at full value in each. The &ldquo;all chains&rdquo; total is therefore a sum of
+    baskets, not a de-duplicated world figure.</p>
+  </div>
+
+  <div class="ref">
+    <h3>&#9673; Coverage and caps</h3>
+    <p><b>The country drill-down is capped at the top 30 exporters per chain</b>
+    (<code>TOP_EXPORTERS = 30</code> in the slice builder), so the country selector in the
+    HS-6 product detail and segment views lists only those 30. The four headline views
+    Q1&ndash;Q4 are <b>uncapped</b> &mdash; every BACI reporter is included.</p>
+    <p><b>Electric vehicles (EVs) are not part of this tool</b> &mdash; the explorer covers
+    10 of the 11 chains &mdash; and EVs have no EXIOBASE use shares either, so they receive
+    no corrected figures for two independent reasons.</p>
+  </div>
+</section>
 
 <details class="dict" id="dict">
   <summary>Column dictionary &mdash; source and formula for every column shown</summary>
