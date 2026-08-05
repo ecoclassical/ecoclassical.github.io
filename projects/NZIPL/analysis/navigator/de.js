@@ -54,6 +54,12 @@ const STATE = {
    * "how much trade touches this basket", and it is the basis every existing
    * screenshot, debrief and external citation was taken against. See val(). */
   basis: 'raw',
+  /* 'full' | 'exclusive' — Q6 only. Which HS basket the concentration index is
+   * computed over. Default `full` because it matches what every other view of
+   * this tool reports; opening Q6 on `exclusive` would make one chain appear to
+   * have two sizes depending on which tab you were looking at. */
+  basket: 'full',
+  concCache: null,
   /* The year list the current view painted; the chart reads it back. */
   years: [],
   /* Every country row, uncapped — the map's source. See viewFlow(). */
@@ -102,6 +108,11 @@ function applicFor(preset) {
      * in these slices. */
     case 'exporters': return {tech: true,  seg: oneChain, country: false};
     case 'importers': return {tech: true,  seg: false, country: false};
+    /* Q6. The chain filter narrows the rows; the segment filter would leave one
+     * row per year, same as Q2. The COUNTRY filter genuinely does not apply: a
+     * concentration index is a property of a segment across all its exporters,
+     * not of any one of them. */
+    case 'conc':      return {tech: true,  seg: false, country: false};
     default:          return {tech: true,  seg: true,  country: true};
   }
 }
@@ -111,15 +122,23 @@ const WHY_OFF = {
   seg_needsChain: 'Filtering by segment needs the per-chain HS-6 detail, which is stored one file per chain. Choose a single supply chain above and this becomes available.',
   seg_importsOnly: 'Segment detail exists per exporting country only — the per-chain HS-6 slice records who ships each code, not who buys it. Q3 · Who exports? can be filtered by segment; this view cannot.',
   country_isFlow: 'This view is already one row per country. Use the chain and segment filters instead.',
-  country_needsChain: 'Filtering by country needs the per-chain HS-6 detail, which is stored one file per chain — filtering all ten at once would fetch about 11 MB. Choose a single supply chain above and this becomes available.'
+  country_needsChain: 'Filtering by country needs the per-chain HS-6 detail, which is stored one file per chain — filtering all ten at once would fetch about 11 MB. Choose a single supply chain above and this becomes available.',
+  seg_isConc: 'This view already has one row per chain × stage. Filtering to a single stage would leave one row per chain — use the chain filter for that.',
+  /* Not "not supported yet". Concentration is a property of a segment measured
+   * ACROSS its exporters; asking for one country's concentration is asking for
+   * the share of a share. The Top exporter column is where a country appears
+   * in this view. */
+  country_isConc: 'A concentration index has no country dimension: it measures how a segment’s exports are spread ACROSS countries, so filtering to one country would leave nothing to spread. The Top exporter column names the leader of each segment.'
 };
 function whyOff(preset, ctl) {
   if (ctl === 'tech') return WHY_OFF.tech;
   if (ctl === 'seg') {
+    if (preset === 'conc') return WHY_OFF.seg_isConc;
     if (preset === 'segments') return WHY_OFF.seg_isSegments;
     if (preset === 'importers') return WHY_OFF.seg_importsOnly;
     return WHY_OFF.seg_needsChain;
   }
+  if (preset === 'conc') return WHY_OFF.country_isConc;
   return (preset === 'exporters' || preset === 'importers')
     ? WHY_OFF.country_isFlow : WHY_OFF.country_needsChain;
 }
@@ -381,6 +400,15 @@ async function loadFlow(dir) {
   return STATE.flowCache[dir];
 }
 
+/* Q6's slice. Its own file for the same reason products.json is: 122 KB on top
+ * of a 195 KB index would have put the cold boot past its 300 KB budget, and
+ * five of the six views never need it. */
+async function loadConc() {
+  if (STATE.concCache) return STATE.concCache;
+  STATE.concCache = decode(await loadJSON('concentration.json'));
+  return STATE.concCache;
+}
+
 /* ── Header reference panels ────────────────────────────────────────────── */
 /* The RAW/DERIVED/MODEL legend and the chain-overlap caution are reference
  * material, not content: they stay on the page verbatim but collapsed, so the
@@ -530,6 +558,7 @@ function wireControls() {
     b.onclick = () => {
       if (b.dataset.arith) STATE.arith = b.dataset.arith;
       else if (b.dataset.basis) STATE.basis = b.dataset.basis;
+      else if (b.dataset.basket) STATE.basket = b.dataset.basket;
       else return;
       STATE.sortKey = null;
       render();
@@ -904,6 +933,10 @@ function chartSVG(cfg) {
 }
 
 function arithFmt() {
+  /* Q6's "levels" are HHI, not dollars. Formatting an index with fmtV would
+   * print "$0K" for every segment on the chart and in its tooltips — the axis
+   * has to follow the view, not the toggle name. */
+  if (STATE.preset === 'conc' && STATE.arith !== 'yoy') return (v => fmtN(v, 3));
   return STATE.arith === 'levels' ? fmtV : STATE.arith === 'yoy' ? fmtPct : (v => fmtN(v, 0));
 }
 
@@ -1026,6 +1059,87 @@ function growthMapSVG(rows, opts) {
          `total. Grey means the country is not in this selection at all.</p>`;
 }
 
+/* Q6's map. NOT a choropleth of HHI — HHI has no country dimension, it is a
+ * property of a segment measured across countries. What it colours is
+ * `top1_iso`: how many of the chain×stage segments on screen each country
+ * LEADS. That is the picture the phrase "choke point" is actually about.
+ *
+ * Sequential, not the diverging CAGR ramp. A count of segments led has no
+ * meaningful zero to diverge from — leading none and leading one are not
+ * opposite directions — so this takes the positive half of MAP_STOPS only.
+ * Reusing mapColor() unchanged would have painted every country red at the
+ * bottom of the scale, which reads as "bad" rather than "few". */
+function leaderColor(n, max) {
+  if (!n) return null;
+  const t = max <= 1 ? 1 : Math.sqrt(n / max);   /* sqrt: 1-vs-2 must stay visible */
+  return mapColor(0.02 + t * 0.48);
+}
+
+function leaderMapSVG(rows, opts) {
+  const world = window.__WORLD110, N2I = window.ISO3N_TABLE || {};
+  if (!world) {
+    return `<p class="mapmsg">The map geometry (<code>geo.js</code>) did not load, so the
+            map cannot be drawn. The same numbers are in the table &mdash; switch back to
+            Data.</p>`;
+  }
+  const feats = topoFeatures(world);
+  if (!feats.length) return `<p class="mapmsg">The map geometry decoded to nothing.</p>`;
+
+  const W = 1180, H = 560, pad = 6;
+  const X = lon => pad + (lon + 180) / 360 * (W - 2 * pad);
+  const Y = lat => pad + (MAP_LAT_N - lat) / (MAP_LAT_N - MAP_LAT_S) * (H - 2 * pad);
+  const path = f => f.rings.map(rg => 'M' + rg.map(
+    p => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('L') + 'Z').join('');
+
+  /* Same Taiwan alias as the growth map, and for the same reason. */
+  const ALIAS = {S19: 'TWN'};
+  const led = {};
+  rows.forEach(r => {
+    if (!r.top1) return;
+    const e = led[r.top1] || (led[r.top1] = {n: 0, segs: [], v: 0});
+    e.n++; e.segs.push(`${r.chain} ${r.stage}`); e.v += (r.v || 0);
+  });
+  const max = Object.values(led).reduce((m, e) => Math.max(m, e.n), 0);
+  const byNum = {};
+  Object.keys(led).forEach(iso => {
+    const n = N2I[ALIAS[iso] || iso];
+    if (n !== undefined) byNum[n] = Object.assign({iso}, led[iso]);
+  });
+
+  const shapes = feats.map(f => {
+    const e = byNum[f.id];
+    const d = path(f);
+    if (!d) return '';
+    const label = e
+      ? `${ISO_NAME[e.iso] || e.iso}\nLeads ${e.n} of ${rows.length} segments\n` +
+        `${e.segs.slice(0, 6).join('\n')}${e.segs.length > 6 ? `\n…and ${e.segs.length - 6} more` : ''}`
+      : `${f.name}\nleads no segment in this selection`;
+    return `<path d="${d}" fill="${e ? leaderColor(e.n, max) : 'var(--mapnone)'}" ` +
+           `stroke="var(--mapline)" stroke-width="0.4"><title>${esc(label)}</title></path>`;
+  }).join('');
+
+  const nLead = Object.keys(led).length;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" class="growthmap" ` +
+         `aria-label="${esc(opts.aria)}">${shapes}</svg>` +
+         `<p class="mapfoot"><b>${nLead}</b> countries lead at least one of the
+          <b>${rows.length}</b> segments on screen; the darkest leads <b>${max}</b>.
+          This is not a map of concentration &mdash; HHI has no country dimension. It is a
+          map of <b>who is the largest exporter</b> of each segment, which is a different
+          and blunter question: leading a segment with a 12% share is not the same as
+          leading one with a 60% share. The Top-1 share column carries that.</p>`;
+}
+
+function leaderLegendHTML(max) {
+  const steps = max <= 1 ? [1] : [1, Math.ceil(max / 3), Math.ceil(2 * max / 3), max]
+    .filter((v, i, a) => a.indexOf(v) === i);
+  return `<div class="maplegend">
+      <span class="mlab">Segments led</span>
+      ${steps.map(n => `<span class="mlab"><span class="msw" style="background:${
+        leaderColor(n, max)}"></span>${n}</span>`).join('')}
+      <span class="mlab"><span class="msw"></span>none</span>
+    </div>`;
+}
+
 function mapLegendHTML() {
   const ticks = [-0.25, -0.10, 0, 0.10, 0.25, 0.50];
   const grad = MAP_STOPS.map(([v, c]) => {
@@ -1060,6 +1174,19 @@ function paintChart() {
     const rows = STATE.rowsAll && STATE.rowsAll.length ? STATE.rowsAll : (STATE.rows || []);
     tbl.hidden = true; wrap.hidden = false; leg.hidden = false;
     if (!rows.length) { wrap.innerHTML = ''; leg.innerHTML = ''; return; }
+    /* Q6's rows are segments, not countries, so it gets the leader map instead
+     * of the growth choropleth — same projection, different question. */
+    if (STATE.preset === 'conc') {
+      const max = Object.values(rows.reduce((a, r) => {
+        if (r.top1) a[r.top1] = (a[r.top1] || 0) + 1;
+        return a;
+      }, {})).reduce((m, n) => Math.max(m, n), 0);
+      wrap.innerHTML = leaderMapSVG(rows, {
+        aria: document.getElementById('summary').textContent.trim()
+      });
+      leg.innerHTML = leaderLegendHTML(max);
+      return;
+    }
     wrap.innerHTML = growthMapSVG(rows, {
       y0: STATE.y0, y1: STATE.y1,
       lab: STATE.preset === 'exporters' ? 'Exports' : 'Imports',
@@ -1077,8 +1204,13 @@ function paintChart() {
   const years = STATE.years || [], rows = STATE.rows || [];
   if (!years.length || !rows.length) { wrap.innerHTML = ''; leg.innerHTML = ''; return; }
 
+  /* Q6 is never stacked: stacking HHI would add indices together, which is not
+   * a quantity. Its rows also need both fields in the label — `chain` alone
+   * repeats four times, once per stage. */
   const stacked = STATE.preset === 'segments' && STATE.arith === 'levels';
-  const labelOf = r => r.chain || r.segment || r.country || r.iso3 || '';
+  const labelOf = STATE.preset === 'conc'
+    ? (r => `${r.chain} · ${r.stage}`)
+    : (r => r.chain || r.segment || r.country || r.iso3 || '');
   wrap.innerHTML = chartSVG({
     rows, years, stacked, labelOf, fmt: arithFmt(),
     colorOf: seriesColor, W: 1180, H: 470, zeroBase: STATE.arith === 'levels',
@@ -1254,12 +1386,16 @@ async function viewChains() {
 
 /* Which views render as one row per entity and one column per year. Q2/Q3/Q4
  * join this in Tasks 4 and 5. */
-const MATRIX_VIEWS = new Set(['chains', 'segments', 'exporters', 'importers']);
+const MATRIX_VIEWS = new Set(['chains', 'segments', 'exporters', 'importers', 'conc']);
 /* Views carrying a year column per year. Deliberately WIDER than MATRIX_VIEWS:
  * the HS-6 detail view gained a year matrix, but 302 product series cannot be
  * drawn as a chart, so it takes the "Read as" toggle without taking Visual
  * mode. Keeping the two sets apart is what lets one grow without the other. */
-const YEARCOL_VIEWS = new Set([...MATRIX_VIEWS, 'products']);
+const YEARCOL_VIEWS = new Set([...MATRIX_VIEWS, 'products', 'conc']);
+/* Q6's year matrix holds an index, not a quantity, so "=100" would rebase an
+ * index — an index of an index. The button is hidden there rather than left to
+ * produce a number nobody can interpret. */
+const NO_INDEX_VIEWS = new Set(['conc']);
 /* The four-panel view is charts only — the Data/Visual toggle does not apply. */
 const PANEL_VIEW = 'panels';
 
@@ -1270,7 +1406,7 @@ const FLOW_VIEWS = new Set(['exporters', 'importers']);
 /* Views whose rows are countries, and so can be drawn on a map. Same membership
  * as FLOW_VIEWS today, kept separate because the reason differs: FLOW_VIEWS is
  * about the row cap, MAP_VIEWS is about having geography at all. */
-const MAP_VIEWS = new Set(['exporters', 'importers']);
+const MAP_VIEWS = new Set(['exporters', 'importers', 'conc']);
 
 /* What a year column actually holds, for the exported Notes block. */
 const ARITH_EXPORT_NOTE = {
@@ -1282,6 +1418,11 @@ const ARITH_EXPORT_NOTE = {
 const BASIS_EXPORT_NOTE = {
   raw: 'RAW — every dollar of trade in this chain’s HS basket, exactly as BACI records it. A product used by many industries (copper ore, steel, aluminium) counts in full towards this chain.',
   corrected: 'CORRECTED FOR MULTI-USE — upstream flows scaled by the EXIOBASE share of that product’s use attributable to this chain. Applies to Raw Material and Processed Material rows ONLY; Product Component, Process Equipment and Final Product rows are unchanged (share = 1.0 by modelling assumption, not by measurement). Corrected totals are NOT comparable to published BACI figures.'
+};
+
+const BASKET_EXPORT_NOTE = {
+  full: 'FULL BASKET — the index is computed over every HS code this chain claims. 107 of 431 dictionary codes are claimed by more than one chain (copper ore 260300 by ten), so a shared code’s exporters shape several chains’ indices at once. Do NOT read these as chain sizes.',
+  exclusive: 'CHAIN-EXCLUSIVE BASKET — the index is computed only over HS codes claimed by exactly one chain (324 of 431). Five segments have no such codes at all and are absent from this file entirely: Electrolyzers Final Product, Electrolyzers Upstream, Heat Pumps Upstream, Magnets Final Product, Transmission Upstream.'
 };
 
 const ARITH_META = {
@@ -1321,7 +1462,13 @@ function syncArith() {
   if (!grp) return;
   grp.hidden = !(YEARCOL_VIEWS.has(STATE.preset) || STATE.preset === PANEL_VIEW);
   const ix = document.getElementById('ar-index');
-  if (ix) ix.textContent = `${STATE.y0}=100`;
+  if (ix) {
+    ix.textContent = `${STATE.y0}=100`;
+    ix.hidden = NO_INDEX_VIEWS.has(STATE.preset);
+    /* If the reader arrived on Q6 already in index mode, fall back rather than
+     * render a rebased index and let them read it as a quantity. */
+    if (ix.hidden && STATE.arith === 'index') STATE.arith = 'levels';
+  }
   grp.querySelectorAll('.ar').forEach(b =>
     b.classList.toggle('on', b.dataset.arith === STATE.arith));
 }
@@ -1338,15 +1485,37 @@ function syncBasis() {
     b.classList.toggle('on', b.dataset.basis === STATE.basis));
   const corr = document.getElementById('ba-corr');
   if (!corr) return;
-  const moves = basisMoves();
+  /* Q6 is not a trade total, so the multi-use basis has nothing to scale: HHI
+   * is a ratio of shares WITHIN a segment, and multiplying every exporter of a
+   * code by the same factor leaves those shares essentially untouched while
+   * making Segment trade disagree with the rest of the page. Reported as
+   * inapplicable rather than left looking live. */
+  const isConc = STATE.preset === 'conc';
+  const moves = !isConc && basisMoves();
   corr.classList.toggle('inert', !moves);
-  corr.title = moves
+  corr.title = isConc
+    ? 'Does not apply to this view. Concentration is a ratio of exporter shares ' +
+      'within a segment; scaling every exporter of a code by the same use share ' +
+      'leaves those shares unchanged. Use the Basket control instead — that is ' +
+      'the choice that moves these numbers.'
+    : moves
     ? 'Upstream flows scaled by the EXIOBASE share of that product’s use ' +
       'attributable to this chain. Applies to Raw Material and Processed ' +
       'Material rows only; everything downstream is unchanged.'
     : 'No effect on this view: it holds no Raw Material or Processed Material ' +
       'rows, and only those carry a use-share measurement. Every other role is ' +
       '1.0 by modelling assumption, so the two bases are identical here.';
+}
+
+/* Q6's basket control. Unlike the basis toggle this is hidden off Q6 entirely,
+ * because no other view has two baskets — a control that is inapplicable
+ * everywhere but one place is clutter, not information. */
+function syncBasket() {
+  const grp = document.getElementById('basket-grp');
+  if (!grp) return;
+  grp.hidden = STATE.preset !== 'conc';
+  grp.querySelectorAll('.ar').forEach(b =>
+    b.classList.toggle('on', b.dataset.basket === STATE.basket));
 }
 
 /* ── View: Q2, one row per stage × role segment ─────────────────────────── */
@@ -1543,6 +1712,161 @@ async function flowForSegment(ti, segKey) {
     s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
   });
   return Object.values(acc);
+}
+
+/* ── View: Q6, one row per chain × stage — the choke points ─────────────── */
+/* How concentrated is each segment's export base, and is it narrowing.
+ *
+ * The year matrix holds HHI, not dollars — the one view where it does. That is
+ * deliberate: concentration is only interesting as a trajectory, and the
+ * alternative (a second chart surface for one view) costs more than it saves
+ * and splits the download path in two. The consequence is that "=100" would be
+ * an index of an index, which is meaningless; syncArith() suppresses it here.
+ *
+ * HHI = Σ sᵢ² over exporter shares of that segment-year, as fractions, so it
+ * runs (0,1]. The competition-authority ×10,000 scale is not used on screen:
+ * this page shows fractions everywhere else and one column on a different scale
+ * would be read wrong. The threshold most people know — 2,500 = "highly
+ * concentrated" — is 0.25 here, and it is stated in the note rather than
+ * implied by a colour. */
+const CONC_HI = 0.25;   /* the 2,500 competition-authority line, as a fraction */
+/* How far the two baskets must diverge before a row is marked. A JUDGEMENT, so
+ * it is defined once and its effect is stated: on the current data it flags
+ * Upstream and Midstream rows and leaves most Final Product rows clean, which
+ * is the expected shape given which codes are shared. */
+const CONC_GAP = 0.05;
+
+async function viewConcentration() {
+  const L = STATE.idx.lookups, years = windowYears();
+  const rows0 = await loadConc();
+  const bi = L.basket.indexOf(STATE.basket);
+  const other = STATE.basket === 'full' ? 'exclusive' : 'full';
+  const oi = L.basket.indexOf(other);
+  const oneChain = STATE.tech !== 'ALL';
+
+  /* Both baskets are built, always. The selected one paints the row; the other
+   * one decides whether the row gets marked. A reader who never touches the
+   * control still has to be told when the number in front of them is one of
+   * two very different answers. */
+  const mk = (acc, d) => {
+    const key = `${d.tech}||${d.stage}`;
+    return acc[key] || (acc[key] = {
+      key, tech: d.tech, stage: L.stage[d.stage],
+      chain: techName(d.tech), byYear: {}, cr3: null, cr1: null,
+      nexp: null, top1: null, v: null, otherByYear: {}, otherSeen: false
+    });
+  };
+  const acc = {};
+  rows0.forEach(d => {
+    if (oneChain && d.tech !== +STATE.tech) return;
+    if (d.basket === bi) {
+      const s = mk(acc, d);
+      s.byYear[d.year] = d.hhi;
+      if (d.year === STATE.y1) {
+        s.cr3 = d.cr3; s.cr1 = d.cr1; s.nexp = d.nexp;
+        s.top1 = d.top1 === null || d.top1 === undefined ? null : L.iso[d.top1];
+        s.v = d.v;
+      }
+    } else if (d.basket === oi) {
+      const s = mk(acc, d);
+      s.otherSeen = true;
+      s.otherByYear[d.year] = d.hhi;
+    }
+  });
+
+  const series = Object.values(acc);
+  /* Two kinds of disagreement, and they are not the same thing:
+   *  - `gap`   — both baskets measure the segment, and differ.
+   *  - `only`  — the segment has NO chain-exclusive codes, so it exists in the
+   *              full basket alone. Five segments are like this; Transmission's
+   *              whole Upstream basket is a subset of Nuclear's. A blank row
+   *              would read as missing data; this is a finding. */
+  series.forEach(s => {
+    const a = s.byYear[STATE.y1], b = s.otherByYear[STATE.y1];
+    s.hhiOther = (b === undefined ? null : b);
+    s.gap = (a === undefined || b === undefined) ? null : Math.abs(a - b);
+    s.onlyFull = !s.otherSeen && STATE.basket === 'full';
+    s.missingHere = Object.keys(s.byYear).length === 0;
+  });
+
+  const rows = series.filter(s => !s.missingHere).map(s => {
+    const r = {chain: s.chain, stage: s.stage, key: s.key,
+               _last: s.byYear[STATE.y1] || 0, _tech: s.tech};
+    /* asLevels, not applyArith: HHI has no dollar reading, and rebasing an
+     * index to 100 would invent a quantity. YoY on HHI is legitimate — it is
+     * the rate the segment is narrowing — so that mode is left available. */
+    const vals = STATE.arith === 'yoy' ? asYoY(s, years) : asLevels(s, years);
+    years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r._spark = vals;
+    r.cr3 = s.cr3; r.cr1 = s.cr1; r.nexp = s.nexp; r.top1 = s.top1; r.v = s.v;
+    r.hhiOther = s.hhiOther; r.gap = s.gap; r.onlyFull = s.onlyFull;
+    r.hhiDelta = (s.byYear[STATE.y0] !== undefined && s.byYear[STATE.y1] !== undefined)
+      ? s.byYear[STATE.y1] - s.byYear[STATE.y0] : null;
+    return r;
+  }).sort((a, b) => b._last - a._last);
+
+  const bLab = STATE.basket === 'full' ? 'full' : 'chain-exclusive';
+  const howH = `Herfindahl-Hirschman Index on exporter shares of this segment in that year: Σ (country share)², over exporters with positive trade. Runs 0–1; 1 would be a single exporter. Computed on the ${bLab} HS basket. The competition-authority "highly concentrated" line of 2,500 is ${CONC_HI} on this scale.`;
+  STATE.cols = [
+    C.txt('chain', 'Supply chain', 'raw', SRC_GD, 'NZIPL value-chain classification.'),
+    C.txt('stage', 'Stage', 'raw', SRC_GD, 'NZIPL value-chain stage.'),
+    ...yearCols(years).map(c => Object.assign({}, c, {
+      cls: STATE.arith === 'yoy' ? 'derived' : 'derived',
+      src: SRC_CALC,
+      fmt: STATE.arith === 'yoy' ? fmtPct : (v => fmtN(v, 3)),
+      how: STATE.arith === 'yoy'
+        ? `Change in HHI against the previous year, as a fraction of the previous year's HHI. Both operands are cells in this row — switch “Read as” to $ to see them.`
+        : howH
+    })),
+    C.num('hhiDelta', `HHI change ${STATE.y0}→${STATE.y1}`, 'derived', SRC_CALC,
+      `= (HHI ${STATE.y1}) − (HHI ${STATE.y0}), both shown. Positive means the segment’s exports concentrated into fewer countries over the window.`, 3),
+    C.pct('cr3', `Top-3 share ${STATE.y1}`, 'derived', SRC_CALC,
+      `Combined share of this segment’s world exports held by its three largest exporters in ${STATE.y1}, on the ${bLab} basket.`),
+    C.pct('cr1', `Top-1 share ${STATE.y1}`, 'derived', SRC_CALC,
+      `Share held by the single largest exporter in ${STATE.y1}, on the ${bLab} basket.`),
+    C.txt('top1', 'Top exporter', 'derived', SRC_CALC,
+      `The country holding the Top-1 share in ${STATE.y1}. This is where a country appears in this view — the country filter does not apply here.`),
+    C.num('nexp', `Exporters ${STATE.y1}`, 'derived', SRC_CALC,
+      `Countries with positive exports in this segment in ${STATE.y1}. The HHI denominator’s support — a segment with 12 exporters and one with 120 can share an HHI.`, 0),
+    C.spark('_spark', 'Trend',
+      `A drawing of this row's HHI cells, ${years[0]}–${years[years.length - 1]}. Rising means narrowing to fewer exporters.`),
+    /* Segment trade is what makes an HHI interpretable and it is not optional:
+     * HHI 0.24 on $3bn and HHI 0.24 on $300bn are different facts. */
+    C.val('v', `Segment trade ${STATE.y1}`, 'raw', SRC_BACI,
+      `World exports of this segment in ${STATE.y1}, on the ${bLab} basket — the base the shares are computed over. An HHI without it cannot be read: a highly concentrated segment worth $200m is not the same finding as one worth $200bn.`)
+  ];
+  STATE.rows = rows;
+  STATE.rowsAll = rows;
+  STATE.years = years;
+  STATE.notes = [];
+
+  const marked = rows.filter(r => r.gap !== null && r.gap >= CONC_GAP).length;
+  const onlyF = rows.filter(r => r.onlyFull).length;
+  STATE.notes.push(
+    `<b>Two baskets, and this tool does not pick one.</b> ${
+      STATE.basket === 'full'
+        ? 'You are looking at the <b>full</b> basket: every HS code each chain claims. 107 of 431 dictionary codes are claimed by more than one chain, so a shared code shapes several chains’ indices at once.'
+        : 'You are looking at the <b>chain-exclusive</b> basket: only codes claimed by exactly one chain.'
+    } ${marked} row${marked === 1 ? '' : 's'} here read materially differently on the
+     other basket (marked &#9873;), and where they do, <b>the disagreement is the
+     finding</b> — not a defect to pick a side on.`);
+  if (onlyF) STATE.notes.push(
+    `<b>${onlyF} segment${onlyF === 1 ? ' has' : 's have'} no chain-exclusive codes at all</b>
+     (marked &#8709;) — every code in ${onlyF === 1 ? 'it is' : 'them is'} shared with another
+     chain, so ${onlyF === 1 ? 'it disappears' : 'they disappear'} entirely from the
+     chain-exclusive basket. Transmission’s whole Upstream basket is a subset of Nuclear’s:
+     one iron-ore fact, reported under several chains.`);
+  STATE.notes.push(
+    `<b>This view measures the overlap; it does not resolve it.</b> Deciding which chain
+     <i>owns</i> a shared code needs a rule that does not yet exist, so no number here should
+     be read as a settled chain size.`);
+
+  const scope = oneChain ? techName(+STATE.tech) : 'all 10 chains';
+  const hi = rows.filter(r => r._last >= CONC_HI).length;
+  return `<span class="k">${rows.length}</span> chain&times;stage segments &middot;
+          ${esc(scope)} &middot; ${STATE.y0}&ndash;${STATE.y1} &middot;
+          <span class="k">${hi}</span> above HHI ${CONC_HI} in ${STATE.y1}
+          &middot; ${bLab} basket`;
 }
 
 /* ── View: HS-6 detail — the traceable spine ────────────────────────────── */
@@ -1811,6 +2135,7 @@ async function render() {
     else if (STATE.preset === 'segments')   note = await viewSegments();
     else if (STATE.preset === 'exporters')  note = await viewFlow('exporters');
     else if (STATE.preset === 'importers')  note = await viewFlow('importers');
+    else if (STATE.preset === 'conc')       note = await viewConcentration();
     else                                    note = await viewProducts();
   } catch (e) {
     sum.textContent = 'Error: ' + e.message;
@@ -1827,6 +2152,7 @@ async function render() {
   /* After the view, never before: basisMoves() reports what val() saw during
    * the pass that just finished. */
   syncBasis();
+  syncBasket();
   paintCaveat();
   paintNotes();
   paintTable();
@@ -1915,6 +2241,20 @@ function paintTable() {
       if (r.brk & 2) cell += `<span class="flag" title="No BACI trade after ${esc(String(r.span).split('–').pop())}. HS-6 codes are renumbered between HS revisions (this code is mapped from ${esc(r.rev)}), so this may be a renumbering rather than a collapse in trade. See the note below the table.">&#9888;</span>`;
       if (r.mode2) cell += `<span class="flag" title="This code carries more than one stage/role within this chain. Canonical assignment is pending co-director sign-off.">&#9673;</span>`;
       if (r.traded === 0) cell += `<span class="flag" title="In the dictionary, but no BACI trade recorded for this code in any year.">&#8709;</span>`;
+    }
+    /* Q6's basket-disagreement markers, on the Stage cell so they sit beside
+     * the segment they qualify. This is the whole point of Task 3: a reader who
+     * never touches the Basket control still has to be told when the number in
+     * front of them is one of two very different answers. Magnets Midstream is
+     * the worked example — 0.055 full against 0.397 exclusive, because the full
+     * basket's leading exporters are aluminium producers, not magnet makers. */
+    if (c.key === 'stage' && STATE.preset === 'conc') {
+      if (r.onlyFull) {
+        cell += `<span class="flag" title="No chain-exclusive codes: every HS code in this segment is also claimed by another chain, so this segment does not exist in the chain-exclusive basket at all. It is measuring trade that several chains share.">&#8709;</span>`;
+      } else if (r.gap !== null && r.gap >= CONC_GAP) {
+        const otherName = STATE.basket === 'full' ? 'chain-exclusive' : 'full';
+        cell += `<span class="flag warn" title="The two baskets disagree here: HHI ${fmtN(r._last, 3)} on the ${STATE.basket === 'full' ? 'full' : 'chain-exclusive'} basket against ${fmtN(r.hhiOther, 3)} on the ${otherName} one — a gap of ${fmtN(r.gap, 3)}. Shared HS codes are doing the work. Switch the Basket control to see the other reading; neither is the answer.">&#9873;</span>`;
+      }
     }
     if (c.key === 'ushare' && r.ushareWhy === 'assumption') {
       cell += `<span class="flag" title="No correction applied: downstream inputs are already tech-specific — use share 1.0 by assumption, not by measurement. This row reads the same under Raw and Corrected.">&#8801;</span>`;
@@ -2035,6 +2375,7 @@ const VIEW_NAMES = {
   segments:  'Q2 · Which segments? (one row per value-chain stage × role)',
   exporters: 'Q3 · Who exports? (one row per exporting country)',
   importers: 'Q4 · Who imports? (one row per importing country)',
+  conc:      'Q6 · Where are the choke points? (one row per supply chain × value-chain stage)',
   products:  'HS-6 product detail (one row per HS-6 code)'
 };
 
@@ -2095,7 +2436,11 @@ function preamble() {
     /* Same reason as the line above, and a sharper one: raw and corrected differ
      * by roughly a factor of two on an upstream-heavy selection. A file that did
      * not say which basis produced it could be quoted against the other one. */
-    ['Counted as', BASIS_EXPORT_NOTE[STATE.basis] || BASIS_EXPORT_NOTE.raw],
+    ...(STATE.preset === 'conc'
+      ? [['HS basket', BASKET_EXPORT_NOTE[STATE.basket] || BASKET_EXPORT_NOTE.full]]
+      /* The multi-use basis is meaningless on Q6 and stating it would imply the
+       * numbers had been through it. Q6 states its own basket instead. */
+      : [['Counted as', BASIS_EXPORT_NOTE[STATE.basis] || BASIS_EXPORT_NOTE.raw]]),
     ['Rows', STATE.showAll || !FLOW_VIEWS.has(STATE.preset)
       ? 'every row in this view'
       : `top ${TOP_N} by ${STATE.y1} value — the view was capped; use “show all” on the page for the full list`],
@@ -2160,6 +2505,23 @@ function preamble() {
       'vc corrected) and the page reads one of them. Under Corrected, every number in ' +
       'this file — levels, CAGR, basket shares, RCA, market share — is on the corrected ' +
       'basis, because all of them are computed from the same scaled operands.'],
+    ...(STATE.preset === 'conc' ? [
+      [],
+      ['— Concentration (Q6) —'],
+      ['HHI', 'Herfindahl-Hirschman Index on exporter shares within each (chain, stage, ' +
+              'year): the sum of squared country shares of that segment\'s world exports, ' +
+              'as fractions. Runs 0-1; 1 would be a single exporter. The competition-' +
+              'authority "highly concentrated" line of 2,500 on the x10,000 scale is 0.25 ' +
+              'here. Source: scripts/build_data/12_build_stage_concentration.R.'],
+      ['Why two baskets', STATE.idx.meta.basket_note || ''],
+      ['What this does NOT settle', 'Q6 measures the effect of chains sharing HS codes; it ' +
+              'does not resolve it. Deciding which chain owns a shared code needs a ' +
+              'canonical-owner rule that does not yet exist, so no figure here is a ' +
+              'settled chain size.'],
+      ['Country filter', 'Does not apply. A concentration index measures how a segment\'s ' +
+              'exports are spread ACROSS countries; there is no one-country reading of it. ' +
+              'The Top exporter column is where a country appears in this view.']
+    ] : []),
     ['Top-30 cap', 'The country-level HS-6 drill-down (product detail view) covers the ' +
                    'top 30 exporters per chain only (TOP_EXPORTERS = 30). Q1–Q4 are ' +
                    'uncapped: every BACI reporter is included.'],

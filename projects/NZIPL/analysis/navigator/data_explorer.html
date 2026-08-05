@@ -326,6 +326,11 @@ td.spkcell{padding-top:2px;padding-bottom:0;width:1%;white-space:nowrap}
    --derived / --model custom properties stay defined: they are theme tokens and
    removing them from four :root blocks buys nothing. */
 .flag{color:var(--flag);font-weight:700;cursor:help;margin-left:3px}
+/* The basket-disagreement marker reads louder than the other flags on purpose:
+   a row it lands on is not measuring what its chain label says it is. */
+.flag.warn{color:#dc2626}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) .flag.warn{color:#f87171}}
+:root[data-theme="dark"] .flag.warn{color:#f87171}
 .hs{font:600 12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
 
 /* ── Standing reference, below the table ──────────────────────────────────
@@ -463,6 +468,7 @@ table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:v
   <button class="preset" data-preset="segments">Q2 &middot; Which segments?</button>
   <button class="preset" data-preset="exporters">Q3 &middot; Who exports?</button>
   <button class="preset" data-preset="importers">Q4 &middot; Who imports?</button>
+  <button class="preset" data-preset="conc">Q6 &middot; Where are the choke points?</button>
   <button class="preset" data-preset="products">HS-6 product detail</button>
 
   <!-- One series, three readings. Hidden on views that are not a year matrix. -->
@@ -485,6 +491,16 @@ table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:v
             title="Every dollar of trade in this chain's HS basket, exactly as BACI records it. Copper ore counts in full towards Solar even though most copper is not used for solar.">Raw</button>
     <button class="ar" type="button" data-basis="corrected" id="ba-corr"
             title="Upstream flows scaled by the EXIOBASE share of that product's use attributable to this chain. Applies to Raw Material and Processed Material rows only; everything downstream is unchanged.">Corrected</button>
+  </div>
+
+  <!-- Q6 only. Which HS basket the concentration index is computed over. Shown
+       nowhere else because no other view has two baskets to choose between. -->
+  <div class="arith" id="basket-grp" hidden>
+    <span class="albl">Basket</span>
+    <button class="ar on" type="button" data-basket="full"
+            title="Every HS code the chain claims. 107 of 431 dictionary codes are claimed by more than one chain, so a shared code shapes several chains' indices at once.">Full</button>
+    <button class="ar" type="button" data-basket="exclusive"
+            title="Only codes claimed by exactly one chain. Five segments have no such codes at all and disappear entirely from this basket.">Chain-exclusive</button>
   </div>
 </div>
 
