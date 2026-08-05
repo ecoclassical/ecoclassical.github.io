@@ -226,6 +226,15 @@ section:last-of-type { padding-bottom: 88px; }
 .t-icon { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .t-title { font-size: 13px; font-weight: 700; color: #fff; }
 .t-sub { font-size: 11px; color: var(--muted); line-height: 1.5; }
+/* Date stamp on a tool card. The PC grid is ordered newest-first, so the date
+   is not decoration — it is what makes the ordering legible and checkable.
+   The date is the document's CREATION date (first git add of its .qmd source),
+   not its last render, so cards do not reshuffle on a re-render. */
+.t-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.t-date { font-size: 9.5px; font-weight: 700; letter-spacing: .06em; color: rgba(255,255,255,.28);
+          font-variant-numeric: tabular-nums; white-space: nowrap; }
+.t-new  { font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+          color: var(--bg); background: var(--accent); border-radius: 3px; padding: 1px 5px; }
 
 /* ── FOOTER ── */
 .footer {
@@ -534,32 +543,53 @@ section:last-of-type { padding-bottom: 88px; }
   <div class="wrap">
     <div class="section-label">Predicted Competitiveness</div>
 
-    <div class="rp-sub">Capability Gap Analysis · latest</div>
+    <!-- Ordered by document CREATION date, newest first. The date on each card is
+         the first git add of its .qmd source (see log/session_20260805.md), NOT the
+         last render — so re-rendering a document does not move it up the grid.
+         Adding a document: put it in date order and stamp it. -->
+    <div class="rp-sub">Capability Gap Analysis · newest first</div>
     <div class="tools-grid" style="margin-bottom:20px;">
-      <a class="t-card" href="analysis/ml_model/ml_replication.html">
-        <div class="t-icon" style="color:var(--accent)">REPLICATION</div>
-        <div class="t-title">SHAP Replication (from source)</div>
-        <div class="t-sub">11-tech reproduction of the SHAP need-axis from the RF notebooks — validated bit-exact for Solar; EDA of the magnitude, sign, and country-year variation the shipped axis discards</div>
+      <a class="t-card" href="analysis/ml_model/need_definition_comparison.html">
+        <div class="t-head"><div class="t-icon" style="color:var(--accent)">NEED · TWO MODELS</div><span class="t-new">New</span></div>
+        <div class="t-title">Two Definitions of Need</div>
+        <div class="t-sub">The legacy SHAP axis against the winners'-recipe target, 10 techs × 5 capability clusters: they disagree by a median 15.1pp and name a different top capability for 5 of 10 techs (Solar flips Chemicals→Electronics). Threshold effects move 27% of roster priority cells. Sum-vs-mean sensitivity measured alongside.</div>
+        <div class="t-date">2026-08-05</div>
       </a>
-      <a class="t-card" href="analysis/ml_model/target_profile.html">
-        <div class="t-icon" style="color:var(--accent)">TARGET · RADAR</div>
-        <div class="t-title">Common Technology Profile</div>
-        <div class="t-sub">Is a single "standard capability radar" countries evolve toward defensible (they rank-agree on shape, ρ≈0.89), where negative "avoid" weights belong (base-rate deficit, not anti-target), and a winners'-recipe target radar that reorders the top cluster for 5 of 11 techs</div>
+      <a class="t-card" href="analysis/ml_model/shap_zscore_aggregation_dispute.html">
+        <div class="t-head"><div class="t-icon" style="color:var(--accent)">DISPUTE · METHOD</div><span class="t-new">New</span></div>
+        <div class="t-title">Where the SHAP Disagreement Actually Lives</div>
+        <div class="t-sub">Isolates the one post-hoc step in dispute — z-score then sum — against Lundberg et al. and the group-Shapley literature: the theorem licensing the sum needs raw values and independent features, and neither holds here</div>
+        <div class="t-date">2026-07-31</div>
       </a>
       <a class="t-card" href="analysis/ml_model/capability_gap.html">
         <div class="t-icon" style="color:var(--accent)">GAP · COUNTRY</div>
         <div class="t-title">The Capability Gap</div>
         <div class="t-sub">The country layer: each focal country's recent signed SHAP vs the common target — gap radars (target frontier vs % reached), ranked build priorities, and a country × tech distance-to-frontier board</div>
+        <div class="t-date">2026-07-07</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/target_profile.html">
+        <div class="t-icon" style="color:var(--accent)">TARGET · RADAR</div>
+        <div class="t-title">Common Technology Profile</div>
+        <div class="t-sub">Is a single "standard capability radar" countries evolve toward defensible (they rank-agree on shape, ρ≈0.89), where negative "avoid" weights belong (base-rate deficit, not anti-target), and a winners'-recipe target radar that reorders the top cluster for 5 of 11 techs</div>
+        <div class="t-date">2026-07-06</div>
+      </a>
+      <a class="t-card" href="analysis/ml_model/ml_replication.html">
+        <div class="t-icon" style="color:var(--accent)">REPLICATION</div>
+        <div class="t-title">SHAP Replication (from source)</div>
+        <div class="t-sub">11-tech reproduction of the SHAP need-axis from the RF notebooks — validated bit-exact for Solar; EDA of the magnitude, sign, and country-year variation the shipped axis discards</div>
+        <div class="t-date">2026-07-03</div>
       </a>
       <a class="t-card" href="analysis/ml_model/model_implications_handbook.html">
         <div class="t-icon" style="color:var(--accent)">HANDBOOK · GAP</div>
         <div class="t-title">Model Implications</div>
         <div class="t-sub">Handbook for reading the capability gap radar: need (winners' recipe) vs achievement, the seven-cell grid with a worked case per cell, and a radar gallery of five focal cases</div>
+        <div class="t-date">2026-06-25</div>
       </a>
       <a class="t-card" href="analysis/ml_model/capability_radar_methodology.html">
         <div class="t-icon" style="color:var(--accent)">RADAR · METHOD</div>
         <div class="t-title">Capability Gap Radar — Methodology</div>
         <div class="t-sub">How the two axes are computed: winners'-recipe target share (need) × achievement fraction (reached), the seven-cell classification, worked India·Solar example, and SHAP↔trade validation</div>
+        <div class="t-date">2026-05-18</div>
       </a>
     </div>
 
@@ -569,6 +599,7 @@ section:last-of-type { padding-bottom: 88px; }
         <div class="t-icon" style="color:var(--accent)">EXPLAINER</div>
         <div class="t-title">ML Pipeline Explainer</div>
         <div class="t-sub">RF on RCA · SHAP mean |z| · 155 countries × 10 techs — the non-technical walkthrough of the model behind the gap analysis</div>
+        <div class="t-date">2026-05-13</div>
       </a>
     </div>
   </div>
@@ -620,6 +651,24 @@ section:last-of-type { padding-bottom: 88px; }
 </section>
 
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     LOGS AND DEBRIEFS
+     ───────────────────────────────────────────────────────────────────────────
+     ⚠️ INTERNAL. These files live under log/, which deploy_pages.sh does NOT
+        copy — so every link in this section resolves locally and on OneDrive
+        and 404s on ecoclassical.github.io. That is deliberate: session logs and
+        personnel debriefs are internal documents and publishing them is a
+        disclosure decision, not a deploy step. If they are ever to go live,
+        add the rsync block consciously and re-read the docs/ warning in
+        deploy_pages.sh first (five internal drafts were found world-readable
+        on 2026-07-30 exactly this way).
+
+     Logs are the rollup tiers, highest first (project → month → week); the
+     dailies under log/session_*.md are deliberately not listed — the rollups
+     are the way in. Debriefs are newest first.
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+
 
 <!-- ── Footer ── -->
 <div class="footer">
@@ -637,6 +686,32 @@ section:last-of-type { padding-bottom: 88px; }
 
 
 <script>
+// ── Internal-only sections ───────────────────────────────────────────────────
+// CVCE.html ships as the PUBLIC landing page (deploy_pages.sh copies it to both
+// index.html and CVCE.html on ecoclassical.github.io). Anything marked
+// [data-internal-only] must not appear there.
+//
+// This is not only about dead links: the cards pair a colleague's name with the
+// substance of a critique of their work, so publishing that index is more
+// exposing than publishing the documents it points at would be. (Deliberately
+// not restating those card titles here — this comment ships in the public HTML.)
+//
+// deploy_pages.sh ALSO strips [data-internal-only] from the deployed copies, so
+// on the public site the markup never ships at all. This runtime guard is
+// defence in depth for any other route a copy of this page might travel.
+//
+// Allow-list, not a block-list: the section renders ONLY in local contexts
+// (file:// from a checkout or the OneDrive mirror, or a local dev server).
+// Any real hostname — known or not — removes it. Fails closed by design.
+(function () {
+  var h = location.hostname;
+  var local = h === '' || h === 'localhost' || h === '127.0.0.1' || h === '[::1]'
+              || h.endsWith('.local');
+  if (local) return;
+  document.querySelectorAll('[data-internal-only]').forEach(function (el) { el.remove(); });
+  document.querySelectorAll('.topbar-nav a[href="#logs"]').forEach(function (a) { a.remove(); });
+})();
+
 // irTabSwitch() was removed here: it had no call site and no .ir-tab-content
 // element left on the page. skCountry() moved to CVCE_archive.html along with
 // the sankey section that was its only caller.
