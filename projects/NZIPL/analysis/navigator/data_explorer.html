@@ -97,7 +97,11 @@ select:disabled,input:disabled{opacity:.38;cursor:not-allowed}
    .38 reads as invisible rather than as greyed out. */
 header select:disabled,header input:disabled{opacity:.5}
 .ctl.off label{opacity:.45}
-#sel-country{max-width:230px}
+/* Narrowed 230 -> 172 (2026-08-05). The option text is `ISO — Name`, so the
+   intrinsic width was set by the longest country name in the list and the
+   control took more header room than the filters that matter more. The ISO code
+   leads, so a clipped option is still identifiable. */
+#sel-country{max-width:172px}
 #sel-seg{max-width:200px}
 #sel-tech{min-width:140px}
 
@@ -270,7 +274,15 @@ td.tl.w{font-size:12.5px;color:var(--mut)}
 .clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
        overflow:hidden;line-height:1.35}
 td.tl.desc{min-width:220px;max-width:340px;white-space:normal;line-height:1.35;
-           font-size:12.5px;color:var(--mut)}
+           font-size:12.5px;color:var(--mut);padding-top:4px;padding-bottom:4px}
+/* Exactly two lines: 2 x 1.35em. Overflow scrolls inside the cell rather than
+   growing the row — `auto` on both axes so a long unbroken code string scrolls
+   sideways and a long sentence scrolls down, without either changing row height.
+   overscroll-behavior keeps a cell scroll from turning into a page scroll once
+   it bottoms out. */
+td.tl.desc .descbox{max-height:2.7em;overflow:auto;overscroll-behavior:contain}
+td.tl.desc .descbox::-webkit-scrollbar{width:6px;height:6px}
+td.tl.desc .descbox::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
 th{position:sticky;top:0;z-index:2;background:var(--bg);font-size:10.5px;
    text-transform:uppercase;letter-spacing:.05em;font-weight:700;
    border-bottom:2px solid var(--brand);cursor:pointer;vertical-align:bottom;
@@ -314,8 +326,13 @@ td.spkcell{padding-top:2px;padding-bottom:0;width:1%;white-space:nowrap}
 /* ── Standing reference, below the table ──────────────────────────────────
    Always open. They sit after the numbers because that is when a reader wants
    them; a toggle in the header only made them easy to miss. */
-#refnotes{display:grid;gap:10px;margin:14px 22px 4px;
+/* Inside #notespanel's .pad, which already supplies the 22px gutter, so the
+   old page-level margin would double it. */
+#refnotes{display:grid;gap:10px;margin:2px 0 4px;
           grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+/* .pad sets a 1.85 line-height suited to a one-paragraph header panel; the
+   cards set their own, and the notes section is not that panel. */
+#notespanel>.in>.pad{line-height:1.5}
 /* The second Multi-use trigger sits on the page body, not on the brand-green
    header, so .hbtn's translucent-white treatment would be invisible here. Same
    button, page-surface skin; both themes, and the open state matches the
@@ -328,6 +345,31 @@ td.spkcell{padding-top:2px;padding-bottom:0;width:1%;white-space:nowrap}
  :root:not([data-theme]) .belowbar .hbtn[aria-expanded="true"]{background:var(--accent);color:#0b100c;border-color:var(--accent)}
 }
 :root[data-theme="dark"] .belowbar .hbtn[aria-expanded="true"]{background:var(--accent);color:#0b100c;border-color:var(--accent)}
+
+/* ── Growth map ──────────────────────────────────────────────────────────── */
+/* Two tokens so the map follows the theme without the draw code knowing which
+   theme is on: --mapnone is "country not in this selection", --mapline the
+   border between countries. */
+:root{--mapnone:#e9ecef;--mapline:rgba(0,0,0,.16)}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme]){--mapnone:#23282c;--mapline:rgba(255,255,255,.14)}
+}
+:root[data-theme="dark"]{--mapnone:#23282c;--mapline:rgba(255,255,255,.14)}
+svg.growthmap{display:block;width:100%;height:auto}
+svg.growthmap path{transition:opacity .12s}
+svg.growthmap:hover path{opacity:.62}
+svg.growthmap path:hover{opacity:1;stroke:var(--fg);stroke-width:1}
+.mapfoot,.mapmsg{margin:8px 22px 0;font-size:11.5px;color:var(--mut);line-height:1.6}
+.maplegend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11px;
+           color:var(--mut);padding:2px 22px}
+.maplegend .mbar{display:inline-block;width:260px;height:10px;border-radius:2px;
+                 border:1px solid var(--line)}
+.maplegend .mticks{display:inline-flex;gap:22px}
+.maplegend .mticks i{font-style:normal}
+.maplegend .msw{display:inline-block;width:11px;height:11px;border-radius:2px;
+                background:var(--mapnone);border:1px solid var(--line);
+                vertical-align:-2px;margin-right:5px}
+.maplegend .mlab{font-weight:600;color:var(--fg)}
 
 .ref{border:1px solid var(--line);border-left:3px solid var(--brand);
      border-radius:6px;background:var(--panel);padding:11px 14px}
@@ -362,10 +404,15 @@ table.dicttbl th{position:static;border-bottom:1px solid var(--line);text-transf
 table.dicttbl th,table.dicttbl td{text-align:left;white-space:normal;padding:5px 8px}
 table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--mut)}
 
-footer{padding:18px 22px 28px;font-size:11.5px;color:var(--mut);
-       border-top:1px solid var(--line);line-height:1.75;background:var(--panel)}
-footer b{color:var(--fg)}
-footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
+/* Was a page <footer>; the sources/units/formulas/scope block is now the last
+   card inside the collapsible notes section, so it is styled as a .ref like its
+   neighbours rather than as a page-wide band. */
+#prov{font-size:12px;color:var(--mut);line-height:1.75}
+#prov b{color:var(--fg)}
+#prov code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
+/* This one card carries six labelled paragraphs, so it reads badly in a narrow
+   auto-fit column — give it the full width of the grid. */
+.ref.wide{grid-column:1/-1}
 </style>
 </head>
 <body>
@@ -394,10 +441,9 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
               title="The numbers, as a table you can sort, download and check by hand.">Data</button>
       <button class="vm" type="button" data-vmode="visual"
               title="The same numbers as a chart. Nothing is computed differently — only drawn.">Visual</button>
+      <button class="vm" type="button" data-vmode="map" hidden
+              title="Where are chains growing? The same countries as the table, drawn on a flat world map and coloured by CAGR over your selected years. Follows the chain and segment selectors.">Map</button>
     </div>
-    <button class="hbtn" id="tg-mu" type="button" aria-expanded="false"
-            aria-controls="panel-mu"
-            title="What the corrected columns are, and why only two roles carry a measurement.">&#9878;&nbsp;Multi-use</button>
     <button class="dlbtn" id="dl-csv" title="Comma-separated values — exactly the rows and columns on screen, with raw unrounded numbers and a notes block naming every source and formula.">&darr;&nbsp;CSV</button>
     <button class="dlbtn" id="dl-xlsx" title="Excel workbook (SpreadsheetML) with two sheets: Notes (sources, units, formulas, caveats) and Data (exactly the table on screen, as numbers).">&darr;&nbsp;Excel</button>
     <button class="hbtn" id="tg-theme" type="button" aria-pressed="false"
@@ -405,26 +451,6 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
     <a class="nav-chip" href="navigator.html">&larr;&nbsp;Atlas Navigator</a>
   </div>
 </header>
-
-<!-- The multi-use text is STATIC markup, not built in JS, for the same reason
-     panel.html's basis line is: it must survive a slice load that fails. Only the
-     source year and the engine's own note are injected at boot. -->
-<div class="hpanel" id="panel-mu"><div class="in"><div class="pad">
-  <b>&#9878; Multi-use correction.</b> BACI counts a copper cathode as copper whatever it
-  ends up in, so a chain&rsquo;s upstream is mostly trade that never reaches the technology.
-  The <b>Use share</b> column is the EXIOBASE direct use share for this
-  (chain, HS-6 code)<span id="mu-year"></span> &mdash; the fraction of the code&rsquo;s trade
-  that plausibly serves THIS chain &mdash; and each <b>corrected</b> column is
-  raw &times; use share, reconcilable by hand from the columns shown. Only
-  <b>Raw Material</b> and <b>Processed Material</b> carry a measurement; for every other
-  role the share is 1.0 <b>by assumption &mdash; no correction applied: downstream inputs
-  are already tech-specific</b> (marked &#8801;). That is a modelling decision, not missing
-  data. The correction reaches the raw trade columns only: CAGR (compound annual growth
-  rate), basket shares, RCA and
-  market share are computed on raw values, and the Q1&ndash;Q4 headline views sum the HS-6
-  dimension away, so they cannot be corrected in the browser.
-  <span class="metaline" id="mu-note"></span>
-</div></div></div>
 
 <div class="presets">
   <button class="preset" data-preset="panels">&#9707;&nbsp;All four</button>
@@ -463,23 +489,48 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
 <p class="note" id="caveat" hidden></p>
 <p class="note" id="revnote" hidden></p>
 
-<!-- Second trigger for the SAME #panel-mu as the header button (2026-08-05).
-     The reader meets the corrected numbers here, at the table, not up in the
-     header — but the explanation is not duplicated, only re-reachable. Opening
-     from this button scrolls the panel into view; see PANELS.scrollFrom. -->
+<!-- ONE toggle, ALL the notes (2026-08-05). Every standing text on this page —
+     multi-use, provenance, the overlap caution, coverage, and the sources/units/
+     formulas/scope block that used to be a page footer — now lives in a single
+     collapsible section below the table. The reasoning: these are reference a
+     reader consults AFTER the numbers, and previously they were spread across a
+     header toggle, an always-open band and a footer, so "hide the notes" was
+     three different gestures and the footer could not be hidden at all.
+
+     None of the blocks may be DELETED, only collapsed. The provenance legend is
+     the promise that nothing here is black-boxed; the overlap caution prevents a
+     real misreading of the chain totals; the coverage block is what stops a
+     capped list being read as the whole world. The per-view notes (#caveat,
+     #revnote above) stay outside this section on purpose — they are volatile,
+     specific to the current selection, and #notemark points at them. -->
 <div class="belowbar">
-  <button class="hbtn" id="tg-mu-below" type="button" aria-expanded="false"
-          aria-controls="panel-mu"
-          title="What the corrected columns are, and why only two roles carry a measurement.">&#9878;&nbsp;Multi-use</button>
+  <button class="hbtn" id="tg-notes" type="button" aria-expanded="false"
+          aria-controls="notespanel"
+          title="Sources, units, formulas, scope, the multi-use correction and the coverage caps — everything that explains how the numbers on this page were produced.">&#9776;&nbsp;Notes &amp; provenance</button>
 </div>
 
-<!-- Standing reference, below the table and always open. These were header
-     toggles; they are reference the reader should meet after the numbers, not
-     controls competing with the filters. None may be deleted: the provenance
-     legend is the promise that nothing here is black-boxed, the overlap caution
-     prevents a real misreading of the chain totals, and the coverage block is
-     what stops a capped list being read as the whole world. -->
+<div class="hpanel" id="notespanel"><div class="in"><div class="pad">
 <section id="refnotes">
+  <!-- The multi-use text is STATIC markup, not built in JS, for the same reason
+       panel.html's basis line is: it must survive a slice load that fails. Only
+       the source year and the engine's own note are injected at boot. -->
+  <div class="ref">
+    <h3>&#9878; Multi-use correction</h3>
+    <p>BACI counts a copper cathode as copper whatever it ends up in, so a chain&rsquo;s
+    upstream is mostly trade that never reaches the technology. The <b>Use share</b> column
+    is the EXIOBASE direct use share for this (chain, HS-6 code)<span id="mu-year"></span>
+    &mdash; the fraction of the code&rsquo;s trade that plausibly serves THIS chain &mdash;
+    and each <b>corrected</b> column is raw &times; use share, reconcilable by hand from the
+    columns shown. Only <b>Raw Material</b> and <b>Processed Material</b> carry a
+    measurement; for every other role the share is 1.0 <b>by assumption &mdash; no
+    correction applied: downstream inputs are already tech-specific</b> (marked &#8801;).
+    That is a modelling decision, not missing data. The correction reaches the raw trade
+    columns only: CAGR, basket shares, RCA and market share are computed on raw values, and
+    the Q1&ndash;Q4 headline views sum the HS-6 dimension away, so they cannot be corrected
+    in the browser.</p>
+    <p class="metaline" id="mu-note"></p>
+  </div>
+
   <div class="ref">
     <h3>Provenance &mdash; where every number comes from</h3>
     <!-- The per-column RAW / DERIVED / MODEL badges were removed on 2026-08-05.
@@ -515,7 +566,15 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
     10 of the 11 chains &mdash; and EVs have no EXIOBASE use shares either, so they receive
     no corrected figures for two independent reasons.</p>
   </div>
+
+  <!-- Was a page <footer>. Folded in here 2026-08-05 so that one toggle hides
+       every standing note; #prov is still the id paintProvenance() writes to. -->
+  <div class="ref wide">
+    <h3>Sources, units, formulas and scope</h3>
+    <div id="prov"></div>
+  </div>
 </section>
+</div></div>
 
 <details class="dict" id="dict">
   <summary>Column dictionary &mdash; source and formula for every column shown</summary>
@@ -525,8 +584,12 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
   </tr></thead><tbody id="dictbody"></tbody></table></div>
 </details>
 
-<footer id="prov"></footer>
-
+<!-- Map assets, loaded before de.js because growthMapSVG() reads both as globals.
+     geo.js is a bare `window.__WORLD110 = {...}` (Natural Earth 110m, no library
+     of its own) and iso3n.js is the shared ISO3 → numeric table. Neither pulls a
+     CDN: this page has no external dependency and the map does not add one. -->
+<script src="geo.js"></script>
+<script src="iso3n.js"></script>
 <script src="de.js"></script>
 <script>boot();</script>
 

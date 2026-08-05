@@ -26,7 +26,7 @@ const DE = 'data_explorer/';
  * (iso3c → country.name) over lookups.iso; five BACI reporter codes have no
  * ISO country and are labelled as such rather than guessed. */
 const ISO_NAME = Object.fromEntries(
-  'ABW:Aruba|AFG:Afghanistan|AGO:Angola|AIA:Anguilla|ALB:Albania|AND:Andorra|ANT:Netherlands Antilles (former)|ARE:United Arab Emirates|ARG:Argentina|ARM:Armenia|ASM:American Samoa|ATF:French Southern Territories|ATG:Antigua and Barbuda|AUS:Australia|AUT:Austria|AZE:Azerbaijan|BDI:Burundi|BEL:Belgium|BEN:Benin|BES:Caribbean Netherlands|BFA:Burkina Faso|BGD:Bangladesh|BGR:Bulgaria|BHR:Bahrain|BHS:Bahamas|BIH:Bosnia and Herzegovina|BLM:St. Barthelemy|BLR:Belarus|BLZ:Belize|BMU:Bermuda|BOL:Bolivia|BRA:Brazil|BRB:Barbados|BRN:Brunei|BTN:Bhutan|BWA:Botswana|CAF:Central African Republic|CAN:Canada|CCK:Cocos (Keeling) Islands|CHE:Switzerland|CHL:Chile|CHN:China|CIV:Cote d’Ivoire|CMR:Cameroon|COD:Congo - Kinshasa|COG:Congo - Brazzaville|COK:Cook Islands|COL:Colombia|COM:Comoros|CPV:Cape Verde|CRI:Costa Rica|CUB:Cuba|CUW:Curacao|CXR:Christmas Island|CYM:Cayman Islands|CYP:Cyprus|CZE:Czechia|DEU:Germany|DJI:Djibouti|DMA:Dominica|DNK:Denmark|DOM:Dominican Republic|DZA:Algeria|ECU:Ecuador|EGY:Egypt|ERI:Eritrea|ESP:Spain|EST:Estonia|ETH:Ethiopia|FIN:Finland|FJI:Fiji|FLK:Falkland Islands|FRA:France|FSM:Micronesia (Federated States of)|GAB:Gabon|GBR:United Kingdom|GEO:Georgia|GHA:Ghana|GIB:Gibraltar|GIN:Guinea|GMB:Gambia|GNB:Guinea-Bissau|GNQ:Equatorial Guinea|GRC:Greece|GRD:Grenada|GRL:Greenland|GTM:Guatemala|GUM:Guam|GUY:Guyana|HKG:Hong Kong SAR China|HND:Honduras|HRV:Croatia|HTI:Haiti|HUN:Hungary|IDN:Indonesia|IND:India|IOT:British Indian Ocean Territory|IRL:Ireland|IRN:Iran|IRQ:Iraq|ISL:Iceland|ISR:Israel|ITA:Italy|JAM:Jamaica|JOR:Jordan|JPN:Japan|KAZ:Kazakhstan|KEN:Kenya|KGZ:Kyrgyzstan|KHM:Cambodia|KIR:Kiribati|KNA:St. Kitts and Nevis|KOR:South Korea|KWT:Kuwait|LAO:Laos|LBN:Lebanon|LBR:Liberia|LBY:Libya|LCA:St. Lucia|LKA:Sri Lanka|LSO:Lesotho|LTU:Lithuania|LUX:Luxembourg|LVA:Latvia|MAC:Macao SAR China|MAR:Morocco|MDA:Moldova|MDG:Madagascar|MDV:Maldives|MEX:Mexico|MHL:Marshall Islands|MKD:North Macedonia|MLI:Mali|MLT:Malta|MMR:Myanmar (Burma)|MNE:Montenegro|MNG:Mongolia|MNP:Northern Mariana Islands|MOZ:Mozambique|MRT:Mauritania|MSR:Montserrat|MUS:Mauritius|MWI:Malawi|MYS:Malaysia|MYT:Mayotte|NAM:Namibia|NCL:New Caledonia|NER:Niger|NFK:Norfolk Island|NGA:Nigeria|NIC:Nicaragua|NIU:Niue|NLD:Netherlands|NOR:Norway|NPL:Nepal|NRU:Nauru|NZL:New Zealand|OMN:Oman|PAK:Pakistan|PAN:Panama|PCN:Pitcairn Islands|PER:Peru|PHL:Philippines|PLW:Palau|PNG:Papua New Guinea|POL:Poland|PRK:North Korea|PRT:Portugal|PRY:Paraguay|PSE:Palestinian Territories|PUS:PUS (BACI reporter code, no ISO country)|PYF:French Polynesia|QAT:Qatar|ROU:Romania|RUS:Russia|RWA:Rwanda|S19:S19 (BACI reporter code, no ISO country)|SAU:Saudi Arabia|SCG:Serbia and Montenegro (former)|SDN:Sudan|SEN:Senegal|SGP:Singapore|SHN:St. Helena|SLB:Solomon Islands|SLE:Sierra Leone|SLV:El Salvador|SMR:San Marino|SOM:Somalia|SPM:St. Pierre and Miquelon|SRB:Serbia|SSD:South Sudan|STP:Sao Tome and Principe|SUR:Suriname|SVK:Slovakia|SVN:Slovenia|SWE:Sweden|SWZ:Eswatini|SXM:Sint Maarten|SYC:Seychelles|SYR:Syria|TCA:Turks and Caicos Islands|TCD:Chad|TGO:Togo|THA:Thailand|TJK:Tajikistan|TKL:Tokelau|TKM:Turkmenistan|TLS:Timor-Leste|TON:Tonga|TTO:Trinidad and Tobago|TUN:Tunisia|TUR:Turkey|TUV:Tuvalu|TZA:Tanzania|UGA:Uganda|UKR:Ukraine|URY:Uruguay|USA:United States|UZB:Uzbekistan|VCT:St. Vincent and Grenadines|VEN:Venezuela|VGB:British Virgin Islands|VNM:Vietnam|VUT:Vanuatu|WLF:Wallis and Futuna|WSM:Samoa|YEM:Yemen|ZA1:ZA1 (BACI reporter code, no ISO country)|ZAF:South Africa|ZMB:Zambia|ZWE:Zimbabwe'
+  'ABW:Aruba|AFG:Afghanistan|AGO:Angola|AIA:Anguilla|ALB:Albania|AND:Andorra|ANT:Netherlands Antilles (former)|ARE:United Arab Emirates|ARG:Argentina|ARM:Armenia|ASM:American Samoa|ATF:French Southern Territories|ATG:Antigua and Barbuda|AUS:Australia|AUT:Austria|AZE:Azerbaijan|BDI:Burundi|BEL:Belgium|BEN:Benin|BES:Caribbean Netherlands|BFA:Burkina Faso|BGD:Bangladesh|BGR:Bulgaria|BHR:Bahrain|BHS:Bahamas|BIH:Bosnia and Herzegovina|BLM:St. Barthelemy|BLR:Belarus|BLZ:Belize|BMU:Bermuda|BOL:Bolivia|BRA:Brazil|BRB:Barbados|BRN:Brunei|BTN:Bhutan|BWA:Botswana|CAF:Central African Republic|CAN:Canada|CCK:Cocos (Keeling) Islands|CHE:Switzerland|CHL:Chile|CHN:China|CIV:Cote d’Ivoire|CMR:Cameroon|COD:Congo - Kinshasa|COG:Congo - Brazzaville|COK:Cook Islands|COL:Colombia|COM:Comoros|CPV:Cape Verde|CRI:Costa Rica|CUB:Cuba|CUW:Curacao|CXR:Christmas Island|CYM:Cayman Islands|CYP:Cyprus|CZE:Czechia|DEU:Germany|DJI:Djibouti|DMA:Dominica|DNK:Denmark|DOM:Dominican Republic|DZA:Algeria|ECU:Ecuador|EGY:Egypt|ERI:Eritrea|ESP:Spain|EST:Estonia|ETH:Ethiopia|FIN:Finland|FJI:Fiji|FLK:Falkland Islands|FRA:France|FSM:Micronesia (Federated States of)|GAB:Gabon|GBR:United Kingdom|GEO:Georgia|GHA:Ghana|GIB:Gibraltar|GIN:Guinea|GMB:Gambia|GNB:Guinea-Bissau|GNQ:Equatorial Guinea|GRC:Greece|GRD:Grenada|GRL:Greenland|GTM:Guatemala|GUM:Guam|GUY:Guyana|HKG:Hong Kong SAR China|HND:Honduras|HRV:Croatia|HTI:Haiti|HUN:Hungary|IDN:Indonesia|IND:India|IOT:British Indian Ocean Territory|IRL:Ireland|IRN:Iran|IRQ:Iraq|ISL:Iceland|ISR:Israel|ITA:Italy|JAM:Jamaica|JOR:Jordan|JPN:Japan|KAZ:Kazakhstan|KEN:Kenya|KGZ:Kyrgyzstan|KHM:Cambodia|KIR:Kiribati|KNA:St. Kitts and Nevis|KOR:South Korea|KWT:Kuwait|LAO:Laos|LBN:Lebanon|LBR:Liberia|LBY:Libya|LCA:St. Lucia|LKA:Sri Lanka|LSO:Lesotho|LTU:Lithuania|LUX:Luxembourg|LVA:Latvia|MAC:Macao SAR China|MAR:Morocco|MDA:Moldova|MDG:Madagascar|MDV:Maldives|MEX:Mexico|MHL:Marshall Islands|MKD:North Macedonia|MLI:Mali|MLT:Malta|MMR:Myanmar (Burma)|MNE:Montenegro|MNG:Mongolia|MNP:Northern Mariana Islands|MOZ:Mozambique|MRT:Mauritania|MSR:Montserrat|MUS:Mauritius|MWI:Malawi|MYS:Malaysia|MYT:Mayotte|NAM:Namibia|NCL:New Caledonia|NER:Niger|NFK:Norfolk Island|NGA:Nigeria|NIC:Nicaragua|NIU:Niue|NLD:Netherlands|NOR:Norway|NPL:Nepal|NRU:Nauru|NZL:New Zealand|OMN:Oman|PAK:Pakistan|PAN:Panama|PCN:Pitcairn Islands|PER:Peru|PHL:Philippines|PLW:Palau|PNG:Papua New Guinea|POL:Poland|PRK:North Korea|PRT:Portugal|PRY:Paraguay|PSE:Palestinian Territories|PUS:US Misc. Pacific Is. (BACI, to 1999)|PYF:French Polynesia|QAT:Qatar|ROU:Romania|RUS:Russia|RWA:Rwanda|S19:Taiwan (BACI: Other Asia, nes)|SAU:Saudi Arabia|SCG:Serbia and Montenegro (former)|SDN:Sudan|SEN:Senegal|SGP:Singapore|SHN:St. Helena|SLB:Solomon Islands|SLE:Sierra Leone|SLV:El Salvador|SMR:San Marino|SOM:Somalia|SPM:St. Pierre and Miquelon|SRB:Serbia|SSD:South Sudan|STP:Sao Tome and Principe|SUR:Suriname|SVK:Slovakia|SVN:Slovenia|SWE:Sweden|SWZ:Eswatini|SXM:Sint Maarten|SYC:Seychelles|SYR:Syria|TCA:Turks and Caicos Islands|TCD:Chad|TGO:Togo|THA:Thailand|TJK:Tajikistan|TKL:Tokelau|TKM:Turkmenistan|TLS:Timor-Leste|TON:Tonga|TTO:Trinidad and Tobago|TUN:Tunisia|TUR:Turkey|TUV:Tuvalu|TZA:Tanzania|UGA:Uganda|UKR:Ukraine|URY:Uruguay|USA:United States|UZB:Uzbekistan|VCT:St. Vincent and Grenadines|VEN:Venezuela|VGB:British Virgin Islands|VNM:Vietnam|VUT:Vanuatu|WLF:Wallis and Futuna|WSM:Samoa|YEM:Yemen|ZA1:Southern African Customs Union (to 1999)|ZAF:South Africa|ZMB:Zambia|ZWE:Zimbabwe'
   .split('|').map(s => { const i = s.indexOf(':'); return [s.slice(0, i), s.slice(i + 1)]; }));
 
 /* ── Source strings, used verbatim in the Column dictionary ─────────────── */
@@ -45,10 +45,14 @@ const STATE = {
   arith: 'levels',
   /* Q3/Q4 show TOP_N countries unless asked for the tail. */
   showAll: false,
-  /* 'data' | 'visual' — the same numbers as a table or as a chart. */
+  /* 'data' | 'visual' | 'map' — the same numbers as a table, a chart, or a
+   * flat world choropleth. Nothing is computed differently between the three;
+   * only drawn. */
   viewMode: 'data',
   /* The year list the current view painted; the chart reads it back. */
   years: [],
+  /* Every country row, uncapped — the map's source. See viewFlow(). */
+  rowsAll: [],
   idx: null, products: null,
   /* Multi-use correction lookup, from the ENGINE's data/_index.json (shared
    * with the Atlas Navigator), fetched at boot — see muShare() below. */
@@ -162,6 +166,22 @@ function isoLabel(iso) {
   return n && n !== iso ? `${iso} — ${n}` : iso;
 }
 
+/* BACI reporter codes that are not countries. S19 is deliberately NOT here.
+ *
+ * S19 is BACI/Comtrade's "Other Asia, nes", which is overwhelmingly TAIWAN —
+ * reported that way because Taiwan is not a UN member, not because the data is
+ * junk. Measured 2026-08-05 on cache/bilateral_ds: S19 is the world's 15th
+ * largest Solar exporter in 2024 ($8.0bn, 1.8% of world solar trade), 16th in
+ * Heat Pumps and 18th in EVs, with $1.8tn of green-basket trade across
+ * 1995–2024. Hiding it would delete a top-20 clean-tech exporter from the tool,
+ * so it is RELABELLED instead — the row stays, the name explains itself.
+ *
+ * These two are different: both are historical aggregates that stop in 1999 and
+ * neither is a country you can act on. PUS carries $23m of green trade in total.
+ * They are dropped from the country selector only; nothing is removed from the
+ * underlying totals, so no headline figure moves. */
+const NON_COUNTRY_REPORTERS = new Set(['PUS', 'ZA1']);
+
 /* CAGR over the selected window. Both endpoints are rendered as columns, so
  * this is DERIVED, not opaque. A series that goes to zero is -100%, which is
  * shown rather than blanked — it is exactly the case the HS-revision note
@@ -210,6 +230,16 @@ const C = {
     ({key, label, cls: cls || 'raw', src, how, fmt: v => fmtN(v, d)}),
   pct: (key, label, cls, src, how) =>
     ({key, label, cls: cls || 'derived', src, how, fmt: fmtPct}),
+  /* A share shown as a percentage to ONE decimal (2026-08-05, by request). The
+   * `<0.1%` floor is not decoration: use shares run down to 0.0019 (aluminium
+   * ore in Biofuel), and "0.0%" would read as "no measurement" for a code that
+   * has one. The unrounded fraction still goes to the CSV. */
+  pct1: (key, label, cls, src, how) =>
+    ({key, label, cls: cls || 'raw', src, how, fmt: v => {
+      if (v === null || v === undefined || Number.isNaN(v)) return '';
+      const p = v * 100;
+      return p > 0 && p < 0.05 ? '<0.1%' : `${p.toFixed(1)}%`;
+    }}),
   /* A drawing of the year cells already in the row — no new number. `viz`
    * marks it so paintTable() emits SVG instead of escaped text, sortBy()
    * refuses it, and buildExportRows() leaves it out of the file: a picture
@@ -319,21 +349,23 @@ async function loadFlow(dir) {
  * table starts near the top. Open/closed survives a reload, because a reader
  * who wants the provenance legend up wants it up on every view.
  * All three functions are TOP-LEVEL by design — see ground rule 1. */
-/* Only the multi-use explanation stays a header toggle: it is the one piece of
- * reference a reader consults WHILE reading a row, because it explains a column
- * they are looking at. Provenance, the overlap caution and the coverage caps are
- * standing text that belongs after the numbers, and now render below the table
- * in #refnotes — always open, nothing to discover. */
-/* ONE panel, TWO triggers (2026-08-05): the header button, and a second one
- * below the table where the reader actually meets the corrected numbers. The
- * text itself is not duplicated — a second copy of the explanation would be a
- * copy with no producer, and the two would drift. Both buttons drive the same
- * #panel-mu and stay in sync through setPanel(). */
+/* ONE toggle for every standing note (2026-08-05). Multi-use, provenance, the
+ * overlap caution, coverage and the sources/units/formulas/scope block are all
+ * inside #notespanel, below the table.
+ *
+ * The history is worth keeping, because it was three separate mistakes: the
+ * multi-use text was a header toggle, provenance and coverage were an always-open
+ * band, and the sources block was a page footer that could not be hidden at all.
+ * "Show me the notes" and "get the notes out of my way" were therefore three
+ * gestures, and one of them was impossible. They are now one.
+ *
+ * Still exactly one copy of each text — a second copy of an explanation is a copy
+ * with no producer (register B-18) and the two drift. */
 const PANELS = [
-  {btns: ['tg-mu', 'tg-mu-below'], panel: 'panel-mu', key: 'cscde.panel.mu',
-   /* Opening from below the table would otherwise scroll nothing into view:
-    * the panel lives up in the header. */
-   scrollFrom: 'tg-mu-below'}
+  {btns: ['tg-notes'], panel: 'notespanel', key: 'cscde.panel.notes',
+   /* The button sits directly above the panel, so opening it from a long table
+    * would otherwise leave the reader looking at rows. */
+   scrollFrom: 'tg-notes'}
 ];
 
 function readPanelPref(key) {
@@ -530,7 +562,8 @@ function populateCountries(entries) {
   const prev = STATE.country;
   sc.innerHTML = '';
   sc.add(new Option('World (all countries)', 'ALL'));
-  entries.forEach(e => sc.add(new Option(isoLabel(e.iso), String(e.i))));
+  entries.filter(e => !NON_COUNTRY_REPORTERS.has(e.iso))
+         .forEach(e => sc.add(new Option(isoLabel(e.iso), String(e.i))));
   const ok = entries.some(e => String(e.i) === prev);
   sc.value = ok ? prev : 'ALL';
   if (!ok && prev !== 'ALL') STATE.country = 'ALL';
@@ -819,6 +852,140 @@ function arithFmt() {
   return STATE.arith === 'levels' ? fmtV : STATE.arith === 'yoy' ? fmtPct : (v => fmtN(v, 0));
 }
 
+/* ── The growth map ─────────────────────────────────────────────────────────
+ * "Where are chains growing?" — the third view mode, beside Data and Visual.
+ *
+ * DELIBERATELY FLAT (2D, equirectangular). Not a globe: a globe hides half the
+ * world at any moment, and the question this answers is a comparison across all
+ * of it at once — you cannot see that South Asia outgrew Europe if one of them
+ * is round the back. Antarctica is cropped (lat 84°N–58°S) because it carries
+ * no trade and would otherwise take a fifth of the height.
+ *
+ * NO DEPENDENCY, by the same rule as Visual mode: this page has no d3 and no
+ * topojson-client, so the ~20 lines below decode the topology directly. geo.js
+ * is a plain `window.__WORLD110 = {...}` assignment with no library of its own.
+ *
+ * What it colours: CAGR over the selected window, per country, from exactly the
+ * rows the table would show — same series, same arithmetic, uncapped. It follows
+ * the chain and segment selectors, so "Solar + Midstream" recolours the map. */
+
+function topoFeatures(topo) {
+  if (!topo || !topo.transform || !topo.objects || !topo.objects.countries) return [];
+  const [sx, sy] = topo.transform.scale, [tx, ty] = topo.transform.translate;
+  /* TopoJSON arcs are quantised and delta-encoded: each point is an offset from
+   * the previous one, so they have to be walked in order to be absolute. */
+  const arcs = topo.arcs.map(arc => {
+    let x = 0, y = 0;
+    return arc.map(p => { x += p[0]; y += p[1]; return [x * sx + tx, y * sy + ty]; });
+  });
+  /* A negative index means "this arc, reversed" — the shared-boundary trick that
+   * makes the format small. ~i is -i-1. */
+  const arcOf = i => (i < 0 ? arcs[~i].slice().reverse() : arcs[i]);
+  const ringOf = idxs => idxs.reduce(
+    (acc, i, k) => acc.concat(k ? arcOf(i).slice(1) : arcOf(i)), []);
+  return topo.objects.countries.geometries.map(g => ({
+    id: parseInt(g.id, 10),
+    name: (g.properties && g.properties.name) || '',
+    rings: g.type === 'Polygon'      ? g.arcs.map(ringOf)
+         : g.type === 'MultiPolygon' ? g.arcs.reduce((a, p) => a.concat(p.map(ringOf)), [])
+         : []
+  }));
+}
+
+const MAP_LAT_N = 84, MAP_LAT_S = -58;
+
+/* A diverging ramp centred on zero growth, because the reader's question is
+ * "which way, and how hard" — a sequential scale would make a 2% decline and a
+ * 40% boom differ only in intensity. Red shrinking, green growing, matching the
+ * brand's green as the positive end. */
+const MAP_STOPS = [
+  [-0.25, [153, 27, 27]], [-0.10, [239, 118, 118]], [-0.02, [252, 211, 211]],
+  [ 0.00, [235, 236, 238]],
+  [ 0.02, [200, 240, 209]], [ 0.10, [ 90, 200, 120]], [ 0.25, [ 22, 128,  60]],
+  [ 0.50, [ 10,  74,  38]]
+];
+function mapColor(v) {
+  if (v === null || v === undefined || Number.isNaN(v)) return null;
+  const s = MAP_STOPS;
+  if (v <= s[0][0]) return `rgb(${s[0][1].join(',')})`;
+  if (v >= s[s.length - 1][0]) return `rgb(${s[s.length - 1][1].join(',')})`;
+  for (let i = 1; i < s.length; i++) {
+    if (v <= s[i][0]) {
+      const t = (v - s[i - 1][0]) / (s[i][0] - s[i - 1][0]);
+      const c = s[i - 1][1].map((a, k) => Math.round(a + t * (s[i][1][k] - a)));
+      return `rgb(${c.join(',')})`;
+    }
+  }
+  return null;
+}
+
+function growthMapSVG(rows, opts) {
+  const W = 1180, H = 560, pad = 6;
+  const world = window.__WORLD110;
+  const N2I = window.ISO3N_TABLE || {};
+  if (!world) {
+    return `<p class="mapmsg">The map geometry (<code>geo.js</code>) did not load, so the
+            map cannot be drawn. The same numbers are in the table &mdash; switch back to
+            Data.</p>`;
+  }
+  const feats = topoFeatures(world);
+  if (!feats.length) return `<p class="mapmsg">The map geometry decoded to nothing.</p>`;
+
+  /* BACI reports Taiwan as "Other Asia, nes" under S19; the topology knows it as
+   * TWN. Without this the world's 15th largest solar exporter is a hole in the
+   * map. Any other reporter with no ISO3166 country simply is not drawn. */
+  const ALIAS = {S19: 'TWN'};
+  const byNum = {};
+  rows.forEach(r => {
+    const iso = ALIAS[r.iso3] || r.iso3;
+    const n = N2I[iso];
+    if (n !== undefined) byNum[n] = r;
+  });
+
+  const X = lon => pad + (lon + 180) / 360 * (W - 2 * pad);
+  const Y = lat => pad + (MAP_LAT_N - lat) / (MAP_LAT_N - MAP_LAT_S) * (H - 2 * pad);
+  const path = f => f.rings.map(rg => 'M' + rg.map(
+    p => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('L') + 'Z').join('');
+
+  const fmtC = v => (v === null || v === undefined || Number.isNaN(v))
+    ? 'no CAGR (series starts or ends at zero)' : `${(v * 100).toFixed(1)}% a year`;
+
+  const shapes = feats.map(f => {
+    const r = byNum[f.id];
+    const col = r ? mapColor(r.cagr) : null;
+    const d = path(f);
+    if (!d) return '';
+    const label = r
+      ? `${r.country || r.iso3}\n${opts.lab} ${opts.y1}: ${fmtV(r._last || 0)}\nCAGR ${opts.y0}–${opts.y1}: ${fmtC(r.cagr)}`
+      : `${f.name}\nnot in this selection`;
+    return `<path d="${d}" fill="${col || 'var(--mapnone)'}" stroke="var(--mapline)" ` +
+           `stroke-width="0.4"><title>${esc(label)}</title></path>`;
+  }).join('');
+
+  const withData = Object.keys(byNum).length;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" class="growthmap" ` +
+         `aria-label="${esc(opts.aria)}">${shapes}</svg>` +
+         `<p class="mapfoot">${withData} of ${rows.length} countries in this selection are ` +
+         `drawn &mdash; the rest are BACI reporters with no matching country outline ` +
+         `(territories, historical aggregates), and they remain in the table and in every ` +
+         `total. Grey means the country is not in this selection at all.</p>`;
+}
+
+function mapLegendHTML() {
+  const ticks = [-0.25, -0.10, 0, 0.10, 0.25, 0.50];
+  const grad = MAP_STOPS.map(([v, c]) => {
+    const p = ((v + 0.25) / 0.75 * 100).toFixed(1);
+    return `rgb(${c.join(',')}) ${p}%`;
+  }).join(',');
+  return `<div class="maplegend">
+      <span class="mlab">CAGR</span>
+      <span class="mbar" style="background:linear-gradient(to right,${grad})"></span>
+      <span class="mticks">${ticks.map(t =>
+        `<i>${t > 0 ? '+' : ''}${(t * 100).toFixed(0)}%</i>`).join('')}</span>
+      <span class="mlab"><span class="msw"></span>not in selection</span>
+    </div>`;
+}
+
 function paintChart() {
   const wrap = document.getElementById('chartwrap');
   const leg = document.getElementById('chartlegend');
@@ -830,6 +997,23 @@ function paintChart() {
     return;
   }
   panels.hidden = true; panels.innerHTML = '';
+
+  /* Map mode, and only where a row IS a country. Q1 chains and Q2 segments have
+   * no geography, which is why syncVMode() hides the button there rather than
+   * drawing an empty world. */
+  if (STATE.viewMode === 'map' && MAP_VIEWS.has(STATE.preset)) {
+    const rows = STATE.rowsAll && STATE.rowsAll.length ? STATE.rowsAll : (STATE.rows || []);
+    tbl.hidden = true; wrap.hidden = false; leg.hidden = false;
+    if (!rows.length) { wrap.innerHTML = ''; leg.innerHTML = ''; return; }
+    wrap.innerHTML = growthMapSVG(rows, {
+      y0: STATE.y0, y1: STATE.y1,
+      lab: STATE.preset === 'exporters' ? 'Exports' : 'Imports',
+      aria: document.getElementById('summary').textContent.trim()
+    });
+    leg.innerHTML = mapLegendHTML();
+    return;
+  }
+
   const on = STATE.viewMode === 'visual' && MATRIX_VIEWS.has(STATE.preset);
   tbl.hidden = on;
   wrap.hidden = leg.hidden = !on;
@@ -937,6 +1121,14 @@ function syncVMode() {
   const grp = document.getElementById('vmode-grp');
   if (!grp) return;
   grp.hidden = !MATRIX_VIEWS.has(STATE.preset);
+  /* The map needs a country per row, which only Q3 and Q4 have. Rather than
+   * draw an empty world on Q1/Q2, hide the button — and if the reader was
+   * already in map mode when they switched view, put them back in the table
+   * instead of leaving them on a mode that renders nothing. */
+  const mapOK = MAP_VIEWS.has(STATE.preset);
+  const mb = grp.querySelector('[data-vmode="map"]');
+  if (mb) mb.hidden = !mapOK;
+  if (!mapOK && STATE.viewMode === 'map') STATE.viewMode = 'data';
   grp.querySelectorAll('.vm').forEach(b =>
     b.classList.toggle('on', b.dataset.vmode === STATE.viewMode));
 }
@@ -1020,6 +1212,10 @@ const PANEL_VIEW = 'panels';
  * table; the count is always stated and "show all" is one click away. */
 const TOP_N = 15;
 const FLOW_VIEWS = new Set(['exporters', 'importers']);
+/* Views whose rows are countries, and so can be drawn on a map. Same membership
+ * as FLOW_VIEWS today, kept separate because the reason differs: FLOW_VIEWS is
+ * about the row cap, MAP_VIEWS is about having geography at all. */
+const MAP_VIEWS = new Set(['exporters', 'importers']);
 
 /* What a year column actually holds, for the exported Notes block. */
 const ARITH_EXPORT_NOTE = {
@@ -1200,6 +1396,11 @@ async function viewFlow(dir) {
       `Compound Annual Growth Rate — the average rate the series grew per year, compounding; not the sum or the average of the yearly changes. = (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`)
   ];
   STATE.rows = shown;
+  /* The table is capped at TOP_N, the map is not. A choropleth that drew only
+   * the top 25 exporters would leave most of the world blank and read as "no
+   * trade" rather than "not in the top 25" — the opposite of what the map is
+   * for, which is seeing where growth is happening away from the leaders. */
+  STATE.rowsAll = all;
   STATE.years = years;
   STATE.notes = [];
   /* Carried for the download's Notes block: the World share denominator left the
@@ -1382,9 +1583,14 @@ async function viewProducts() {
      * codes whose series breaks. For every other row the span was the window
      * the year matrix already draws, so the column restated a fact the reader
      * could see. The field stays on the row; only the column is gone. */
-    Object.assign(
-      C.num('ushare', 'Use share', 'raw', SRC_EXIO, howShare, 6),
-      {fmt: v => (v === null || v === undefined || Number.isNaN(v)) ? '' : (v === 1 ? '1' : v.toFixed(6))}),
+    /* Shown as a percentage to one decimal (2026-08-05, by request). This used
+     * to carry an Object.assign override printing the bare fraction to six
+     * decimals with a special case for exactly 1 — the override, not the
+     * constructor, was what the table actually rendered. It is gone: a
+     * by-assumption row now reads 100.0% and keeps its ≡ flag, which says the
+     * same thing in the place that explains it. The CSV still exports the
+     * unrounded fraction. */
+    C.pct1('ushare', 'Use share', 'raw', SRC_EXIO, howShare),
     C.val('w0', `World trade ${STATE.y0}`, 'raw', SRC_BACI, howW),
     C.val('w0c', `World trade ${STATE.y0} corrected`, 'derived', SRC_CALC, `= (World trade ${STATE.y0}) × (Use share), both shown.`),
     C.val('w1', `World trade ${STATE.y1}`, 'raw', SRC_BACI, howW),
@@ -1569,9 +1775,9 @@ function paintNoteMark() {
   };
 }
 
-/* Fills the two header panels whose text is static markup in the HTML — only the
+/* Fills the notes blocks whose text is static markup in the HTML — only the
  * EXIOBASE source year and the engine's own note are injected, so a failed slice
- * load still leaves both texts readable on the page. */
+ * load still leaves the text readable on the page. */
 function fillStandingPanels() {
   const y = document.getElementById('mu-year');
   if (y) y.textContent = STATE.muYear ? ` (${STATE.muYear})` : '';
@@ -1615,6 +1821,16 @@ function paintTable() {
     if (c.wide) {
       const full = String(r[c.key] === null || r[c.key] === undefined ? '' : r[c.key]);
       return `<td class="${cls}${zero}" title="${esc(full)}"><span class="clamp">${cell}</span></td>`;
+    }
+    /* Official BACI descriptions run to a paragraph for some codes ("Machines and
+     * mechanical appliances having individual functions, not specified…"), which
+     * made a single row three or four lines tall and pushed the year matrix off
+     * screen. Capped at two lines in a scroll box (2026-08-05): the row height is
+     * now uniform and nothing is lost — the rest scrolls inside the cell, the full
+     * string stays on hover, and the export is untouched. */
+    if (c.key === 'desc') {
+      const full = String(r[c.key] === null || r[c.key] === undefined ? '' : r[c.key]);
+      return `<td class="${cls}${zero}" title="${esc(full)}"><div class="descbox">${cell}</div></td>`;
     }
     return `<td class="${cls}${zero}">${cell}</td>`;
   }).join('') + '</tr>').join('');
