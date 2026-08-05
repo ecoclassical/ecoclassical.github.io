@@ -49,6 +49,11 @@ const STATE = {
    * flat world choropleth. Nothing is computed differently between the three;
    * only drawn. */
   viewMode: 'data',
+  /* 'raw' | 'corrected' — which of the two aggregates every slice carries is
+   * read. Raw is the default and stays the default: it is the honest answer to
+   * "how much trade touches this basket", and it is the basis every existing
+   * screenshot, debrief and external citation was taken against. See val(). */
+  basis: 'raw',
   /* The year list the current view painted; the chart reads it back. */
   years: [],
   /* Every country row, uncapped — the map's source. See viewFlow(). */
@@ -203,11 +208,18 @@ function techName(i) { return STATE.idx.meta.techs[i]; }
  * 2. Only Raw Material and Processed Material carry a measurement. Every
  *    other role is 1.0 BY ASSUMPTION — no correction applied: downstream
  *    inputs are already tech-specific. A reason, not missing data.
- * 3. Only a field that still carries an HS code can be corrected here
- *    (raw × share). The Q1–Q4 headline views sum the code dimension away,
- *    so they stay raw; the corrected columns live in the HS-6 detail view.
+ * 3. The correction is applied in the R BUILDER, per row, before any
+ *    group_by — so every slice carries `vc` beside `v` and every view can be
+ *    restated. This used to say the opposite: that only a field still
+ *    carrying an HS code could be corrected, and that Q1–Q4 therefore stayed
+ *    raw. That was true of the shipped JSON, not of the data. importers.json
+ *    is (tech, year, iso, v) with the code dimension summed away, so nothing
+ *    the browser can do recovers it — but the builder still has the code, and
+ *    correcting before the sum makes Q1–Q5 exact. See val() below.
  * `why` distinguishes the four ways share ends up 1.0, so the page can
- * label the assumption case rather than implying a measurement was made. */
+ * label the assumption case rather than implying a measurement was made.
+ * muShare() survives because the HS-6 view still needs the per-code share to
+ * EXPLAIN a row; the toggle shows the effect, this shows the cause. */
 function muShare(tech, code, role) {
   const t = STATE.muShares[tech] || STATE.muShares[String(tech).replace(/ /g, '_')];
   if (!t) return {share: 1, why: 'unmapped'};
@@ -217,6 +229,32 @@ function muShare(tech, code, role) {
   const s = t[code];
   return s === undefined ? {share: 1, why: 'unmeasured'} : {share: s, why: 'measured'};
 }
+
+/* THE one place a slice row's value is read. Every aggregation on this page
+ * goes through it, so the Raw | Corrected toggle cannot reach some panels and
+ * miss others — which was the failure mode of the previous design, where the
+ * correction existed as five extra columns in one view out of five.
+ *
+ * `?? d.v` is load-bearing, not defensive habit: a slice built before the
+ * builder learned to emit `vc` must degrade to raw, not to NaN. A NaN here
+ * renders as an empty cell, which looks like "no trade" rather than "no
+ * column", and the page would lie quietly rather than fail. */
+let _basisDiffers = false;
+function val(d) {
+  if (d.vc !== undefined && d.vc !== null && d.vc !== d.v) _basisDiffers = true;
+  return STATE.basis === 'corrected' ? (d.vc === undefined || d.vc === null ? d.v : d.vc) : d.v;
+}
+
+/* Whether the CURRENT view can differ between the two bases at all. Only Raw
+ * Material and Processed Material rows carry a measurement, so a reader who
+ * flips the toggle on a Final Product segment and sees nothing move is owed
+ * the reason rather than left to wonder whether the control is broken.
+ *
+ * Detected inside val() rather than by re-scanning the rows afterwards, because
+ * val() is the ONE path every aggregation takes: a view that reached its
+ * numbers some other way would also escape a row scan, and this way it cannot.
+ * render() resets the flag before each pass. */
+function basisMoves() { return _basisDiffers; }
 
 /* ── Column constructors ────────────────────────────────────────────────── */
 /* cls is authoritative: it paints the badge and (in Task 11) annotates export
@@ -484,8 +522,18 @@ function wireControls() {
   document.querySelectorAll('.vm').forEach(b => {
     b.onclick = () => { STATE.viewMode = b.dataset.vmode; render(); };
   });
+  /* Both toggles share the `.ar` class because they are the same control idiom.
+   * Dispatch on which data attribute the button actually carries — reading
+   * `b.dataset.arith` unconditionally would set STATE.arith to undefined every
+   * time someone pressed Raw or Corrected. */
   document.querySelectorAll('.ar').forEach(b => {
-    b.onclick = () => { STATE.arith = b.dataset.arith; STATE.sortKey = null; render(); };
+    b.onclick = () => {
+      if (b.dataset.arith) STATE.arith = b.dataset.arith;
+      else if (b.dataset.basis) STATE.basis = b.dataset.basis;
+      else return;
+      STATE.sortKey = null;
+      render();
+    };
   });
   document.getElementById('dl-csv').onclick = downloadCSV;
   document.getElementById('dl-xlsx').onclick = downloadXLSX;
@@ -549,6 +597,13 @@ function availCountries(t) {
   const byIso = {};
   decode(t.products_by_country).forEach(d => {
     const e = byIso[d.iso] || (byIso[d.iso] = {i: d.iso, iso: L.iso[d.iso], last: 0});
+    /* Deliberately RAW, and deliberately not val(). Two reasons, both real:
+     * this only orders a dropdown, and a list that reshuffles when the basis
+     * flips is disorienting for no gain. More importantly val() sets the
+     * "does the basis bite on this view" flag, and this helper sweeps EVERY
+     * code in the chain including upstream ones the view may filter out — so
+     * routing it through val() made a Final-Product-only view claim the
+     * toggle was live when it was not. */
     if (d.year === lastYear) e.last += d.v;
   });
   return Object.values(byIso).sort((a, b) => b.last - a.last);
@@ -610,7 +665,7 @@ async function seriesFor(view) {
      * imports are the same number, so one flow direction is the world total. */
     decode(STATE.idx.chains).filter(d => d.flow === 0).forEach(d => {
       const s = mk(acc, String(d.tech), STATE.idx.meta.techs[d.tech]);
-      s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+      s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
     });
 
   } else if (view === 'segments') {
@@ -620,7 +675,7 @@ async function seriesFor(view) {
         const stage = L.stage[d.stage], role = L.role[d.role];
         const s = mk(acc, `${stage}||${role}`, `${stage} · ${role}`);
         s.stage = stage; s.role = role;
-        s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+        s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
       });
 
   } else if (view === 'exporters' || view === 'importers') {
@@ -630,7 +685,7 @@ async function seriesFor(view) {
         const iso = L.iso[d.iso];
         const s = mk(acc, iso, ISO_NAME[iso] || iso);
         s.iso3 = iso;
-        s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+        s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
       });
 
   } else {
@@ -1224,6 +1279,11 @@ const ARITH_EXPORT_NOTE = {
   index:  'Index, first year of the selected window = 100, = 100 × (value in this year / value in the first year). Switch “Read as” to $ on the page and re-download for the underlying levels.'
 };
 
+const BASIS_EXPORT_NOTE = {
+  raw: 'RAW — every dollar of trade in this chain’s HS basket, exactly as BACI records it. A product used by many industries (copper ore, steel, aluminium) counts in full towards this chain.',
+  corrected: 'CORRECTED FOR MULTI-USE — upstream flows scaled by the EXIOBASE share of that product’s use attributable to this chain. Applies to Raw Material and Processed Material rows ONLY; Product Component, Process Equipment and Final Product rows are unchanged (share = 1.0 by modelling assumption, not by measurement). Corrected totals are NOT comparable to published BACI figures.'
+};
+
 const ARITH_META = {
   levels: {cls: 'raw',     fmtOf: () => fmtV,
            how: y => `Sum of every bilateral BACI flow in this basket in ${y}. At BACI’s bilateral grain world exports and world imports are the same number.`,
@@ -1242,8 +1302,15 @@ function yearCols(years) {
     key: 'y' + y, label: String(y), cls: m.cls, src: m.src(), how: m.how(y), fmt: m.fmtOf()
   }));
 }
+/* Every view's summary line ends with this, so the basis travels with the
+ * headline total. A corrected total is roughly half a raw one on an
+ * upstream-heavy selection; a screenshot of the number without the basis beside
+ * it is the same class of error as a year column with no units. Raw adds
+ * nothing to the line — it is the default, and labelling the default on every
+ * view would train the reader to stop reading the suffix. */
 function arithSuffix() {
-  return (ARITH_META[STATE.arith] || ARITH_META.levels).suffix();
+  const a = (ARITH_META[STATE.arith] || ARITH_META.levels).suffix();
+  return a + (STATE.basis === 'corrected' ? ' · corrected for multi-use' : '');
 }
 
 /* Show the toggle only where it means something, and keep the index button
@@ -1257,6 +1324,29 @@ function syncArith() {
   if (ix) ix.textContent = `${STATE.y0}=100`;
   grp.querySelectorAll('.ar').forEach(b =>
     b.classList.toggle('on', b.dataset.arith === STATE.arith));
+}
+
+/* The basis toggle applies to every view, so unlike `arith` it is never hidden.
+ * What it does do is say when it has no effect: on a view with no Raw Material
+ * or Processed Material rows the two bases are identical by construction, and
+ * a control that visibly does nothing has to explain itself or it reads as
+ * broken. basisMoves() is set inside val() during the render that just ran. */
+function syncBasis() {
+  const grp = document.getElementById('basis-grp');
+  if (!grp) return;
+  grp.querySelectorAll('.ar').forEach(b =>
+    b.classList.toggle('on', b.dataset.basis === STATE.basis));
+  const corr = document.getElementById('ba-corr');
+  if (!corr) return;
+  const moves = basisMoves();
+  corr.classList.toggle('inert', !moves);
+  corr.title = moves
+    ? 'Upstream flows scaled by the EXIOBASE share of that product’s use ' +
+      'attributable to this chain. Applies to Raw Material and Processed ' +
+      'Material rows only; everything downstream is unchanged.'
+    : 'No effect on this view: it holds no Raw Material or Processed Material ' +
+      'rows, and only those carry a use-share measurement. Every other role is ' +
+      '1.0 by modelling assumption, so the two bases are identical here.';
 }
 
 /* ── View: Q2, one row per stage × role segment ─────────────────────────── */
@@ -1330,7 +1420,7 @@ async function segmentsForCountry(ti, ci) {
         key: k, label: k.replace('||', ' · '),
         stage: k.split('||')[0], role: k.split('||')[1], byYear: {}
       });
-      s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+      s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
     });
   });
   return Object.values(acc);
@@ -1450,7 +1540,7 @@ async function flowForSegment(ti, segKey) {
     const iso = L.iso[d.iso];
     const s = acc[iso] || (acc[iso] = {key: iso, iso3: iso,
                                        label: ISO_NAME[iso] || iso, byYear: {}});
-    s.byYear[d.year] = (s.byYear[d.year] || 0) + d.v;
+    s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
   });
   return Object.values(acc);
 }
@@ -1499,9 +1589,9 @@ async function viewProducts() {
      * before the first one on screen, so a clipped series would blank the
      * leading growth cell — the same reason seriesFor() builds full-width. */
     const w = world[d.code] || (world[d.code] = {v0: 0, v1: 0, by: {}});
-    w.by[d.year] = (w.by[d.year] || 0) + d.v;
-    if (d.year === wy) w.v0 += d.v;
-    else if (d.year === wy1) w.v1 += d.v;
+    w.by[d.year] = (w.by[d.year] || 0) + val(d);
+    if (d.year === wy) w.v0 += val(d);
+    else if (d.year === wy1) w.v1 += val(d);
   });
 
   /* Country drill-down. The slice covers the top 30 exporters per chain, so
@@ -1517,9 +1607,9 @@ async function viewProducts() {
     pbc.forEach(d => {
       if (d.iso !== ci) return;
       const k = ctry[d.code] || (ctry[d.code] = {v0: 0, v1: 0, by: {}});
-      k.by[d.year] = (k.by[d.year] || 0) + d.v;
-      if (d.year === wy) k.v0 += d.v;
-      else if (d.year === wy1) k.v1 += d.v;
+      k.by[d.year] = (k.by[d.year] || 0) + val(d);
+      if (d.year === wy) k.v0 += val(d);
+      else if (d.year === wy1) k.v1 += val(d);
     });
   }
   /* Basket denominators: the country's / the world's total for THIS chain in
@@ -1555,11 +1645,12 @@ async function viewProducts() {
       span: sp ? (sp.a === sp.b ? String(sp.a) : `${sp.a}–${sp.b}`) : 'no BACI trade',
       brk,
       ushare: mu.share, ushareWhy: mu.why,
+      /* w0/w1/c0/c1 are whatever basis STATE.basis selects — they are summed
+       * from val(), so under Corrected the endpoints, the CAGR built on them,
+       * and RCA built on those are all one consistent basis. The `*c` twin
+       * fields that used to sit here are gone with their columns. */
       w0: w.v0, w1: w.v1,
-      w0c: w.v0 * mu.share, w1c: w.v1 * mu.share,
       c0: isCountry ? k.v0 : null, c1: isCountry ? k.v1 : null,
-      c0c: isCountry ? k.v0 * mu.share : null,
-      c1c: isCountry ? k.v1 * mu.share : null,
       cTot: isCountry ? cTot1 : null, wTot: wTot1,
       cShare, wShare, rca,
       mktShare: (isCountry && w.v1) ? k.v1 / w.v1 : null,
@@ -1583,26 +1674,32 @@ async function viewProducts() {
      * codes whose series breaks. For every other row the span was the window
      * the year matrix already draws, so the column restated a fact the reader
      * could see. The field stays on the row; only the column is gone. */
-    /* Shown as a percentage to one decimal (2026-08-05, by request). This used
-     * to carry an Object.assign override printing the bare fraction to six
-     * decimals with a special case for exactly 1 — the override, not the
-     * constructor, was what the table actually rendered. It is gone: a
-     * by-assumption row now reads 100.0% and keeps its ≡ flag, which says the
-     * same thing in the place that explains it. The CSV still exports the
-     * unrounded fraction. */
+    /* THE FOUR CORRECTED TWINS WERE REMOVED HERE ON 2026-08-05: `World trade
+     * <y> corrected` ×2 and `<ISO> exports <y> corrected` ×2. They were the
+     * whole of the multi-use correction's presence in this tool — four columns
+     * in one view out of five — and the Raw | Corrected toggle replaces them
+     * everywhere at once. With the toggle on Corrected the columns below ARE
+     * the corrected numbers, so a twin would restate its neighbour.
+     *
+     * `Use share` STAYS, against the plan, which listed it for removal. The
+     * plan was written before the request of 2026-08-05 to render it as a
+     * percentage to one decimal — an instruction to keep a column, not to drop
+     * it. It is also the only thing on the page that explains WHY a row moves
+     * when the toggle flips: the toggle shows the effect, this shows the cause.
+     *
+     * `w0`/`w1` STAY for a harder reason: they are the operands of Country
+     * share, World share, RCA and World market share, all of which are
+     * rendered. Removing them would break this page's ground rule that every
+     * derived cell is reproducible from cells beside it. */
     C.pct1('ushare', 'Use share', 'raw', SRC_EXIO, howShare),
     C.val('w0', `World trade ${STATE.y0}`, 'raw', SRC_BACI, howW),
-    C.val('w0c', `World trade ${STATE.y0} corrected`, 'derived', SRC_CALC, `= (World trade ${STATE.y0}) × (Use share), both shown.`),
-    C.val('w1', `World trade ${STATE.y1}`, 'raw', SRC_BACI, howW),
-    C.val('w1c', `World trade ${STATE.y1} corrected`, 'derived', SRC_CALC, `= (World trade ${STATE.y1}) × (Use share), both shown.`)
+    C.val('w1', `World trade ${STATE.y1}`, 'raw', SRC_BACI, howW)
   ];
   if (isCountry) {
     const nm = isoLabel(L.iso[ci]);
     STATE.cols.push(
       C.val('c0', `${L.iso[ci]} exports ${STATE.y0}`, 'raw', SRC_BACI, `Sum of BACI flows on this code with ${nm} as exporter.`),
-      C.val('c0c', `${L.iso[ci]} exports ${STATE.y0} corrected`, 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y0}) × (Use share), both shown.`),
       C.val('c1', `${L.iso[ci]} exports ${STATE.y1}`, 'raw', SRC_BACI, `Sum of BACI flows on this code with ${nm} as exporter.`),
-      C.val('c1c', `${L.iso[ci]} exports ${STATE.y1} corrected`, 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) × (Use share), both shown.`),
       C.val('cTot', `${L.iso[ci]} ${tn} basket ${STATE.y1}`, 'derived', SRC_CALC, `Sum of the ${L.iso[ci]} exports column over every code in the ${tn} basket. RCA denominator — shown so RCA is reproducible.`),
       C.val('wTot', `World ${tn} basket ${STATE.y1}`, 'derived', SRC_CALC, `Sum of the world trade column over every code in the ${tn} basket. RCA denominator — shown so RCA is reproducible.`),
       C.pct('cShare', 'Country share of basket', 'derived', SRC_CALC, `= (${L.iso[ci]} exports ${STATE.y1}) / (${L.iso[ci]} ${tn} basket ${STATE.y1}), both shown.`),
@@ -1616,10 +1713,11 @@ async function viewProducts() {
    * CAGR are already computed on: the selected country's exports when a country
    * is chosen, world trade otherwise. In $ mode the first and last cells
    * therefore repeat the endpoint columns above, and that repetition is the
-   * point — those columns are the operands of RCA and of the corrected twins,
-   * and every operand stays on screen. The correction is NOT applied here: only
-   * a column that names its own use share beside it can be reconciled by hand,
-   * which is exactly what the endpoint pairs do. */
+   * point — those columns are the operands of RCA, and every operand stays on
+   * screen. Both the matrix and the endpoints are built from val(), so the
+   * whole row is on ONE basis: the sentence that used to sit here, saying the
+   * correction is not applied to the matrix, described the four corrected-twin
+   * columns that the Raw | Corrected toggle replaced. */
   STATE.cols.push(
     ...yearCols(pyears).map(c => Object.assign(c, {
       how: c.how + (isCountry
@@ -1703,6 +1801,10 @@ async function render() {
    * download — the failure mode would be a plausible-looking wrong number in a
    * file, which is the worst kind this page can produce. */
   STATE.worldTot = null;
+  /* Reset before the view runs, so basisMoves() describes THIS pass. Left set
+   * from a previous view it would claim the toggle bites on a view where it
+   * does not. */
+  _basisDiffers = false;
   try {
     if (STATE.preset === 'panels')          note = await viewPanels();
     else if (STATE.preset === 'chains')     note = await viewChains();
@@ -1722,6 +1824,9 @@ async function render() {
   const sa = document.getElementById('show-all');
   if (sa) sa.onclick = () => { STATE.showAll = !STATE.showAll; render(); };
   syncControls();
+  /* After the view, never before: basisMoves() reports what val() saw during
+   * the pass that just finished. */
+  syncBasis();
   paintCaveat();
   paintNotes();
   paintTable();
@@ -1812,7 +1917,7 @@ function paintTable() {
       if (r.traded === 0) cell += `<span class="flag" title="In the dictionary, but no BACI trade recorded for this code in any year.">&#8709;</span>`;
     }
     if (c.key === 'ushare' && r.ushareWhy === 'assumption') {
-      cell += `<span class="flag" title="No correction applied: downstream inputs are already tech-specific — use share 1.0 by assumption, not by measurement.">&#8801;</span>`;
+      cell += `<span class="flag" title="No correction applied: downstream inputs are already tech-specific — use share 1.0 by assumption, not by measurement. This row reads the same under Raw and Corrected.">&#8801;</span>`;
     }
     const zero = (typeof r[c.key] === 'number' && r[c.key] === 0) ? ' num0' : '';
     /* Wide free-text columns (informal_tag) are clamped to three lines so one
@@ -1888,12 +1993,17 @@ function paintProvenance() {
     <b>Apportionment.</b> None. <code>split_weight</code> is not applied anywhere in this
     tool, so a code shared by two chains shows the same full BACI value in both, by design.
     Chain totals therefore overlap and must not be added together as a world figure.<br>
-    <b>Multi-use correction.</b> The HS-6 product detail view shows every raw trade value
-    beside its corrected twin: raw &times; EXIOBASE direct use share for that
-    (chain, HS-6 code), the share itself shown as a column. Only Raw Material and
-    Processed Material carry a measured share; every other role is 1.0 by assumption
-    (downstream inputs are already tech-specific). Q1&ndash;Q4 aggregate away the HS-6
-    dimension and are raw throughout.<br>
+    <b>Multi-use correction.</b> The <b>Count as</b> control restates every number on
+    every view. <i>Raw</i> counts each dollar of trade in the chain&rsquo;s HS basket as
+    BACI records it. <i>Corrected</i> scales each flow by the EXIOBASE direct use share
+    for that (chain, HS-6 code) &mdash; the fraction of that product&rsquo;s use
+    attributable to this chain. The scaling happens in the builder, per flow, before any
+    aggregation, which is why the country and segment totals can be corrected at all.
+    Only Raw Material and Processed Material carry a measured share (${
+      esc(String(m.basis_pairs_measured || ''))} chain&times;code pairs); every other role
+    is 1.0 by assumption &mdash; downstream inputs are already chain-specific. On a view
+    with no upstream rows the two bases are identical. Corrected totals are not comparable
+    to published BACI figures.<br>
     <b>Formulas.</b> share = value / total, both shown &middot;
     <b>CAGR</b> &mdash; <b>Compound Annual Growth Rate</b>, the average rate the series grew
     per year, compounding, not the sum of the yearly changes
@@ -1982,6 +2092,10 @@ function preamble() {
      * headed "2019" holding 114.5 is meaningless unless you know whether that
      * is dollars, a growth rate or an index. */
     ['Year columns read as', ARITH_EXPORT_NOTE[STATE.arith] || ARITH_EXPORT_NOTE.levels],
+    /* Same reason as the line above, and a sharper one: raw and corrected differ
+     * by roughly a factor of two on an upstream-heavy selection. A file that did
+     * not say which basis produced it could be quoted against the other one. */
+    ['Counted as', BASIS_EXPORT_NOTE[STATE.basis] || BASIS_EXPORT_NOTE.raw],
     ['Rows', STATE.showAll || !FLOW_VIEWS.has(STATE.preset)
       ? 'every row in this view'
       : `top ${TOP_N} by ${STATE.y1} value — the view was capped; use “show all” on the page for the full list`],
@@ -2039,11 +2153,13 @@ function preamble() {
                   'Raw Material and Processed Material carry a measurement; every other ' +
                   'role is 1.0 by assumption — no correction applied: downstream inputs ' +
                   'are already tech-specific. A modelling decision, not missing data.'],
-    ['Corrected columns', STATE.preset === 'products'
-      ? 'raw × use share; both operands are columns in this file. CAGR, basket shares, ' +
-        'RCA and market share are computed on RAW values.'
-      : 'absent from this view — Q1–Q4 totals aggregate away the HS-6 dimension and ' +
-        'cannot be corrected in the browser, so every value in this file is raw.'],
+    ['Basis of this file', BASIS_EXPORT_NOTE[STATE.basis] || BASIS_EXPORT_NOTE.raw],
+    ['How the correction is applied', 'In the R builder, to each bilateral flow, BEFORE ' +
+      'any aggregation — so every view is exact, including the country totals that ' +
+      'aggregate the HS-6 dimension away. Each slice carries both aggregates (v raw, ' +
+      'vc corrected) and the page reads one of them. Under Corrected, every number in ' +
+      'this file — levels, CAGR, basket shares, RCA, market share — is on the corrected ' +
+      'basis, because all of them are computed from the same scaled operands.'],
     ['Top-30 cap', 'The country-level HS-6 drill-down (product detail view) covers the ' +
                    'top 30 exporters per chain only (TOP_EXPORTERS = 30). Q1–Q4 are ' +
                    'uncapped: every BACI reporter is included.'],

@@ -225,6 +225,11 @@ header select:disabled,header input:disabled{opacity:.5}
 @media (prefers-color-scheme:dark){:root:not([data-theme]) .ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}}
 :root[data-theme="dark"] .ar.on{background:var(--accent);color:#06210a;border-color:var(--accent)}
 .arith[hidden]{display:none}
+/* A basis button that cannot change this view is dimmed rather than disabled:
+   it must stay pressable so the reader can confirm nothing moves, and its
+   title says why. Only the second `.arith` group carries `margin-left:auto`. */
+#basis-grp{margin-left:10px}
+.ar.inert:not(.on){opacity:.42}
 
 /* ── Notes / banners ──────────────────────────────────────────────────── */
 .note{margin:0;padding:11px 22px;background:var(--warn-bg);color:var(--warn-fg);
@@ -470,6 +475,17 @@ table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:v
     <button class="ar" type="button" data-arith="index" id="ar-index"
             title="Rebased to the first year of your window = 100. Comparable across chains of very different size.">=100</button>
   </div>
+
+  <!-- The multi-use basis. Same idiom as "Read as" because it is the same class
+       of thing: a restatement of the same flows, not a different dataset. Raw is
+       the default and stays it — every published figure was taken against it. -->
+  <div class="arith" id="basis-grp">
+    <span class="albl">Count as</span>
+    <button class="ar on" type="button" data-basis="raw"
+            title="Every dollar of trade in this chain's HS basket, exactly as BACI records it. Copper ore counts in full towards Solar even though most copper is not used for solar.">Raw</button>
+    <button class="ar" type="button" data-basis="corrected" id="ba-corr"
+            title="Upstream flows scaled by the EXIOBASE share of that product's use attributable to this chain. Applies to Raw Material and Processed Material rows only; everything downstream is unchanged.">Corrected</button>
+  </div>
 </div>
 
 <div id="summary">Loading&hellip;</div>
@@ -517,17 +533,26 @@ table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:v
   <div class="ref">
     <h3>&#9878; Multi-use correction</h3>
     <p>BACI counts a copper cathode as copper whatever it ends up in, so a chain&rsquo;s
-    upstream is mostly trade that never reaches the technology. The <b>Use share</b> column
-    is the EXIOBASE direct use share for this (chain, HS-6 code)<span id="mu-year"></span>
-    &mdash; the fraction of the code&rsquo;s trade that plausibly serves THIS chain &mdash;
-    and each <b>corrected</b> column is raw &times; use share, reconcilable by hand from the
-    columns shown. Only <b>Raw Material</b> and <b>Processed Material</b> carry a
-    measurement; for every other role the share is 1.0 <b>by assumption &mdash; no
-    correction applied: downstream inputs are already tech-specific</b> (marked &#8801;).
-    That is a modelling decision, not missing data. The correction reaches the raw trade
-    columns only: CAGR, basket shares, RCA and market share are computed on raw values, and
-    the Q1&ndash;Q4 headline views sum the HS-6 dimension away, so they cannot be corrected
-    in the browser.</p>
+    upstream is mostly trade that never reaches the technology. The <b>Count as</b> control
+    at the top right of the view selector switches between the two answers, and it restates
+    <b>every number on every view</b> &mdash; levels, growth, CAGR, basket shares, RCA and
+    market share alike.</p>
+    <p><b>Raw</b> (the default) counts every dollar of trade in the chain&rsquo;s HS basket
+    exactly as BACI records it. <b>Corrected</b> scales each flow by the EXIOBASE direct use
+    share for its (chain, HS-6 code)<span id="mu-year"></span> &mdash; the fraction of that
+    product&rsquo;s use that plausibly serves THIS chain. The <b>Use share</b> column in the
+    HS-6 detail view is that number, per code, so any corrected figure there is reconcilable
+    by hand.</p>
+    <p>Only <b>Raw Material</b> and <b>Processed Material</b> carry a measurement; for every
+    other role the share is 1.0 <b>by assumption &mdash; no correction applied: downstream
+    inputs are already tech-specific</b> (marked &#8801;). That is a modelling decision, not
+    missing data, and it means a view holding no upstream rows reads <b>identically</b>
+    under both bases. If you flip the control and nothing moves, that is the reason.</p>
+    <p>The scaling is applied in the R builder to each bilateral flow <b>before</b> any
+    aggregation, which is what lets the country and segment totals be corrected at all &mdash;
+    they sum the HS-6 dimension away, so no browser-side arithmetic could recover it.
+    Corrected totals are <b>not</b> comparable to published BACI figures. Downloads state
+    which basis produced them.</p>
     <p class="metaline" id="mu-note"></p>
   </div>
 
