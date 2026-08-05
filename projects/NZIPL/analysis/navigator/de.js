@@ -68,7 +68,14 @@ const STATE = {
   /* Multi-use correction lookup, from the ENGINE's data/_index.json (shared
    * with the Atlas Navigator), fetched at boot — see muShare() below. */
   muShares: {}, muRoles: [], muNote: '', muYear: null,
-  techCache: {}, flowCache: {}, decCache: new WeakMap(),
+  techCache: {}, flowCache: {}, segcCache: null, decCache: new WeakMap(),
+  /* Q5 only. Segments below this in the END year are dropped before ranking.
+   * Not cosmetic: a segment going $0.4m → $9m is a potent-looking CAGR and an
+   * immaterial fact, and without a floor those rows own the top of the table. */
+  q5Floor: 5e5,
+  /* Q5 opens on the CORRECTED basis and puts back whatever was selected when
+   * it is left — see setPreset(). Null means "not currently overridden". */
+  q5PrevBasis: null,
   /* tech·code → stage||role keys, built once by codeSegmentIndex(). */
   segIdx: null,
   rows: [], cols: [], notes: [],
@@ -108,6 +115,10 @@ function applicFor(preset) {
      * in these slices. */
     case 'exporters': return {tech: true,  seg: oneChain, country: false};
     case 'importers': return {tech: true,  seg: false, country: false};
+    /* Q5 is the only view where all three filters apply: its slice is keyed on
+     * chain × country × segment, so each control narrows rows that are already
+     * there rather than needing a source the page does not hold. */
+    case 'segcountry': return {tech: true, seg: true, country: true};
     /* Q6. The chain filter narrows the rows; the segment filter would leave one
      * row per year, same as Q2. The COUNTRY filter genuinely does not apply: a
      * concentration index is a property of a segment across all its exporters,
@@ -409,6 +420,16 @@ async function loadConc() {
   return STATE.concCache;
 }
 
+/* Q5's slice: chain × exporter × stage × role × year, precomputed. Q2 derives
+ * the same shape in the browser for ONE chain, from that chain's file; ranking
+ * across all ten would mean fetching ten of them (~13 MB), which is why this
+ * exists as a slice at 1.8 MB instead. Lazily fetched, cached. */
+async function loadSegCountry() {
+  if (STATE.segcCache) return STATE.segcCache;
+  STATE.segcCache = decode(await loadJSON('segments_by_country.json'));
+  return STATE.segcCache;
+}
+
 /* ── Header reference panels ────────────────────────────────────────────── */
 /* The RAW/DERIVED/MODEL legend and the chain-overlap caution are reference
  * material, not content: they stay on the page verbatim but collapsed, so the
@@ -580,10 +601,22 @@ function setYear(which, v) {
 }
 
 async function setPreset(p) {
+  const was = STATE.preset;
   STATE.preset = p;
   STATE.sortKey = null;
   document.querySelectorAll('.preset').forEach(b =>
     b.classList.toggle('on', b.dataset.preset === p));
+  /* Q5 opens on the corrected basis (see viewSegCountry for why) and hands back
+   * whatever was selected before, so visiting it cannot silently change the
+   * basis the other five views are read on. The toggle stays live inside Q5 —
+   * this sets the opening position, it does not lock it. */
+  if (p === 'segcountry' && was !== 'segcountry') {
+    STATE.q5PrevBasis = STATE.basis;
+    STATE.basis = 'corrected';
+  } else if (was === 'segcountry' && p !== 'segcountry' && STATE.q5PrevBasis !== null) {
+    STATE.basis = STATE.q5PrevBasis;
+    STATE.q5PrevBasis = null;
+  }
   /* The HS-6 view is per-chain by construction: codes, SHAP and the
    * country drill-down slice are all keyed on one technology. */
   if (p === 'products' && STATE.tech === 'ALL') {
@@ -758,13 +791,31 @@ function applyArith(s, years, mode, base) {
  * therefore lands in SEVERAL segments — the same reading viewProducts already
  * uses for its segment filter, so the two cannot disagree.
  * This is what makes the cross-filters possible without a slice rebuild. */
+/* tech·code → the segments that code actually occupies.
+ *
+ * `segs` carries the REAL (stage, role) pairs from the dictionary. It has to,
+ * because `stage` and `role` are collapsed independently: a code with stages
+ * {Downstream, Final Product} and roles {Final Product, Product Component}
+ * gives four combinations when recombined and only two are assigned. This
+ * function used to do that cross-product and invented 11 phantom segments
+ * across 6 codes — Solar 854142 gained a "Final Product · Product Component"
+ * the dictionary never gave it, and the trade went with it.
+ *
+ * The fallback keeps the old behaviour for a slice built before the builder
+ * emitted `segs`, so an out-of-date data directory degrades to the previous
+ * answer rather than to no segments at all. */
 function codeSegmentIndex() {
   if (STATE.segIdx) return STATE.segIdx;
   const idx = {};
   decode(STATE.idx.codes).forEach(c => {
-    const keys = [];
-    String(c.stage).split(' | ').forEach(st =>
-      String(c.role).split(' | ').forEach(ro => keys.push(`${st}||${ro}`)));
+    let keys;
+    if (c.segs) {
+      keys = String(c.segs).split(' ; ');
+    } else {
+      keys = [];
+      String(c.stage).split(' | ').forEach(st =>
+        String(c.role).split(' | ').forEach(ro => keys.push(`${st}||${ro}`)));
+    }
     idx[`${c.tech}|${c.code}`] = keys;
   });
   STATE.segIdx = idx;
@@ -808,6 +859,10 @@ function seriesColor(row, i) {
   if (STATE.preset === 'segments') {
     return SR_COLORS[`${row.stage}|${row.role}`] || GREY;
   }
+  /* Q5 lines are coloured by supply chain, not by rank: the rows are a mix of
+   * chains and countries, and the chain is the dimension a reader is tracking
+   * when several rows of one chain climb together. */
+  if (STATE.preset === 'segcountry') return TECH_COLORS[row.chain] || GREY;
   return i < CAT10.length ? CAT10[i] : GREY;
 }
 
@@ -1386,7 +1441,8 @@ async function viewChains() {
 
 /* Which views render as one row per entity and one column per year. Q2/Q3/Q4
  * join this in Tasks 4 and 5. */
-const MATRIX_VIEWS = new Set(['chains', 'segments', 'exporters', 'importers', 'conc']);
+const MATRIX_VIEWS = new Set(['chains', 'segments', 'exporters', 'importers',
+                              'segcountry', 'conc']);
 /* Views carrying a year column per year. Deliberately WIDER than MATRIX_VIEWS:
  * the HS-6 detail view gained a year matrix, but 302 product series cannot be
  * drawn as a chart, so it takes the "Read as" toggle without taking Visual
@@ -1406,6 +1462,11 @@ const FLOW_VIEWS = new Set(['exporters', 'importers']);
 /* Views whose rows are countries, and so can be drawn on a map. Same membership
  * as FLOW_VIEWS today, kept separate because the reason differs: FLOW_VIEWS is
  * about the row cap, MAP_VIEWS is about having geography at all. */
+/* Q5 is deliberately NOT here. Its rows are chain × country × segment, so a
+ * country appears many times and a choropleth would have to pick one or sum
+ * across segments that overlap — inventing a per-country number the table does
+ * not contain. Filter it to one chain and one segment and Q3 answers the same
+ * question on a map, from a slice built for it. */
 const MAP_VIEWS = new Set(['exporters', 'importers', 'conc']);
 
 /* What a year column actually holds, for the exported Notes block. */
@@ -1593,6 +1654,180 @@ async function segmentsForCountry(ti, ci) {
     });
   });
   return Object.values(acc);
+}
+
+/* First year of each HS revision window. A series that begins in one of these
+ * years began when the numbering changed, which is the cheapest available
+ * signal that "new" means "renumbered". 1995 is excluded deliberately: it is
+ * where BACI itself starts, so everything begins there and it says nothing. */
+const HS_REV_START = new Set([1996, 2002, 2007, 2012, 2017, 2022]);
+
+/* ── View: Q5, one row per chain × country × segment ─────────────────────── */
+/* The cross-cutting leaderboard. Q2 asks "which segments" inside one chain;
+ * this asks which chain × country × segment in the whole roster is growing,
+ * which is a different question and needs every chain in memory at once.
+ *
+ * WHY THIS VIEW OPENS ON THE CORRECTED BASIS, alone among the six.
+ * On raw BACI the top of this table is an artifact. Australia's Upstream Raw
+ * Material reads $95.1bn under Geothermal, $94.6bn under Batteries, $94.0bn
+ * under Nuclear and $93.9bn under Transmission — one ore shipment, four chains
+ * claiming it, four adjacent rows. Ranking is exactly the operation that makes
+ * shared codes look like separate findings, because near-duplicates sort next
+ * to each other. On the corrected basis those four collapse to $0.5bn, $3.7bn,
+ * $0.8bn and $4.4bn and the ranking becomes readable. Raw remains one click
+ * away and the note says what changes.
+ *
+ * This does NOT resolve the shared-code question (G-2) — it avoids the worst of
+ * its effect on one view. */
+async function viewSegCountry() {
+  const L = STATE.idx.lookups, years = windowYears();
+  const rows0 = await loadSegCountry();
+  const oneChain = STATE.tech !== 'ALL';
+
+  /* The country list comes from THIS slice, not from a per-chain file: with all
+   * ten chains selected the offered countries are the union of ten top-30 cuts,
+   * and availCountries() only knows about one chain at a time. Ranked by their
+   * last-year value so the list opens on the countries the view is about. */
+  const lastYear = STATE.idx.meta.year_max, byIso = {};
+  rows0.forEach(d => {
+    if (oneChain && d.tech !== +STATE.tech) return;
+    if (d.year !== lastYear) return;
+    const e = byIso[d.iso] || (byIso[d.iso] = {i: d.iso, iso: L.iso[d.iso], last: 0});
+    e.last += d.v;
+  });
+  populateCountries(Object.values(byIso).sort((a, b) => b.last - a.last));
+
+  const acc = {};
+  rows0.forEach(d => {
+    if (oneChain && d.tech !== +STATE.tech) return;
+    if (STATE.country !== 'ALL' && d.iso !== +STATE.country) return;
+    const stage = L.stage[d.stage], role = L.role[d.role];
+    if (STATE.segment !== 'ALL' && `${stage}||${role}` !== STATE.segment) return;
+    const key = `${d.tech}|${d.iso}|${d.stage}|${d.role}`;
+    const s = acc[key] || (acc[key] = {
+      key, chain: techName(d.tech), iso: L.iso[d.iso],
+      segment: `${stage} · ${role}`, stage, role,
+      _tech: d.tech, byYear: {}
+    });
+    s.byYear[d.year] = (s.byYear[d.year] || 0) + val(d);
+  });
+
+  const series = Object.values(acc);
+  const v0 = s => s.byYear[STATE.y0], v1 = s => s.byYear[STATE.y1];
+
+  /* Three ways a row can fail to be rankable, and they are not the same thing:
+   *  - absent at the end   → dropped. Nothing to rank.
+   *  - below the floor     → dropped, and counted in the note.
+   *  - absent at the start  → kept, CAGR blank, marked. A segment that did not
+   *    exist in y0 (its HS codes were introduced later) has no growth RATE, but
+   *    it is often the biggest story on the table — China's Solar Final Product
+   *    is $30bn in 2024 against nothing in 2014. Dropping those would quietly
+   *    remove the largest arrivals from a view about growth. */
+  const present = series.filter(s => v1(s) !== undefined && v1(s) > 0);
+  const dropped = present.filter(s => v1(s) < STATE.q5Floor).length;
+  const kept = present.filter(s => v1(s) >= STATE.q5Floor);
+
+  const rows = kept.map(s => {
+    const a = v0(s), b = v1(s);
+    const vals = applyArith(s, years, STATE.arith, STATE.y0);
+    const r = {chain: s.chain, country: isoLabel(s.iso), segment: s.segment,
+               key: s.key, _tech: s._tech, _last: b};
+    years.forEach((y, i) => { r['y' + y] = vals[i]; });
+    r._spark = vals;
+    r.isNew = (a === undefined || a === 0);
+    r.cagr = r.isNew ? null : cagr(a, b, yearsSel());
+    r.added = b - (a || 0);
+    /* A segment whose FIRST trade in the whole series lands on an HS revision
+     * boundary is very probably a renumbering, not an arrival. This is not a
+     * hypothetical: every one of the nine rows this view currently marks is
+     * Solar Final Product starting in 2017, which is HS17 introducing 854143 —
+     * the same mechanism hsRevNote() documents for single codes, one level up.
+     * Ranked by dollars added, that artifact would otherwise be row 1. */
+    if (r.isNew) {
+      const ys = Object.keys(s.byYear).map(Number).filter(y => s.byYear[y] > 0);
+      r.firstYear = ys.length ? Math.min(...ys) : null;
+      r.revBreak = r.firstYear !== null && HS_REV_START.has(r.firstYear);
+    }
+    return r;
+  });
+
+  /* Sorted by dollars added, not by rate. Both columns ship — they disagree
+   * violently, because a rate ranking is won by whatever had the smallest base
+   * — and the header sort switches between them. Dollars is the default
+   * because it is the reading that survives the small-base problem unaided. */
+  rows.sort((x, y) => y.added - x.added);
+
+  const chainTot = {};
+  rows.forEach(r => { chainTot[r._tech] = (chainTot[r._tech] || 0) + r._last; });
+  rows.forEach(r => {
+    r.share = chainTot[r._tech] ? r._last / chainTot[r._tech] : null;
+  });
+
+  STATE.cols = [
+    C.txt('chain', 'Supply chain', 'raw', SRC_GD, 'NZIPL value-chain classification.'),
+    C.txt('country', 'Exporter', 'raw', SRC_BACI,
+      'The exporting country. These are EXPORTS — the slice records who ships each code, not who buys it.'),
+    C.txt('segment', 'Segment (stage · role)', 'raw', SRC_GD,
+      'Value-chain stage and product role, as assigned in the green dictionary. A code assigned to two segments of one chain is counted in both.'),
+    ...yearCols(years),
+    C.spark('_spark', 'Trend',
+      `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range. A gap is a break in the series, not a zero.`),
+    C.val('added', `Added ${STATE.y0}→${STATE.y1}`, 'derived', SRC_CALC,
+      `= (value ${STATE.y1}) − (value ${STATE.y0}), both shown as cells in this row. Where the segment had no trade in ${STATE.y0} the whole of ${STATE.y1} counts as added, and the row is marked ▲ new. This is the default sort: it is the growth reading that a small starting base cannot distort.`),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `Compound Annual Growth Rate = (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle. Blank where the segment had no trade in ${STATE.y0}: a rate out of zero is not a large number, it is undefined.`),
+    C.pct('share', `Share of chain ${STATE.y1}`, 'derived', SRC_CALC,
+      `= (this row’s ${STATE.y1} trade) / (all rows of the SAME supply chain in this table, ${STATE.y1}). Within a chain, not across the table — segments of different chains overlap and their sum is not a total.`)
+  ];
+  STATE.rows = rows;
+  STATE.rowsAll = rows;
+  STATE.years = years;
+  STATE.notes = [];
+
+  const nNew = rows.filter(r => r.isNew).length;
+  STATE.notes.push(
+    `<b>This view opens on the Corrected basis</b>, alone among the six, because ranking is
+     the operation that shared HS codes distort most. On Raw, Australia’s Upstream Raw
+     Material appears four times near the top of this table — ${'$'}95.1bn under Geothermal,
+     ${'$'}94.6bn under Batteries, ${'$'}94.0bn under Nuclear, ${'$'}93.9bn under Transmission —
+     which is <b>one ore shipment claimed by four chains</b>, not four findings. Switch to Raw
+     to see it; the numbers there are not wrong, they are just not comparable down a column.`);
+  STATE.notes.push(
+    `<b>Top 30 exporting countries per chain</b> (83–91% of each chain’s trade), inherited from
+     the per-chain HS-6 slice so that every country ranked here can also be opened in
+     Q2 · Which segments?. The tail is <b>absent, not zero</b> — a country outside a chain’s
+     top 30 cannot appear in that chain’s rows however fast it grew.`);
+  if (dropped) STATE.notes.push(
+    `<b>${dropped} segment${dropped === 1 ? ' is' : 's are'} below the ${fmtV(STATE.q5Floor)}
+     materiality floor</b> in ${STATE.y1} and ${dropped === 1 ? 'is' : 'are'} not ranked. Without
+     it the top of a growth table is owned by rows going from almost nothing to slightly more
+     than almost nothing — a 129% CAGR on ${'$'}0.7bn of Zambian Electrolyzer ore is arithmetic,
+     not an industrial fact.`);
+  const nRev = rows.filter(r => r.revBreak).length;
+  if (nNew) STATE.notes.push(
+    `<b>${nNew} row${nNew === 1 ? ' has' : 's have'} no trade in ${STATE.y0}</b>, so the whole
+     of ${STATE.y1} counts as added and the CAGR is blank — a growth rate out of zero is
+     undefined, not infinite.` +
+    (nRev ? ` <b>&#9888; ${nRev} of ${nRev === nNew ? 'them' : `those ${nNew}`} begin on an HS
+     revision boundary and are probably renumbering, not growth.</b> HS-6 codes are renumbered
+     between revisions (HS96·1996 · HS02·2002 · HS07·2007 · HS12·2012 · HS17·2017 · HS22·2022),
+     so a segment can appear at a boundary while the trade continues under different numbers.
+     Solar Final Product is the case to know: it starts in 2017 because HS17 introduced
+     <code>854143</code>, and on a dollars-added ranking that puts it near the top of this
+     table on an artifact. Those rows are marked &#9888; rather than ▲.` : '') +
+    (nNew > nRev ? ` The remaining ${nNew - nRev} start away from a boundary (marked ▲) and
+     are more likely to be real arrivals.` : ''));
+  STATE.notes.push(
+    `<b>A code assigned to two segments of one chain is counted in both</b>, so the rows of a
+     chain can sum to more than that chain’s total — the same convention Q2 uses. The share
+     column is computed within a chain for this reason.`);
+
+  const scope = oneChain ? techName(+STATE.tech) : 'all 10 chains';
+  return `<span class="k">${rows.length}</span> chain&times;country&times;segment rows &middot;
+          ${esc(scope)}
+          ${STATE.country !== 'ALL' ? '&middot; ' + esc(isoLabel(L.iso[+STATE.country])) : ''}
+          &middot; exports &middot; ${STATE.y0}&ndash;${STATE.y1}
+          &middot; ranked by ${'$'} added` + arithSuffix();
 }
 
 /* ── View: Q3 / Q4, one row per country ─────────────────────────────────── */
@@ -2135,6 +2370,7 @@ async function render() {
     else if (STATE.preset === 'segments')   note = await viewSegments();
     else if (STATE.preset === 'exporters')  note = await viewFlow('exporters');
     else if (STATE.preset === 'importers')  note = await viewFlow('importers');
+    else if (STATE.preset === 'segcountry') note = await viewSegCountry();
     else if (STATE.preset === 'conc')       note = await viewConcentration();
     else                                    note = await viewProducts();
   } catch (e) {
@@ -2255,6 +2491,14 @@ function paintTable() {
         const otherName = STATE.basket === 'full' ? 'chain-exclusive' : 'full';
         cell += `<span class="flag warn" title="The two baskets disagree here: HHI ${fmtN(r._last, 3)} on the ${STATE.basket === 'full' ? 'full' : 'chain-exclusive'} basket against ${fmtN(r.hhiOther, 3)} on the ${otherName} one — a gap of ${fmtN(r.gap, 3)}. Shared HS codes are doing the work. Switch the Basket control to see the other reading; neither is the answer.">&#9873;</span>`;
       }
+    }
+    /* Q5's arrival marker, on the Segment cell. A blank CAGR beside a very
+     * large "added" figure otherwise reads as a missing computation rather than
+     * as the finding it is: the segment was not there at the start. */
+    if (c.key === 'segment' && STATE.preset === 'segcountry' && r.isNew) {
+      cell += r.revBreak
+        ? `<span class="flag warn" title="⚠ Probably a renumbering, not an arrival. This segment's first recorded trade is ${r.firstYear} — the first year of an HS revision, when HS-6 codes are renumbered. Solar Final Product is the worked case: it begins in 2017 because HS17 introduced the codes, not because the trade began. Its whole ${STATE.y1} value is counted as added here, which flatters this row. Read the note below the table before quoting it.">&#9888;</span>`
+        : `<span class="flag" title="No trade recorded in ${STATE.y0}${r.firstYear ? `; the series begins in ${r.firstYear}` : ''}, so this segment's whole ${STATE.y1} value counts as added and its growth RATE is undefined rather than infinite. That start year is not an HS revision boundary, so this is more likely a real arrival than a renumbering — but check the HS-6 detail view before reading it as one.">&#9650;</span>`;
     }
     if (c.key === 'ushare' && r.ushareWhy === 'assumption') {
       cell += `<span class="flag" title="No correction applied: downstream inputs are already tech-specific — use share 1.0 by assumption, not by measurement. This row reads the same under Raw and Corrected.">&#8801;</span>`;
@@ -2522,9 +2766,34 @@ function preamble() {
               'exports are spread ACROSS countries; there is no one-country reading of it. ' +
               'The Top exporter column is where a country appears in this view.']
     ] : []),
-    ['Top-30 cap', 'The country-level HS-6 drill-down (product detail view) covers the ' +
-                   'top 30 exporters per chain only (TOP_EXPORTERS = 30). Q1–Q4 are ' +
-                   'uncapped: every BACI reporter is included.'],
+    ...(STATE.preset === 'segcountry' ? [
+      [],
+      ['— Growth leaderboard (Q5) —'],
+      ['Grain', 'One row per supply chain x exporting country x segment (stage, role) x ' +
+                'year, from data_explorer/segments_by_country.json. These are EXPORTS.'],
+      ['Default basis', 'Q5 OPENS ON CORRECTED, alone among the six views. Ranking is the ' +
+                'operation that shared HS codes distort most: on the raw basis Australia\'s ' +
+                'Upstream Raw Material occupies four of the top rows at ~$94bn each, under ' +
+                'Geothermal, Batteries, Nuclear and Transmission — one ore shipment claimed ' +
+                'by four chains, not four findings. Check the "Counted as" line above for ' +
+                'the basis THIS file was taken on; the toggle stays live on the page.'],
+      ['Materiality floor', 'Segments below $500m in the end year are not ranked. A rate ' +
+                'ranking without a floor is won by whatever had the smallest starting base.'],
+      ['Rows marked new', 'A segment with no trade in the start year has its whole end-year ' +
+                'value counted as added and its CAGR left BLANK — a growth rate out of zero ' +
+                'is undefined, not infinite. Usually the HS codes were introduced in a later ' +
+                'revision rather than an industry appearing.'],
+      ['Double counting within a chain', 'A code assigned to two segments of one chain is ' +
+                'counted in both, so a chain\'s rows can sum to more than the chain total. ' +
+                'The share column is computed within a chain for this reason.'],
+      ['Country coverage', 'Top 30 exporters per chain — 83-91% of each chain\'s trade. The ' +
+                'tail is ABSENT, not zero: a country outside a chain\'s top 30 cannot appear ' +
+                'in that chain\'s rows however fast it grew.']
+    ] : []),
+    ['Top-30 cap', 'The country-level HS-6 drill-down (product detail view) and the Q5 ' +
+                   'growth leaderboard cover the top 30 exporters per chain only ' +
+                   '(TOP_EXPORTERS = 30). Q1–Q4 are uncapped: every BACI reporter ' +
+                   'is included.'],
     ['EVs', 'Electric vehicles are not part of this tool (10 of 11 chains) and have no ' +
             'EXIOBASE use shares — no corrected figures exist for them, for two ' +
             'independent reasons.'],

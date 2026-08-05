@@ -468,6 +468,7 @@ table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:v
   <button class="preset" data-preset="segments">Q2 &middot; Which segments?</button>
   <button class="preset" data-preset="exporters">Q3 &middot; Who exports?</button>
   <button class="preset" data-preset="importers">Q4 &middot; Who imports?</button>
+  <button class="preset" data-preset="segcountry">Q5 &middot; Who is growing, and in what?</button>
   <button class="preset" data-preset="conc">Q6 &middot; Where are the choke points?</button>
   <button class="preset" data-preset="products">HS-6 product detail</button>
 
@@ -601,8 +602,16 @@ table.dicttbl code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:v
     <h3>&#9673; Coverage and caps</h3>
     <p><b>The country drill-down is capped at the top 30 exporters per chain</b>
     (<code>TOP_EXPORTERS = 30</code> in the slice builder), so the country selector in the
-    HS-6 product detail and segment views lists only those 30. The four headline views
+    HS-6 product detail and segment views lists only those 30, and so does
+    <b>Q5 &middot; Who is growing, and in what?</b> &mdash; which is built from the same cut,
+    deliberately, so that every row it ranks can also be opened in Q2. That covers 83&ndash;91%
+    of each chain&rsquo;s trade; the tail is <b>absent, not zero</b>. The four headline views
     Q1&ndash;Q4 are <b>uncapped</b> &mdash; every BACI reporter is included.</p>
+    <p><b>Q5 opens on the Corrected basis</b>, alone among the six views, because ranking is
+    the operation that shared HS codes distort most: on Raw, one Australian ore shipment
+    appears four times near the top of the table under four different chains. The toggle stays
+    live &mdash; this is an opening position, not a lock &mdash; and the note under the table
+    says what changes.</p>
     <p><b>Electric vehicles (EVs) are not part of this tool</b> &mdash; the explorer covers
     10 of the 11 chains &mdash; and EVs have no EXIOBASE use shares either, so they receive
     no corrected figures for two independent reasons.</p>
