@@ -7,10 +7,13 @@
  * 2. No ratio is stored in the slices. Shares, CAGRs and RCA are computed here
  *    from operands that are themselves rendered as columns, so any figure on
  *    screen can be reproduced by hand in a spreadsheet. See design spec §5.2.
- * 3. Every column definition carries `cls` (RAW / DERIVED / MODEL), `src` (the
- *    file the number comes from) and `how` (the formula). `cls` paints the
- *    badge, `src`/`how` fill the Column dictionary. Screen and dictionary are
- *    generated from the same object, so they cannot drift apart.
+ * 3. Every column definition carries `src` (the file the number comes from) and
+ *    `how` (the formula). Both fill the Column dictionary AND the download's
+ *    Notes block, generated from the same objects that paint the table, so the
+ *    three cannot drift apart. `cls` (raw / derived / model) is still carried —
+ *    the year columns switch it with the arithmetic mode — but since 2026-08-05
+ *    it is no longer painted as a badge: it summarised `src`/`how` in one word,
+ *    and the thing summarised is more useful than the summary.
  * 4. Official BACI text is the only product identifier. `informal_tag` is the
  *    researcher's internal shorthand and is shown only in an explicitly
  *    labelled column, never as a name.
@@ -321,8 +324,16 @@ async function loadFlow(dir) {
  * they are looking at. Provenance, the overlap caution and the coverage caps are
  * standing text that belongs after the numbers, and now render below the table
  * in #refnotes — always open, nothing to discover. */
+/* ONE panel, TWO triggers (2026-08-05): the header button, and a second one
+ * below the table where the reader actually meets the corrected numbers. The
+ * text itself is not duplicated — a second copy of the explanation would be a
+ * copy with no producer, and the two would drift. Both buttons drive the same
+ * #panel-mu and stay in sync through setPanel(). */
 const PANELS = [
-  {btn: 'tg-mu', panel: 'panel-mu', key: 'cscde.panel.mu'}
+  {btns: ['tg-mu', 'tg-mu-below'], panel: 'panel-mu', key: 'cscde.panel.mu',
+   /* Opening from below the table would otherwise scroll nothing into view:
+    * the panel lives up in the header. */
+   scrollFrom: 'tg-mu-below'}
 ];
 
 function readPanelPref(key) {
@@ -333,21 +344,33 @@ function writePanelPref(key, open) {
 }
 
 function setPanel(cfg, open, persist) {
-  const btn = document.getElementById(cfg.btn);
   const panel = document.getElementById(cfg.panel);
-  if (!btn || !panel) return;
+  if (!panel) return;
   panel.classList.toggle('open', open);
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  /* Every trigger reflects the panel's state, so a reader who opened it from
+   * the header does not find the button below the table claiming it is shut. */
+  cfg.btns.forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
   if (persist) writePanelPref(cfg.key, open);
 }
 
 function wirePanels() {
   PANELS.forEach(cfg => {
-    const btn = document.getElementById(cfg.btn);
-    if (!btn) return;
     setPanel(cfg, readPanelPref(cfg.key), false);
-    btn.onclick = () =>
-      setPanel(cfg, btn.getAttribute('aria-expanded') !== 'true', true);
+    cfg.btns.forEach(id => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.onclick = () => {
+        const open = btn.getAttribute('aria-expanded') !== 'true';
+        setPanel(cfg, open, true);
+        if (open && id === cfg.scrollFrom) {
+          const p = document.getElementById(cfg.panel);
+          if (p && p.scrollIntoView) p.scrollIntoView({behavior: 'smooth', block: 'center'});
+        }
+      };
+    });
   });
 }
 
@@ -964,8 +987,8 @@ async function viewChains() {
     ...yearCols(years),
     C.spark('_spark', 'Trend',
       `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
-    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC,
-      `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `Compound Annual Growth Rate — the average rate the series grew per year, compounding; not the sum or the average of the yearly changes. = (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
     C.pct('share', `Share of all chains ${STATE.y1}`, 'derived', SRC_CALC,
       `= (this chain’s ${STATE.y1} trade) / (all chains ${STATE.y1} total). The total is in the summary line above the table.`)
   ];
@@ -1070,8 +1093,8 @@ async function viewSegments() {
     ...yearCols(years),
     C.spark('_spark', 'Trend',
       `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
-    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC,
-      `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `Compound Annual Growth Rate — the average rate the series grew per year, compounding; not the sum or the average of the yearly changes. = (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`),
     C.pct('share', `Share ${STATE.y1}`, 'derived', SRC_CALC,
       `= (this segment’s ${STATE.y1} trade) / (all segments ${STATE.y1} total). The total is in the summary line above the table.`)
   ];
@@ -1161,20 +1184,39 @@ async function viewFlow(dir) {
       'Label only; it does not affect any number.'),
     ...yearCols(years).map(c => Object.assign({}, c,
       {how: STATE.arith === 'levels' ? howC : c.how})),
-    C.val('w1', `World ${lab.toLowerCase()} ${STATE.y1}`, 'derived', SRC_CALC,
-      'Sum of the country column over every country in this view — including any hidden by the row cap. Shown so the share is reproducible.'),
+    /* The world total used to be a column. It is one constant repeated down
+     * every row, so it cost a column's width to say a single number — removed
+     * 2026-08-05. It has NOT simply been dropped: World share below is a ratio,
+     * and this page's rule is that every operand of a displayed ratio stays
+     * visible. The denominator is now stated once, in the note under the table,
+     * and it still goes into the download's Notes block. */
     C.pct('sh1', `World share ${STATE.y1}`, 'derived', SRC_CALC,
-      `= (${lab} ${STATE.y1}) / (World ${lab.toLowerCase()} ${STATE.y1}), both shown.`),
+      `= (${lab} ${STATE.y1}) / (world ${lab.toLowerCase()} ${STATE.y1}). The denominator is one number for the whole view — ${fmtV(world[STATE.y1] || 0)} — and is stated in the note under the table rather than repeated down a column.`),
     C.pct('shDelta', 'Share change', 'derived', SRC_CALC,
       `= (World share ${STATE.y1}) − (World share ${STATE.y0}), in percentage points.`),
     C.spark('_spark', 'Trend',
       `A drawing of this row's year cells, ${years[0]}–${years[years.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
-    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC,
-      `= (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`)
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC,
+      `Compound Annual Growth Rate — the average rate the series grew per year, compounding; not the sum or the average of the yearly changes. = (value ${STATE.y1} / value ${STATE.y0})^(1/${yearsSel()}) − 1, on the $ levels — unaffected by the “Read as” toggle.`)
   ];
   STATE.rows = shown;
   STATE.years = years;
   STATE.notes = [];
+  /* Carried for the download's Notes block: the World share denominator left the
+   * table as a column, so it has to reach the exported file some other way or a
+   * reader working offline cannot reproduce the share. Cleared by every other
+   * view — see clearFlowTotals() at the top of render(). */
+  STATE.worldTot = {y0: world[STATE.y0] || 0, y1: world[STATE.y1] || 0, lab: lab.toLowerCase()};
+  /* The World share denominator, stated once — it replaced a column that held
+   * this same number on every row (2026-08-05). It stays on screen because the
+   * share above it is a ratio, and no ratio on this page is shown without its
+   * operands. */
+  STATE.notes.push(
+    `<b>World ${lab.toLowerCase()} ${STATE.y1}: ${fmtV(world[STATE.y1] || 0)}</b> —
+     the denominator behind the World share column, summed over
+     <b>every</b> country in this view including any hidden by the row cap.
+     World ${lab.toLowerCase()} ${STATE.y0} was ${fmtV(world[STATE.y0] || 0)},
+     which is the ${STATE.y0} end of the Share change column.`);
   if (bySeg) STATE.notes.push(
     `<b>Segment-filtered exports are derived from the per-chain HS-6 detail</b>, which covers
      the <b>top 30 exporting countries</b> for this chain — so the world total on this view is
@@ -1334,7 +1376,12 @@ async function viewProducts() {
     C.txt('role', 'Role', 'raw', SRC_GD, 'NZIPL classification. A pipe-separated value means the code carries more than one role in this chain.'),
     C.txt('cat', 'HS category', 'raw', SRC_GD, 'The HS category used as a feature group by the competitiveness model.'),
     C.txt('rev', 'HS revision', 'raw', SRC_GD, 'The canonical HS revision the code was mapped from (green_dictionary.hs_rev_canonical). HS-6 codes are renumbered between revisions.'),
-    C.txt('span', 'BACI trade years', 'derived', SRC_CALC, 'First and last year in which this code records any world trade, across the full 1995–' + STATE.idx.meta.year_max + ' series. A span that stops short of your window is flagged ⚠ — see the note below the table.'),
+    /* 'BACI trade years' was a column until 2026-08-05. It is now carried where
+     * it is actually needed: `r.span` still feeds the ⚠ tooltips on the HS-6
+     * code cell, which name the first or last year of trade for exactly the
+     * codes whose series breaks. For every other row the span was the window
+     * the year matrix already draws, so the column restated a fact the reader
+     * could see. The field stays on the row; only the column is gone. */
     Object.assign(
       C.num('ushare', 'Use share', 'raw', SRC_EXIO, howShare, 6),
       {fmt: v => (v === null || v === undefined || Number.isNaN(v)) ? '' : (v === 1 ? '1' : v.toFixed(6))}),
@@ -1376,7 +1423,7 @@ async function viewProducts() {
     })),
     C.spark('_spark', 'Trend',
       `A drawing of this row's year cells, ${pyears[0]}–${pyears[pyears.length - 1]}: nothing is computed here that is not already a column. Scaled to this row's own range, so it shows shape — the magnitude is in the cells beside it. A gap is a break in the series, not a zero.`),
-    C.pct('cagr', 'CAGR (compound annual growth rate)', 'derived', SRC_CALC, `The average rate at which this series grew per year, compounding — not the sum of the yearly changes. = (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1, on the ${isCountry ? L.iso[ci] + ' export' : 'world trade'} columns. −100.0% means the series reaches zero — check the HS revision first.`),
+    C.pct('cagr', 'CAGR', 'derived', SRC_CALC, `Compound Annual Growth Rate — the average rate at which this series grew per year, compounding; not the sum of the yearly changes. = (v${STATE.y1} / v${STATE.y0})^(1/${yearsSel()}) − 1, on the ${isCountry ? L.iso[ci] + ' export' : 'world trade'} columns. −100.0% means the series reaches zero — check the HS revision first.`),
     C.num('shap', 'SHAP mean |z|', 'model', SRC_SHAP, 'Mean absolute standardised SHAP value from the predicted-competitiveness random forest. Measures how much this code drives the model’s competitiveness prediction. It is a model output and cannot be recomputed from this page.', 3),
     Object.assign(
       C.txt('informal_tag', 'informal_tag (internal label — NOT official)', 'raw', SRC_GD, 'The researcher’s working shorthand for the sub-component. Shown for traceability against internal spreadsheets only. It is never used as a product identifier here.'),
@@ -1423,7 +1470,8 @@ function hsRevNote(n, total) {
   return `<b>&#9888; ${n} of ${total} codes do not have BACI trade across your whole
     ${STATE.y0}&ndash;${STATE.y1} window</b>, and are flagged in the HS-6 column. Before
     reading this as a market collapse or a new market, check the
-    <b>HS revision</b> and <b>BACI trade years</b> columns:
+    <b>HS revision</b> column and hover the &#9888; flag, which names the first or last
+    year of trade for that code:
     <b>HS-6 codes are renumbered between HS revisions</b>
     (HS92&middot;1995 &middot; HS96&middot;1996&ndash;2001 &middot; HS02&middot;2002&ndash;2006 &middot;
      HS07&middot;2007&ndash;2011 &middot; HS12&middot;2012&ndash;2016 &middot;
@@ -1444,6 +1492,11 @@ async function render() {
   sum.textContent = 'Computing…';
   syncControls();
   let note = '';
+  /* Only viewFlow sets this. Clearing it here rather than trusting each view to
+   * unset it means a stale world total from Q3 can never be exported inside a Q1
+   * download — the failure mode would be a plausible-looking wrong number in a
+   * file, which is the worst kind this page can produce. */
+  STATE.worldTot = null;
   try {
     if (STATE.preset === 'panels')          note = await viewPanels();
     else if (STATE.preset === 'chains')     note = await viewChains();
@@ -1534,8 +1587,7 @@ function paintTable() {
     const arrow = STATE.sortKey === c.key ? (STATE.sortDir < 0 ? ' ▾' : ' ▴') : '';
     return `<th data-k="${esc(c.key)}" class="${c.align === 'l' ? 'tl' : ''}${c.wide ? ' w' : ''}${c.viz ? ' novs' : ''}" ` +
            `title="${esc(c.src)} — ${esc(c.how)}">` +
-           `<span class="lab">${c.label}${arrow}</span>` +
-           `<span class="cls ${c.cls}">${c.cls.toUpperCase()}</span></th>`;
+           `<span class="lab">${c.label}${arrow}</span></th>`;
   }).join('') + '</tr>';
 
   tbody.innerHTML = STATE.rows.map(r => '<tr>' + STATE.cols.map(c => {
@@ -1593,12 +1645,16 @@ function sortBy(k) {
   paintTable();
 }
 
-/* Generated from the same column objects that paint the table, so the badge
- * on screen and the source line here can never disagree. */
+/* Generated from the same column objects that paint the table, so the source
+ * line here and the column on screen can never disagree.
+ *
+ * The RAW / DERIVED / MODEL badge was dropped 2026-08-05: it was accurate but
+ * low-information next to `src` and `how`, which say where the number came from
+ * and how it was made. `cls` is still carried on every column object — the year
+ * columns switch it with the arithmetic mode — it is simply no longer painted. */
 function paintDict() {
   document.getElementById('dictbody').innerHTML = STATE.cols.map(c => `
     <tr><td><b>${c.label}</b></td>
-        <td><span class="cls ${c.cls}">${c.cls.toUpperCase()}</span></td>
         <td><code>${esc(c.src)}</code></td>
         <td>${esc(c.how)}</td></tr>`).join('');
 }
@@ -1623,8 +1679,8 @@ function paintProvenance() {
     (downstream inputs are already tech-specific). Q1&ndash;Q4 aggregate away the HS-6
     dimension and are raw throughout.<br>
     <b>Formulas.</b> share = value / total, both shown &middot;
-    <b>CAGR</b> (<b>c</b>ompound <b>a</b>nnual <b>g</b>rowth <b>r</b>ate &mdash; the average
-    rate the series grew per year, compounding, not the sum of the yearly changes)
+    <b>CAGR</b> &mdash; <b>Compound Annual Growth Rate</b>, the average rate the series grew
+    per year, compounding, not the sum of the yearly changes
     = (v<sub>1</sub> / v<sub>0</sub>)<sup>1/years</sup> &minus; 1 &middot;
     RCA (within basket) = (country share of basket) / (world share of basket), all four
     operands shown as columns.<br>
@@ -1660,7 +1716,11 @@ function buildExportRows() {
   /* Drawings do not go in a file: the Trend column is a picture of the year
    * columns, which are exported in full right next to it. */
   const cols = STATE.cols.filter(c => !c.viz);
-  const header = cols.map(c => `${c.label} [${c.cls.toUpperCase()}]`);
+  /* Plain column labels: the `[RAW]` / `[DERIVED]` suffix went with the on-screen
+   * badge on 2026-08-05. A header that reads exactly like the screen is easier to
+   * match against by hand, and the Notes block still names every source and
+   * formula per column. */
+  const header = cols.map(c => c.label);
   const rows = STATE.rows.map(r => cols.map(c => {
     const v = r[c.key];
     return (v === null || v === undefined || (typeof v === 'number' && Number.isNaN(v)))
@@ -1722,14 +1782,25 @@ function preamble() {
     ['Units', m.units],
     ['Numbers', 'Raw and unrounded. The screen abbreviates to $M / $B; this file holds the exact figure.'],
     ['Percentages', 'Exported as decimal fractions (0.25 = 25%). Format as % in your spreadsheet.'],
-    ['Column classes', 'RAW = as recorded in the source files · DERIVED = computed from ' +
-                       'columns also present in this file · MODEL = external ML output, not recomputable'],
+    ['Per-column detail', 'Every column has its own source and formula line in the ' +
+                          '“Where each column comes from” block below.'],
     ['split_weight applied', 'NO — values are exact raw BACI numbers per HS-6 code. A code ' +
                              'shared by two chains carries its full value in both, so chain ' +
                              'totals overlap and must not be added into a world figure.'],
     [],
     ['— Formulas —'],
     ['share', 'value / total (both operands are columns in this file)'],
+    /* The World share denominator is a single number for the whole view, so it
+     * is a note rather than a column (2026-08-05). It must still be here, or the
+     * share cannot be reproduced from the file alone. */
+    ...(STATE.worldTot ? [
+      [`World ${STATE.worldTot.lab} ${STATE.y1}`,
+       `${STATE.worldTot.y1} — denominator of the World share column, summed over every ` +
+       `country in this view including any hidden by the row cap. Same units as the ` +
+       `value columns.`],
+      [`World ${STATE.worldTot.lab} ${STATE.y0}`,
+       `${STATE.worldTot.y0} — the ${STATE.y0} denominator, behind the Share change column.`]
+    ] : []),
     ['CAGR', 'Compound annual growth rate: the average rate the series grew per ' +
              'year, compounding — NOT the sum or the average of the yearly changes. ' +
              '= (v1 / v0)^(1/years) − 1 (both endpoints are columns in this file). ' +
@@ -1738,7 +1809,7 @@ function preamble() {
                             'operands are columns in this file'],
     ['RCA caveat', m.rca_caveat],
     ['SHAP', 'External model output (predicted-competitiveness random forest). ' +
-             'MODEL columns are not recomputable from this file.'],
+             'It is not recomputable from this file.'],
     ['Blank SHAP', 'Expected — the code did not pass the model feature-selection cut. ' +
                    'It is not missing data.'],
     ['HS revisions', 'HS-6 codes are renumbered between HS revisions (HS92·1995 · ' +
@@ -1765,6 +1836,16 @@ function preamble() {
             'independent reasons.'],
     [],
     ['— Scope —'],
+    [],
+    /* Added 2026-08-05, when the `[RAW]` / `[DERIVED]` suffix came off the column
+     * headers. The badge was a one-word summary; this is the thing it summarised,
+     * per column, and it keeps the file self-documenting away from the page.
+     * Built from the same STATE.cols objects that paint the table and the on-screen
+     * Column dictionary, so the three cannot disagree. */
+    ['— Where each column comes from —'],
+    ['Column', 'Source', 'How it is produced'],
+    ...STATE.cols.filter(c => !c.viz).map(c => [c.label, c.src, c.how]),
+    [],
     ['Chains', `${m.techs.length}: ${m.techs.join(', ')}. Electric vehicles are not part of this tool.`],
     ['Coverage', 'Only HS-6 codes listed in the NZIPL green dictionary — a view of the ' +
                  'clean-technology baskets, not a general BACI or Comtrade replacement. ' +

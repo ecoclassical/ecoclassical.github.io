@@ -303,12 +303,11 @@ td.spkcell{padding-top:2px;padding-bottom:0;width:1%;white-space:nowrap}
    the sign change is the whole point, and in $ mode it never draws. */
 .spk-zero{stroke:var(--mut);stroke-width:.75;opacity:.45}
 .spk-na{color:var(--mut);opacity:.6}
-.cls{display:inline-block;font:700 8.5px/1.5 Archivo,system-ui,sans-serif;padding:1px 5px;
-     border-radius:3px;color:#fff;letter-spacing:.06em;margin-top:3px}
-.cls.raw{background:var(--raw)} .cls.derived{background:var(--derived)}
-.cls.model{background:var(--model)}
-@media (prefers-color-scheme:dark){:root:not([data-theme]) .cls{color:#0b100c}}
-:root[data-theme="dark"] .cls{color:#0b100c}
+/* The .cls RAW/DERIVED/MODEL badge was removed from the UI on 2026-08-05 — it was
+   accurate but low-information beside the source and formula, which the Column
+   dictionary and the download's Notes block both carry per column. The --raw /
+   --derived / --model custom properties stay defined: they are theme tokens and
+   removing them from four :root blocks buys nothing. */
 .flag{color:var(--flag);font-weight:700;cursor:help;margin-left:3px}
 .hs{font:600 12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
 
@@ -317,6 +316,19 @@ td.spkcell{padding-top:2px;padding-bottom:0;width:1%;white-space:nowrap}
    them; a toggle in the header only made them easy to miss. */
 #refnotes{display:grid;gap:10px;margin:14px 22px 4px;
           grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+/* The second Multi-use trigger sits on the page body, not on the brand-green
+   header, so .hbtn's translucent-white treatment would be invisible here. Same
+   button, page-surface skin; both themes, and the open state matches the
+   header's (filled, brand-coloured). */
+.belowbar{padding:12px 22px 0;display:flex;gap:8px}
+.belowbar .hbtn{border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.belowbar .hbtn:hover{background:var(--line2);border-color:var(--mut)}
+.belowbar .hbtn[aria-expanded="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme]) .belowbar .hbtn[aria-expanded="true"]{background:var(--accent);color:#0b100c;border-color:var(--accent)}
+}
+:root[data-theme="dark"] .belowbar .hbtn[aria-expanded="true"]{background:var(--accent);color:#0b100c;border-color:var(--accent)}
+
 .ref{border:1px solid var(--line);border-left:3px solid var(--brand);
      border-radius:6px;background:var(--panel);padding:11px 14px}
 @media (prefers-color-scheme:dark){:root:not([data-theme]) .ref{border-left-color:var(--accent)}}
@@ -451,6 +463,16 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
 <p class="note" id="caveat" hidden></p>
 <p class="note" id="revnote" hidden></p>
 
+<!-- Second trigger for the SAME #panel-mu as the header button (2026-08-05).
+     The reader meets the corrected numbers here, at the table, not up in the
+     header — but the explanation is not duplicated, only re-reachable. Opening
+     from this button scrolls the panel into view; see PANELS.scrollFrom. -->
+<div class="belowbar">
+  <button class="hbtn" id="tg-mu-below" type="button" aria-expanded="false"
+          aria-controls="panel-mu"
+          title="What the corrected columns are, and why only two roles carry a measurement.">&#9878;&nbsp;Multi-use</button>
+</div>
+
 <!-- Standing reference, below the table and always open. These were header
      toggles; they are reference the reader should meet after the numbers, not
      controls competing with the filters. None may be deleted: the provenance
@@ -460,17 +482,19 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
 <section id="refnotes">
   <div class="ref">
     <h3>Provenance &mdash; where every number comes from</h3>
-    <p><span class="cls raw">RAW</span> as recorded in the source files &mdash; no arithmetic
-    applied on this page
+    <!-- The per-column RAW / DERIVED / MODEL badges were removed on 2026-08-05.
+         This paragraph keeps the promise they stood for — nothing here is
+         black-boxed — stated once, in words, instead of a badge on every heading. -->
+    <p><b>Nothing on this page is black-boxed.</b> Trade values are BACI as recorded, with
+    no arithmetic applied. Every ratio &mdash; shares, CAGR, RCA, market share &mdash; is
+    computed in your browser from operands that are themselves shown as columns, so any
+    figure here can be reproduced by hand in a spreadsheet. The one exception is
+    <b>SHAP mean |z|</b>, which is the output of an external machine-learning model and
+    <b>cannot</b> be recomputed from this page.
     <span class="sep">|</span>
-    <span class="cls derived">DERIVED</span> computed in your browser from operands that are
-    themselves shown as columns, so every figure can be reproduced by hand
-    <span class="sep">|</span>
-    <span class="cls model">MODEL</span> output of an external machine-learning model &mdash;
-    <b>not</b> recomputable from this page.
-    <span class="sep">|</span>
-    Click any column heading to sort. The <b>Column dictionary</b> below gives the exact
-    source file and formula behind each column.</p>
+    Click any column heading to sort. Hover a heading for its source and formula; the
+    <b>Column dictionary</b> below gives both for every column, and the CSV and Excel
+    downloads carry the same list.</p>
     <p class="metaline" id="meta-line"></p>
   </div>
 
@@ -496,8 +520,8 @@ footer code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
 <details class="dict" id="dict">
   <summary>Column dictionary &mdash; source and formula for every column shown</summary>
   <div class="dictwrap"><table class="dicttbl"><thead><tr>
-    <th style="width:22%">Column</th><th style="width:11%">Class</th>
-    <th style="width:33%">Source</th><th style="width:34%">How it is produced</th>
+    <th style="width:24%">Column</th>
+    <th style="width:36%">Source</th><th style="width:40%">How it is produced</th>
   </tr></thead><tbody id="dictbody"></tbody></table></div>
 </details>
 
