@@ -128,6 +128,27 @@ section:last-of-type { padding-bottom: 88px; }
 
 /* ── ATLAS CARDS ── */
 .atlas-2col { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; margin-bottom: 14px; align-items: start; }
+/* Three columns, one per way in: World, Country, Technology. Replaced the
+   2-column grid plus a full-width tech strip on 2026-08-05, once every
+   technology had a single integrated atlas to point at. The tech strip used to
+   carry one link per country per technology — 29 links — because there was no
+   one place to send a reader who wanted "Solar". Now there is. */
+.atlas-3col { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 14px; align-items: stretch; }
+.atlas-3col > * { height: 100%; }
+/* Tech rows mirror the country rows deliberately: the two columns answer the
+   same question from opposite sides, so they should read the same way. */
+.tech-list { display: flex; flex-direction: column; }
+.tech-row {
+  display: flex; align-items: center; gap: 10px; padding: 9px 20px;
+  border-bottom: 1px solid var(--border); text-decoration: none; transition: background .15s;
+}
+.tech-row:last-child { border-bottom: none; }
+.tech-row:hover { background: rgba(255,255,255,.05); }
+.tr-name { font-size: 13px; font-weight: 700; color: var(--tc); min-width: 96px; }
+.tr-dots { flex: 1; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.tr-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--tc); opacity: .85; }
+.tr-arrow { font-size: 12px; font-weight: 800; color: var(--accent); }
+.tech-row:hover .tr-arrow { transform: translateX(2px); }
 .atlas-card, .flagship-card {
   background: var(--surface); border: 1px solid var(--border-hi);
   border-radius: 10px; overflow: hidden;
@@ -226,6 +247,7 @@ section:last-of-type { padding-bottom: 88px; }
 @media (max-width: 800px) {
   .entry-grid { grid-template-columns: 1fr; }
   .atlas-2col { grid-template-columns: 1fr; }
+  .atlas-3col { grid-template-columns: 1fr; }
   .kit-grid   { grid-template-columns: 1fr; }
   .cases-grid { grid-template-columns: repeat(2, 1fr); }
   #br-grid    { grid-template-columns: 90px repeat(4,1fr); font-size:9px; }
@@ -234,20 +256,6 @@ section:last-of-type { padding-bottom: 88px; }
    One row per technology instead of one chip per country per technology. The
    --tc custom property carries the tech colour down to the chips so each row
    needs a single colour declaration rather than an inline style per link. */
-.techgrid{display:flex;flex-direction:column;gap:7px}
-.techrow{display:flex;flex-wrap:wrap;gap:5px;align-items:center;
-         padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.techrow:last-child{border-bottom:0}
-.techrow .techname{flex:0 0 152px;font-size:12px;font-weight:800;color:var(--tc);
-                   letter-spacing:.02em;text-decoration:none}
-.techrow a.techname:hover{text-decoration:underline}
-.techrow .cc{font-size:11px;line-height:1.5;padding:2px 9px;border-radius:3px;
-             text-decoration:none;color:var(--tc);white-space:nowrap;
-             border:1px solid color-mix(in srgb, var(--tc) 40%, transparent);
-             background:color-mix(in srgb, var(--tc) 10%, transparent)}
-.techrow .cc:hover{background:color-mix(in srgb, var(--tc) 24%, transparent)}
-.techrow .ccgap{font-size:10px;color:var(--muted);letter-spacing:.05em;margin-left:2px}
-@media (max-width:640px){.techrow .techname{flex-basis:100%}}
 </style>
 </head>
 <body>
@@ -377,15 +385,23 @@ section:last-of-type { padding-bottom: 88px; }
   <div class="wrap">
     <div class="section-label">Atlas Plates — World, Country &amp; Technology</div>
 
-    <!-- Global Atlas (left) + Country Atlases (right) -->
-    <div class="atlas-2col">
+    <!-- THREE COLUMNS, ONE PER WAY IN: World, Country, Technology.
+         Restructured 2026-08-05. The tech column used to be a full-width strip
+         of 29 links - one per country per technology - because no single page
+         answered "show me Solar". Now each technology has one integrated atlas
+         carrying all 7 countries behind a selector, exactly like the EVs one,
+         so the column is 6 links instead of 29 and the three ways into the same
+         data sit side by side. The per-country sheets still exist on disk and
+         are still built by render_case_panels.R; they are simply no longer the
+         way in, because the integrated atlas supersedes them. -->
+    <div class="atlas-3col">
 
-      <!-- GLOBAL ATLAS -->
+      <!-- 1. GLOBAL -->
       <div class="flagship-card">
         <div class="a-header">
-          <div class="a-badge green">★ Flagship · 13 case studies</div>
-          <div class="a-title" style="margin-top:8px;">Global Atlas of the Clean Industrial Base</div>
-          <div class="a-desc">World map trade flows, value chain timeline, product treemap, capability radar, sankey decomposition, PC scatter, and firm activity — all in one panel view across 13 country × technology cases.</div>
+          <div class="a-badge green">&#9733; Flagship &middot; 13 cases</div>
+          <div class="a-title" style="margin-top:8px;">Global Atlas</div>
+          <div class="a-desc">Thirteen country &times; technology cases in one panel view &mdash; trade map, timeline, treemap, capability radar, sankey, PC scatter and firm activity.</div>
         </div>
         <div class="a-body">
           <div class="a-sub">Case Studies</div>
@@ -406,95 +422,50 @@ section:last-of-type { padding-bottom: 88px; }
           </div>
         </div>
         <div class="a-footer">
-          <a class="a-link" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html">Open Global Atlas →</a>
+          <a class="a-link" href="analysis/atlas/Global_Atlas_of_the_Clean_Industrial_Base.html">Open Global Atlas &rarr;</a>
         </div>
       </div>
 
-      <!-- COUNTRY ATLASES (full value chain, 10 techs each) -->
+      <!-- 2. BY COUNTRY -->
       <div class="atlas-card">
         <div class="a-header">
-          <div class="a-badge green">Full Value Chain · 10 techs · 7 countries</div>
-          <div class="a-title" style="margin-top:8px;">Country Atlases of the Clean Industrial Base</div>
-          <div class="a-desc">Per-country deep dives across all 10 technologies — trade map, capability radar, SHAP gap analysis, firm activity layer, sankey, dendrite, and PC scatter.</div>
+          <div class="a-badge green">7 countries &middot; 10 techs each</div>
+          <div class="a-title" style="margin-top:8px;">Country Atlases</div>
+          <div class="a-desc">One country across its whole clean industrial base. Every technology, full value chain, with the firm activity layer.</div>
         </div>
         <div class="country-list">
-          <a class="country-row" href="analysis/atlas/Brazil_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Brazil</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
-          <a class="country-row" href="analysis/atlas/India_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">India</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
-          <a class="country-row" href="analysis/atlas/Mexico_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Mexico</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
-          <a class="country-row" href="analysis/atlas/Japan_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Japan</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
-          <a class="country-row" href="analysis/atlas/Vietnam_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Vietnam</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
-          <a class="country-row" href="analysis/atlas/Spain_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Spain</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
-          <a class="country-row" href="analysis/atlas/South_Korea_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">South Korea</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">→</span></a>
+          <a class="country-row" href="analysis/atlas/Brazil_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Brazil</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
+          <a class="country-row" href="analysis/atlas/India_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">India</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
+          <a class="country-row" href="analysis/atlas/Mexico_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Mexico</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
+          <a class="country-row" href="analysis/atlas/Japan_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Japan</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
+          <a class="country-row" href="analysis/atlas/Vietnam_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Vietnam</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
+          <a class="country-row" href="analysis/atlas/Spain_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">Spain</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
+          <a class="country-row" href="analysis/atlas/South_Korea_Atlas_of_the_Clean_Industrial_Base.html"><span class="cr-name">South Korea</span><span class="cr-techs"><span class="cr-dot" style="background:var(--solar)" title="Solar"></span><span class="cr-dot" style="background:var(--nuclear)" title="Nuclear"></span><span class="cr-dot" style="background:var(--batteries)" title="Batteries"></span><span class="cr-dot" style="background:var(--transmission)" title="Transmission"></span><span class="cr-dot" style="background:var(--wind)" title="Wind"></span><span class="cr-dot" style="background:var(--biofuel)" title="Biofuel"></span><span class="cr-dot" style="background:var(--electrolyzers)" title="Electrolyzers"></span><span class="cr-dot" style="background:var(--geothermal)" title="Geothermal"></span><span class="cr-dot" style="background:var(--heatpumps)" title="Heat Pumps"></span><span class="cr-dot" style="background:var(--magnets)" title="Magnets"></span></span><span class="cr-arrow">&rarr;</span></a>
         </div>
       </div>
-    </div>
 
-    <!-- Tech-level atlases. Compacted 2026-08-05: this was ~45 lines of one
-         full-width chip per country per technology, which pushed the section to
-         three screens and buried the three COMPLETE technologies among the
-         partial ones. Now one row per technology, so "which techs are complete
-         across all 7 countries" is answerable at a glance. Every link that
-         existed before still exists — nothing was dropped, only laid out. -->
-    <div class="rp-sub" style="margin-top:18px;">Tech-Level Atlases
-      <span style="font-size:9px;font-weight:700;color:#14b8a6;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.35);border-radius:3px;padding:1px 7px;margin-left:8px;letter-spacing:.1em">NEW &middot; EVs</span>
-      <span style="font-size:10px;font-weight:600;color:var(--muted);margin-left:8px;letter-spacing:.06em">3 COMPLETE &times; 7 COUNTRIES &middot; 29 SHEETS</span>
-    </div>
-    <div style="font-size:12px;color:var(--muted);line-height:1.6;margin:4px 0 10px;">
-      Single-technology sheets across the full value chain. <strong>EVs</strong> (100 HS codes),
-      <strong>Solar</strong> (51) and <strong>Batteries</strong> (70) are complete across all
-      7 focal countries; the rest are built for selected countries only. The full
-      10-technology view for any focal country is in its <em>country</em> atlas above.
-    </div>
-    <div class="techgrid">
-      <div class="techrow" style="--tc:#14b8a6">
-        <a class="techname star" href="analysis/atlas/Global_Atlas_of_the_EVs_Base.html" title="All 7 countries in one panel view with a country selector">&#9733; EVs &middot; Global</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_Brazil_Atlas_of_the_Clean_Industrial_Base.html">Brazil</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_India_Atlas_of_the_Clean_Industrial_Base.html">India</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_Mexico_Atlas_of_the_Clean_Industrial_Base.html">Mexico</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_Japan_Atlas_of_the_Clean_Industrial_Base.html">Japan</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_Vietnam_Atlas_of_the_Clean_Industrial_Base.html">Vietnam</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_Spain_Atlas_of_the_Clean_Industrial_Base.html">Spain</a>
-        <a class="cc" href="analysis/atlas/sheets/EVs_South_Korea_Atlas_of_the_Clean_Industrial_Base.html">South Korea</a>
-      </div>
-      <div class="techrow" style="--tc:#eab308">
-        <span class="techname">Solar</span>
-        <a class="cc" href="analysis/atlas/sheets/Solar_Brazil_Atlas_of_the_Clean_Industrial_Base.html">Brazil</a>
-        <a class="cc" href="analysis/atlas/sheets/Solar_India_Atlas_of_the_Clean_Industrial_Base.html">India</a>
-        <a class="cc" href="analysis/atlas/sheets/Solar_Mexico_Atlas_of_the_Clean_Industrial_Base.html">Mexico</a>
-        <a class="cc" href="analysis/atlas/sheets/Solar_Japan_Atlas_of_the_Clean_Industrial_Base.html">Japan</a>
-        <a class="cc" href="analysis/atlas/sheets/Solar_Vietnam_Atlas_of_the_Clean_Industrial_Base.html">Vietnam</a>
-        <a class="cc" href="analysis/atlas/sheets/Solar_Spain_Atlas_of_the_Clean_Industrial_Base.html">Spain</a>
-        <a class="cc" href="analysis/atlas/sheets/Solar_South_Korea_Atlas_of_the_Clean_Industrial_Base.html">South Korea</a>
-      </div>
-      <div class="techrow" style="--tc:#f59e0b">
-        <span class="techname">Batteries</span>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_Brazil_Atlas_of_the_Clean_Industrial_Base.html">Brazil</a>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_India_Atlas_of_the_Clean_Industrial_Base.html">India</a>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_Mexico_Atlas_of_the_Clean_Industrial_Base.html">Mexico</a>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_Japan_Atlas_of_the_Clean_Industrial_Base.html">Japan</a>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_Vietnam_Atlas_of_the_Clean_Industrial_Base.html">Vietnam</a>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_Spain_Atlas_of_the_Clean_Industrial_Base.html">Spain</a>
-        <a class="cc" href="analysis/atlas/sheets/Batteries_South_Korea_Atlas_of_the_Clean_Industrial_Base.html">South Korea</a>
-      </div>
-      <div class="techrow" style="--tc:#0ea5e9">
-        <span class="techname">Nuclear</span>
-        <a class="cc" href="analysis/atlas/sheets/Nuclear_Japan_Atlas_of_the_Clean_Industrial_Base.html">Japan</a>
-        <a class="cc" href="analysis/atlas/sheets/Nuclear_South_Korea_Atlas_of_the_Clean_Industrial_Base.html">South Korea</a>
-        <span class="ccgap">2 of 7</span>
-      </div>
-      <div class="techrow" style="--tc:#06b6d4">
-        <span class="techname">Transmission</span>
-        <a class="cc" href="analysis/atlas/sheets/Transmission_Japan_Atlas_of_the_Clean_Industrial_Base.html">Japan</a>
-        <a class="cc" href="analysis/atlas/sheets/Transmission_Vietnam_Atlas_of_the_Clean_Industrial_Base.html">Vietnam</a>
-        <a class="cc" href="analysis/atlas/sheets/Transmission_South_Korea_Atlas_of_the_Clean_Industrial_Base.html">South Korea</a>
-        <span class="ccgap">3 of 7</span>
-      </div>
-      <div class="techrow" style="--tc:#3b82f6">
-        <span class="techname">Wind</span>
-        <a class="cc" href="analysis/atlas/sheets/Wind_India_Atlas_of_the_Clean_Industrial_Base.html">India</a>
-        <a class="cc" href="analysis/atlas/sheets/Wind_Japan_Atlas_of_the_Clean_Industrial_Base.html">Japan</a>
-        <a class="cc" href="analysis/atlas/sheets/Wind_Vietnam_Atlas_of_the_Clean_Industrial_Base.html">Vietnam</a>
-        <span class="ccgap">3 of 7</span>
+      <!-- 3. BY TECHNOLOGY -->
+      <div class="atlas-card">
+        <div class="a-header">
+          <div class="a-badge green">6 technologies &middot; 7 countries each</div>
+          <div class="a-title" style="margin-top:8px;">Technology Atlases</div>
+          <div class="a-desc">One technology across all 7 focal countries, behind a country selector &mdash; the country atlases turned on their side.</div>
+        </div>
+        <div class="tech-list">
+          <a class="tech-row" style="--tc:#14b8a6" href="analysis/atlas/Global_Atlas_of_the_EVs_Base.html" title="All 7 focal countries in one panel view &middot; 112 HS codes"><span class="tr-name">EVs</span><span class="tr-dots"><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span></span><span class="tr-arrow">&rarr;</span></a>
+          <a class="tech-row" style="--tc:#eab308" href="analysis/atlas/Global_Atlas_of_the_Solar_Base.html" title="All 7 focal countries in one panel view &middot; 51 HS codes"><span class="tr-name">Solar</span><span class="tr-dots"><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span></span><span class="tr-arrow">&rarr;</span></a>
+          <a class="tech-row" style="--tc:#f59e0b" href="analysis/atlas/Global_Atlas_of_the_Batteries_Base.html" title="All 7 focal countries in one panel view &middot; 70 HS codes"><span class="tr-name">Batteries</span><span class="tr-dots"><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span></span><span class="tr-arrow">&rarr;</span></a>
+          <a class="tech-row" style="--tc:#0ea5e9" href="analysis/atlas/Global_Atlas_of_the_Nuclear_Base.html" title="All 7 focal countries in one panel view"><span class="tr-name">Nuclear</span><span class="tr-dots"><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span></span><span class="tr-arrow">&rarr;</span></a>
+          <a class="tech-row" style="--tc:#06b6d4" href="analysis/atlas/Global_Atlas_of_the_Transmission_Base.html" title="All 7 focal countries in one panel view"><span class="tr-name">Transmission</span><span class="tr-dots"><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span></span><span class="tr-arrow">&rarr;</span></a>
+          <a class="tech-row" style="--tc:#3b82f6" href="analysis/atlas/Global_Atlas_of_the_Wind_Base.html" title="All 7 focal countries in one panel view"><span class="tr-name">Wind</span><span class="tr-dots"><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span><span class="tr-dot"></span></span><span class="tr-arrow">&rarr;</span></a>
+        </div>
+        <div class="a-footer">
+          <span style="font-size:11px;color:var(--muted);line-height:1.55">
+            Each dot is one of the 7 focal countries, all inside the atlas.
+            The remaining 4 technologies &mdash; Biofuel, Electrolyzers, Geothermal,
+            Heat Pumps &mdash; are in every <em>country</em> atlas.
+          </span>
+        </div>
       </div>
     </div>
   </div>
