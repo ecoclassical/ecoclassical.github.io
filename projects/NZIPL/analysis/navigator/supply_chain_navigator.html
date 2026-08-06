@@ -123,8 +123,10 @@
            font-size:.56rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
            border:1px solid rgba(255,255,255,.18);white-space:nowrap;align-self:flex-start;}
   .de-link:hover{background:var(--accent);color:#04210a;border-color:var(--accent);}
-  /* two-line brand at the head of the left stack: CLEAN SUPPLY CHAIN / SUPPLY CHAIN NAVIGATOR
-     (the product name stays on ONE line — it is a name, not two words to be stacked) */
+  /* two-line brand at the head of the left stack: CLEAN SUPPLY CHAIN / NAVIGATOR.
+     The two lines read as one title, so the second must not repeat a word from the first — it
+     said "Chain Navigator" under "Clean Supply Chain" and the eye read "Chain" twice.
+     Whatever sits on l2 stays on ONE line — it is a name, not words to be stacked. */
   .brand-2l{display:flex;flex-direction:column;white-space:nowrap;line-height:1.15;flex-shrink:0;gap:1px;}
   .brand-2l .l1{font-size:.58rem;font-weight:700;letter-spacing:.4px;color:var(--accent);text-transform:uppercase;}
   .brand-2l .l2{font-size:.8rem;font-weight:800;letter-spacing:.2px;color:#fff;text-transform:uppercase;}
@@ -317,7 +319,7 @@
   <div class="pnl pnl-fixed" id="p-title">
     <div class="title-split">
       <div class="brand-2l">
-        <span class="l1">Clean Supply Chain</span><span class="l2">Chain&nbsp;Navigator</span>
+        <span class="l1">Clean Supply Chain</span><span class="l2">Navigator</span>
         <a class="de-link" href="data_explorer.html" title="Open the numeric companion: raw BACI trade data, HS-6 codes in line, everything downloadable">Data&nbsp;Explorer&nbsp;&rarr;</a>
       </div>
       <div id="bar-title">
@@ -600,21 +602,51 @@ function selName(){
    the headline trade numbers (its rows re-sum to D.yearly). D.partners_yearly_sr is the same story
    one grain finer — year × dir × stage × role × partner — so the partner list and the map arrows
    now honour stage and role too (see partnersAt()). Neither series carries an HS-code dimension,
-   so CATEGORY (defined per HS code via D.scatter) and a single PRODUCT cannot be resolved against
-   either; and the world/regional rank+share rows are precomputed across all countries at the
-   whole-technology level. Those are reported as NOT APPLIED — never silently passed off as
-   filtered. ────────────────────────────────────────────────────────────────────────────────── */
+   so CATEGORY (defined per HS code via D.scatter) cannot be resolved against either; and the
+   world/regional rank+share rows are precomputed across all countries at the whole-technology
+   level. Those are reported as NOT APPLIED — never silently passed off as filtered.
+
+   A single PRODUCT is the exception, and only on THIS page. navigator.html has no code-grained
+   series at all, so there a picked HS code is always NOT APPLIED — that is where this wording
+   comes from. Here two code-grained series exist (products_flow in the bundle, feeding the
+   headline; the FLOWS sidecar, feeding Top Partners and the arrows), so the code usually IS
+   applied and must be labelled as such. They are asked SEPARATELY and are allowed to disagree:
+   they are different files with different cuts, so the headline can be per-product while the
+   partner list falls back, or the reverse. Reporting one panel's disposition on the other is how
+   this went wrong the first time — the panels showed HS 381800 while both captions said "not
+   applied", correct numbers under a caption that denied them. ──────────────────────────────── */
 function srPass(stage,role){
   return (selStage==='ALL'||stage===selStage)&&(selRole==='ALL'||role===selRole);
 }
 function srOn(){ return selStage!=='ALL'||selRole!=='ALL'; }
-function flowScope(){
+/* Did the picked product actually reach each surface? Each predicate makes the SAME call the
+   panel itself makes, so a caption cannot drift from the number above it.
+   · headline  → productFlow(): null when the code is outside products_flow's top-150 cut.
+   · partners  → flowPartnersAt(): null when the sidecar is missing or still loading. It returns
+     [] (truthy) for a code with no rows, which is "applied, and the answer is nothing" — the
+     panel treats that as per-product too, so the caption must agree. The map arrows read the
+     same call at the same code, so this predicate covers them as well. */
+function prodInFlows(){    return !!(selProduct && productFlow(activeCode())); }
+function prodInPartners(){ return !!(selProduct && flowPartnersAt(activeCode(),'src',selYear)); }
+/* `on` = stage/role are filtering the SERIES CHOICE — it selects which data source is read and
+   must stay exactly srOn(). `live` = something in the selection reached this panel, which is what
+   the chips and captions speak to. The two are different questions and were one field before. */
+function flowScope(prodApplied){
   const applied=[], ignored=[];
   if(selStage!=='ALL') applied.push(selStage);
   if(selRole!=='ALL')  applied.push(selRole);
   if(selCat!=='ALL')   ignored.push(selCat.toLowerCase()+' category');
-  if(selProduct)       ignored.push('HS '+selProduct);
-  return {applied, ignored, on:srOn()};
+  if(selProduct)       (prodApplied?applied:ignored).push('HS '+selProduct);
+  return {applied, ignored, on:srOn(), live:srOn()||!!prodApplied};
+}
+/* The reason an amber note gives has to match what was actually dropped. A category is dropped
+   because no series carries it; a product is dropped only when its code-grained series could not
+   answer — which is a different sentence, and saying "carries no HS-code dimension" about a page
+   that clearly does filter by HS code is the mislabel one level down. */
+function scopeOffWhy(sc,where){
+  return sc.ignored.some(s=>s.indexOf('HS ')===0)
+    ? `no per-product series for this code — ${where} is the whole technology`
+    : `this series is split by stage · role only, it carries no HS-code dimension`;
 }
 /* Exports/imports for one year under the ACTIVE stage/role filter, summed straight from
    D.timeline. Returns null when the year is absent from the series, so growthArrow() prints "--"
@@ -672,24 +704,27 @@ function partnersAt(dir,year){
    carry the same chip; only the dimensions nothing can honour (category, single HS code) still
    raise an amber flag. */
 function updateScopeFlags(){
-  const sc=flowScope(), filtered=anyFilter();
-  const chip=el=>{ if(!el) return;
-    el.className='pnl-flag'+(sc.on?' f-on':(filtered?' f-off':''));
-    el.textContent = sc.on ? 'filtered' : (filtered ? 'whole tech' : '');
+  // One scope per surface. The two panels read different code-grained files, so a single shared
+  // scope object cannot describe both without lying about one of them.
+  const f=flowScope(prodInFlows()), p=flowScope(prodInPartners()), filtered=anyFilter();
+  const chip=(el,sc)=>{ if(!el) return;
+    el.className='pnl-flag'+(sc.live?' f-on':(filtered?' f-off':''));
+    el.textContent = sc.live ? 'filtered' : (filtered ? 'whole tech' : '');
   };
-  chip(document.getElementById('flag-flows'));
-  chip(document.getElementById('flag-partners'));
+  chip(document.getElementById('flag-flows'),f);
+  chip(document.getElementById('flag-partners'),p);
   const ph=document.getElementById('phase');
   if(ph){
-    // The arrows honour exactly what the partner series can: stage and role. The amber warning is
-    // therefore tied to sc.ignored (category / single product) — NOT to "any filter at all", which
-    // would now be crying wolf over a selection the arrows do apply.
-    ph.classList.toggle('phase-warn',sc.ignored.length>0);
-    ph.textContent = sc.ignored.length
-      ? (sc.on ? `arrows filtered · ${sc.applied.join(' · ')} — ${sc.ignored.join(' and ')} not applied`
-               : 'filter active · map arrows stay whole-technology')
-      : (sc.on ? `arrows filtered · ${sc.applied.join(' · ')}`
-               : 'Phase 1 shell · arrows are tech-level');
+    // The arrows read flowPartnersAt() at the selected node's code — the same call prodInPartners()
+    // makes — so they honour stage, role AND the single product. The amber warning is tied to what
+    // is left over after that, NOT to "any filter at all", which would cry wolf over a selection
+    // the arrows do apply.
+    ph.classList.toggle('phase-warn',p.ignored.length>0);
+    ph.textContent = p.ignored.length
+      ? (p.live ? `arrows filtered · ${p.applied.join(' · ')} — ${p.ignored.join(' and ')} not applied`
+                : 'filter active · map arrows stay whole-technology')
+      : (p.live ? `arrows filtered · ${p.applied.join(' · ')}`
+                : 'Phase 1 shell · arrows are tech-level');
   }
 }
 
@@ -1634,6 +1669,9 @@ function renderStats(){
   // instead of re-summing the whole of D.timeline: the two agree, but the builder rounds each
   // stage·role row independently, so a full re-sum can land ±2 KUSD off D.yearly. Falling back
   // keeps the unfiltered panel byte-identical to what it printed before the drums were wired in.
+  // This `scope` picks the SERIES ONLY — it is read for .on and nothing else, and is called with
+  // no product argument on purpose. The captions get their own scopes further down, after `pf` has
+  // settled whether the product reached the headline. Do not reuse this one for labelling.
   const scope=flowScope();
   const yrRow=y=>((D.yearly||[]).find(r=>r.year===y))||null;
   let exp,imp,expN,impN;
@@ -1706,18 +1744,21 @@ function renderStats(){
   // ▣ green: which drum dimensions the headline above actually applied.
   // ◌ amber: which ones it could not, and why — stated, never silently dropped.
   const filtered=anyFilter();
-  const scopeOn = scope.on
-    ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
-  const scopeOff = scope.ignored.length
-    ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the trade series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+  // `pf` above decided the headline; ask the partner series its own question. Two scopes, because
+  // the two panels can genuinely differ — see prodInFlows / prodInPartners.
+  const fScope=flowScope(!!pf), pScope=flowScope(prodInPartners());
+  const scopeOn = fScope.live
+    ? `<div class="flt-note flt-on">▣ filtered · ${fScope.applied.join(' · ')}</div>` : '';
+  const scopeOff = fScope.ignored.length
+    ? `<div class="flt-note flt-off">◌ ${fScope.ignored.join(' and ')} not applied — ${scopeOffWhy(fScope,'the total above')}</div>` : '';
   const rankNote = filtered
     ? `<div class="flt-note flt-off">◌ whole technology — world &amp; regional totals are not split by stage · role</div>` : '';
-  // Top Partners reads the same two dimensions the headline does, so it gets the same pair of
-  // notes. What it still cannot do is category / single HS code — and only that now earns amber.
-  const partnerOn = scope.on
-    ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
-  const partnerOff = scope.ignored.length
-    ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the partner series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+  // Top Partners honours stage, role and — via the sidecar — the single HS code. What it still
+  // cannot do is category, and a product whose flows never loaded; only those earn amber.
+  const partnerOn = pScope.live
+    ? `<div class="flt-note flt-on">▣ filtered · ${pScope.applied.join(' · ')}</div>` : '';
+  const partnerOff = pScope.ignored.length
+    ? `<div class="flt-note flt-off">◌ ${pScope.ignored.join(' and ')} not applied — ${scopeOffWhy(pScope,'the list below')}</div>` : '';
   // ── multi-use basis note ──────────────────────────────────────────────────────────────────
   // Shown only in corrected mode: raw is the basis every earlier build used, and labelling the
   // default would be noise. Amber when the active tech has no EXIOBASE mapping at all, because
@@ -1759,13 +1800,15 @@ function renderStats(){
 
   // The partner panel is never hidden under a filter — a hidden panel is worse than a labelled
   // one. It is held back in contrast only when it is genuinely stale, i.e. when a filter is on and
-  // NONE of it reached this list (category / product alone). Under a stage/role selection the list
-  // is live and reads at full strength.
+  // NONE of it reached this list (a category alone, or a product whose flows never loaded). Under
+  // a stage/role selection — or a product the sidecar answered — the list is live and reads at
+  // full strength. Dimming it on pScope.on rather than pScope.live is what greyed out a list that
+  // was in fact showing exactly the product asked for.
   pel.innerHTML = muNote + partnerOn + partnerOff +
-    `<div class="${(!scope.on&&filtered)?'flt-stale':''}">`+
+    `<div class="${(!pScope.live&&filtered)?'flt-stale':''}">`+
     (dests.length?`<div class="ov-part-title">Top Export Destinations</div>${dests.map(p=>partnerRow(p,'dest')).join('')}`:'')+
     (srcs.length?`<div class="ov-part-title">Top Import Sources</div>${srcs.map(p=>partnerRow(p,'src')).join('')}`:'')+
-    ((!dests.length&&!srcs.length)?`<div class="ov-part-title">no partner data for ${selYear}${scope.on?' · '+scope.applied.join(' · '):''}</div>`:'')+
+    ((!dests.length&&!srcs.length)?`<div class="ov-part-title">no partner data for ${selYear}${pScope.live?' · '+pScope.applied.join(' · '):''}</div>`:'')+
     `</div>`;
   flushSparks();          // both panels are in the DOM now — draw into the queued placeholders
   updateScopeFlags();
