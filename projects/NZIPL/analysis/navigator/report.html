@@ -89,11 +89,32 @@ const VISUALS=[
   {id:'sankey',   label:'Value-Chain Sankey',  fam:'Structure',      draw:(d,td)=>VIZ.sankey('#v-sankey',td&&td.sankey)},
   {id:'tree',     label:'Tech Tree',           fam:'Structure',      draw:(d,td)=>VIZ.tree('#v-tree',td&&td.tree)},
   {id:'firms',    label:'Activity Map',        fam:'Firms',          draw:(d,td)=>VIZ.firms('#v-firms',d.firms,d.iso)},
+  // diagnostic modules (2026-08-06)
+  {id:'benchmark',           label:'Benchmarking',           fam:'Trade',
+   draw:(d,td)=>VIZ.benchmark('#v-benchmark',d.bench,Object.assign({focal_label:(d.country||'').replace(/_/g,' ')},d.bench_meta))},
+  {id:'deficit_widening',    label:'Deficit Widening',       fam:'Trade',
+   draw:(d,td)=>VIZ.deficitWidening('#v-deficit_widening',d.timeline,PERIODS)},
+  {id:'persistent_deficits', label:'Top Persistent Deficits',fam:'Trade',
+   draw:(d,td)=>VIZ.persistentDeficits('#v-persistent_deficits',d.deficits,PERIODS)},
+  {id:'hhi',                 label:'HHI Concentration',      fam:'Trade',
+   draw:(d,td)=>VIZ.hhi('#v-hhi',d.hhi)},
+  {id:'top_exporters',       label:'Top Exporters',          fam:'Trade',
+   draw:(d,td)=>VIZ.topPartnersSR('#v-top_exporters',d.partners_yearly_sr,'src')},
+  {id:'top_importers',       label:'Top Importers',          fam:'Trade',
+   draw:(d,td)=>VIZ.topPartnersSR('#v-top_importers',d.partners_yearly_sr,'dest')},
+  {id:'net_balance',         label:'Net Balance by Product', fam:'Trade',
+   draw:(d,td)=>VIZ.netBalance('#v-net_balance',d.products_flow,d.products)},
 ];
-let IDX=null, CUR={tech:'Solar',country:'India',vis:VISUALS.map(v=>v.id)};
+let PERIODS=null;   // subperiod labels from _index.json (see embed.html for the reasoning)
+/* The DEFAULT slide set stays the original eight. The seven diagnostic modules are
+   opt-in via ?vis= — defaulting to all fifteen would silently double the length of
+   every PDF anyone already generates from a bare URL. */
+const DEFAULT_VIS = ['radar','scatter','timeline','treemap','map','sankey','tree','firms'];
+let IDX=null, CUR={tech:'Solar',country:'India',vis:DEFAULT_VIS.slice()};
 
 async function boot(){
   IDX=await (await fetch('data/_index.json')).json(); IDX=Array.isArray(IDX)?IDX[0]:IDX;
+  VIZ.setLookups(IDX.lookups); PERIODS=IDX.periods||null;
   // geo is inlined (geo.js) so the world map renders even under file:// — fall back to fetch
   try{ VIZ.initGeo(window.__WORLD110 || await (await fetch('../lib/countries-110m.json')).json()); }catch(e){ console.warn('geo',e); }
   const p=new URLSearchParams(location.search);

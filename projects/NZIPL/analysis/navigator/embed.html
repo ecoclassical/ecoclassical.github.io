@@ -47,11 +47,24 @@ const DRAW = {
   sankey:            (d,td)=>VIZ.sankey('#stage', td && td.sankey),
   tech_tree:         (d,td)=>VIZ.tree('#stage', td && td.tree),
   solar_system:      (d,td)=>VIZ.solarsystem('#stage', td && td.tree),
+  // diagnostic modules (2026-08-06)
+  benchmark:          (d,td)=>VIZ.benchmark('#stage', d.bench,
+                        Object.assign({focal_label:(d.country||'').replace(/_/g,' ')}, d.bench_meta)),
+  deficit_widening:   (d,td)=>VIZ.deficitWidening('#stage', d.timeline, PERIODS),
+  persistent_deficits:(d,td)=>VIZ.persistentDeficits('#stage', d.deficits, PERIODS),
+  hhi:                (d,td)=>VIZ.hhi('#stage', d.hhi),
+  top_exporters:      (d,td)=>VIZ.topPartnersSR('#stage', d.partners_yearly_sr, 'src'),
+  top_importers:      (d,td)=>VIZ.topPartnersSR('#stage', d.partners_yearly_sr, 'dest'),
+  net_balance:        (d,td)=>VIZ.netBalance('#stage', d.products_flow, d.products),
 };
 // engine-native aliases, so ?panel=scatter also works
 const ALIAS = { scatter:'pc_scatter', timeline:'trade_timeline', treemap:'trade_composition',
                 map:'trade_map', firms:'activity_map', tree:'tech_tree',
-                solarsystem:'solar_system', orrery:'solar_system' };
+                solarsystem:'solar_system', orrery:'solar_system',
+                bench:'benchmark', widening:'deficit_widening', deficits:'persistent_deficits',
+                concentration:'hhi', exporters:'top_exporters', importers:'top_importers',
+                balance:'net_balance' };
+let PERIODS = null;   // subperiod labels from _index.json; charts state the window they used
 
 function msg(t){ document.getElementById('stage').innerHTML =
   '<text x="50%" y="50%" text-anchor="middle" fill="rgba(148,163,184,.7)" font-size="12">'+t+'</text>'; }
@@ -68,6 +81,14 @@ async function boot(){
 
   // geo (inlined for file://; fetch fallback) — needed for trade_map / activity_map
   try{ VIZ.initGeo(window.__WORLD110 || await (await fetch('../lib/countries-110m.json')).json()); }catch(e){ console.warn('geo',e); }
+
+  // _index.json carries the compact-block lookups and the subperiod labels. viz.js ships the
+  // same lookups as defaults (they are fixed closed domains on the builder side), so a failed
+  // fetch degrades to correct decoding rather than to blank charts — the index is an override,
+  // not a dependency. PERIODS has no default: a chart with no window label says so.
+  try{ const ix = await (await fetch('data/_index.json')).json();
+       VIZ.setLookups(ix.lookups); PERIODS = ix.periods || null; }
+  catch(e){ console.warn('index',e); }
 
   const id = tech.replace(/ /g,'_')+'_'+country;
   let d; try{ d = await (await fetch('data/'+id+'.json')).json(); }

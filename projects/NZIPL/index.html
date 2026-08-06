@@ -731,6 +731,13 @@ const BR_MODULES = [
   {id:'sankey', label:'Sankey'},
   {id:'trade_map', label:'Trade Map'},
   {id:'activity_map', label:'Activity Map'},
+  {id:'benchmark', label:'Benchmarking'},
+  {id:'deficit_widening', label:'Deficit Widening'},
+  {id:'persistent_deficits', label:'Top Persistent Deficits'},
+  {id:'hhi', label:'HHI Concentration'},
+  {id:'top_exporters', label:'Top Exporters to Country'},
+  {id:'top_importers', label:'Top Importers from Country'},
+  {id:'net_balance', label:'Net Balance by Product'},
 ];
 const BR_TECHS = [
   {name:'Solar', slug:'Solar', col:'#eab308'},
@@ -788,7 +795,10 @@ function buildPath(mod, tech, country) {
   // of a pre-rendered standalone panel — one renderer, all engine countries.
   // sankey/tech_tree pull from _tech_<tech>.json (country is ignored there).
   var ENGINE = {radar:1, pc_scatter:1, trade_timeline:1, trade_composition:1,
-                trade_map:1, activity_map:1, sankey:1, tech_tree:1, solar_system:1};
+                trade_map:1, activity_map:1, sankey:1, tech_tree:1, solar_system:1,
+                // diagnostic modules (2026-08-06)
+                benchmark:1, deficit_widening:1, persistent_deficits:1, hhi:1,
+                top_exporters:1, top_importers:1, net_balance:1};
   if(ENGINE[mod]) {
     return 'analysis/navigator/embed.html?tech=' + encodeURIComponent(tech)
          + '&country=' + encodeURIComponent(country) + '&panel=' + mod;

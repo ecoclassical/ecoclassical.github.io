@@ -23,8 +23,6 @@ const SR = {
 };
 const CAT = {Chemicals:"#2563eb",Electronics:"#7c3aed",Metals:"#ef4444",Machinery:"#10b981","Industrial Materials":"#f59e0b",Other:"#6b7280"};
 const LANE = ["#78350f","#9ca3af","#6b7280","#4b5563","#4ade80","#15803d","#f97316"];
-const STAGE_X = {Upstream:0,Midstream:1,Downstream:2,"Final Product":3};
-const STAGES = ['Upstream','Midstream','Downstream','Final Product'];
 const ISO3N={AFG:4,ALB:8,DZA:12,AGO:24,ARG:32,ARM:51,AUS:36,AUT:40,AZE:31,BGD:50,BLR:112,BEL:56,BFA:854,BDI:108,KHM:116,CMR:120,CAN:124,TCD:148,CHL:152,CHN:156,COL:170,COD:180,COG:178,HRV:191,CUB:192,CYP:196,CZE:203,DNK:208,DOM:214,ECU:218,EGY:818,ETH:231,FJI:242,FIN:246,FRA:250,DEU:276,GHA:288,GRC:300,GTM:320,HND:340,HKG:344,HUN:348,IND:356,IDN:360,IRN:364,IRQ:368,IRL:372,ISR:376,ITA:380,JPN:392,JOR:400,KAZ:398,KEN:404,PRK:408,KOR:410,KWT:414,LAO:418,LVA:428,LBN:422,LBY:434,LTU:440,LUX:442,MDG:450,MWI:454,MYS:458,MLI:466,MLT:470,MRT:478,MEX:484,MDA:498,MNG:496,MAR:504,MOZ:508,MMR:104,NAM:516,NPL:524,NLD:528,NZL:554,NGA:566,NOR:578,OMN:512,PAK:586,PAN:591,PER:604,PHL:608,POL:616,PRT:620,QAT:634,ROU:642,RUS:643,SAU:682,SEN:686,SGP:702,SVK:703,ZAF:710,ESP:724,LKA:144,SWE:752,CHE:756,SYR:760,TWN:158,TJK:762,TZA:834,THA:764,TTO:780,TUN:788,TUR:792,TKM:795,UGA:800,UKR:804,ARE:784,GBR:826,USA:840,URY:858,UZB:860,VNM:704,YEM:887,ZMB:894,ZWE:716,BOL:68,BRA:76,BHR:48,DJI:262,SWZ:748,GEO:268,SLV:222,GNQ:226,EST:233,GUY:328,HTI:332,RWA:646,SLE:694,SDN:729,SUR:740,NER:562,CAF:140,ERI:232};
 
 /* ── theme ──────────────────────────────────────────────────────────────────── */
@@ -199,23 +197,75 @@ function sankey(sel,flows){
     .attr('x',d=>d.x-3).attr('y',d=>d.y0).attr('width',6).attr('height',d=>d.y1-d.y0).attr('fill',d=>LANE[d.lane]||'#888').attr('rx',1)
     .on('mousemove',(e,d)=>tipMove(e,d.label+'<br>'+fmtV(Math.max(d.vin,d.vout)))).on('mouseout',tipOut);
 }
+/* Hierarchical linear dendrite of the production process — the SAME topological layering the
+   atlas (build_country_atlas.R drawDendrite) and the navigator (drawNavProduct) use, so all
+   three surfaces draw the value chain the same way.
+
+   Two things this deliberately does NOT do, both of which it used to:
+   - It does not bucket nodes into four fixed STAGE columns. Position on the x-axis is the
+     node's longest distance to a sink (a final product with no further downstream edge),
+     flipped so raw material sits left and final product right. A declared stage says which
+     SR colour a node gets; it does not say where the node sits in the chain.
+   - It does not key nodes on the bare HS code. Many distinct process-of-production steps
+     share one HS6 — Solar's 848620 covers 15 separate module/cell-line steps — so keying by
+     code alone collapses them and fabricates cycles. Measured on Solar: bare code gives 34
+     nodes, from_cn/to_cn gives the true 55. Falls back to the bare code only for stale
+     cached JSON predating the cn fields. */
 function tree(sel,edges){
   const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
   if(!edges||!edges.length) return empty(svg,W,H,'no tech-tree edges');
-  const m={t:26,r:10,b:10,l:10};
-  const nodes=new Map(); const reg=(c,nm,st,ro)=>{ if(!nodes.has(c)) nodes.set(c,{code:c,name:nm,stage:st,role:ro,deg:0}); return nodes.get(c); };
-  edges.forEach(e=>{ const a=reg(e.from_code,e.from_name,e.from_stage,e.from_role),b=reg(e.to_code,e.to_name,e.to_stage,e.to_role); a.deg++; b.deg++; });
-  const colX=s=>m.l+(W-m.l-m.r)*((STAGE_X[s]??1)/3);
-  const byStage=d3.groups([...nodes.values()],d=>d.stage);
-  byStage.forEach(([st,ns])=>{ ns.sort((a,b)=>b.deg-a.deg); const step=(H-m.t-m.b)/(ns.length+1); ns.forEach((n,i)=>{ n.x=colX(st); n.y=m.t+step*(i+1); }); });
-  STAGES.forEach((s,si)=>{ if(!byStage.find(g=>g[0]===s)) return; const anc=si===0?'start':si===STAGES.length-1?'end':'middle', lx=si===0?colX(s)-6:si===STAGES.length-1?colX(s)+6:colX(s);
-    svg.append('text').attr('x',lx).attr('y',14).attr('text-anchor',anc).attr('font-size','9px').attr('fill',T.faint).attr('font-weight','700').text(s.toUpperCase()); });
-  svg.append('g').selectAll('path').data(edges).join('path')
-    .attr('d',e=>{ const a=nodes.get(e.from_code),b=nodes.get(e.to_code); if(!a||!b)return null; const xm=(a.x+b.x)/2; return `M${a.x},${a.y} C${xm},${a.y} ${xm},${b.y} ${b.x},${b.y}`; })
-    .attr('fill','none').attr('stroke',T.grid).attr('stroke-width',1);
-  svg.append('g').selectAll('circle').data([...nodes.values()]).join('circle')
-    .attr('cx',d=>d.x).attr('cy',d=>d.y).attr('r',d=>Math.min(9,4+d.deg)).attr('fill',d=>SR[d.stage+'|'+d.role]||'#888').attr('stroke',T.nodeStroke)
-    .on('mousemove',(e,d)=>tipMove(e,(d.name||d.code)+'<br>'+d.stage+' · '+d.role)).on('mouseout',tipOut);
+  const m={t:16,r:12,b:18,l:12};
+  const cnOf=(code,cn)=>cn||code;
+  const nm=new Map();
+  const reg=(cn,c,nn,ff,st,ro)=>{ if(!nm.has(cn)) nm.set(cn,{cn,code:c,name:nn,full:ff,stage:st,role:ro,deg:0}); return nm.get(cn); };
+  edges.forEach(e=>{
+    reg(cnOf(e.from_code,e.from_cn),e.from_code,e.from_name,e.from_full,e.from_stage,e.from_role).deg++;
+    reg(cnOf(e.to_code,e.to_cn),e.to_code,e.to_name,e.to_full,e.to_stage,e.to_role).deg++;
+  });
+  const nodes=[...nm.values()];
+
+  // step = longest distance to a sink; raw materials end with the biggest step, finals at 0
+  const stepMap=new Map(nodes.map(n=>[n.cn,0]));
+  let changed=true;
+  for(let i=0;i<25&&changed;i++){ changed=false;
+    edges.forEach(e=>{ const fcn=cnOf(e.from_code,e.from_cn), tcn=cnOf(e.to_code,e.to_cn);
+      const ts=stepMap.get(tcn)||0, fs=stepMap.get(fcn)||0;
+      if(fs<ts+1){ stepMap.set(fcn,ts+1); changed=true; } }); }
+  const maxStep=Math.max(0,...stepMap.values());
+  const displayLv=s=>maxStep-s;                        // flip: raw material left → final right
+  const stepToX=s=>m.l+(W-m.l-m.r)*displayLv(s)/(maxStep||1);
+
+  const buckets={};
+  nodes.forEach(n=>{ const s=stepMap.get(n.cn)||0; (buckets[s]=buckets[s]||[]).push(n); });
+  Object.values(buckets).forEach(ns=>ns.sort((a,b)=>(a.name||'').localeCompare(b.name||'')));
+  const nodeY=new Map();
+  Object.values(buckets).forEach(ns=>{ const avail=H-m.t-m.b, stp=avail/ns.length;
+    ns.forEach((n,i)=>nodeY.set(n.cn,m.t+stp*(i+0.5))); });
+  const px=n=>stepToX(stepMap.get(n.cn)||0), py=n=>nodeY.get(n.cn)||H/2;
+
+  // step ruler along the bottom — the axis the layout is actually on
+  for(let s=0;s<=maxStep;s++)
+    svg.append('text').attr('x',stepToX(s)).attr('y',H-4).attr('text-anchor','middle')
+      .attr('font-size','7px').attr('font-weight','600').attr('fill',T.grid).text(displayLv(s));
+  svg.append('text').attr('x',m.l).attr('y',10).attr('text-anchor','start')
+    .attr('font-size','8.5px').attr('font-weight','700').attr('fill',T.faint).text('RAW MATERIAL');
+  svg.append('text').attr('x',W-m.r).attr('y',10).attr('text-anchor','end')
+    .attr('font-size','8.5px').attr('font-weight','700').attr('fill',T.faint).text('FINAL PRODUCT');
+
+  // straight links, atlas convention — a dendrite, not a bezier flow diagram
+  svg.append('g').selectAll('line').data(edges).join('line')
+    .attr('x1',e=>{const a=nm.get(cnOf(e.from_code,e.from_cn));return a?px(a):-99;})
+    .attr('y1',e=>{const a=nm.get(cnOf(e.from_code,e.from_cn));return a?py(a):-99;})
+    .attr('x2',e=>{const b=nm.get(cnOf(e.to_code,e.to_cn));return b?px(b):-99;})
+    .attr('y2',e=>{const b=nm.get(cnOf(e.to_code,e.to_cn));return b?py(b):-99;})
+    .attr('stroke',T.grid).attr('stroke-width',.7);
+
+  const rSc=d3.scaleSqrt().domain([0,d3.max(nodes,n=>n.deg)||1]).range([3.5,10]);
+  svg.append('g').selectAll('circle').data(nodes).join('circle')
+    .attr('cx',px).attr('cy',py).attr('r',n=>Math.max(3,rSc(n.deg)))
+    .attr('fill',n=>SR[n.stage+'|'+n.role]||'#888').attr('stroke',T.nodeStroke).attr('stroke-width',.6)
+    .on('mousemove',(e,n)=>tipMove(e,'HS '+n.code+'<br><b>'+clip(n.full||n.name||n.code,64)+'</b><br>'
+      +n.stage+' · '+n.role+' · step '+(stepMap.get(n.cn)||0))).on('mouseout',tipOut);
 }
 // Value-chain "solar system" — circular alternative to tree(): final product = Sun at
 // the centre, concentric rings by step-distance to the final product (same step ⇒ same
@@ -264,6 +314,315 @@ function solarsystem(sel,edges){
     .attr('fill',n=>SR[n.stage+'|'+n.role]||'#888').attr('stroke',T.nodeStroke).attr('stroke-width',.6)
     .on('mousemove',(e,n)=>tipMove(e,(n.name||n.code)+'<br>'+n.stage+' · '+n.role+'<br>step '+step.get(n.code)+' from final')).on('mouseout',tipOut);
 }
+/* ── diagnostic modules (2026-08-06) ─────────────────────────────────────────────
+   Seven charts ported from qmd/report/{report,visual_report}.qmd. They read the
+   slices build_datadriven_proto.R emits alongside them: products_flow, deficits,
+   hhi, bench — plus timeline and partners_yearly_sr, which already shipped.
+
+   Compact-block decoding. products_flow and partners_yearly_sr ship as
+   {cols, rows} with stage/role/dir/flow as 0-based integer indices resolved
+   against lookup tables. The tables are FIXED CLOSED DOMAINS on the R side (see
+   L_STAGE/L_ROLE/L_DIR/L_FLOW there), so the same vectors are safe to carry here
+   as defaults; setLookups() lets _index.json override them if they ever move,
+   which keeps one source of truth without making every page fetch the index
+   before it can draw. */
+let LK = {
+  stage: ["Downstream","Final Product","Midstream","Upstream"],
+  role:  ["Final Product","Process Equipment","Processed Material","Product Component","Raw Material"],
+  dir:   ["dest","src"],
+  flow:  ["exp","imp"]
+};
+function setLookups(l){ if(l) LK = Object.assign({}, LK, l); }
+/* {cols, rows} → array of objects, decoding any column that names a lookup. */
+function dec(b){
+  if(!b) return [];
+  if(Array.isArray(b)) return b;                       // already array-of-objects
+  if(!b.cols || !b.rows) return [];
+  return b.rows.map(r=>{ const o={};
+    b.cols.forEach((c,i)=>{ o[c] = LK[c] ? (LK[c][r[i]] ?? r[i]) : r[i]; });
+    return o; });
+}
+const SR_ORDER = ["Upstream|Raw Material","Upstream|Processed Material",
+  "Midstream|Processed Material","Midstream|Process Equipment","Midstream|Product Component",
+  "Downstream|Product Component","Downstream|Process Equipment","Downstream|Final Product",
+  "Final Product|Final Product"];
+/* The builder joins stage and role with " | " (spaces) while the SR table is keyed without
+   them. Looking SR up on the raw string silently returns undefined and every bar falls back
+   to grey — which looks like a styling choice, not a bug. Normalise on the way in. */
+const srNorm = s=>String(s||'').replace(/\s*\|\s*/,'|');
+const srCol  = s=>SR[srNorm(s)]||'#888';
+const srSort = (a,b)=>{ const i=SR_ORDER.indexOf(srNorm(a)), j=SR_ORDER.indexOf(srNorm(b));
+  return (i<0?99:i)-(j<0?99:j); };
+const srLbl = s=>srNorm(s).replace('|',' · ');
+const fmtPct = v=>(v*100).toFixed(v<0.1?1:0)+'%';
+/* USD with a sign, for diverging/delta axes where fmtV's unsigned form would lie. */
+const fmtSigned = v=>(v<0?'−':'')+fmtV(Math.abs(v));
+
+/* 1 · BENCHMARKING — the focal country's stage·role composition against three reference
+   means, imports and exports side by side.
+
+   SEGMENT ON THE Y-AXIS, GROUPS ADJACENT WITHIN IT. The first cut of this put one row per
+   reference group with nine unlabelled bars stacked inside it, which made the actual
+   comparison — "is the focal country above or below the world on THIS segment" — a
+   vertical scan across four separate blocks, and left the nine segments identifiable only
+   by colour. Transposed, the four bars being compared sit adjacent, and each segment is
+   named once. Fill is the SR colour (segment identity); opacity steps down through the
+   reference groups, which the legend names. */
+function benchmark(sel,rows,meta){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  rows=dec(rows);
+  if(!rows.length) return empty(svg,W,H,'no benchmark data');
+  const GROUPS=['Focal','WB Region','UN Subregion','World'].filter(g=>rows.some(r=>r.group===g));
+  const FLOWS=['Imports','Exports'].filter(f=>rows.some(r=>r.flow===f));
+  const srs=[...new Set(rows.map(r=>srNorm(r.stage_role)))].sort(srSort);
+  const label=g=>g==='Focal'?((meta&&meta.focal_label)||'Focal')
+    :g==='WB Region'?((meta&&meta.wb_region)||'WB Region')
+    :g==='UN Subregion'?((meta&&meta.un_subregion)||'UN Subregion')
+    :'World'+(meta&&meta.n_world?' ('+meta.n_world+')':'');
+  const OP=[.95,.68,.46,.28];                     // Focal → World, matching GROUPS order
+  const m={t:40,r:10,b:26,l:Math.min(146,W*0.33)};
+  const cw=(W-m.l-m.r)/FLOWS.length, plotW=cw-16;
+  const maxv=d3.max(rows,r=>r.share)||1;
+  const x=d3.scaleLinear().domain([0,maxv]).nice().range([0,plotW]);
+  const y=d3.scaleBand().domain(srs).range([m.t,H-m.b]).padding(.22);
+  const bh=y.bandwidth()/GROUPS.length;
+  FLOWS.forEach((f,fi)=>svg.append('text').attr('x',m.l+cw*fi+plotW/2).attr('y',11)
+    .attr('text-anchor','middle').attr('font-size','9.5px').attr('font-weight','700')
+    .attr('fill',T.title).text(f));
+  srs.forEach(sr=>{
+    svg.append('text').attr('x',m.l-7).attr('y',y(sr)+y.bandwidth()/2).attr('text-anchor','end')
+      // 5.4 px/char, not 4.7: at 8px the longer segment names ("Downstream · Product
+      // Component") were running off the left edge of the panel with the first letter cut.
+      .attr('dominant-baseline','middle').attr('font-size','8px').attr('fill',T.label)
+      .text(clip(srLbl(sr),Math.floor((m.l-12)/5.4)));
+    FLOWS.forEach((f,fi)=>GROUPS.forEach((g,gi)=>{
+      const rec=rows.find(r=>r.group===g&&r.flow===f&&srNorm(r.stage_role)===sr);
+      const v=rec?rec.share:0;
+      svg.append('rect').attr('x',m.l+cw*fi).attr('y',y(sr)+bh*gi)
+        .attr('width',Math.max(v>0?1:0,x(v))).attr('height',Math.max(1,bh-1))
+        .attr('rx',1).attr('fill',srCol(sr)).attr('opacity',OP[gi]??.3)
+        .on('mousemove',e=>tipMove(e,`<b>${srLbl(sr)}</b> · ${f}<br>${label(g)}: <b>${fmtPct(v)}</b> of total flow`))
+        .on('mouseout',tipOut);
+    }));
+  });
+  FLOWS.forEach((f,fi)=>styleAxis(svg.append('g')
+    .attr('transform',`translate(${m.l+cw*fi},${H-m.b+2})`)
+    .call(d3.axisBottom(x).ticks(3).tickFormat(fmtPct))));
+  // Legend names the four groups by opacity step, in the same order the bars run top-to-bottom.
+  legend(svg,m.l,26,GROUPS.map((g,gi)=>[
+    d3.color(T.label).copy({opacity:OP[gi]??.3}).formatRgb(), label(g)]));
+}
+
+/* 2 · DEFICIT WIDENING — Δ mean annual deficit, last window minus first, by stage·role.
+   Computed client-side from `timeline`, which already ships: no new slice. Diverging
+   about zero, because a NARROWING deficit is the interesting opposite case and a
+   one-sided bar chart would hide it. */
+function deficitWidening(sel,timeline,periods){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  const tl=dec(timeline);
+  if(!tl.length) return empty(svg,W,H,'no trade data');
+  const P=(periods&&periods.length>=2)?periods:['1995–2005','2015–2024'];
+  const first=P[0], last=P[P.length-1];
+  const parse=p=>p.split(/[–-]/).map(Number);
+  const [f0,f1]=parse(first), [l0,l1]=parse(last);
+  const win=(y,a,b)=>y>=a&&y<=b;
+  const agg={};
+  tl.forEach(r=>{ const k=r.stage+'|'+r.role; (agg[k]=agg[k]||{f:{e:0,i:0},l:{e:0,i:0}});
+    const s=win(r.year,f0,f1)?agg[k].f:win(r.year,l0,l1)?agg[k].l:null; if(!s) return;
+    if(r.flow==='exp') s.e+=r.v; else s.i+=r.v; });
+  const rows=Object.entries(agg).map(([k,a])=>({sr:k,
+      d:(Math.max(a.l.i-a.l.e,0)/(l1-l0+1))-(Math.max(a.f.i-a.f.e,0)/(f1-f0+1))}))
+    .filter(r=>isFinite(r.d)&&r.d!==0).sort((a,b)=>b.d-a.d);
+  if(!rows.length) return empty(svg,W,H,'no deficit change to show');
+  const m={t:22,r:14,b:26,l:Math.min(126,W*0.34)};
+  const ext=d3.extent(rows,r=>r.d); const lo=Math.min(0,ext[0]), hi=Math.max(0,ext[1]);
+  const x=d3.scaleLinear().domain([lo,hi]).nice().range([m.l,W-m.r]);
+  const y=d3.scaleBand().domain(rows.map(r=>r.sr)).range([m.t,H-m.b]).padding(.28);
+  svg.append('text').attr('x',m.l).attr('y',11).attr('font-size','9px').attr('font-weight','700')
+    .attr('fill',T.title).text(`Δ mean annual deficit · ${last} minus ${first}`);
+  svg.append('g').selectAll('rect').data(rows).join('rect')
+    .attr('x',r=>x(Math.min(0,r.d))).attr('y',r=>y(r.sr))
+    .attr('width',r=>Math.max(1,Math.abs(x(r.d)-x(0)))).attr('height',y.bandwidth())
+    .attr('rx',3).attr('fill',r=>srCol(r.sr)).attr('opacity',.92)
+    .on('mousemove',(e,r)=>tipMove(e,`<b>${srLbl(r.sr)}</b><br>${r.d>0?'widened':'narrowed'} by ${fmtV(Math.abs(r.d))}/yr`))
+    .on('mouseout',tipOut);
+  rows.forEach(r=>svg.append('text').attr('x',m.l-6).attr('y',y(r.sr)+y.bandwidth()/2)
+    .attr('text-anchor','end').attr('dominant-baseline','middle').attr('font-size','8.5px')
+    .attr('fill',T.label).text(clip(srLbl(r.sr),Math.floor(m.l/5.2))));
+  svg.append('line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',m.t).attr('y2',H-m.b)
+    .attr('stroke',T.axis).attr('stroke-width',1);
+  styleAxis(svg.append('g').attr('transform',`translate(0,${H-m.b})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(fmtSigned)));
+}
+
+/* 3 · TOP PERSISTENT DEFICITS — one bar per HS6 code, NOT per process step.
+   report.qmd draws this at codename level, so Solar's 848620 contributes 15 bars of
+   identical height: trade data is HS6, so that is ONE number printed fifteen times and
+   read as fifteen findings. Here the code appears once and its process steps are named
+   in the tooltip. `persistent` (a deficit in every subperiod) is carried as opacity +
+   a ring rather than by filtering, so the non-persistent context stays visible. */
+function persistentDeficits(sel,rows,periods){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  rows=dec(rows);
+  if(!rows.length) return empty(svg,W,H,'no deficit data');
+  const last=(periods&&periods.length)?periods[periods.length-1]:'the recent window';
+  const top=rows.slice().sort((a,b)=>b.mean_deficit_recent-a.mean_deficit_recent).slice(0,15);
+  const m={t:38,r:16,b:26,l:Math.min(190,W*0.44)};
+  const x=d3.scaleLinear().domain([0,d3.max(top,r=>r.mean_deficit_recent)||1]).nice().range([m.l,W-m.r]);
+  const y=d3.scaleBand().domain(top.map(r=>r.code)).range([m.t,H-m.b]).padding(.24);
+  svg.append('text').attr('x',m.l).attr('y',11).attr('font-size','9px').attr('font-weight','700')
+    .attr('fill',T.title).text(`Mean annual deficit · ${last}`);
+  svg.append('g').selectAll('rect').data(top).join('rect')
+    .attr('x',m.l).attr('y',r=>y(r.code)).attr('height',y.bandwidth())
+    .attr('width',r=>Math.max(1,x(r.mean_deficit_recent)-m.l)).attr('rx',3)
+    .attr('fill',r=>srCol(r.stage+'|'+r.role))
+    .attr('opacity',r=>r.persistent?.95:.42)
+    .attr('stroke',r=>r.persistent?T.nodeStroke:'none').attr('stroke-width',1)
+    .on('mousemove',(e,r)=>tipMove(e,
+      `HS ${r.code}<br><b>${clip(r.desc_full||r.product_name,72)}</b><br>`+
+      `${r.stage} · ${r.role}<br>${fmtV(r.mean_deficit_recent)}/yr · deficit in `+
+      `${r.n_periods} of ${(periods&&periods.length)||3} subperiods`+
+      (r.n_steps>0?`<br><span style="opacity:.75">${r.n_steps} process step${r.n_steps>1?'s':''} on this code: `+
+        clip(r.steps,150)+'</span>':'')))
+    .on('mouseout',tipOut);
+  top.forEach(r=>svg.append('text').attr('x',m.l-6).attr('y',y(r.code)+y.bandwidth()/2)
+    .attr('text-anchor','end').attr('dominant-baseline','middle').attr('font-size','8px')
+    .attr('fill',r.persistent?T.label:T.faint)
+    .text(clip(r.code+' '+(r.product_name||''),Math.floor(m.l/4.9))));
+  styleAxis(svg.append('g').attr('transform',`translate(0,${H-m.b})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(fmtV)));
+  legend(svg,m.l,26,[[T.label,'full opacity = deficit in every subperiod']]);
+}
+
+/* 4 · HHI CONCENTRATION OVER TIME — four series that are really a 2x2:
+   {Imports, Deficits} x {partner, product}. Encoding that as four unrelated hues hides
+   the structure, so hue carries the DIMENSION (who vs what) and dash carries the
+   MEASURE (imports vs deficit exposure). Two hues also means only two colours had to
+   clear the CVD checks — #6366f1/#16a34a pass all six in both light and dark
+   (ΔE 28.7 deutan, 33.9 normal). */
+const HHI_HUE = {partner:'#6366f1', product:'#16a34a'};
+function hhi(sel,rows){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  rows=dec(rows);
+  if(!rows.length) return empty(svg,W,H,'no concentration data');
+  const parse=s=>({dim:/partner/i.test(s)?'partner':'product',
+                   measure:/deficit/i.test(s)?'Deficits':'Imports'});
+  const series=d3.groups(rows,r=>r.series);
+  const m={t:40,r:10,b:26,l:44};
+  const x=d3.scaleLinear().domain(d3.extent(rows,r=>r.year)).range([m.l,W-m.r]);
+  const y=d3.scaleLinear().domain([0,Math.min(1,(d3.max(rows,r=>r.hhi)||1)*1.1)]).nice().range([H-m.b,m.t]);
+  const line=d3.line().x(d=>x(d.year)).y(d=>y(d.hhi)).defined(d=>isFinite(d.hhi));
+  svg.append('text').attr('x',m.l).attr('y',11).attr('font-size','9px').attr('font-weight','700')
+    .attr('fill',T.title).text('Higher = more concentrated dependence');
+  series.forEach(([name,vals])=>{ const p=parse(name);
+    svg.append('path').datum(vals.slice().sort((a,b)=>a.year-b.year)).attr('d',line)
+      .attr('fill','none').attr('stroke',HHI_HUE[p.dim]).attr('stroke-width',2)
+      .attr('stroke-dasharray',p.measure==='Deficits'?'4,3':null)
+      .attr('opacity',.92); });
+  styleAxis(svg.append('g').attr('transform',`translate(0,${H-m.b})`)
+    .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('d'))));
+  styleAxis(svg.append('g').attr('transform',`translate(${m.l},0)`)
+    .call(d3.axisLeft(y).ticks(4).tickFormat(d3.format('.2f'))));
+  // hover crosshair: one tooltip naming all four series at the year under the cursor
+  const hit=svg.append('rect').attr('x',m.l).attr('y',m.t).attr('width',Math.max(0,W-m.l-m.r))
+    .attr('height',Math.max(0,H-m.t-m.b)).attr('fill','transparent');
+  const cross=svg.append('line').attr('y1',m.t).attr('y2',H-m.b).attr('stroke',T.axis)
+    .attr('stroke-width',1).attr('opacity',0).attr('pointer-events','none');
+  hit.on('mousemove',ev=>{
+    const yr=Math.round(x.invert(d3.pointer(ev,svg.node())[0]));
+    cross.attr('x1',x(yr)).attr('x2',x(yr)).attr('opacity',.6);
+    const at=rows.filter(r=>r.year===yr).sort((a,b)=>b.hhi-a.hhi);
+    if(!at.length) return;
+    tipMove(ev,`<b>${yr}</b><br>`+at.map(r=>{const p=parse(r.series);
+      return `<span style="color:${HHI_HUE[p.dim]}">■</span> ${r.series}: <b>${(+r.hhi).toFixed(3)}</b>`;
+    }).join('<br>'));
+  }).on('mouseout',()=>{ cross.attr('opacity',0); tipOut(); });
+  legend(svg,m.l+2,26,[[HHI_HUE.partner,'partner (who)'],[HHI_HUE.product,'product (what)'],
+                       [T.faint,'dashed = deficit exposure']]);
+}
+
+/* 5 · TOP PARTNERS BY STAGE·ROLE — stacked bars, top-15 partners by mean annual value,
+   segmented by value-chain position. dir='src' = exporters TO the focal country,
+   dir='dest' = importers FROM it. One function, two modules: the two charts differ only
+   in which side of the flow they read. Reads partners_yearly_sr, which already shipped. */
+function topPartnersSR(sel,block,dir){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  const all=dec(block).filter(r=>r.dir===dir);
+  if(!all.length) return empty(svg,W,H,dir==='src'?'no import partners':'no export partners');
+  const nYears=new Set(all.map(r=>r.year)).size||1;
+  /* Nested Map, not a concatenated "partner<sep>stage|role" string key. A composite
+     string key needs a separator guaranteed absent from every component, and the
+     obvious candidates are not: a space appears inside "Process Equipment" and "|"
+     is already the stage/role joiner, so splitting one back out is guesswork.
+     Nesting sidesteps the question entirely. */
+  const agg=new Map();      // partner -> Map(stage|role -> v)
+  const byP=new Map();      // partner -> total v
+  all.forEach(r=>{ const sr=srNorm(r.stage+'|'+r.role);
+    let inner=agg.get(r.partner); if(!inner){ inner=new Map(); agg.set(r.partner,inner); }
+    inner.set(sr,(inner.get(sr)||0)+r.v);
+    byP.set(r.partner,(byP.get(r.partner)||0)+r.v); });
+  const top=[...byP.entries()].sort((a,b)=>b[1]-a[1]).slice(0,15).map(d=>d[0]);
+  const srs=[...new Set(all.map(r=>srNorm(r.stage+'|'+r.role)))].sort(srSort);
+  const m={t:22,r:14,b:24,l:44};
+  const x=d3.scaleLinear().domain([0,(d3.max(top,p=>byP.get(p))||1)/nYears]).nice().range([m.l,W-m.r]);
+  const y=d3.scaleBand().domain(top).range([m.t,H-m.b]).padding(.24);
+  svg.append('text').attr('x',m.l).attr('y',11).attr('font-size','9px').attr('font-weight','700')
+    .attr('fill',T.title).text(dir==='src'?'Top exporters to this country · mean annual'
+                                          :'Top importers from this country · mean annual');
+  top.forEach(p=>{ let acc=0;
+    srs.forEach(sr=>{ const v=((agg.get(p)||new Map()).get(sr)||0)/nYears; if(v<=0) return;
+      const x0=x(acc), x1=x(acc+v); acc+=v;
+      svg.append('rect').attr('x',x0).attr('y',y(p))
+        .attr('width',Math.max(.5,x1-x0-2))                    // 2px surface gap between segments
+        .attr('height',y.bandwidth()).attr('rx',2)
+        .attr('fill',srCol(sr)).attr('opacity',.92)
+        .on('mousemove',e=>tipMove(e,`<b>${p}</b> · ${srLbl(sr)}<br>${fmtV(v)}/yr`))
+        .on('mouseout',tipOut); });
+    svg.append('text').attr('x',m.l-6).attr('y',y(p)+y.bandwidth()/2).attr('text-anchor','end')
+      .attr('dominant-baseline','middle').attr('font-size','8.5px').attr('fill',T.label).text(p); });
+  styleAxis(svg.append('g').attr('transform',`translate(0,${H-m.b})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(fmtV)));
+}
+
+/* 6 · BEST AND WORST BY NET BALANCE — the largest surpluses above the line, the largest
+   deficits below it, one diverging chart rather than two lists. Reads products_flow. */
+function netBalance(sel,block,products){
+  const {W,H}=dims(sel); const svg=d3.select(sel); svg.selectAll('*').remove();
+  const pf=dec(block);
+  if(!pf.length) return empty(svg,W,H,'no product flow data');
+  const meta=new Map((products||[]).map(p=>[p.code,p]));
+  const bal=new Map();
+  pf.forEach(r=>{ const b=bal.get(r.code)||{e:0,i:0}; if(r.flow==='exp') b.e+=r.v; else b.i+=r.v; bal.set(r.code,b); });
+  const rows=[...bal.entries()].map(([code,b])=>({code,v:b.e-b.i,
+      p:meta.get(code)||{}})).filter(r=>isFinite(r.v)&&r.v!==0);
+  if(!rows.length) return empty(svg,W,H,'no net balance to show');
+  const N=7;
+  const srt=rows.slice().sort((a,b)=>b.v-a.v);
+  const pick=[...srt.slice(0,N),...srt.slice(-N)];
+  const seen=new Set(); const top=pick.filter(r=>seen.has(r.code)?false:(seen.add(r.code),true))
+    .sort((a,b)=>b.v-a.v);
+  const m={t:24,r:14,b:24,l:Math.min(178,W*0.42)};
+  const ext=d3.extent(top,r=>r.v);
+  const x=d3.scaleLinear().domain([Math.min(0,ext[0]),Math.max(0,ext[1])]).nice().range([m.l,W-m.r]);
+  const y=d3.scaleBand().domain(top.map(r=>r.code)).range([m.t,H-m.b]).padding(.22);
+  svg.append('text').attr('x',m.l).attr('y',11).attr('font-size','9px').attr('font-weight','700')
+    .attr('fill',T.title).text('Net balance by product · exports minus imports, all years');
+  svg.append('g').selectAll('rect').data(top).join('rect')
+    .attr('x',r=>x(Math.min(0,r.v))).attr('y',r=>y(r.code))
+    .attr('width',r=>Math.max(1,Math.abs(x(r.v)-x(0)))).attr('height',y.bandwidth()).attr('rx',3)
+    .attr('fill',r=>srCol((r.p.stage||'')+'|'+(r.p.role||''))).attr('opacity',.92)
+    .on('mousemove',(e,r)=>tipMove(e,`HS ${r.code}<br><b>${clip(r.p.desc_full||r.p.product_name||r.code,72)}</b>`+
+      `<br>${r.v>0?'surplus':'deficit'} ${fmtV(Math.abs(r.v))}`))
+    .on('mouseout',tipOut);
+  top.forEach(r=>svg.append('text').attr('x',m.l-6).attr('y',y(r.code)+y.bandwidth()/2)
+    .attr('text-anchor','end').attr('dominant-baseline','middle').attr('font-size','8px')
+    .attr('fill',T.label).text(clip(r.code+' '+(r.p.product_name||''),Math.floor(m.l/4.9))));
+  svg.append('line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',m.t).attr('y2',H-m.b)
+    .attr('stroke',T.axis).attr('stroke-width',1);
+  styleAxis(svg.append('g').attr('transform',`translate(0,${H-m.b})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(fmtSigned)));
+}
+
 function empty(svg,W,H,msg,muted){ svg.append('text').attr('x',W/2).attr('y',H/2).attr('text-anchor','middle').attr('fill',T.empty).attr('font-size','12px').text(msg); }
 // small inline swatch legend (top-left of a chart)
 function legend(svg,x,y,items){ const g=svg.append('g').attr('transform',`translate(${x},${y})`); let dx=0;
@@ -314,12 +673,68 @@ function highlights(kind,d,td){
       const bigf=fl.slice().sort((a,b)=>b.weight-a.weight)[0]; if(bigf) out.push(`Largest flow: <b>${bigf.from_country}→${bigf.to_country}</b> (${fmtV(bigf.weight)}).`); }
   } else if(kind==='tree'||kind==='solar_system'){
     const e=(td&&td.tree)||[]; if(e.length){ const codes=new Set(); e.forEach(x=>{codes.add(x.from_code);codes.add(x.to_code);});
-      out.push(`Production process spans <b>${codes.size}</b> HS products and ${e.length} transformation links.`); }
+      const steps=new Set(); e.forEach(x=>{steps.add(x.from_cn||x.from_code);steps.add(x.to_cn||x.to_code);});
+      out.push(`Production process spans <b>${codes.size}</b> HS products across ${steps.size} process steps, and ${e.length} transformation links.`); }
+  } else if(kind==='benchmark'){
+    const b=dec(d.bench)||[];
+    if(b.length){ const f=b.filter(r=>r.group==='Focal'&&r.flow==='Imports').sort((x,y)=>y.share-x.share)[0];
+      const w=b.filter(r=>r.group==='World'&&r.flow==='Imports');
+      if(f){ const wm=w.find(r=>r.stage_role===f.stage_role);
+        out.push(`Largest import segment: <b>${srLbl(f.stage_role)}</b> at ${fmtPct(f.share)}`+
+          (wm?` — world average ${fmtPct(wm.share)}.`:'.')); }
+      const gaps=b.filter(r=>r.group==='Focal'&&r.flow==='Exports').map(r=>{
+        const wm=w.length?b.find(q=>q.group==='World'&&q.flow==='Exports'&&q.stage_role===r.stage_role):null;
+        return wm?{sr:r.stage_role,d:r.share-wm.share}:null; }).filter(Boolean)
+        .sort((x,y)=>x.d-y.d)[0];
+      if(gaps) out.push(`Furthest below the world export average: <b>${srLbl(gaps.sr)}</b> (${fmtPct(gaps.d)}).`);
+    } else out.push('No benchmark data for this case yet.');
+  } else if(kind==='deficit_widening'){
+    const tl=dec(d.timeline)||[];
+    if(tl.length) out.push('Positive bars are segments where import dependence grew faster than export capacity.');
+    else out.push('No trade data for this case yet.');
+  } else if(kind==='persistent_deficits'){
+    const r=dec(d.deficits)||[]; const p=r.filter(x=>x.persistent);
+    if(r.length){ out.push(`<b>${p.length}</b> of ${r.length} products run a deficit in every subperiod.`);
+      const t=r.slice().sort((a,b)=>b.mean_deficit_recent-a.mean_deficit_recent)[0];
+      if(t) out.push(`Largest: <b>${t.product_name||t.code}</b> (${fmtV(t.mean_deficit_recent)}/yr).`);
+      const multi=r.filter(x=>x.n_steps>1).length;
+      if(multi) out.push(`${multi} of these HS codes carry more than one process step — one code, one number.`);
+    } else out.push('No persistent deficits for this case.');
+  } else if(kind==='hhi'){
+    const h=dec(d.hhi)||[];
+    if(h.length){ const yrs=[...new Set(h.map(r=>r.year))].sort((a,b)=>a-b); const ly=yrs.at(-1);
+      const at=h.filter(r=>r.year===ly).sort((a,b)=>b.hhi-a.hhi)[0];
+      if(at) out.push(`Most concentrated in ${ly}: <b>${at.series}</b> (HHI ${(+at.hhi).toFixed(3)}).`);
+      const pp=h.filter(r=>/product/i.test(r.series)&&r.year===ly);
+      const pt=h.filter(r=>/partner/i.test(r.series)&&r.year===ly);
+      if(pp.length&&pt.length){ const a=d3.mean(pp,r=>r.hhi), b=d3.mean(pt,r=>r.hhi);
+        out.push(a>b?'Dependence is concentrated more in <b>which products</b> than in which partners.'
+                   :'Dependence is concentrated more in <b>which partners</b> than in which products.'); }
+    } else out.push('No concentration series for this case yet.');
+  } else if(kind==='top_exporters'||kind==='top_importers'){
+    const dir=kind==='top_exporters'?'src':'dest';
+    const rows=dec(d.partners_yearly_sr).filter(r=>r.dir===dir);
+    if(rows.length){ const by={}; rows.forEach(r=>by[r.partner]=(by[r.partner]||0)+r.v);
+      const t=top(by,3);
+      if(t[0]) out.push(`Top ${kind==='top_exporters'?'source':'destination'}: <b>${t[0][0]}</b>.`);
+      const tot=Object.values(by).reduce((a,b)=>a+b,0);
+      if(tot&&t.length) out.push(`Top three account for <b>${fmtPct(t.reduce((a,b)=>a+b[1],0)/tot)}</b> of the flow shown.`);
+    } else out.push('No partner data for this case yet.');
+  } else if(kind==='net_balance'){
+    const pf=dec(d.products_flow);
+    if(pf.length){ const bal={}; pf.forEach(r=>{ bal[r.code]=(bal[r.code]||0)+(r.flow==='exp'?r.v:-r.v); });
+      const e=Object.entries(bal).sort((a,b)=>b[1]-a[1]);
+      const nm=c=>{ const p=(d.products||[]).find(x=>x.code===c); return p?(p.product_name||c):c; };
+      if(e[0]&&e[0][1]>0) out.push(`Largest surplus: <b>${nm(e[0][0])}</b> (${fmtV(e[0][1])}).`);
+      const w=e.at(-1); if(w&&w[1]<0) out.push(`Largest deficit: <b>${nm(w[0])}</b> (${fmtV(-w[1])}).`);
+    } else out.push('No product flow data for this case yet.');
   }
   return out;
 }
 
 global.VIZ = {SR,CAT,fmtV,setTheme,initGeo,radar,scatter,timeline,treemap,map,firms,sankey,tree,solarsystem,highlights,
+  // diagnostic modules (2026-08-06) + the compact-block decoder they share
+  benchmark,deficitWidening,persistentDeficits,hhi,topPartnersSR,netBalance,setLookups,dec,
   // additive exports for the integrated explorer (integrated_explorer.html) — reuse the engine's
   // focal projection + geo tables without duplicating them. Getters because CENT
   // and FEATS are populated by initGeo() after load.
