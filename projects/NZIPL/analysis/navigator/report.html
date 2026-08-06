@@ -85,7 +85,7 @@ const VISUALS=[
   {id:'scatter',  label:'PC Scatter',          fam:'Competitiveness',draw:(d,td)=>VIZ.scatter('#v-scatter',d.scatter)},
   {id:'timeline', label:'Trade Timeline',      fam:'Trade',          draw:(d,td)=>VIZ.timeline('#v-timeline',(d.timeline||[]).filter(r=>r.flow==='exp'))},
   {id:'treemap',  label:'Trade Composition',   fam:'Trade',          draw:(d,td)=>VIZ.treemap('#v-treemap',d.products)},
-  {id:'map',      label:'Trade Map',           fam:'Trade',          draw:(d,td)=>VIZ.map('#v-map',d.partners,d.iso)},
+  {id:'map',      label:'Trade Map',           fam:'Trade',          draw:(d,td)=>VIZ.map('#v-map',VIZ.partnersLatest(d),d.iso)},
   {id:'sankey',   label:'Value-Chain Sankey',  fam:'Structure',      draw:(d,td)=>VIZ.sankey('#v-sankey',td&&td.sankey)},
   {id:'tree',     label:'Tech Tree',           fam:'Structure',      draw:(d,td)=>VIZ.tree('#v-tree',td&&td.tree)},
   {id:'firms',    label:'Activity Map',        fam:'Firms',          draw:(d,td)=>VIZ.firms('#v-firms',d.firms,d.iso)},
@@ -171,7 +171,7 @@ async function render(){
 function coverMain(d,td,cn){
   const exp=(d.timeline||[]).filter(r=>r.flow==='exp'), imp=(d.timeline||[]).filter(r=>r.flow==='imp');
   const totE=d3.sum(exp,r=>r.v), totI=d3.sum(imp,r=>r.v);
-  const dest=(d.partners||[]).filter(r=>r.dir==='dest').sort((a,b)=>b.v-a.v)[0];
+  const dest=VIZ.partnersLatest(d).filter(r=>r.dir==='dest').sort((a,b)=>b.v-a.v)[0];
   const nprod=(d.products||[]).length;
   return `<div class="eg">Trade-based intelligence brief</div>
     <h1><span class="tk">${CUR.tech}</span><br>${cn}</h1>

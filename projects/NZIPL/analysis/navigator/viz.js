@@ -155,7 +155,23 @@ function baseMap(svg,W,H,focalIso,fit){
     .attr('stroke-width',d=>focalFeat&&d===focalFeat?.9:.5);
   return {svg,proj};
 }
+/* The engine replaced the flat `partners` array with a per-year top-8 series
+   (partners_yearly). Callers that still read d.partners get `undefined`, and
+   map() then throws on .filter — which embed.html swallows into "render error"
+   and report.html turns into a dead panel. panel.html was repaired inline in
+   July; embed.html and report.html were not, so the derivation lives here now
+   and there is one copy of it (register B-2). Raw basis and latest year only:
+   partners_yearly_c re-ranks partners under the multi-use correction, and a map
+   that silently switched basis would be the B-21 defect again. */
+function partnersLatest(d){
+  const py = (d && d.partners_yearly) || [];
+  if(!py.length) return [];
+  const yr = Math.max(...py.map(r => +r.year));
+  return py.filter(r => +r.year === yr)
+           .map(r => ({dir:r.dir, partner:r.partner, v:+r.v || 0}));
+}
 function map(sel,parts,focal){
+  parts = parts || [];
   const {W,H}=dims(sel); const svg=d3.select(sel); const b=baseMap(svg,W,H); if(!b)return;
   if(CENT[focal]){ const p=b.proj(CENT[focal]); if(p) svg.append('circle').attr('cx',p[0]).attr('cy',p[1]).attr('r',5).attr('fill',T.focal).attr('stroke',T.nodeStroke); }
   const maxv=d3.max(parts,d=>d.v)||1, r=d3.scaleSqrt().domain([0,maxv]).range([0,20]);
@@ -660,8 +676,9 @@ function highlights(kind,d,td){
     if(p.length){ out.push(`${p.length} traded products; top product <b>${(p[0].product_name||p[0].code)}</b> (${fmtV(p[0].v)}).`);
       if(byStage) out.push(`Composition concentrated in <b>${byStage[0]}</b>.`); }
   } else if(kind==='map'||kind==='partners'){
-    const dest=(d.partners||[]).filter(r=>r.dir==='dest').sort((a,b)=>b.v-a.v);
-    const src=(d.partners||[]).filter(r=>r.dir==='src').sort((a,b)=>b.v-a.v);
+    const pl=partnersLatest(d);
+    const dest=pl.filter(r=>r.dir==='dest').sort((a,b)=>b.v-a.v);
+    const src=pl.filter(r=>r.dir==='src').sort((a,b)=>b.v-a.v);
     if(dest[0]) out.push(`Top export destination: <b>${dest[0].partner}</b> (${fmtV(dest[0].v)}).`);
     if(src[0]) out.push(`Top import source: <b>${src[0].partner}</b> (${fmtV(src[0].v)}).`);
   } else if(kind==='firms'){
@@ -733,6 +750,7 @@ function highlights(kind,d,td){
 }
 
 global.VIZ = {SR,CAT,fmtV,setTheme,initGeo,radar,scatter,timeline,treemap,map,firms,sankey,tree,solarsystem,highlights,
+  partnersLatest,
   // diagnostic modules (2026-08-06) + the compact-block decoder they share
   benchmark,deficitWidening,persistentDeficits,hhi,topPartnersSR,netBalance,setLookups,dec,
   // additive exports for the integrated explorer (integrated_explorer.html) — reuse the engine's

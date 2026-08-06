@@ -42,7 +42,7 @@ const DRAW = {
   pc_scatter:        (d,td)=>VIZ.scatter('#stage', d.scatter),
   trade_timeline:    (d,td)=>VIZ.timeline('#stage', (d.timeline||[]).filter(r=>r.flow==='exp')),
   trade_composition: (d,td)=>VIZ.treemap('#stage', d.products),
-  trade_map:         (d,td)=>VIZ.map('#stage', d.partners, d.iso),
+  trade_map:         (d,td)=>VIZ.map('#stage', VIZ.partnersLatest(d), d.iso),
   activity_map:      (d,td)=>VIZ.firms('#stage', d.firms, d.iso),
   sankey:            (d,td)=>VIZ.sankey('#stage', td && td.sankey),
   tech_tree:         (d,td)=>VIZ.tree('#stage', td && td.tree),

@@ -208,7 +208,10 @@ function available(mod, techSlug, countrySlug){
 // _tech_<Tech>.json for tree/sankey). The CSV download mints files in-browser
 // from that JSON — no sidecar files on disk (single source of truth = the engine).
 const CASE_SLICE = { radar:'radar', pc_scatter:'scatter', trade_timeline:'timeline',
-                     trade_composition:'products', trade_map:'partners', activity_map:'firms',
+                     // trade_map read 'partners' until 2026-08-06. No bundle has that key —
+                     // the engine replaced it with the per-year top-8 series — so the slice
+                     // named here was one no case could satisfy. See VIZ.partnersLatest().
+                     trade_composition:'products', trade_map:'partners_yearly', activity_map:'firms',
                      // diagnostic modules (2026-08-06)
                      benchmark:'bench', deficit_widening:'timeline',
                      persistent_deficits:'deficits', hhi:'hhi',

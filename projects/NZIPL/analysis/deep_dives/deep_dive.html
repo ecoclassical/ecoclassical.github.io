@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Deep Dives · NZIPL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#060d08; --surface:#0b1a0d; --surface2:#0f2312;
+  --border:rgba(255,255,255,.07); --border-hi:rgba(255,255,255,.13);
+  --text:#dde8dd; --muted:#7a9b7d; --accent:#3cb54a;
+  --font:"Archivo",-apple-system,"Segoe UI",sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.6;}
+
+/* ══ REPORT SCREEN (intelligence-report layout) ══ */
+#screen-report{display:none;}
+body.report-mode{height:100vh;overflow:hidden;}
+body.report-mode #screen-selector{display:none;}
+body.report-mode #screen-report{display:flex;flex-direction:column;height:100vh;}
+#ir-top{display:flex;height:66.66vh;min-height:0;}
+#ir-analysis{height:33.34vh;border-top:1px solid var(--border);background:var(--bg);overflow-y:auto;padding:18px 24px;}
+.ir-analysis-ph{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.18);}
+#ir-sidebar{width:230px;min-width:230px;background:var(--bg);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;height:100%;flex-shrink:0;}
+.ir-topbar{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
+.ir-tb-btn{font-size:11px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.55);background:rgba(255,255,255,.05);border:1px solid var(--border-hi);border-radius:5px;padding:5px 10px;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;transition:all .15s;}
+.ir-tb-btn:hover{color:#fff;border-color:var(--accent);}
+.ir-brand{padding:16px 14px 12px;border-bottom:1px solid var(--border);}
+.ir-brand-eyebrow{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.ir-brand-country{font-size:20px;font-weight:800;color:#fff;line-height:1.1;}
+.ir-brand-tech{font-size:10px;font-weight:600;color:rgba(255,255,255,.35);letter-spacing:.07em;text-transform:uppercase;margin-top:3px;}
+.ir-nav{padding:8px 7px 20px;}
+.ir-nav-link{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:5px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.5);cursor:pointer;text-decoration:none;transition:color .15s,background .15s;margin-bottom:2px;border:none;background:transparent;text-align:left;font-family:inherit;}
+.ir-nav-link:hover{color:#fff;background:rgba(255,255,255,.06);}
+.ir-nav-link.active{color:var(--accent)!important;background:rgba(60,181,74,.1);font-weight:600;}
+.ir-nav-link .ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:currentColor;opacity:.7;}
+.ir-nav-num{font-size:9px;color:rgba(255,255,255,.25);margin-left:auto;font-weight:700;}
+.ir-nav-group{margin-bottom:2px;}
+.ir-nav-ghd{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:5px;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;user-select:none;transition:color .15s,background .15s;}
+.ir-nav-ghd:hover{color:#fff;background:rgba(255,255,255,.04);}
+.ir-nav-ghd .ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0;opacity:1;}
+.ir-nav-chevron{font-size:12px;color:rgba(255,255,255,.35);transition:transform .18s;display:inline-block;}
+.ir-nav-sub{display:none;}
+.ir-nav-sub.open{display:block;}
+.ir-nav-link.sub{padding-left:20px;font-size:12px;}
+#ir-main{flex:1;min-height:0;height:100%;overflow:hidden;padding:0;background:#0a0f14;}
+#rep-main{height:100%;}
+.ir-pane{display:none;height:100%;flex-direction:column;}
+.ir-pane.active{display:flex;}
+.ir-pane-head{padding:16px 24px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.ir-pane-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.ir-pane-title .accent{color:var(--accent);}
+.ir-pane-sub{font-size:11.5px;color:rgba(255,255,255,.3);margin-top:4px;}
+.ir-frame-wrap{flex:1;position:relative;background:#0a1218;}
+.ir-pane iframe{width:100%;height:100%;border:none;display:block;background:#0a1218;}
+.ir-pane .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.2);font-size:12px;font-weight:600;}
+
+/* On-screen pre-print state (added by printReport / beforeprint): make every
+   pane visible and sized so all iframes load at the right dimensions. */
+body.printing #ir-sidebar, body.printing .ir-topbar{display:none!important;}
+body.printing #screen-report, body.printing #ir-top{display:block;height:auto;}
+body.printing #ir-main{height:auto;overflow:visible;}
+body.printing #ir-analysis{height:auto;}
+body.printing .ir-pane{display:block!important;height:auto;border-bottom:1px solid var(--border);}
+body.printing .ir-frame-wrap{height:620px;}
+body.printing .ir-pane iframe{height:620px;}
+
+@media print{
+  body.report-mode{height:auto;overflow:visible;}
+  #ir-sidebar,.ir-topbar{display:none!important;}
+  body.report-mode #screen-report{display:block;height:auto;}
+  #ir-top{display:block;height:auto;}
+  #ir-main{height:auto;overflow:visible;}
+  #ir-analysis{height:auto;}
+  .ir-pane{display:block!important;height:auto;page-break-after:always;border-bottom:2px solid #000;}
+  .ir-frame-wrap{height:620px;}
+  .ir-pane iframe{height:620px;}
+}
+
+/* ══ DEEP DIVES ══ */
+#dd-main{height:100%;}
+.dd-picks{display:flex;flex-direction:column;gap:6px;margin-top:9px;}
+.dd-pick{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:6px;
+  background:var(--surface);border:1px solid var(--border-hi);color:#fff;font-family:inherit;
+  font-size:13px;font-weight:700;cursor:pointer;text-align:left;transition:border-color .15s;}
+.dd-pick:hover{border-color:var(--accent);}
+.dd-pick .swatch{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dd-pick .cap{font-size:8.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);display:block;margin-bottom:1px;}
+.dd-pick .val{display:block;line-height:1.15;}
+.dd-pick .chev{margin-left:auto;font-size:10px;color:rgba(255,255,255,.35);}
+.dd-pop{display:none;position:fixed;z-index:60;width:238px;max-height:60vh;overflow-y:auto;
+  background:var(--surface2);border:1px solid var(--border-hi);border-radius:8px;padding:6px;
+  box-shadow:0 12px 34px rgba(0,0,0,.55);}
+.dd-pop.open{display:block;}
+.dd-grp{font-size:8.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;
+  color:rgba(255,255,255,.32);padding:8px 8px 4px;border-bottom:1px solid var(--border);margin-bottom:3px;}
+.dd-grp:first-child{padding-top:2px;}
+.dd-opt{display:flex;align-items:center;gap:8px;width:100%;padding:6px 9px;border-radius:5px;
+  background:transparent;border:none;color:rgba(255,255,255,.66);font-family:inherit;font-size:12.5px;
+  font-weight:600;cursor:pointer;text-align:left;transition:background .12s,color .12s;}
+.dd-opt:hover{background:rgba(255,255,255,.06);color:#fff;}
+.dd-opt.on{background:rgba(60,181,74,.13);color:#fff;}
+.dd-opt .swatch{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dd-opt .sub{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:rgba(255,255,255,.24);}
+.ir-nav-link.unavail{opacity:.34;cursor:not-allowed;}
+.ir-nav-link.unavail:hover{background:transparent;color:rgba(255,255,255,.5);}
+.ir-nav-why{font-size:9.5px;color:rgba(255,255,255,.28);padding:0 10px 6px 25px;line-height:1.35;}
+.dd-tag{font-size:8.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:1px 5px;border-radius:3px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);}
+</style>
+</head>
+<body>
+
+<!-- ══ DEEP DIVE ══ -->
+<section id="screen-report">
+  <div id="ir-top">
+    <nav id="ir-sidebar">
+      <div class="ir-topbar">
+        <a class="ir-tb-btn" href="../../CVCE.html">&larr; Atlas</a>
+        <a class="ir-tb-btn" href="../intelligence/report_builder.html">Report Builder</a>
+      </div>
+      <div class="ir-brand">
+        <div class="ir-brand-eyebrow">NZIPL · Deep Dive</div>
+        <div class="dd-picks">
+          <button class="dd-pick" id="pick-tech" aria-haspopup="listbox">
+            <span class="swatch" id="sw-tech"></span>
+            <span><span class="cap">Technology</span><span class="val" id="val-tech">—</span></span>
+            <span class="chev">&#9662;</span>
+          </button>
+          <button class="dd-pick" id="pick-country" aria-haspopup="listbox">
+            <span class="swatch" id="sw-country"></span>
+            <span><span class="cap">Country</span><span class="val" id="val-country">—</span></span>
+            <span class="chev">&#9662;</span>
+          </button>
+        </div>
+      </div>
+      <div class="ir-nav" id="dd-nav"></div>
+    </nav>
+    <main id="ir-main"><div id="dd-main"></div></main>
+  </div>
+  <div id="ir-analysis"><div id="dd-stats"><div class="ir-analysis-ph">Case statistics</div></div></div>
+</section>
+<div class="dd-pop" id="pop-tech" role="listbox"></div>
+<div class="dd-pop" id="pop-country" role="listbox"></div>
+
+<script>
+const MODULES = [{"id":"radar","label":"Capability Radar","family":"Capability","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"pc_scatter","label":"PC Scatter","family":"Competitiveness","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"trade_timeline","label":"Trade Timeline","family":"Trade","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"trade_composition","label":"Trade Composition","family":"Trade","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"tech_tree","label":"Tech Tree","family":"Structure","country_dependent":false,"tpl":"../tech_tree/{tech}_tech_tree.html"},{"id":"solar_system","label":"Value-Chain Solar System","family":"Structure","country_dependent":false,"tpl":"../solar_system/{tech}_solar_system.png"},{"id":"sankey","label":"Sankey","family":"Structure","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"trade_map","label":"Trade Map","family":"Trade","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"activity_map","label":"Activity Map","family":"Firms","country_dependent":true,"tpl":"../{module}/{country}/{tech}_{country}_{module}.html"},{"id":"benchmark","label":"Benchmarking","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=benchmark"},{"id":"deficit_widening","label":"Deficit Widening","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=deficit_widening"},{"id":"persistent_deficits","label":"Top Persistent Deficits","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=persistent_deficits"},{"id":"hhi","label":"HHI Concentration","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=hhi"},{"id":"top_exporters","label":"Top Exporters to Country","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=top_exporters"},{"id":"top_importers","label":"Top Importers from Country","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=top_importers"},{"id":"net_balance","label":"Net Balance by Product","family":"Trade","country_dependent":true,"tpl":"../navigator/embed.html?tech={tech}&country={country}&panel=net_balance"}];
+const TECHS = [{"name":"Solar","slug":"Solar","color":"#eab308"},{"name":"Nuclear","slug":"Nuclear","color":"#0ea5e9"},{"name":"Batteries","slug":"Batteries","color":"#f59e0b"},{"name":"Transmission","slug":"Transmission","color":"#06b6d4"},{"name":"Wind","slug":"Wind","color":"#3b82f6"},{"name":"Biofuel","slug":"Biofuel","color":"#84cc16"},{"name":"Electrolyzers","slug":"Electrolyzers","color":"#a855f7"},{"name":"Geothermal","slug":"Geothermal","color":"#ef4444"},{"name":"Heat Pumps","slug":"Heat_Pumps","color":"#f97316"},{"name":"Magnets","slug":"Magnets","color":"#ec4899"},{"name":"EVs","slug":"EVs","color":"#14b8a6"}];
+const COUNTRIES = [{"name":"India","slug":"India","iso3":"IND","color":"#3cb54a","sets":"Focal|Factory Asia|G30"},{"name":"Brazil","slug":"Brazil","iso3":"BRA","color":"#C17A2E","sets":"Focal|Supplier South America|G30"},{"name":"Japan","slug":"Japan","iso3":"JPN","color":"#0ea5e9","sets":"Focal|Factory Asia|G30"},{"name":"S. Korea","slug":"South_Korea","iso3":"KOR","color":"#06b6d4","sets":"Focal|Factory Asia"},{"name":"Vietnam","slug":"Vietnam","iso3":"VNM","color":"#3b82f6","sets":"Focal|Factory Asia"},{"name":"Mexico","slug":"Mexico","iso3":"MEX","color":"#84cc16","sets":"Focal|Factory North America|G30"},{"name":"Spain","slug":"Spain","iso3":"ESP","color":"#ef4444","sets":"Focal|Factory Europe|G30"},{"name":"USA","slug":"USA","iso3":"USA","color":"#2563eb","sets":"Factory North America|G30"},{"name":"Canada","slug":"Canada","iso3":"CAN","color":"#dc2626","sets":"Factory North America|G30"},{"name":"China","slug":"China","iso3":"CHN","color":"#f59e0b","sets":"Factory Asia|G30"},{"name":"Malaysia","slug":"Malaysia","iso3":"MYS","color":"#14b8a6","sets":"Factory Asia"},{"name":"Philippines","slug":"Philippines","iso3":"PHL","color":"#8b5cf6","sets":"Factory Asia"},{"name":"Indonesia","slug":"Indonesia","iso3":"IDN","color":"#ec4899","sets":"Factory Asia"},{"name":"Germany","slug":"Germany","iso3":"DEU","color":"#eab308","sets":"Factory Europe|G30"},{"name":"UK","slug":"UK","iso3":"GBR","color":"#6366f1","sets":"Factory Europe|G30"},{"name":"France","slug":"France","iso3":"FRA","color":"#1d4ed8","sets":"Factory Europe|G30"},{"name":"Poland","slug":"Poland","iso3":"POL","color":"#f43f5e","sets":"Factory Europe|G30"},{"name":"Italy","slug":"Italy","iso3":"ITA","color":"#10b981","sets":"Factory Europe|G30"},{"name":"Colombia","slug":"Colombia","iso3":"COL","color":"#facc15","sets":"Supplier South America"},{"name":"Chile","slug":"Chile","iso3":"CHL","color":"#f97316","sets":"Supplier South America"},{"name":"Argentina","slug":"Argentina","iso3":"ARG","color":"#38bdf8","sets":"Supplier South America|G30"},{"name":"Nigeria","slug":"Nigeria","iso3":"NGA","color":"#22c55e","sets":"Supplier Africa|G30"},{"name":"South Africa","slug":"South_Africa","iso3":"ZAF","color":"#a855f7","sets":"Supplier Africa"},{"name":"Australia","slug":"Australia","iso3":"AUS","color":"#d97706","sets":"Supplier Oceania|G30"},{"name":"Russia","slug":"Russia","iso3":"RUS","color":"#64748b","sets":"Supplier Eurasia|G30"},{"name":"Singapore","slug":"Singapore","iso3":"SGP","color":"#db2777","sets":"Factory Asia|G30"},{"name":"Switzerland","slug":"Switzerland","iso3":"CHE","color":"#e11d48","sets":"Factory Europe|G30"}];
+const SETS = ["Focal","Factory North America","Factory Asia","Factory Europe","Supplier South America","Supplier Africa"];
+const PATHS = new Set(["../activity_map/Japan/Solar_Japan_activity_map.html","../pc_scatter/Japan/Solar_Japan_pc_scatter.html","../radar/Japan/Solar_Japan_radar.html","../sankey/Japan/Solar_Japan_sankey.html","../tech_tree/Batteries/Batteries_All_tech_tree.html","../tech_tree/Batteries/Batteries_Final_Product_tech_tree.html","../tech_tree/Batteries/Batteries_Midstream_tech_tree.html","../tech_tree/Batteries/Batteries_Raw_Material_tech_tree.html","../tech_tree/Biofuel/Biofuel_All_tech_tree.html","../tech_tree/Biofuel/Biofuel_Final_Product_tech_tree.html","../tech_tree/Biofuel/Biofuel_Midstream_tech_tree.html","../tech_tree/Biofuel/Biofuel_Raw_Material_tech_tree.html","../tech_tree/EVs/EVs_All_tech_tree.html","../tech_tree/EVs/EVs_Final_Product_tech_tree.html","../tech_tree/EVs/EVs_Midstream_tech_tree.html","../tech_tree/EVs/EVs_Raw_Material_tech_tree.html","../tech_tree/Electrolyzers/Electrolyzers_All_tech_tree.html","../tech_tree/Electrolyzers/Electrolyzers_Final_Product_tech_tree.html","../tech_tree/Electrolyzers/Electrolyzers_Midstream_tech_tree.html","../tech_tree/Electrolyzers/Electrolyzers_Raw_Material_tech_tree.html","../tech_tree/Geothermal/Geothermal_All_tech_tree.html","../tech_tree/Geothermal/Geothermal_Final_Product_tech_tree.html","../tech_tree/Geothermal/Geothermal_Midstream_tech_tree.html","../tech_tree/Geothermal/Geothermal_Raw_Material_tech_tree.html","../tech_tree/Heat_Pumps/Heat_Pumps_All_tech_tree.html","../tech_tree/Heat_Pumps/Heat_Pumps_Final_Product_tech_tree.html","../tech_tree/Heat_Pumps/Heat_Pumps_Midstream_tech_tree.html","../tech_tree/Heat_Pumps/Heat_Pumps_Raw_Material_tech_tree.html","../tech_tree/Magnets/Magnets_All_tech_tree.html","../tech_tree/Magnets/Magnets_Final_Product_tech_tree.html","../tech_tree/Magnets/Magnets_Midstream_tech_tree.html","../tech_tree/Magnets/Magnets_Raw_Material_tech_tree.html","../tech_tree/Nuclear/Nuclear_All_tech_tree.html","../tech_tree/Nuclear/Nuclear_Final_Product_tech_tree.html","../tech_tree/Nuclear/Nuclear_Midstream_tech_tree.html","../tech_tree/Nuclear/Nuclear_Raw_Material_tech_tree.html","../tech_tree/Solar/Solar_All_tech_tree.html","../tech_tree/Solar/Solar_Final_Product_tech_tree.html","../tech_tree/Solar/Solar_Midstream_tech_tree.html","../tech_tree/Solar/Solar_Raw_Material_tech_tree.html","../tech_tree/Solar_tech_tree.html","../tech_tree/Transmission/Transmission_All_tech_tree.html","../tech_tree/Transmission/Transmission_Final_Product_tech_tree.html","../tech_tree/Transmission/Transmission_Midstream_tech_tree.html","../tech_tree/Transmission/Transmission_Raw_Material_tech_tree.html","../tech_tree/Wind/Wind_All_tech_tree.html","../tech_tree/Wind/Wind_Final_Product_tech_tree.html","../tech_tree/Wind/Wind_Midstream_tech_tree.html","../tech_tree/Wind/Wind_Raw_Material_tech_tree.html","../trade_composition/Japan/Solar_Japan_trade_composition.html","../trade_map/Japan/Solar_Japan_trade_map.html","../trade_timeline/Japan/Solar_Japan_trade_timeline.html"]);
+const DATACASES = new Set(["Batteries_Argentina","Batteries_Australia","Batteries_Brazil","Batteries_Canada","Batteries_Chile","Batteries_China","Batteries_Colombia","Batteries_France","Batteries_Germany","Batteries_India","Batteries_Indonesia","Batteries_Italy","Batteries_Japan","Batteries_Malaysia","Batteries_Mexico","Batteries_Nigeria","Batteries_Philippines","Batteries_Poland","Batteries_Russia","Batteries_Singapore","Batteries_South_Africa","Batteries_South_Korea","Batteries_Spain","Batteries_Switzerland","Batteries_UK","Batteries_USA","Batteries_Vietnam","Biofuel_Argentina","Biofuel_Australia","Biofuel_Brazil","Biofuel_Canada","Biofuel_Chile","Biofuel_China","Biofuel_Colombia","Biofuel_France","Biofuel_Germany","Biofuel_India","Biofuel_Indonesia","Biofuel_Italy","Biofuel_Japan","Biofuel_Malaysia","Biofuel_Mexico","Biofuel_Nigeria","Biofuel_Philippines","Biofuel_Poland","Biofuel_Russia","Biofuel_Singapore","Biofuel_South_Africa","Biofuel_South_Korea","Biofuel_Spain","Biofuel_Switzerland","Biofuel_UK","Biofuel_USA","Biofuel_Vietnam","EVs_Argentina","EVs_Australia","EVs_Brazil","EVs_Canada","EVs_Chile","EVs_China","EVs_Colombia","EVs_France","EVs_Germany","EVs_India","EVs_Indonesia","EVs_Italy","EVs_Japan","EVs_Malaysia","EVs_Mexico","EVs_Nigeria","EVs_Philippines","EVs_Poland","EVs_Russia","EVs_Singapore","EVs_South_Africa","EVs_South_Korea","EVs_Spain","EVs_Switzerland","EVs_UK","EVs_USA","EVs_Vietnam","Electrolyzers_Argentina","Electrolyzers_Australia","Electrolyzers_Brazil","Electrolyzers_Canada","Electrolyzers_Chile","Electrolyzers_China","Electrolyzers_Colombia","Electrolyzers_France","Electrolyzers_Germany","Electrolyzers_India","Electrolyzers_Indonesia","Electrolyzers_Italy","Electrolyzers_Japan","Electrolyzers_Malaysia","Electrolyzers_Mexico","Electrolyzers_Nigeria","Electrolyzers_Philippines","Electrolyzers_Poland","Electrolyzers_Russia","Electrolyzers_Singapore","Electrolyzers_South_Africa","Electrolyzers_South_Korea","Electrolyzers_Spain","Electrolyzers_Switzerland","Electrolyzers_UK","Electrolyzers_USA","Electrolyzers_Vietnam","Geothermal_Argentina","Geothermal_Australia","Geothermal_Brazil","Geothermal_Canada","Geothermal_Chile","Geothermal_China","Geothermal_Colombia","Geothermal_France","Geothermal_Germany","Geothermal_India","Geothermal_Indonesia","Geothermal_Italy","Geothermal_Japan","Geothermal_Malaysia","Geothermal_Mexico","Geothermal_Nigeria","Geothermal_Philippines","Geothermal_Poland","Geothermal_Russia","Geothermal_Singapore","Geothermal_South_Africa","Geothermal_South_Korea","Geothermal_Spain","Geothermal_Switzerland","Geothermal_UK","Geothermal_USA","Geothermal_Vietnam","Heat_Pumps_Argentina","Heat_Pumps_Australia","Heat_Pumps_Brazil","Heat_Pumps_Canada","Heat_Pumps_Chile","Heat_Pumps_China","Heat_Pumps_Colombia","Heat_Pumps_France","Heat_Pumps_Germany","Heat_Pumps_India","Heat_Pumps_Indonesia","Heat_Pumps_Italy","Heat_Pumps_Japan","Heat_Pumps_Malaysia","Heat_Pumps_Mexico","Heat_Pumps_Nigeria","Heat_Pumps_Philippines","Heat_Pumps_Poland","Heat_Pumps_Russia","Heat_Pumps_Singapore","Heat_Pumps_South_Africa","Heat_Pumps_South_Korea","Heat_Pumps_Spain","Heat_Pumps_Switzerland","Heat_Pumps_UK","Heat_Pumps_USA","Heat_Pumps_Vietnam","Magnets_Argentina","Magnets_Australia","Magnets_Brazil","Magnets_Canada","Magnets_Chile","Magnets_China","Magnets_Colombia","Magnets_France","Magnets_Germany","Magnets_India","Magnets_Indonesia","Magnets_Italy","Magnets_Japan","Magnets_Malaysia","Magnets_Mexico","Magnets_Nigeria","Magnets_Philippines","Magnets_Poland","Magnets_Russia","Magnets_Singapore","Magnets_South_Africa","Magnets_South_Korea","Magnets_Spain","Magnets_Switzerland","Magnets_UK","Magnets_USA","Magnets_Vietnam","Nuclear_Argentina","Nuclear_Australia","Nuclear_Brazil","Nuclear_Canada","Nuclear_Chile","Nuclear_China","Nuclear_Colombia","Nuclear_France","Nuclear_Germany","Nuclear_India","Nuclear_Indonesia","Nuclear_Italy","Nuclear_Japan","Nuclear_Malaysia","Nuclear_Mexico","Nuclear_Nigeria","Nuclear_Philippines","Nuclear_Poland","Nuclear_Russia","Nuclear_Singapore","Nuclear_South_Africa","Nuclear_South_Korea","Nuclear_Spain","Nuclear_Switzerland","Nuclear_UK","Nuclear_USA","Nuclear_Vietnam","Solar_Argentina","Solar_Australia","Solar_Brazil","Solar_Canada","Solar_Chile","Solar_China","Solar_Colombia","Solar_France","Solar_Germany","Solar_India","Solar_Indonesia","Solar_Italy","Solar_Japan","Solar_Malaysia","Solar_Mexico","Solar_Nigeria","Solar_Philippines","Solar_Poland","Solar_Russia","Solar_Singapore","Solar_South_Africa","Solar_South_Korea","Solar_Spain","Solar_Switzerland","Solar_UK","Solar_USA","Solar_Vietnam","Transmission_Argentina","Transmission_Australia","Transmission_Brazil","Transmission_Canada","Transmission_Chile","Transmission_China","Transmission_Colombia","Transmission_France","Transmission_Germany","Transmission_India","Transmission_Indonesia","Transmission_Italy","Transmission_Japan","Transmission_Malaysia","Transmission_Mexico","Transmission_Nigeria","Transmission_Philippines","Transmission_Poland","Transmission_Russia","Transmission_Singapore","Transmission_South_Africa","Transmission_South_Korea","Transmission_Spain","Transmission_Switzerland","Transmission_UK","Transmission_USA","Transmission_Vietnam","Wind_Argentina","Wind_Australia","Wind_Brazil","Wind_Canada","Wind_Chile","Wind_China","Wind_Colombia","Wind_France","Wind_Germany","Wind_India","Wind_Indonesia","Wind_Italy","Wind_Japan","Wind_Malaysia","Wind_Mexico","Wind_Nigeria","Wind_Philippines","Wind_Poland","Wind_Russia","Wind_Singapore","Wind_South_Africa","Wind_South_Korea","Wind_Spain","Wind_Switzerland","Wind_UK","Wind_USA","Wind_Vietnam"]);
+const DATATECHS = new Set(["Batteries","Biofuel","EVs","Electrolyzers","Geothermal","Heat_Pumps","Magnets","Nuclear","Solar","Transmission","Wind"]);
+const SLICE_OF = {"radar":"radar","pc_scatter":"scatter","trade_timeline":"timeline","trade_composition":"products","trade_map":"partners_yearly","activity_map":"firms","benchmark":"bench","deficit_widening":"timeline","persistent_deficits":"deficits","hhi":"hhi","top_exporters":"partners_yearly_sr","top_importers":"partners_yearly_sr","net_balance":"products_flow"};
+const SLICE_OK = {"firms":["Batteries_Brazil","Batteries_India","Batteries_Japan","Batteries_Mexico","Batteries_South_Korea","Batteries_Spain","Batteries_Vietnam","Biofuel_Brazil","Biofuel_India","Biofuel_Japan","Biofuel_Mexico","Biofuel_South_Korea","Biofuel_Spain","Biofuel_Vietnam","EVs_Brazil","EVs_India","EVs_Japan","EVs_Mexico","EVs_South_Korea","EVs_Spain","EVs_Vietnam","Electrolyzers_Brazil","Electrolyzers_India","Electrolyzers_Japan","Electrolyzers_Mexico","Electrolyzers_South_Korea","Electrolyzers_Spain","Electrolyzers_Vietnam","Geothermal_Brazil","Geothermal_India","Geothermal_Japan","Geothermal_Mexico","Geothermal_South_Korea","Geothermal_Spain","Geothermal_Vietnam","Heat_Pumps_Brazil","Heat_Pumps_India","Heat_Pumps_Japan","Heat_Pumps_Mexico","Heat_Pumps_South_Korea","Heat_Pumps_Spain","Heat_Pumps_Vietnam","Magnets_Brazil","Magnets_India","Magnets_Japan","Magnets_Mexico","Magnets_South_Korea","Magnets_Spain","Magnets_Vietnam","Nuclear_Brazil","Nuclear_India","Nuclear_Japan","Nuclear_Mexico","Nuclear_South_Korea","Nuclear_Spain","Nuclear_Vietnam","Solar_Brazil","Solar_India","Solar_Japan","Solar_Mexico","Solar_South_Korea","Solar_Spain","Solar_Vietnam","Transmission_Brazil","Transmission_India","Transmission_Japan","Transmission_Mexico","Transmission_South_Korea","Transmission_Spain","Transmission_Vietnam","Wind_Brazil","Wind_India","Wind_Japan","Wind_Mexico","Wind_South_Korea","Wind_Spain","Wind_Vietnam"]};
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+function bySlugTech(s){ return TECHS.find(t=>t.slug===s); }
+function bySlugCountry(s){ return COUNTRIES.find(c=>c.slug===s); }
+function modById(id){ return MODULES.find(m=>m.id===id); }
+
+function resolvePath(mod, techSlug, countrySlug){
+  return mod.tpl.replace(/\{module\}/g, mod.id)
+               .replace(/\{tech\}/g, techSlug)
+               .replace(/\{country\}/g, countrySlug);
+}
+function available(mod, techSlug, countrySlug){
+  return PATHS.has(resolvePath(mod, techSlug, countrySlug));
+}
+
+// ── Data delivery: read the data-driven engine's per-case JSON ────────────────
+// Each module maps to one slice of a case bundle (or a country-independent
+// _tech_<Tech>.json for tree/sankey). The CSV download mints files in-browser
+// from that JSON — no sidecar files on disk (single source of truth = the engine).
+const CASE_SLICE = { radar:'radar', pc_scatter:'scatter', trade_timeline:'timeline',
+                     // trade_map read 'partners' until 2026-08-06. No bundle has that key —
+                     // the engine replaced it with the per-year top-8 series — so the slice
+                     // named here was one no case could satisfy. See VIZ.partnersLatest().
+                     trade_composition:'products', trade_map:'partners_yearly', activity_map:'firms',
+                     // diagnostic modules (2026-08-06)
+                     benchmark:'bench', deficit_widening:'timeline',
+                     persistent_deficits:'deficits', hhi:'hhi',
+                     top_exporters:'partners_yearly_sr', top_importers:'partners_yearly_sr',
+                     net_balance:'products_flow' };
+const TECH_SLICE = { sankey:'sankey', tech_tree:'tree', solar_system:'tree' };   // from _tech_<Tech>.json
+const DATA_DIR   = '../navigator/data/';
+
+function dataAvailable(modId, techSlug, countrySlug){
+  if(TECH_SLICE[modId]) return DATATECHS.has(techSlug);
+  if(CASE_SLICE[modId]) return DATACASES.has(techSlug + '_' + countrySlug);
+  return false;
+}
+// ── Visual delivery via the data-driven engine ───────────────────────────────
+// Engine-covered modules render through the shared viz.js (embed.html) instead
+// of a pre-rendered standalone panel — one renderer, all engine countries, no
+// per-file HTML. Non-engine modules fall back to the pre-rendered path.
+function engineCovers(modId){ return !!(CASE_SLICE[modId] || TECH_SLICE[modId]); }
+function embedPath(modId, techSlug, countrySlug){
+  return '../navigator/embed.html?tech=' + encodeURIComponent(techSlug)
+       + '&country=' + encodeURIComponent(countrySlug) + '&panel=' + modId;
+}
+function visPath(mod, techSlug, countrySlug){
+  return engineCovers(mod.id) ? embedPath(mod.id, techSlug, countrySlug)
+                              : resolvePath(mod, techSlug, countrySlug);
+}
+function visAvailable(mod, techSlug, countrySlug){
+  return engineCovers(mod.id) ? dataAvailable(mod.id, techSlug, countrySlug)
+                              : available(mod, techSlug, countrySlug);
+}
+
+// ── Deep Dives ───────────────────────────────────────────────────────────────
+// State is the pair plus the open panel. Everything else is derived: the rail
+// from MODULES, availability from visAvailable(), the pane src from visPath().
+let ddTech = 'Solar', ddCountry = 'India', ddPanel = null;
+
+const FAMILY_ORDER = ['Structure','Trade','Capability','Competitiveness','Firms','Narrative','Reference'];
+const famRank = f => { const i = FAMILY_ORDER.indexOf(f); return i < 0 ? 99 : i; };
+
+function ddTechObj(){ return bySlugTech(ddTech); }
+function ddCountryObj(){ return bySlugCountry(ddCountry); }
+
+// Country grouping for the picker: focal first, then blocs in registry order.
+function countryGroups(){
+  const groups = [];
+  const focal = COUNTRIES.filter(c => (c.sets||'').split('|').includes('Focal'));
+  if(focal.length) groups.push({label:'Focal', items: focal});
+  SETS.filter(s => s !== 'Focal').forEach(s => {
+    const items = COUNTRIES.filter(c => (c.sets||'').split('|').includes(s) &&
+                                        !(c.sets||'').split('|').includes('Focal'));
+    if(items.length) groups.push({label:s, items:items});
+  });
+  const seen = new Set(groups.flatMap(g => g.items.map(c => c.slug)));
+  const rest = COUNTRIES.filter(c => !seen.has(c.slug));
+  if(rest.length) groups.push({label:'Other', items: rest});
+  return groups;
+}
+
+// ── pickers ──────────────────────────────────────────────────────────────────
+function closePops(){ document.querySelectorAll('.dd-pop').forEach(p => p.classList.remove('open')); }
+
+function openPop(popId, btnId, groups, current, onPick){
+  const pop = document.getElementById(popId), btn = document.getElementById(btnId);
+  const wasOpen = pop.classList.contains('open');
+  closePops();
+  if(wasOpen) return;
+  pop.innerHTML = groups.map(g =>
+    '<div class="dd-grp">' + g.label + '</div>' +
+    g.items.map(it =>
+      '<button class="dd-opt' + (it.slug === current ? ' on' : '') + '" data-slug="' + it.slug + '">' +
+        '<span class="swatch" style="background:' + (it.color || '#6b7280') + '"></span>' +
+        '<span>' + it.name + '</span>' +
+        (it.note ? '<span class="sub">' + it.note + '</span>' : '') +
+      '</button>').join('')
+  ).join('');
+  const r = btn.getBoundingClientRect();
+  pop.style.left = r.left + 'px';
+  pop.style.top  = (r.bottom + 5) + 'px';
+  pop.classList.add('open');
+  pop.querySelectorAll('.dd-opt').forEach(b =>
+    b.addEventListener('click', () => { closePops(); onPick(b.dataset.slug); }));
+}
+
+function renderPicks(){
+  const t = ddTechObj(), c = ddCountryObj();
+  document.getElementById('val-tech').textContent = t ? t.name : ddTech;
+  document.getElementById('val-country').textContent = c ? c.name : ddCountry;
+  document.getElementById('sw-tech').style.background = t ? t.color : '#6b7280';
+  document.getElementById('sw-country').style.background = c ? c.color : '#6b7280';
+}
+
+// ── rail + panes ─────────────────────────────────────────────────────────────
+function ddModules(){
+  return MODULES.slice().sort((a,b) =>
+    famRank(a.family) - famRank(b.family) || a.label.localeCompare(b.label));
+}
+
+// A module is country-independent when it reads the per-tech bundle: the same
+// picture for all 27 countries. Saying so matters — a panel that does not change
+// when the country does otherwise reads as a broken selector.
+function techLevel(m){ return !!TECH_SLICE[m.id]; }
+
+// Does the slice this module reads actually have rows in this case? SLICE_OK
+// carries only the slices that are empty somewhere; anything absent from it is
+// populated everywhere and needs no check.
+function sliceOk(m, techSlug, countrySlug){
+  const s = SLICE_OF[m.id];
+  if(!s || !SLICE_OK[s]) return true;
+  return SLICE_OK[s].indexOf(techSlug + '_' + countrySlug) !== -1;
+}
+
+// Why a module is not offered, in the reader's terms. Never "unavailable" on its
+// own: an unexplained gap is indistinguishable from a bug.
+const SLICE_WHY = {
+  firms: 'S&P firm locations cover the 7 focal countries only'
+};
+function ddReason(m){
+  if(techLevel(m) && !DATATECHS.has(ddTech)) return 'no ' + ddTech + ' tech bundle yet';
+  if(!techLevel(m) && CASE_SLICE[m.id] && !DATACASES.has(ddTech + '_' + ddCountry))
+    return 'no engine case for this pair';
+  if(!sliceOk(m, ddTech, ddCountry))
+    return SLICE_WHY[SLICE_OF[m.id]] || 'no ' + SLICE_OF[m.id] + ' data for this pair';
+  if(!visAvailable(m, ddTech, ddCountry)) return 'no panel built for this pair';
+  return null;
+}
+function ddOffered(m){ return ddReason(m) === null; }
+
+function buildNav(){
+  const nav = document.getElementById('dd-nav');
+  let html = '', lastFam = null, n = 0;
+  ddModules().forEach(m => {
+    if(m.family !== lastFam){ html += '<div class="dd-grp">' + m.family + '</div>'; lastFam = m.family; }
+    const why = ddReason(m), ok = why === null;
+    n += ok ? 1 : 0;
+    html += '<button class="ir-nav-link' + (ok ? '' : ' unavail') + '" data-mod="' + m.id + '"' +
+            (ok ? '' : ' disabled') + '>' +
+              '<span class="ndot" style="background:' + (ddTechObj() ? ddTechObj().color : '#3cb54a') + '"></span>' +
+              '<span>' + m.label + '</span>' +
+              (techLevel(m) ? '<span class="dd-tag" title="country-independent">TECH</span>' : '') +
+            '</button>' +
+            (ok ? '' : '<div class="ir-nav-why">' + why + '</div>');
+  });
+  nav.innerHTML = html;
+  nav.querySelectorAll('.ir-nav-link:not(.unavail)').forEach(b =>
+    b.addEventListener('click', () => showPanel(b.dataset.mod)));
+  return n;
+}
+
+function buildPanes(){
+  const main = document.getElementById('dd-main');
+  main.innerHTML = ddModules().map(m => {
+    if(!ddOffered(m)) return '';
+    const tech = ddTechObj(), country = ddCountryObj();
+    // A tech-level panel names the tech and says so, rather than naming a country
+    // it does not vary with.
+    const sub = techLevel(m)
+      ? (tech ? tech.name : ddTech) + ' · all countries — this panel is country-independent'
+      : (tech ? tech.name : ddTech) + ' · ' + (country ? country.name : ddCountry);
+    return '<div class="ir-pane" data-mod="' + m.id + '">' +
+      '<div class="ir-pane-head">' +
+        '<div class="ir-pane-title"><span class="accent">' + m.label + '</span>' +
+          '<span class="dd-tag">' + m.family + '</span>' +
+          (techLevel(m) ? '<span class="dd-tag">TECH-LEVEL</span>' : '') + '</div>' +
+        '<div class="ir-pane-sub">' + sub + '</div>' +
+      '</div>' +
+      '<div class="ir-frame-wrap"><div class="ph">Loading…</div>' +
+        '<iframe data-src="' + visPath(m, ddTech, ddCountry) + '" ' +
+        'sandbox="allow-scripts allow-same-origin allow-popups allow-downloads"></iframe></div>' +
+    '</div>';
+  }).join('');
+}
+
+// Idempotent: an iframe whose src is already set is left alone, so re-showing a
+// pane does not reload it.
+function loadFrame(fr){
+  if(!fr || fr.getAttribute('src')) return;
+  const ph = fr.parentElement.querySelector('.ph');
+  fr.addEventListener('load', () => { if(ph) ph.style.display = 'none'; }, {once:true});
+  fr.setAttribute('src', fr.dataset.src);
+}
+
+function showPanel(id){
+  const panes = [...document.querySelectorAll('#dd-main .ir-pane')];
+  if(!panes.length) return;
+  let target = panes.find(p => p.dataset.mod === id) || panes[0];
+  ddPanel = target.dataset.mod;
+  panes.forEach(p => p.classList.toggle('active', p === target));
+  document.querySelectorAll('#dd-nav .ir-nav-link').forEach(b =>
+    b.classList.toggle('active', b.dataset.mod === ddPanel));
+  loadFrame(target.querySelector('iframe'));
+  syncURL();
+}
+
+// A pair change rebuilds the rail and the panes (availability differs per pair),
+// then restores the panel that was open if it survived the change.
+function setPair(tech, country){
+  const keep = ddPanel;
+  if(tech) ddTech = tech;
+  if(country) ddCountry = country;
+  renderPicks();
+  buildNav();
+  buildPanes();
+  showPanel(keep);
+  renderStats();
+}
+
+function syncURL(){
+  const q = '?tech=' + encodeURIComponent(ddTech) +
+            '&country=' + encodeURIComponent(ddCountry) +
+            '&panel=' + encodeURIComponent(ddPanel || '');
+  history.replaceState(null, '', location.pathname + q);
+}
+
+// ── boot ─────────────────────────────────────────────────────────────────────
+function ddBoot(){
+  const p = new URLSearchParams(location.search);
+  if(p.get('tech')    && bySlugTech(p.get('tech')))       ddTech    = p.get('tech');
+  if(p.get('country') && bySlugCountry(p.get('country'))) ddCountry = p.get('country');
+  const wanted = p.get('panel');
+
+  document.body.classList.add('report-mode');
+
+  document.getElementById('pick-tech').addEventListener('click', e => {
+    e.stopPropagation();
+    openPop('pop-tech', 'pick-tech', [{label:'Technology', items: TECHS}], ddTech,
+            s => setPair(s, null));
+  });
+  document.getElementById('pick-country').addEventListener('click', e => {
+    e.stopPropagation();
+    openPop('pop-country', 'pick-country', countryGroups(), ddCountry,
+            s => setPair(null, s));
+  });
+  document.addEventListener('click', closePops);
+  window.addEventListener('resize', closePops);
+
+  renderPicks();
+  buildNav();
+  buildPanes();
+  showPanel(wanted);
+  renderStats();
+}
+
+// Task 4 fills this in; defined now so ddBoot() cannot throw on a missing symbol
+// — a ReferenceError here would stop boot and blank every pane, which is the
+// failure shape this project has hit five times.
+function renderStats(){}
+
+ddBoot();
+</script>
+</body>
+</html>
+
