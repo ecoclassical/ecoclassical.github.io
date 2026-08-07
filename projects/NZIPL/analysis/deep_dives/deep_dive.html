@@ -113,6 +113,35 @@ body.printing .ir-pane iframe{height:620px;}
 .ir-nav-why{font-size:9.5px;color:rgba(255,255,255,.28);padding:0 10px 6px 25px;line-height:1.35;}
 .dd-tag{font-size:8.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   padding:1px 5px;border-radius:3px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);}
+
+/* ── the case stats strip ──
+   CSS_IR splits the page 66.66 / 33.34. Deep Dives gives the band back to the
+   panels: the strip is a row of tiles, not prose, and needs about two thirds of
+   what the intelligence report reserves for its narrative. This is an OVERRIDE —
+   CSS_IR is shared with report_builder.html and is not edited here.
+   Because CSS_DD is emitted after CSS_IR, these same-specificity rules would also
+   beat CSS_IR's print rules, so the print heights are restated below. */
+#ir-top{height:78vh;}
+#ir-analysis{height:22vh;padding:12px 20px 15px;}
+body.printing #ir-top,body.printing #ir-analysis{height:auto;}
+@media print{#ir-top,#ir-analysis{height:auto;}}
+
+.dd-stats-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px;}
+.dd-stats-note{font-size:9.5px;color:rgba(255,255,255,.3);line-height:1.4;}
+.dd-basis{font-size:8.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;border:1px solid var(--border-hi);background:var(--surface);
+  color:rgba(255,255,255,.62);font-family:inherit;cursor:pointer;transition:all .15s;}
+.dd-basis:hover{border-color:var(--accent);color:#fff;}
+.dd-basis.corr{background:rgba(60,181,74,.14);border-color:var(--accent);color:var(--accent);}
+.dd-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:7px;}
+.dd-tile{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 11px 9px;}
+.dd-tile .k{font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.32);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dd-tile .v{font-size:17px;font-weight:800;color:#fff;margin-top:2px;line-height:1.15;}
+.dd-tile .s{font-size:9.5px;color:rgba(255,255,255,.4);margin-top:2px;line-height:1.4;}
+.dd-tile.pos .v{color:#3cb54a;}
+.dd-tile.neg .v{color:#f97316;}
+.dd-stats-msg{font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;}
 </style>
 </head>
 <body>
@@ -425,10 +454,204 @@ function ddBoot(){
   renderStats();
 }
 
-// Task 4 fills this in; defined now so ddBoot() cannot throw on a missing symbol
-// — a ReferenceError here would stop boot and blank every pane, which is the
-// failure shape this project has hit five times.
-function renderStats(){}
+// ── the case stats strip ─────────────────────────────────────────────────────
+// Read from the same case bundle the panels draw from, so the strip and the
+// panes cannot disagree about the pair they are both describing. Nothing here
+// is precomputed: no new slice, no sidecar file.
+//
+// renderStats() is called from ddBoot() and setPair() and must never throw — a
+// ReferenceError here would stop boot and blank every pane, the failure shape
+// this project has hit five times.
+
+let ddBasis = 'raw';          // 'raw' | 'corr' — stated on the chip, never implied
+let statsToken = 0;           // a newer pair must win a race with an older fetch
+let gdpPromise = null, gdpIndex = null;
+const bundleCache = {};
+
+const DASH = '—';
+
+// _gdp.json is 277 KB, 36x _index.json. Fetched once, on the first strip render,
+// never at boot.
+function loadGDP(){
+  if(gdpPromise) return gdpPromise;
+  gdpPromise = fetch(DATA_DIR + '_gdp.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(rows => {
+      gdpIndex = {};
+      (rows || []).forEach(r => { gdpIndex[r.iso3 + '|' + r.year] = r.gdp_mil_usd; });
+      return gdpIndex;
+    })
+    .catch(() => { gdpIndex = {}; return gdpIndex; });
+  return gdpPromise;
+}
+
+function loadBundle(key){
+  if(!(key in bundleCache)){
+    bundleCache[key] = fetch(DATA_DIR + key + '.json')
+      .then(r => r.ok ? r.json() : null).catch(() => null);
+  }
+  return bundleCache[key];
+}
+
+// A missing figure is an em-dash. Never NaN, never undefined, never a field that
+// quietly disappears — the reader cannot tell a dropped field from a zero.
+function num(v){ return (typeof v === 'number' && isFinite(v)) ? v : null; }
+function fmtKUSD(v){
+  if(v === null) return DASH;
+  const sign = v < 0 ? '−' : '', a = Math.abs(v);
+  if(a >= 1e6) return sign + '$' + (a/1e6).toFixed(1) + 'B';
+  if(a >= 1e3) return sign + '$' + (a/1e3).toFixed(1) + 'M';
+  return sign + '$' + a.toFixed(0) + 'K';
+}
+// Already in percent units (0.134 means 0.134 %), so no x100 here.
+function fmtPctUnits(v){
+  if(v === null) return DASH;
+  return (Math.abs(v) >= 0.1 ? v.toFixed(2) : v.toFixed(3)) + ' %';
+}
+// A fraction (0.3587) rendered as a percentage.
+function fmtFrac(v, dp){ return v === null ? DASH : (v*100).toFixed(dp == null ? 1 : dp) + ' %'; }
+function fmtSigned(v){ return v === null ? DASH : (v >= 0 ? '+' : '−') + Math.abs(v*100).toFixed(1) + ' %'; }
+function fmtNum(v, dp){ return v === null ? DASH : v.toFixed(dp); }
+
+// Every figure the strip shows, derived in one place so the tiles cannot drift
+// from each other on basis or on year.
+function statFields(d){
+  const corr = ddBasis === 'corr';
+  const kx = corr ? 'exports_kusd_c' : 'exports_kusd';
+  const km = corr ? 'imports_kusd_c' : 'imports_kusd';
+  const pk = corr ? 'partners_yearly_c' : 'partners_yearly';
+
+  const yr = (d.yearly || []).slice().sort((a,b) => a.year - b.year);
+  if(!yr.length) return null;
+  const last = yr[yr.length-1], Y = last.year;
+  const exp = num(last[kx]), imp = num(last[km]);
+  const f = { year: Y, exports: exp, imports: imp,
+              balance: (exp === null || imp === null) ? null : exp - imp };
+
+  // ⚠ UNITS. Bundle values are KUSD, _gdp.json is millions USD:
+  // pct = val_kusd / gdp_mil_usd / 10. See CLAUDE.md, "Units".
+  const g = num(gdpIndex ? gdpIndex[d.iso + '|' + Y] : null);
+  f.gdpYear = g;
+  f.pctExp = (g && exp !== null) ? exp / g / 10 : null;
+  f.pctImp = (g && imp !== null) ? imp / g / 10 : null;
+
+  // 10-year CAGR, only where both endpoints are strictly positive — a CAGR off a
+  // zero or negative base is not a growth rate, it is a division artefact.
+  const base = yr.find(r => r.year === Y - 10);
+  f.cagrFrom = base ? base.year : null;
+  const bx = base ? num(base[kx]) : null, bm = base ? num(base[km]) : null;
+  f.cagrExp = (bx !== null && bx > 0 && exp !== null && exp > 0) ? Math.pow(exp/bx, 0.1) - 1 : null;
+  f.cagrImp = (bm !== null && bm > 0 && imp !== null && imp > 0) ? Math.pow(imp/bm, 0.1) - 1 : null;
+
+  // Partner shares are taken against the flow total from `yearly`, NOT against
+  // the sum of the partner rows: partners_yearly is the top 8 per year and
+  // direction, so its own sum is not the trade total. For Solar - India 2024 the
+  // partner sum would report the USA at 58 % of exports where it is 36 %.
+  const part = (dir, total) => {
+    const rows = (d[pk] || []).filter(r => r.year === Y && r.dir === dir)
+                              .sort((a,b) => b.v - a.v);
+    if(!rows.length) return null;
+    const v = num(rows[0].v);
+    return { partner: rows[0].partner, share: (v !== null && total) ? v/total : null };
+  };
+  f.topDest = part('dest', exp);
+  f.topSrc  = part('src',  imp);
+
+  // The bundle ships four HHI series; the partner-concentration one is imports.
+  const h = (d.hhi || []).filter(r => r.series === 'Imports: partner HHI')
+                         .sort((a,b) => a.year - b.year);
+  f.hhi = h.length ? h[h.length-1] : null;
+
+  const defs = d.deficits || [];
+  f.defPersistent = defs.filter(r => r.persistent).length;
+  f.defTotal = defs.length;
+  f.codes = (d.products || []).length;
+
+  const pc = (d.pc || []).slice().sort((a,b) => a.year - b.year);
+  f.pc = pc.length ? pc[pc.length-1] : null;
+  f.meta = d.bench_meta || null;
+  return f;
+}
+
+function tile(k, v, s, cls){
+  return '<div class="dd-tile' + (cls ? ' ' + cls : '') + '">' +
+    '<div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+    '<div class="s">' + (s || '&nbsp;') + '</div></div>';
+}
+
+function statsHead(note){
+  const chip = '<button class="dd-basis' + (ddBasis === 'corr' ? ' corr' : '') + '" id="dd-basis" ' +
+    'title="Raw counts a shared HS code in full under every technology that claims it. ' +
+    'Corrected splits it. Click to switch.">' +
+    (ddBasis === 'corr' ? 'Corrected basis' : 'Raw basis') + '</button>';
+  return '<div class="dd-stats-hd"><span class="ir-analysis-ph">Case statistics</span>' +
+         chip + '<span class="dd-stats-note">' + note + '</span></div>';
+}
+
+function wireBasis(){
+  const b = document.getElementById('dd-basis');
+  if(b) b.addEventListener('click', () => { ddBasis = ddBasis === 'raw' ? 'corr' : 'raw'; renderStats(); });
+}
+
+function renderStats(){
+  const el = document.getElementById('dd-stats');
+  if(!el) return;
+  const key = ddTech + '_' + ddCountry;
+  const my = ++statsToken;
+
+  if(!DATACASES.has(key)){
+    el.innerHTML = statsHead('No engine case bundle for this pair, so there are no figures to show.') +
+                   '<div class="dd-stats-msg">' + ddTech + ' · ' + ddCountry + ' is not one of the 297 built cases.</div>';
+    wireBasis();
+    return;
+  }
+
+  el.innerHTML = statsHead('Reading the case bundle…');
+  wireBasis();
+
+  Promise.all([loadBundle(key), loadGDP()]).then(([d]) => {
+    if(my !== statsToken) return;                   // a newer pair has taken over
+    const f = d ? statFields(d) : null;
+    if(!f){
+      el.innerHTML = statsHead('The case bundle could not be read.') +
+        '<div class="dd-stats-msg">If you opened this over file://, use a local server or the deployed site.</div>';
+      wireBasis();
+      return;
+    }
+
+    const basisWord = ddBasis === 'corr' ? 'multi-use corrected' : 'raw';
+    const cagrNote = f.cagrFrom ? f.cagrFrom + '–' + f.year + ' CAGR' : '10-yr CAGR';
+    const note = 'All figures for <b>' + f.year + '</b>, on the ' + basisWord +
+                 ' basis, from ' + key + '.json.';
+
+    const bal = f.balance;
+    const tiles = [
+      tile('Exports ' + f.year, fmtKUSD(f.exports),
+           fmtPctUnits(f.pctExp) + ' of GDP · ' + fmtSigned(f.cagrExp) + ' ' + cagrNote),
+      tile('Imports ' + f.year, fmtKUSD(f.imports),
+           fmtPctUnits(f.pctImp) + ' of GDP · ' + fmtSigned(f.cagrImp) + ' ' + cagrNote),
+      tile('Trade balance', fmtKUSD(bal),
+           bal === null ? DASH : (bal < 0 ? 'net importer' : 'net exporter'),
+           bal === null ? '' : (bal < 0 ? 'neg' : 'pos')),
+      tile('Top destination', f.topDest ? f.topDest.partner : DASH,
+           f.topDest ? fmtFrac(f.topDest.share) + ' of exports' : 'no partner rows'),
+      tile('Top source', f.topSrc ? f.topSrc.partner : DASH,
+           f.topSrc ? fmtFrac(f.topSrc.share) + ' of imports' : 'no partner rows'),
+      tile('Import partner HHI', f.hhi ? fmtNum(num(f.hhi.hhi), 3) : DASH,
+           f.hhi ? 'concentration, ' + f.hhi.year : 'no HHI series'),
+      tile('Persistent deficits', String(f.defPersistent),
+           'of ' + f.defTotal + ' deficit products'),
+      tile('HS codes', String(f.codes), 'traded in this chain'),
+      tile('Predicted competitiveness', f.pc ? fmtNum(num(f.pc.pc), 3) : DASH,
+           f.pc ? 'PC score, ' + f.pc.year : 'no PC score for this pair'),
+      tile('Region', f.meta && f.meta.wb_region ? f.meta.wb_region : DASH,
+           f.meta && f.meta.n_world ? 'ranked among ' + f.meta.n_world + ' countries' : '')
+    ].join('');
+
+    el.innerHTML = statsHead(note) + '<div class="dd-tiles">' + tiles + '</div>';
+    wireBasis();
+  });
+}
 
 ddBoot();
 </script>
