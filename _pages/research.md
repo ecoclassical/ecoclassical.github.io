@@ -58,6 +58,20 @@ The structure of intermediate production networks determines both the normal dyn
 
 ---
 
+### The Structure of Ecological Unequal Exchange
+
+Ecologically unequal exchange is now measurable at global scale: high-income economies appropriate raw materials, energy, land and labour from lower-income economies in physical volumes far exceeding what they export, while capturing the value added. That result — established in the form given by Dorninger et al. (2021) — is fundamentally **bilateral**, a set of net flows between country groups. This project asks the question bilateral accounting cannot answer: **how is that appropriation organised as a network?**
+
+Bilateral flows say that country A appropriates from country B. They do not say whether appropriation runs through a small set of broker sectors intermediating between peripheral extraction and core consumption; whether the world system decomposes into regional blocs with distinct ecological metabolisms or into a single core–periphery hierarchy; whether a country's position reflects its size or its structural role; or how deep the supply chains are through which appropriation actually travels.
+
+There is a precise reason the network is the right object rather than a borrowed image. Because the matrix of technical coefficients is column-substochastic, the Leontief inverse is the walk-generating function of the production graph, $(I-A)^{-1} = \sum_k A^k$. Leontief multipliers therefore *are* a path-counting centrality in the literal sense. Network measures here inherit an economic interpretation instead of importing a metaphor.
+
+Built on the **GLORIA** multi-regional supply-use tables (release 060, 164 regions × 120 sectors, 2012–2026), parsed in Julia with the Leontief inverse never materialised — every question is a backsolve against a stored factorization, which is what keeps the analysis tractable on ordinary hardware.
+
+**Current output**: [The Structure of Ecological Unequal Exchange](/projects/ecological_unequal_exchange/) — 2019 cross-section complete; network analysis and temporal extension in progress.
+
+---
+
 ### History of Economic Thought
 
 Methodological and historical work on the development of value theory, the thermodynamic foundations of political economy, and the relationship between classical and neoclassical research programmes.

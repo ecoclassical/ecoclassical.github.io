@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Mapping the network structure of ecologically unequal exchange: who appropriates whose materials, energy, land and labour through global trade, and how that appropriation is organised as a network." />
+<meta name="keywords" content="ecologically unequal exchange, GLORIA, MRIO, input-output, Leontief, production networks, core-periphery, world-systems, embodied resources, Dorninger" />
+<title>The Structure of Ecological Unequal Exchange</title>
+<style>
+  :root {
+    --bg:        #080d18;
+    --surface:   #0f1726;
+    --surface2:  #162035;
+    --border:    rgba(255,255,255,0.07);
+    --border-hi: rgba(255,255,255,0.14);
+    --text:      #e2e8f0;
+    --muted:     #7a8aa0;
+    --accent:    #4f9cf9;
+    --accent2:   #38d9a9;
+    --accent3:   #f9a84f;
+    --accent4:   #c084fc;
+    --font:      -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+    --mono:      "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; }
+  a { color: var(--accent); }
+  .back {
+    display: inline-block; font-size: 12.5px; color: var(--muted);
+    text-decoration: none; margin-bottom: 32px; letter-spacing: 0.02em;
+  }
+  .back:hover { color: var(--accent); }
+  .eyebrow {
+    font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent4); background: rgba(192,132,252,0.1);
+    border: 1px solid rgba(192,132,252,0.3); padding: 3px 9px; border-radius: 4px;
+    display: inline-block; margin-bottom: 20px;
+  }
+  h1 { font-size: clamp(28px, 5vw, 42px); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 18px; }
+  .standfirst { font-size: 17px; color: var(--muted); margin-bottom: 44px; max-width: 62ch; }
+  h2 {
+    font-size: 20px; letter-spacing: -0.01em; margin: 48px 0 16px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 15px; margin: 28px 0 10px; color: var(--accent2); }
+  p { margin-bottom: 16px; max-width: 68ch; }
+  ul { margin: 0 0 16px 22px; max-width: 66ch; }
+  li { margin-bottom: 8px; }
+  strong { color: #fff; font-weight: 600; }
+  .eq {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 18px 22px; margin: 20px 0; font-family: var(--mono); font-size: 14px;
+    color: var(--accent2); overflow-x: auto;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin: 24px 0; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 18px;
+  }
+  .stat .n { font-size: 24px; font-weight: 700; color: var(--accent); font-family: var(--mono); }
+  .stat .l { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+  .note {
+    background: var(--surface2); border-left: 3px solid var(--accent3);
+    border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 24px 0; font-size: 14.5px;
+  }
+  .tags { margin-top: 36px; }
+  .tag {
+    display: inline-block; font-size: 11px; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 20px; margin: 0 6px 6px 0;
+  }
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; display: block; overflow-x: auto; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="../">&larr; Projects</a>
+
+  <div class="eyebrow">Active · In progress</div>
+  <h1>The Structure of Ecological Unequal Exchange</h1>
+  <p class="standfirst">
+    Who appropriates whose materials, energy, land and labour through global trade — and, the
+    question this project adds, <strong>how that appropriation is organised as a network</strong>.
+  </p>
+
+  <h2>The question</h2>
+
+  <p>
+    Ecologically unequal exchange is now measurable at global scale. High-income economies
+    appropriate raw materials, energy, land and labour from lower-income economies in physical
+    volumes far exceeding what they send back, while capturing the value added. That result, in the
+    form established by Dorninger et al. (2021), is fundamentally <strong>bilateral</strong>: a set
+    of net flows between countries and country groups.
+  </p>
+
+  <p>
+    Bilateral flows tell you that country A appropriates from country B. They do not tell you how
+    the appropriation is <em>structured</em>:
+  </p>
+
+  <ul>
+    <li>Is it organised through a small set of <strong>broker sectors</strong> intermediating between
+      peripheral extraction and core consumption?</li>
+    <li>Does the world system decompose into <strong>regional blocs</strong> with distinct ecological
+      metabolisms, or into a single <strong>core–periphery</strong> hierarchy? These are competing
+      hypotheses, not complementary ones.</li>
+    <li>Is a country's position a property of its <strong>size</strong>, or of its
+      <strong>structural role</strong>?</li>
+    <li>How <strong>deep</strong> are the supply chains through which appropriation actually travels?
+      A first-tier flow and a fifth-tier embodied flow describe very different economies.</li>
+  </ul>
+
+  <h2>Why a network, and not a metaphor</h2>
+
+  <p>
+    There is a precise reason network structure is the right object here rather than a borrowed
+    image. Writing <span style="font-family:var(--mono)">A</span> for the matrix of technical
+    coefficients, the Leontief inverse is a geometric series:
+  </p>
+
+  <div class="eq">(I − A)⁻¹ = Σ<sub>k≥0</sub> A<sup>k</sup></div>
+
+  <p>
+    Because <span style="font-family:var(--mono)">A</span> is column-substochastic, this is a random
+    walk with leakage, and the inverse is its <strong>walk-generating function</strong>. Leontief
+    multipliers therefore <em>are</em> a path-counting centrality, in the literal sense — not an
+    analogy to one. Computing centrality on this network computes the same quantity input–output
+    economics has always computed, in a language that lets structural questions be asked of it.
+  </p>
+
+  <div class="note">
+    A second consequence constrains what can be claimed. The accounting identity forces every column
+    of <span style="font-family:var(--mono)">A</span> to sum to exactly
+    <span style="font-family:var(--mono)">1 − π<sub>j</sub></span>, the non-value-added share. The
+    weights are <strong>compositional</strong>, so any distributional claim that ignores the
+    constraint risks recovering an artifact of the accounting and reporting it as economics.
+  </div>
+
+  <h2>Data and method</h2>
+
+  <p>
+    The project is built on the <strong>GLORIA multi-regional supply-use tables</strong> (release
+    060), converted to a Leontief input–output system and solved as an environmentally extended
+    MRIO. Embodied resource flows follow
+    <span style="font-family:var(--mono)">F = q̂ L ŷ</span>; trade in value added follows
+    <span style="font-family:var(--mono)">B = p̂ L ŷ</span>.
+  </p>
+
+  <div class="grid">
+    <div class="stat"><div class="n">164</div><div class="l">Regions</div></div>
+    <div class="stat"><div class="n">120</div><div class="l">Sectors</div></div>
+    <div class="stat"><div class="n">19,680</div><div class="l">Country-sector nodes</div></div>
+    <div class="stat"><div class="n">2012–2026</div><div class="l">Series available</div></div>
+  </div>
+
+  <p>
+    Parsing is done in Julia via <a href="https://github.com/theplatters/Juliora">Juliora</a>, with
+    large matrices held outside R and only aggregates or edge lists crossing the boundary. The
+    Leontief inverse is never materialised — every question takes the form of a backsolve against a
+    stored factorization, which is what makes the analysis tractable on ordinary hardware rather
+    than requiring cloud compute.
+  </p>
+
+  <h3>Measures deployed</h3>
+
+  <ul>
+    <li><strong>Global structure</strong> — edge-weight and strength distributions; density measured
+      on a disparity-filter backbone at a stated threshold, since MRIO graphs are near-complete and
+      raw density is uninformative.</li>
+    <li><strong>Per-country tail parameters</strong> against the global benchmark, extending
+      Acemoglu et al. (2012) from a single national input–output network to 164 economies, with
+      log-normal tested against power law rather than assumed.</li>
+    <li><strong>Centrality</strong> — strength, PageRank and betweenness over country-sector nodes,
+      with flow weights inverted to distances before any shortest-path computation.</li>
+    <li><strong>Community structure and hierarchy</strong>, using direction-aware methods, since the
+      entire claim of unequal exchange is directional.</li>
+    <li><strong>Core–periphery detection</strong>, arbitrated against modularity by a
+      degree-corrected stochastic block model rather than reported alongside it.</li>
+  </ul>
+
+  <h2>Status</h2>
+
+  <table>
+    <tr><th>Stage</th><th>State</th></tr>
+    <tr><td>GLORIA 060 pipeline, 2019</td><td>Complete — accounts balance to ~10⁻¹⁶</td></tr>
+    <tr><td>Year-keyed cache for iterative analysis</td><td>In progress</td></tr>
+    <tr><td>Network analysis, 2019</td><td>In progress</td></tr>
+    <tr><td>Temporal extension, 2012–2026</td><td>Planned</td></tr>
+  </table>
+
+  <p>
+    The 2019 cross-section is the primary deliverable. Temporal extension follows once the
+    single-year structure is characterised — first a spread of years chosen around the endpoints and
+    the pandemic disruption, then the full series.
+  </p>
+
+  <div class="tags">
+    <span class="tag">GLORIA MRIO</span>
+    <span class="tag">Input–output</span>
+    <span class="tag">Ecologically unequal exchange</span>
+    <span class="tag">Production networks</span>
+    <span class="tag">Core–periphery</span>
+    <span class="tag">World-systems</span>
+    <span class="tag">Embodied resources</span>
+    <span class="tag">Julia · R</span>
+  </div>
+
+  <footer>
+    Oriol Vallès Codina, with Franz Scharnreitner and Lukas Cserjan.<br />
+    Building on Dorninger et al. (2021), <em>Global patterns of ecologically unequal exchange</em>,
+    <em>Ecological Economics</em>.
+  </footer>
+
+</div>
+</body>
+</html>
