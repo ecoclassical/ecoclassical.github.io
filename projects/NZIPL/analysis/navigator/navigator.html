@@ -3,12 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Clean Supply Chain Atlas Navigator</title>
+<title>Clean Supply Chain Navigator</title>
 <!--
-  navigator.html — the Clean Supply Chain Atlas Navigator.
+  navigator.html — the Clean Supply Chain Navigator.
   (Renamed 2026-07-30 from integrated_explorer.html / "Integrated Explorer".
    Its numeric companion is data_explorer.html, the Clean Supply Chain Data Explorer.
-   It navigates ACROSS the per-country atlas sheets in analysis/atlas/, hence "Atlas".)
+
+   Consolidated 2026-08-07: this file WAS supply_chain_navigator.html, forked from
+   the Atlas Navigator on 2026-08-06 and now moved onto its path. The project ships
+   ONE navigator. The retired page is a plain delete in the same commit; git shows
+   this as a modification of navigator.html rather than a rename, because rename
+   detection pairs deletes with adds and this target path already existed.
+
+   "Atlas" is deliberately gone from the name. The old page navigated ACROSS the
+   per-country atlas sheets in analysis/atlas/, hence "Atlas"; this one makes the
+   production chain the stage, with the globe drawn inside the selected node, so
+   the atlas sheets are no longer what it is organised around.
+
+   ⚠️ Depends on the flows sidecar at analysis/navigator/data/flows/ (297 files,
+   gitignored by design — register B-20). The retired navigator.html had ZERO
+   references to it; this one has six. A fresh clone degrades to whole-technology
+   numbers until scripts/proto/build_datadriven_proto.R is run.)
 
   A single integrated visual fusing three atlas panes into one:
     ① focal-centered world map           (cockpit zoom on the focus country)
@@ -123,8 +138,10 @@
            font-size:.56rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
            border:1px solid rgba(255,255,255,.18);white-space:nowrap;align-self:flex-start;}
   .de-link:hover{background:var(--accent);color:#04210a;border-color:var(--accent);}
-  /* two-line brand at the head of the left stack: CLEAN SUPPLY CHAIN / ATLAS NAVIGATOR
-     (the product name stays on ONE line — it is a name, not two words to be stacked) */
+  /* two-line brand at the head of the left stack: CLEAN SUPPLY CHAIN / NAVIGATOR.
+     The two lines read as one title, so the second must not repeat a word from the first — it
+     said "Chain Navigator" under "Clean Supply Chain" and the eye read "Chain" twice.
+     Whatever sits on l2 stays on ONE line — it is a name, not words to be stacked. */
   .brand-2l{display:flex;flex-direction:column;white-space:nowrap;line-height:1.15;flex-shrink:0;gap:1px;}
   .brand-2l .l1{font-size:.58rem;font-weight:700;letter-spacing:.4px;color:var(--accent);text-transform:uppercase;}
   .brand-2l .l2{font-size:.8rem;font-weight:800;letter-spacing:.2px;color:#fff;text-transform:uppercase;}
@@ -306,7 +323,6 @@
 <div id="split">
   <div id="left">
     <svg id="stage"></svg>
-    <button id="mapmode" title="Toggle flat map / 3D globe">🌐 Globe</button>
     <button id="firmtoggle" title="Show/hide S&amp;P firm activity dots">🏭 Firms</button>
     <button id="mutoggle" title="Raw trade vs multi-use corrected (EXIOBASE direct use shares) — corrects for the fact that most copper, aluminium and steel trade never reaches this technology">⚖️ Raw</button>
   </div>
@@ -318,7 +334,7 @@
   <div class="pnl pnl-fixed" id="p-title">
     <div class="title-split">
       <div class="brand-2l">
-        <span class="l1">Clean Supply Chain</span><span class="l2">Atlas&nbsp;Navigator</span>
+        <span class="l1">Clean Supply Chain</span><span class="l2">Navigator</span>
         <a class="de-link" href="data_explorer.html" title="Open the numeric companion: raw BACI trade data, HS-6 codes in line, everything downloadable">Data&nbsp;Explorer&nbsp;&rarr;</a>
       </div>
       <div id="bar-title">
@@ -375,12 +391,32 @@
      box, one fewer header to read. ══ -->
 <div id="rstack" class="stack">
 
+  <!-- The four drums are back (2026-08-07, consolidation Task 3). They were removed when this
+       page was forked, on the argument that the chain IS the control surface — you pick a
+       product by clicking its node, so a Product drum is a second way to do the same thing.
+       That argument holds for Product and fails for the other three: Stage, Role and Category
+       select a SET, which clicking one node cannot express. With the page now the project's
+       only navigator, dropping them would drop the capability outright rather than move it.
+
+       Restored as HTML only. Nothing in the JS changed: fillDrum(), initDrums(),
+       updateDrumRole/Cat/Product(), pickSR() and clearFilters() were never deleted — fillDrum()
+       returns quietly on an absent element (see its first line), so the whole chain stayed live
+       against markup that was not there. The .drum-* CSS was still here too.
+
+       Scroll geometry is the atlas's and must not drift: spacer 22px, initial scrollTop
+       19+idx*22, readback (scrollTop-19)/22. Documented in CLAUDE.md because it has been got
+       wrong before.
+
+       --bh grows 74px -> 170px to seat the wheels. This does NOT move the globe: drawFusion()
+       measures its clear band from lstack.right and rstack.LEFT — horizontal edges only — so a
+       taller right stack leaves the band, and the globe in it, where they were. Measured
+       before/after: globe bbox unchanged at (877.8, 254.3, 304.4px). -->
   <div class="pnl" id="p-drums" style="--bh:170px">
     <button class="pnl-hd" type="button" data-pnl="p-drums" aria-expanded="true" aria-controls="p-drums-bd">
-      <span class="pnl-t">Supply Chain Selector</span><span class="chev" aria-hidden="true">▾</span></button>
+      <span class="pnl-t">Supply Chain Selector</span><span class="chev" aria-hidden="true">&#9662;</span></button>
     <div class="pnl-bd" id="p-drums-bd"><div class="pnl-in">
       <div id="sel-title"><span class="stx" id="sel-stx">Whole technology</span>
-        <button id="sel-clear" type="button" style="display:none">✕ clear all</button></div>
+        <button id="sel-clear" type="button" style="display:none">&#10005; clear all</button></div>
       <div class="drums">
         <div class="drum-row"><span class="drum-lab">Stage</span><div class="drum-wrap" id="drum-stage"><div class="drum-hl"></div><div class="drum-inner" id="drum-stage-inner"></div></div></div>
         <div class="drum-row"><span class="drum-lab">Role</span><div class="drum-wrap" id="drum-role"><div class="drum-hl"></div><div class="drum-inner" id="drum-role-inner"></div></div></div>
@@ -404,7 +440,7 @@
         <button class="nav-mode-btn active" type="button" id="nav-mode-product" data-mode="product">By Product</button>
         <button class="nav-mode-btn" type="button" id="nav-mode-sr" data-mode="sr">By Stage/Role</button>
       </div>
-      <span id="nav-hd-sub">upstream → final product, left to right · click a node to trace it on the map</span>
+      <span id="nav-hd-sub">zoomed-out reference · the ring marks where the globe is</span>
       <svg id="nav"></svg>
     </div></div>
   </div>
@@ -435,6 +471,46 @@ const TECH_COLORS = {Solar:'#eab308',Nuclear:'#0ea5e9',Batteries:'#f59e0b',Trans
 let TECH="Solar", COUNTRY="India";
 let D=null, TD=null;           // case json, tech json (dendrite tree)
 let selProduct=null;           // selected HS code (solar-system navigation)
+// The chain node the globe currently occupies. Written by drawFusion(), read by the overview
+// panel's position marker — one variable rather than each view picking its own node, because
+// several process steps can share one HS code and two independent picks would disagree.
+let STAGE_SEL_CN=null, STAGE_SEL_CODE=null, STAGE_L=null;
+/* Declared with the rest of the state, not down beside drawNav(), because chainLayout()
+   reads it and is defined earlier in the file — a `let` further down would sit in the
+   temporal dead zone for any caller that ran before it. */
+let navMode='product';   // 'product' (per-HS-code dendrite) | 'sr' (7-node stage/role network)
+/* Remembers the HS code picked in By Product across a trip through By Stage/Role, so
+   coming back restores the same product rather than the largest node. */
+let navModeMemoCode=null;
+/* The HS code the page is currently ABOUT. Not the same thing as selProduct: the globe always
+   occupies some node (the largest, before anything is clicked), so on first load selProduct is
+   null while the stage is unmistakably showing one product. Reading the panel off selProduct
+   there printed whole-technology totals beside a globe labelled with a single product — the
+   right label over the wrong number. Both sides read this instead, so they cannot disagree,
+   and clearFilters() still means something because it resets the drums rather than this. */
+/* ── THE selection, in one place ───────────────────────────────────────────────
+   Four control surfaces can write it — a node in the stage map, a node in the overview
+   map, the drums, the SR legend — and every panel must read the same answer from all
+   four. Before this the answer was inferred separately at each call site from
+   `selProduct || STAGE_SEL_CODE`, which is how the headline and Top Partners once came
+   to answer different questions in the same box (a $5.3B China row under a $3.1B
+   imports total — B-21).
+
+   `code` is an HS code or null, NEVER a "Stage|Role" key: `STAGE_SEL_CODE` is already
+   null in sr mode for that reason (see drawFusion). `stage`/`role` are 'ALL' unless
+   narrowed. `mode` says which of the two data paths a panel should read:
+     · product  → productFlow() / flowPartnersAt(), the code-grained series + sidecar
+     · sr       → tlYear() / partnersAt(), the srPass()-filtered series
+   Both already exist and both already work. This is a router, not new arithmetic. */
+function selection(){
+  return {mode: navMode, code: (navMode==='sr' ? null : (selProduct || STAGE_SEL_CODE)),
+          stage: selStage, role: selRole,
+          /* true when the user picked the code, false when it is the auto-selected
+             largest node the globe defaults to. The panels read the same series either
+             way; the captions must not claim a pick that never happened. */
+          picked: !!selProduct};
+}
+function activeCode(){ return selection().code; }
 let selStage='ALL', selRole='ALL', selCat='ALL';   // drum filters (top-bar drumwheels)
 let root=null, zoomB=null, zoomT=d3.zoomIdentity;   // pan/zoom container + behavior + transform
 let mapMode='flat', globeRot=null, globeScale=1;    // flat map ⇄ 3D orthographic globe
@@ -574,10 +650,11 @@ function selSR(){
   return null;
 }
 function selName(){
-  if(!selProduct) return null;
-  const e=((TD&&TD.tree)||[]).find(x=>x.from_code===selProduct||x.to_code===selProduct);
-  if(e) return e.from_code===selProduct?(e.from_full||e.from_name):(e.to_full||e.to_name);
-  const p=(D.products||[]).find(x=>x.code===selProduct); return p?(p.desc_full||p.product_name):selProduct;
+  const code=activeCode();
+  if(!code) return null;
+  const e=((TD&&TD.tree)||[]).find(x=>x.from_code===code||x.to_code===code);
+  if(e) return e.from_code===code?(e.from_full||e.from_name):(e.to_full||e.to_name);
+  const p=((D&&D.products)||[]).find(x=>x.code===code); return p?(p.desc_full||p.product_name):code;
 }
 
 /* ── Supply Chain Selector → what each series can actually honour ─────────────────────────────
@@ -588,21 +665,51 @@ function selName(){
    the headline trade numbers (its rows re-sum to D.yearly). D.partners_yearly_sr is the same story
    one grain finer — year × dir × stage × role × partner — so the partner list and the map arrows
    now honour stage and role too (see partnersAt()). Neither series carries an HS-code dimension,
-   so CATEGORY (defined per HS code via D.scatter) and a single PRODUCT cannot be resolved against
-   either; and the world/regional rank+share rows are precomputed across all countries at the
-   whole-technology level. Those are reported as NOT APPLIED — never silently passed off as
-   filtered. ────────────────────────────────────────────────────────────────────────────────── */
+   so CATEGORY (defined per HS code via D.scatter) cannot be resolved against either; and the
+   world/regional rank+share rows are precomputed across all countries at the whole-technology
+   level. Those are reported as NOT APPLIED — never silently passed off as filtered.
+
+   A single PRODUCT is the exception, and only on THIS page. navigator.html has no code-grained
+   series at all, so there a picked HS code is always NOT APPLIED — that is where this wording
+   comes from. Here two code-grained series exist (products_flow in the bundle, feeding the
+   headline; the FLOWS sidecar, feeding Top Partners and the arrows), so the code usually IS
+   applied and must be labelled as such. They are asked SEPARATELY and are allowed to disagree:
+   they are different files with different cuts, so the headline can be per-product while the
+   partner list falls back, or the reverse. Reporting one panel's disposition on the other is how
+   this went wrong the first time — the panels showed HS 381800 while both captions said "not
+   applied", correct numbers under a caption that denied them. ──────────────────────────────── */
 function srPass(stage,role){
   return (selStage==='ALL'||stage===selStage)&&(selRole==='ALL'||role===selRole);
 }
 function srOn(){ return selStage!=='ALL'||selRole!=='ALL'; }
-function flowScope(){
+/* Did the picked product actually reach each surface? Each predicate makes the SAME call the
+   panel itself makes, so a caption cannot drift from the number above it.
+   · headline  → productFlow(): null when the code is outside products_flow's top-150 cut.
+   · partners  → flowPartnersAt(): null when the sidecar is missing or still loading. It returns
+     [] (truthy) for a code with no rows, which is "applied, and the answer is nothing" — the
+     panel treats that as per-product too, so the caption must agree. The map arrows read the
+     same call at the same code, so this predicate covers them as well. */
+function prodInFlows(){    return !!(selProduct && productFlow(activeCode())); }
+function prodInPartners(){ return !!(selProduct && flowPartnersAt(activeCode(),'src',selYear)); }
+/* `on` = stage/role are filtering the SERIES CHOICE — it selects which data source is read and
+   must stay exactly srOn(). `live` = something in the selection reached this panel, which is what
+   the chips and captions speak to. The two are different questions and were one field before. */
+function flowScope(prodApplied){
   const applied=[], ignored=[];
   if(selStage!=='ALL') applied.push(selStage);
   if(selRole!=='ALL')  applied.push(selRole);
   if(selCat!=='ALL')   ignored.push(selCat.toLowerCase()+' category');
-  if(selProduct)       ignored.push('HS '+selProduct);
-  return {applied, ignored, on:srOn()};
+  if(selProduct)       (prodApplied?applied:ignored).push('HS '+selProduct);
+  return {applied, ignored, on:srOn(), live:srOn()||!!prodApplied};
+}
+/* The reason an amber note gives has to match what was actually dropped. A category is dropped
+   because no series carries it; a product is dropped only when its code-grained series could not
+   answer — which is a different sentence, and saying "carries no HS-code dimension" about a page
+   that clearly does filter by HS code is the mislabel one level down. */
+function scopeOffWhy(sc,where){
+  return sc.ignored.some(s=>s.indexOf('HS ')===0)
+    ? `no per-product series for this code — ${where} is the whole technology`
+    : `this series is split by stage · role only, it carries no HS-code dimension`;
 }
 /* Exports/imports for one year under the ACTIVE stage/role filter, summed straight from
    D.timeline. Returns null when the year is absent from the series, so growthArrow() prints "--"
@@ -660,199 +767,472 @@ function partnersAt(dir,year){
    carry the same chip; only the dimensions nothing can honour (category, single HS code) still
    raise an amber flag. */
 function updateScopeFlags(){
-  const sc=flowScope(), filtered=anyFilter();
-  const chip=el=>{ if(!el) return;
-    el.className='pnl-flag'+(sc.on?' f-on':(filtered?' f-off':''));
-    el.textContent = sc.on ? 'filtered' : (filtered ? 'whole tech' : '');
+  // One scope per surface. The two panels read different code-grained files, so a single shared
+  // scope object cannot describe both without lying about one of them.
+  const f=flowScope(prodInFlows()), p=flowScope(prodInPartners()), filtered=anyFilter();
+  const chip=(el,sc)=>{ if(!el) return;
+    el.className='pnl-flag'+(sc.live?' f-on':(filtered?' f-off':''));
+    el.textContent = sc.live ? 'filtered' : (filtered ? 'whole tech' : '');
   };
-  chip(document.getElementById('flag-flows'));
-  chip(document.getElementById('flag-partners'));
+  chip(document.getElementById('flag-flows'),f);
+  chip(document.getElementById('flag-partners'),p);
   const ph=document.getElementById('phase');
   if(ph){
-    // The arrows honour exactly what the partner series can: stage and role. The amber warning is
-    // therefore tied to sc.ignored (category / single product) — NOT to "any filter at all", which
-    // would now be crying wolf over a selection the arrows do apply.
-    ph.classList.toggle('phase-warn',sc.ignored.length>0);
-    ph.textContent = sc.ignored.length
-      ? (sc.on ? `arrows filtered · ${sc.applied.join(' · ')} — ${sc.ignored.join(' and ')} not applied`
-               : 'filter active · map arrows stay whole-technology')
-      : (sc.on ? `arrows filtered · ${sc.applied.join(' · ')}`
-               : 'Phase 1 shell · arrows are tech-level');
+    // The arrows read flowPartnersAt() at the selected node's code — the same call prodInPartners()
+    // makes — so they honour stage, role AND the single product. The amber warning is tied to what
+    // is left over after that, NOT to "any filter at all", which would cry wolf over a selection
+    // the arrows do apply.
+    ph.classList.toggle('phase-warn',p.ignored.length>0);
+    ph.textContent = p.ignored.length
+      ? (p.live ? `arrows filtered · ${p.applied.join(' · ')} — ${p.ignored.join(' and ')} not applied`
+                : 'filter active · map arrows stay whole-technology')
+      : (p.live ? `arrows filtered · ${p.applied.join(' · ')}`
+                : 'Phase 1 shell · arrows are tech-level');
   }
 }
 
 /* ── the cockpit render ────────────────────────────────────────────────────── */
+/* ══ THE STAGE — the value chain IS the map ════════════════════════════════════════
+   navigator.html draws the globe on #stage and the dendrite in a 280px side panel.
+   Here those two roles are swapped: the dendrite occupies the stage, and the globe is
+   drawn INSIDE the selected node at that node's own dendrite position, with translucent
+   bands running out to its chain neighbours. The value chain as the solar system, one
+   product as the Earth.
+
+   The function keeps the name drawFusion() deliberately. Ten call sites across the year
+   slider, the drums, the zoom handler, the resize handler and loadCase() already call
+   it; renaming would mean touching all ten for no gain, and the contract ("redraw the
+   stage from current state") is unchanged. */
+
+/* Per-product partner flows, fetched lazily from the sidecar built by
+   build_datadriven_proto.R --flows. NOT in the case bundle: at top-8 it is ~7x
+   partners_yearly_sr, so it would land in every cold case fetch to serve this one page.
+
+   THE DIRECTORY IS GITIGNORED (register B-20), so "absent" is the NORMAL state on a
+   fresh clone, not an error. That is why FLOW_STATE has a 'missing' value distinct from
+   'error' and why the stage draws a visible note and falls back to the whole-tech
+   partner series rather than showing an empty globe with no explanation. */
+let FLOWS=null, FLOWS_KEY=null, FLOW_STATE='idle';   // idle | loading | ready | missing
+function flowsKey(){ return TECH.replace(/ /g,'_')+'_'+COUNTRY; }
+async function ensureFlows(){
+  const k=flowsKey();
+  if(FLOWS_KEY===k && FLOW_STATE!=='idle') return;   // already resolved (or resolving) for this case
+  FLOWS_KEY=k; FLOW_STATE='loading'; FLOWS=null;
+  let d=null;
+  try{ const r=await fetch('data/flows/'+k+'.json'); if(r.ok) d=await r.json(); }
+  catch(e){ /* file:// or offline — same user-visible outcome as a missing file */ }
+  if(!d){ FLOW_STATE='missing'; redrawAll(); return; }
+  /* VIZ.dec() resolves any column named in its lookup table: `dir` is there and decodes to
+     "dest"/"src". `partner` deliberately is NOT — its dictionary is per file, not global —
+     so it stays an integer index and is resolved here against this file's own array.
+     Adding `partner` to the shared lookup would silently decode it against the wrong table. */
+  const rows=VIZ.dec(d.flows), pl=d.partners||[];
+  const by=new Map();                       // code → dir → year → [{partner, v}]
+  rows.forEach(r=>{
+    const code=r.code, dir=r.dir, yr=+r.year;
+    let a=by.get(code); if(!a){ a=new Map(); by.set(code,a); }
+    let b=a.get(dir);   if(!b){ b=new Map(); a.set(dir,b); }
+    let c=b.get(yr);    if(!c){ c=[];        b.set(yr,c); }
+    c.push({partner:pl[r.partner]||String(r.partner), v:+r.v||0});
+  });
+  FLOWS={by, topN:d.top_n, withYear:d.with_year!==false};
+  FLOW_STATE='ready';
+  // redrawAll, NOT drawFusion. The sidecar arrives after the first paint, and it feeds the
+  // stats panel (Top Partners, its sparklines) as well as the stage. Redrawing only the stage
+  // left the panel showing whole-technology partners under a product headline until something
+  // else happened to trigger a re-render — the incoherence looked like a data bug, not a
+  // missing refresh, because every number in it was individually correct.
+  redrawAll();
+}
+/* Partners for ONE product at one year. Falls back to the whole-tech series when the
+   sidecar is absent, so the page stays usable without it — degraded, and labelled. */
+function flowPartnersAt(code,dir,year){
+  if(FLOW_STATE!=='ready'||!code) return null;
+  const a=FLOWS.by.get(code); if(!a) return [];
+  const b=a.get(dir);         if(!b) return [];
+  const rows=(FLOWS.withYear ? (b.get(year)||[]) : [...b.values()].flat());
+  // muShare is per (code, role) and this series still HAS its code, so the multi-use
+  // correction is applied here rather than by the builder — same rule as By-Product sizing.
+  const sh=muShare(code, PROD_ROLE.get(code));
+  return rows.map(p=>({dir,partner:p.partner,v:p.v*sh})).filter(p=>p.v>0).sort((a,b)=>b.v-a.v);
+}
+
+/* Shared dendrite layout. Identical topology to drawNavProduct() — same cnOf() node keying
+   and same longest-path-to-sink step map — but parameterised on width/height so the stage
+   and the small overview panel lay out the SAME graph at two scales. Extracted rather than
+   duplicated: two copies of a layout would drift, and the overview's position marker has to
+   land on the same node the stage has selected or it is worse than no marker at all. */
+/* padR defaults to padX, so the small overview panel keeps calling this with three arguments
+   and a symmetric inset while the stage passes an asymmetric one. */
+/* ── the stage·role network, defined ONCE ──────────────────────────────────────
+   Hoisted out of drawNavSR() (2026-08-07) so the big stage map can lay out the same
+   7-node graph the small overview map draws. Two copies of a 7-node topology is how
+   the two views come to disagree about what the chain is. */
+const LANE_SR=['Upstream|Raw Material','Midstream|Processed Material','Midstream|Process Equipment',
+  'Midstream|Product Component','Downstream|Product Component','Downstream|Process Equipment',
+  'Final Product|Final Product'];
+const LANE_LABEL=['Raw Material','Processed Material','Process Equipment','Product Component',
+  'Product Component','Process Equipment','Final Product'];
+const EDGES_SR=[[0,1],[1,2],[1,3],[2,5],[3,4],[5,6],[4,6]];
+
+/* The stage·role graph rewritten in chainLayout()'s edge shape, so ONE layout engine
+   serves both modes. `from` is the upstream end: chainLayout's relaxation puts `from`
+   one step deeper than `to`, and stepToX maps the deepest step to the LEFT — which is
+   the same direction EDGES_SR already runs (0 = Raw Material). */
+function srChainEdges(){
+  const mk=i=>({cn:LANE_SR[i], code:LANE_SR[i], name:LANE_LABEL[i],
+                full:LANE_SR[i].replace('|',' · '),
+                stage:LANE_SR[i].split('|')[0], role:LANE_SR[i].split('|')[1]});
+  return EDGES_SR.map(([a,b])=>{
+    const F=mk(a), T=mk(b);
+    return {from_code:F.code, from_cn:F.cn, from_name:F.name, from_full:F.full,
+            from_stage:F.stage, from_role:F.role,
+            to_code:T.code, to_cn:T.cn, to_name:T.name, to_full:T.full,
+            to_stage:T.stage, to_role:T.role};
+  });
+}
+
+/* Which stage·role is selected right now, however it was picked — drums, legend or a
+   node in either map. Null when nothing narrows it. */
+function srSelKey(){
+  if(selStage!=='ALL'&&selRole!=='ALL') return selStage+'|'+selRole;
+  return selSR();
+}
+
+function chainLayout(W,H,padX,padY,padR,edgeSrc){
+  // Second node-set source, not a second layout engine (2026-08-07). Everything below
+  // — the longest-path step, the bucketing, the undirected adjacency — is topology, and
+  // is identical for both graphs.
+  const edges=edgeSrc||(navMode==='sr'?srChainEdges():((TD&&TD.tree)||[]));
+  if(!edges.length) return null;
+  const cnOf=(code,cn)=>cn||code;
+  const nm=new Map(); const reg=(cn,c,nn,ff,st,ro)=>{ if(!nm.has(cn)) nm.set(cn,{cn,code:c,name:nn,full:ff,stage:st,role:ro}); return nm.get(cn); };
+  edges.forEach(e=>{
+    reg(cnOf(e.from_code,e.from_cn),e.from_code,e.from_name,e.from_full,e.from_stage,e.from_role);
+    reg(cnOf(e.to_code,e.to_cn),e.to_code,e.to_name,e.to_full,e.to_stage,e.to_role);
+  });
+  const nodes=[...nm.values()];
+  const stepMap=new Map(nodes.map(n=>[n.cn,0]));
+  let changed=true;
+  for(let i=0;i<25&&changed;i++){ changed=false;
+    edges.forEach(e=>{ const f=cnOf(e.from_code,e.from_cn), t=cnOf(e.to_code,e.to_cn);
+      const ts=stepMap.get(t)||0, fs=stepMap.get(f)||0;
+      if(fs<ts+1){ stepMap.set(f,ts+1); changed=true; } }); }
+  const maxStep=Math.max(0,...stepMap.values());
+  const pr=(padR==null?padX:padR);
+  const stepToX=s=>padX+Math.max(40,W-padX-pr)*(maxStep-s)/(maxStep||1);
+  const buckets={};
+  nodes.forEach(n=>{ const s=stepMap.get(n.cn)||0; (buckets[s]=buckets[s]||[]).push(n); });
+  Object.values(buckets).forEach(ns=>ns.sort((a,b)=>(a.name||'').localeCompare(b.name||'')));
+  const nodeY=new Map();
+  Object.values(buckets).forEach(ns=>{ const avail=H-2*padY, stp=avail/ns.length;
+    ns.forEach((n,i)=>nodeY.set(n.cn,padY+stp*(i+0.5))); });
+  const pos=cn=>[stepToX(stepMap.get(cn)||0), nodeY.get(cn)||H/2];
+  // undirected adjacency — the bands run to whatever the node is connected to, upstream or
+  // down. A band that only went downstream would make an upstream node look like a dead end.
+  const nbr=new Map(nodes.map(n=>[n.cn,new Set()]));
+  edges.forEach(e=>{ const f=cnOf(e.from_code,e.from_cn), t=cnOf(e.to_code,e.to_cn);
+    if(f===t) return; nbr.get(f)&&nbr.get(f).add(t); nbr.get(t)&&nbr.get(t).add(f); });
+  return {edges,nodes,stepMap,pos,nbr,cnOf,byCn:nm,maxStep};
+}
+/* The node the globe currently sits in. selProduct is an HS CODE and several process steps
+   can share one (Solar's 848620 covers 15), so the code alone does not identify a node —
+   the largest-valued node carrying that code is chosen, and that choice has to be the same
+   one the overview marker uses, which is why this is a function and not an inline pick. */
+function selectedCn(L,sval){
+  if(!L) return null;
+  /* In stage·role mode the selection is a lane, not an HS code, so match on the node's
+     own stage|role key. Falls through to "largest node" exactly as before when nothing
+     is picked, which is what puts the globe somewhere sensible on first paint. */
+  if(navMode==='sr'){
+    const k=srSelKey();
+    if(k){ const hit=L.nodes.find(n=>(n.stage+'|'+n.role)===k); if(hit) return hit.cn; }
+  }else if(selProduct){
+    const cand=L.nodes.filter(n=>n.code===selProduct);
+    if(cand.length) return cand.sort((a,b)=>sval(b)-sval(a))[0].cn;
+  }
+  return L.nodes.slice().sort((a,b)=>sval(b)-sval(a))[0]?.cn || null;
+}
+
+/* One product's exports/imports by year, from the bundle's products_flow block.
+   Memoised per (case, code): renderStats runs on every year step, drum change and redraw, and
+   decoding a ~2,000-row block each time would make the year slider stutter for no new data. */
+let PF_CACHE=new Map(), PF_KEY=null;
+function productFlow(code){
+  if(!code||!D||!D.products_flow) return null;
+  const k=TECH+'|'+COUNTRY;
+  if(PF_KEY!==k){ PF_CACHE=new Map(); PF_KEY=k; }
+  if(PF_CACHE.has(code)) return PF_CACHE.get(code);
+  const rows=VIZ.dec(D.products_flow).filter(r=>r.code===code);
+  // muShare is per (code, role) and this series keeps its code, so the correction belongs here
+  const sh=muShare(code, PROD_ROLE.get(code));
+  const m=rows.length?new Map(rows.map(r=>[r.year+'|'+r.flow,(+r.v||0)*sh])):null;
+  PF_CACHE.set(code,m);
+  return m;
+}
+
 function drawFusion(){
   if(!D) return;
   const svg=d3.select('#stage');
   const {W,H}=VIZ.dims('#stage');
   svg.selectAll('*').remove();
-  const CENT=VIZ.centroids(), FEATS=VIZ.feats(), ISO3N=VIZ.ISO3N;
-  const iso4id=id=>{ const s=String(id).padStart(3,'0'); return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(s)); };
-  let proj, fc, front=()=>true;   // front(lonlat) → is the point on the visible hemisphere (globe only)
+  // ── lay the chain out in the VISIBLE canvas, not the whole one ────────────────────────
+  // #stage spans the full window and the two panel stacks float ON TOP of it. Laying out
+  // across the full width therefore pushes the right-hand columns — where the final products
+  // and the biggest nodes are — underneath #rstack, and since the globe follows the selected
+  // node, the globe goes under the panel with it. Measured from the live elements rather than
+  // hardcoded from --stack-w/--stack-r-w so a collapsed or resized panel stays honest.
+  const bx=id=>{ const e=document.getElementById(id); return e?e.getBoundingClientRect():null; };
+  const lb=bx('lstack'), rb=bx('rstack');
+  const padL=(lb?lb.right:16)+34, padR=W-(rb?rb.left:W-16)+34;
+  const L=chainLayout(W,H,padL,26,padR);
+  if(!L){ msg('no value-chain data for this tech'); return; }
+  root=svg.append('g').attr('class','zoom-root').attr('transform',zoomT);
+  // Auto-pan lives on its OWN group inside the zoom root, not folded into the node coordinates.
+  // Two reasons: the user's d3.zoom transform keeps sole ownership of `root`, so panning by hand
+  // still composes cleanly; and every child stays in chain coordinates, so L.pos() means the same
+  // thing to the globe, the bands and anything measuring them. Baking the offset into the
+  // positions instead would make the globe's true position and its laid-out position differ by
+  // exactly the pan — invisible on screen and impossible to assert against.
+  const panG=root.append('g').attr('class','auto-pan');
 
-  if(mapMode==='globe'){
-    root=svg.append('g').attr('class','zoom-root');            // globe rotates via projection, not a group transform
-    const c0=CENT[D.iso]||[0,0];
-    const rot=globeRot||[-c0[0],-c0[1],0];
-    const scale=(Math.min(W,H)/2-24)*globeScale;
-    proj=d3.geoOrthographic().rotate(rot).translate([W/2,H/2]).scale(scale).clipAngle(90);
-    const gp=d3.geoPath(proj), centerLL=[-rot[0],-rot[1]];
-    front=ll=>d3.geoDistance(ll,centerLL)<=Math.PI/2+0.02;
-    root.append('path').datum({type:'Sphere'}).attr('d',gp)          // ocean sphere
-      .attr('fill','#0a1a12').attr('stroke','rgba(96,165,250,.28)').attr('stroke-width',1);
-    root.append('path').datum(d3.geoGraticule10()).attr('d',gp)      // graticule
-      .attr('fill','none').attr('stroke','rgba(255,255,255,.06)').attr('stroke-width',0.5);
-    root.append('g').selectAll('path').data(FEATS).join('path').attr('d',gp)  // land (clipAngle culls back)
-      .attr('fill',d=>iso4id(d.id)===D.iso?'#1c3d2c':'#12281c')
-      .attr('stroke',d=>iso4id(d.id)===D.iso?'rgba(60,181,74,.85)':'rgba(255,255,255,.08)')
-      .attr('stroke-width',d=>iso4id(d.id)===D.iso?1.1:0.4);
-    fc=proj(c0)||[W/2,H/2];      // focal country's OWN projected position — tracks rotation/drag,
-                                  // rather than a fixed screen-center point (was the origin-doesn't-move bug)
-  } else {
-    root=svg.append('g').attr('class','zoom-root').attr('transform',zoomT);  // pan/zoom container
-    const b=VIZ.baseMap(root,W,H,D.iso,'world');   // fixed whole-world fit (not zoomed to the focal country) —
-    // so every partner's true coordinates land inside the visible canvas, not just nearby ones
-    if(!b){ msg('world map unavailable'); return; }
-    proj=b.proj;
-    fc = CENT[D.iso] ? proj(CENT[D.iso]) : [W/2,H/2];
+  // node size ∝ focal trade value at the selected year (same fallback ladder and sqrt scale
+  // as the panel dendrite, so a node is the same size in both views)
+  const tvY=new Map(((D&&D.products_yearly)||[]).filter(p=>p.year===selYear)
+    .map(p=>[p.code,(+p.v||0)*muShare(p.code,PROD_ROLE.get(p.code))]));
+  const tvAll=new Map(((D&&D.products)||[]).map(p=>[p.code,(+p.v||0)*muShare(p.code,p.role)]));
+  const deg=new Map(L.nodes.map(n=>[n.cn,0]));
+  L.edges.forEach(e=>{ const f=L.cnOf(e.from_code,e.from_cn), t=L.cnOf(e.to_code,e.to_cn);
+    deg.set(f,(deg.get(f)||0)+1); deg.set(t,(deg.get(t)||0)+1); });
+  const useYear=!!tvY.size, useAll=!useYear&&!!tvAll.size;
+  /* In stage·role mode a node's `code` is a "Stage|Role" key, which is not in
+     products_yearly — so the product ladder above would size every node 0 and the whole
+     chain would collapse to the 4px floor. Sized instead from D.timeline, the same
+     year × stage × role × flow series drawNavSR() sizes the overview map from, so a lane
+     is the same size in both views. */
+  const srV=new Map();
+  if(navMode==='sr') ((D&&D.timeline)||[]).filter(t=>t.year===selYear)
+    .forEach(t=>{ const k=t.stage+'|'+t.role; srV.set(k,(srV.get(k)||0)+muV(t)); });
+  const sval=navMode==='sr'
+    ? (n=>srV.get(n.cn)||0)
+    : (n=>useYear?(tvY.get(n.code)||0):useAll?(tvAll.get(n.code)||0):(deg.get(n.cn)||0));
+  const rSc=d3.scaleSqrt().domain([0,d3.max(L.nodes,sval)||1]).range([4,15]);
+
+  const selCn=selectedCn(L,sval);
+  STAGE_SEL_CN=selCn;                              // published for the overview marker
+  /* HS code ONLY. In stage·role mode a node's `code` is a "Stage|Role" key, and publishing
+     that here would feed activeCode() a string that looks like an HS code and is not —
+     productFlow()/flowPartnersAt() would look it up, miss, and the panels would quietly
+     report the whole technology while the readout named a lane. Null in sr mode, so the
+     panels fall through to the srPass()-filtered series, which is the right answer. */
+  STAGE_SEL_CODE=(navMode==='sr'||!selCn)?null:L.byCn.get(selCn).code;
+  // The layout THIS DRAW used, published for anything that needs to reason about positions
+  // (check_chain_nav.js). A consumer that recomputed it from chainLayout() would have to
+  // reproduce the panel-inset arithmetic exactly, and would silently measure a different graph
+  // the moment the insets changed — which is precisely what happened on 2026-08-06.
+  STAGE_L=L;
+  const gpos=selCn?L.pos(selCn):[W/2,H/2];
+  const selNode=selCn?L.byCn.get(selCn):null;
+  const cm=catMap();
+  const drumOn=srOn()||selCat!=='ALL';
+  const passDrum=n=>srPass(n.stage,n.role)&&(selCat==='ALL'||(cm[n.code]||'Other')===selCat);
+  const nbrs=selCn?[...(L.nbr.get(selCn)||[])]:[];
+  const nbrSet=new Set(nbrs);
+
+  // ── ① the chain, drawn first so the globe and its bands sit on top ──────────────
+  panG.append('g').selectAll('line').data(L.edges).join('line')
+    .attr('x1',e=>L.pos(L.cnOf(e.from_code,e.from_cn))[0]).attr('y1',e=>L.pos(L.cnOf(e.from_code,e.from_cn))[1])
+    .attr('x2',e=>L.pos(L.cnOf(e.to_code,e.to_cn))[0]).attr('y2',e=>L.pos(L.cnOf(e.to_code,e.to_cn))[1])
+    .attr('stroke','rgba(255,255,255,.10)').attr('stroke-width',.7);
+
+  const ng=panG.append('g').attr('class','chain-nodes');
+  ng.selectAll('circle').data(L.nodes).join('circle')
+    .attr('cx',n=>L.pos(n.cn)[0]).attr('cy',n=>L.pos(n.cn)[1])
+    .attr('r',n=>Math.max(4,rSc(sval(n))))
+    .attr('fill',n=>VIZ.SR[n.stage+'|'+n.role]||'#888')
+    .attr('stroke',n=>nbrSet.has(n.cn)?'#fff':'rgba(0,0,0,.35)')
+    .attr('stroke-width',n=>nbrSet.has(n.cn)?1.6:.6)
+    .attr('opacity',n=>n.cn===selCn?0:(nbrSet.has(n.cn)?1:(drumOn?(passDrum(n)?.85:.10):.5)))
+    .attr('cursor','pointer')
+    // Clicking a node means the same thing in both modes — "make this the selection" —
+    // but the selection itself is a different kind of thing, so it goes through the same
+    // setter each mode's other control surfaces use (pickSR is what the legend and the
+    // overview map's nodes already call).
+    .on('click',(e,n)=>{ if(navMode==='sr'){ pickSR(n.stage,n.role); } else { selProduct=n.code; redrawAll(); } })
+    .on('mousemove',(e,n)=>tip(e, navMode==='sr'
+      ? '<b>'+n.stage+' · '+n.role+'</b>'+(sval(n)?'<br>'+VIZ.fmtV(sval(n))+' · '+selYear:'')
+        +'<br><span style="opacity:.6">click to filter by this stage · role</span>'
+      : 'HS '+n.code+'<br><b>'+(n.full||n.name||n.code)+'</b><br>'+n.stage+' · '+n.role
+        +(sval(n)?'<br>'+VIZ.fmtV(sval(n))+' · '+selYear:'')+(nbrSet.has(n.cn)?'<br><i>click to walk the chain</i>':'')))
+    .on('mouseout',tipOut);
+
+  // ── ② translucent bands from the globe out to the selected node's chain neighbours ──
+  // Drawn from the globe's EDGE rather than its centre, so a band reads as leaving the
+  // sphere instead of being overdrawn by it.
+  // Sized against the CLEAR band between the panels, not against W: the stage spans the whole
+  // window but roughly 640px of it is under the two stacks, so a radius scaled off W puts the
+  // sphere's edge behind a panel however well the auto-pan centres it.
+  const clearW=Math.max(160,(rb?rb.left:W-16)-(lb?lb.right:16)-32);
+  const R=Math.max(46,Math.min(Math.min(clearW,H)*0.20*globeScale, clearW*0.34, H*0.34));
+  if(selCn){
+    const bg=panG.append('g').attr('class','bands');
+    nbrs.forEach(cn=>{
+      const p=L.pos(cn), dx=p[0]-gpos[0], dy=p[1]-gpos[1], len=Math.hypot(dx,dy)||1;
+      const ux=dx/len, uy=dy/len;
+      const a=[gpos[0]+ux*(R*0.96), gpos[1]+uy*(R*0.96)];
+      const nd=L.byCn.get(cn);
+      const w=Math.max(3,Math.min(14,rSc(sval(nd))*1.1));
+      bg.append('line').attr('x1',a[0]).attr('y1',a[1]).attr('x2',p[0]).attr('y2',p[1])
+        .attr('stroke','rgba(255,255,255,.20)').attr('stroke-width',w)
+        .attr('stroke-linecap','round').attr('cursor','pointer')
+        .on('mouseover',function(){ d3.select(this).attr('stroke','rgba(255,255,255,.52)'); })
+        .on('mouseout',function(){ d3.select(this).attr('stroke','rgba(255,255,255,.20)'); tipOut(); })
+        .on('mousemove',e=>tip(e,'<b>'+(nd.full||nd.name||nd.code)+'</b><br>HS '+nd.code+' · '+nd.stage+' · '+nd.role+'<br><i>click to move the globe here</i>'))
+        .on('click',()=>{ selProduct=nd.code; redrawAll(); });
+    });
   }
 
-  // arrowhead markers
-  const defs=root.append('defs');
-  [['dest','#3cb54a'],['src','#f97316']].forEach(([k,c])=>{
-    defs.append('marker').attr('id','ah-'+k).attr('viewBox','0 0 10 10').attr('refX',8).attr('refY',5)
-      .attr('markerWidth',16).attr('markerHeight',16).attr('markerUnits','userSpaceOnUse')  // fixed size, not ∝ stroke
-      .attr('orient','auto-start-reverse')
-      .append('path').attr('d','M0,0 L10,5 L0,10 z').attr('fill',c);
-  });
-
-  // ① invisible country hit-layer (click-to-refocus / hover) — under the marks
-  root.append('g').selectAll('path').data(FEATS).join('path')
-    .attr('d',d3.geoPath(proj)).attr('fill','transparent').attr('stroke','none')
+  // ── ③ the globe, drawn AT THE SELECTED NODE rather than at W/2,H/2 ──────────────
+  const CENT=VIZ.centroids(), FEATS=VIZ.feats(), ISO3N=VIZ.ISO3N;
+  const iso4id=id=>{ const s=String(id).padStart(3,'0'); return Object.keys(ISO3N).find(k=>ISO3N[k]===parseInt(s)); };
+  const c0=CENT[D.iso]||[0,0];
+  const rot=globeRot||[-c0[0],-c0[1],0];
+  const proj=d3.geoOrthographic().rotate(rot).translate(gpos).scale(R).clipAngle(90);
+  const gp=d3.geoPath(proj), centerLL=[-rot[0],-rot[1]];
+  const front=ll=>d3.geoDistance(ll,centerLL)<=Math.PI/2+0.02;
+  const gg=panG.append('g').attr('class','globe');
+  // Rotate/zoom bound to the GLOBE GROUP, not to #stage. navigator.html binds them in
+  // setMapMode('globe'), which this page never calls — the stage is always chain + globe, so
+  // there is no mode to switch into and an unbound globe would silently refuse to turn.
+  // Binding here also resolves the conflict with the dendrite's own pan/zoom on #stage: a drag
+  // that starts on the sphere spins it, a drag anywhere else pans the chain under it, and
+  // stopPropagation is what keeps one gesture from doing both.
+  gg.call(globeDrag)
+    .on('wheel.globe',ev=>{ ev.stopPropagation(); globeWheel(ev); })
+    .on('mousedown.stop',ev=>ev.stopPropagation());
+  gg.append('circle').attr('cx',gpos[0]).attr('cy',gpos[1]).attr('r',R+7)   // halo, so the sphere
+    .attr('fill','none').attr('stroke','rgba(96,165,250,.16)').attr('stroke-width',7);  // lifts off the chain
+  gg.append('path').datum({type:'Sphere'}).attr('d',gp)
+    .attr('fill','#0a1a12').attr('stroke','rgba(96,165,250,.32)').attr('stroke-width',1);
+  gg.append('path').datum(d3.geoGraticule10()).attr('d',gp)
+    .attr('fill','none').attr('stroke','rgba(255,255,255,.06)').attr('stroke-width',0.5);
+  gg.append('g').selectAll('path').data(FEATS).join('path').attr('d',gp)
+    .attr('fill',d=>iso4id(d.id)===D.iso?'#1c3d2c':'#12281c')
+    .attr('stroke',d=>iso4id(d.id)===D.iso?'rgba(60,181,74,.85)':'rgba(255,255,255,.08)')
+    .attr('stroke-width',d=>iso4id(d.id)===D.iso?1.1:0.4);
+  // click-to-refocus, same as the retired Atlas Navigator's hit layer
+  gg.append('g').selectAll('path').data(FEATS).join('path').attr('d',gp)
+    .attr('fill','transparent').attr('stroke','none')
     .attr('cursor',d=>{const iso=iso4id(d.id);return (iso&&ISO2SLUG[iso]&&iso!==D.iso)?'pointer':'default';})
     .on('click',(e,d)=>{const iso=iso4id(d.id); if(iso&&ISO2SLUG[iso]&&iso!==D.iso) loadCase(TECH,ISO2SLUG[iso]);})
     .on('mousemove',(e,d)=>{const iso=iso4id(d.id); if(iso&&ISO2SLUG[iso]) tip(e,'<b>'+ISO2SLUG[iso].replace(/_/g,' ')+'</b>'+(iso===D.iso?'<br>focal country':'<br>click to refocus')); else tipOut();})
     .on('mouseout',tipOut);
 
-  // ③ partner trade arrows — width ∝ sqrt(value); great-circle arcs on the globe. Filtered to the
-  // year slider (selYear) so the map stays consistent with the stats panel, rather than showing
-  // an all-time aggregate for a different implied period — and routed through partnersAt(), so a
-  // stage/role selection resizes them from that segment's values and drops any partner that does
-  // no trade inside it. Category / single-product selections cannot reach this series; the #phase
-  // readout says so when one is active.
-  const dests=partnersAt('dest',selYear).filter(p=>CENT[p.partner]).slice(0,8);
-  const srcs =partnersAt('src', selYear).filter(p=>CENT[p.partner]).slice(0,8);
-  const arr=[...dests,...srcs];
-  const maxV=d3.max(arr,p=>p.v)||1;
-  const minV=Math.max(1, d3.min(arr,p=>p.v)||1);
-  const wsc=d3.scaleSqrt().domain([minV, Math.max(maxV, minV+1)]).range([3,28]).clamp(true);  // wide, rank-legible width
-  const rsc=d3.scaleSqrt().domain([0,maxV]).range([3,11]);
-  const ag=root.append('g').attr('class','arrows');
-  const gpArc=d3.geoPath(proj);
-  // Arrows are drawn full-length (centroid → partner) but MASKED to "everything outside the focal
-  // country's own silhouette" — a white full-canvas rect with the country's real path painted
-  // black on top (SVG <mask> luminance: white=visible, black=hidden). So the segment inside the
-  // country is invisible and the visible arrow starts exactly on the true coastline, for any
-  // shape. (Tried an evenodd clip-path rect-minus-country hole first — verified mathematically
-  // correct via isPointInFill sampling, but Chromium silently fails to rasterize it for a path
-  // this complex/high-vertex-count; the country shape alone clips fine, just not combined with
-  // the rect under evenodd. The mask/compositing approach sidesteps that renderer quirk entirely.)
-  const focalFeat=FEATS.find(f=>iso4id(f.id)===D.iso);
-  if(focalFeat){
-    const maskG=defs.append('mask').attr('id','mask-hide-focal');
-    maskG.append('rect').attr('x',0).attr('y',0).attr('width',W).attr('height',H).attr('fill','#fff');
-    maskG.append('path').attr('d',gpArc(focalFeat)).attr('fill','#000');
-    ag.attr('mask','url(#mask-hide-focal)');
-  }
-  const nextArrows=new Map();   // this year's arrow geometry, keyed dir|partner (see prevArrows)
+  // ── ④ trade arrows for THIS PRODUCT ALONE, from the sidecar ─────────────────────
+  const code=selNode?selNode.code:null;
+  let dests=flowPartnersAt(code,'dest',selYear), srcs=flowPartnersAt(code,'src',selYear);
+  const perProduct = dests!==null;
+  if(!perProduct){ dests=partnersAt('dest',selYear); srcs=partnersAt('src',selYear); }  // whole-tech fallback
+  const arr=[...(dests||[]).filter(p=>CENT[p.partner]).slice(0,8),
+             ...(srcs ||[]).filter(p=>CENT[p.partner]).slice(0,8)];
+  const maxV=d3.max(arr,p=>p.v)||1, minV=Math.max(1,d3.min(arr,p=>p.v)||1);
+  const wsc=d3.scaleSqrt().domain([minV,Math.max(maxV,minV+1)]).range([2,Math.max(4,R*0.085)]).clamp(true);
+  const rsc=d3.scaleSqrt().domain([0,maxV]).range([2,Math.max(3,R*0.055)]);
+  const defs=panG.append('defs');
+  [['dest','#3cb54a'],['src','#f97316']].forEach(([k,c])=>{
+    defs.append('marker').attr('id','ah2-'+k).attr('viewBox','0 0 10 10').attr('refX',8).attr('refY',5)
+      .attr('markerWidth',11).attr('markerHeight',11).attr('markerUnits','userSpaceOnUse')
+      .attr('orient','auto-start-reverse')
+      .append('path').attr('d','M0,0 L10,5 L0,10 z').attr('fill',c);
+  });
+  const fc=proj(c0)||gpos;
+  const ag=panG.append('g').attr('class','arrows');
   arr.forEach(p=>{
-    const cll=CENT[p.partner]; if(!cll) return;
-    if(mapMode==='globe' && !front(cll)) return;    // hide partners on the far side of the globe
+    const cll=CENT[p.partner]; if(!cll||!front(cll)) return;      // far side of the sphere
     const tgt=proj(cll); if(!tgt) return;
-    const col=p.dir==='dest'?'#3cb54a':'#f97316', w=wsc(Math.max(1,p.v));   // exports green, imports orange
-    const start=fc;   // true centroid — the mask (above) hides the in-country segment visually
-    // arc bowed perpendicular to the chord. Fixed relative side (not "whichever is outward") —
-    // since A/B swap ends between dest/src, this alone bows exports and imports of the SAME
-    // partner to opposite sides, so they no longer overlap (e.g. China as both a big import
-    // source and export destination for many countries). On the flat map the fixed whole-world
-    // fit (see VIZ.baseMap 'world' mode above) already lands every partner inside the canvas,
-    // so no edge-clamping is needed — only the bow and the opacity differ between the modes.
-    const A=p.dir==='dest'?start:tgt, B=p.dir==='dest'?tgt:start;
+    const col=p.dir==='dest'?'#3cb54a':'#f97316', w=wsc(Math.max(1,p.v));
+    const A=p.dir==='dest'?fc:tgt, B=p.dir==='dest'?tgt:fc;
     const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
     const dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy)||1;
-    const nx=-dy/len, ny=dx/len;
-    const bow = mapMode==='globe' ? len*0.3+16 : len*0.12+8;
-    const op  = mapMode==='globe' ? .7 : .62;
-    const ctrl=[mx+nx*bow, my+ny*bow];
-    const r=rsc(p.v), key=p.dir+'|'+p.partner, prev=animArrows?prevArrows.get(key):null;
-    const pth=ag.append('path').attr('d',`M${A[0]},${A[1]} Q${ctrl[0]},${ctrl[1]} ${B[0]},${B[1]}`)
-      .attr('fill','none').attr('stroke',col).attr('stroke-opacity',op)
-      .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah-'+p.dir+')');
-    // partner dot + label — the partner's true projected position, on both the globe and the map
-    const dp=tgt;
-    const cir=ag.append('circle').attr('cx',dp[0]).attr('cy',dp[1]).attr('r',r)
-      .attr('fill',col).attr('fill-opacity',.45).attr('stroke',col).attr('stroke-width',1).attr('cursor','pointer')
-      .on('mousemove',e=>tip(e,'<b>'+p.partner+'</b><br>'+(p.dir==='dest'?'export destination':'import source')+' · '+VIZ.fmtV(p.v))).on('mouseout',tipOut);
-    ag.append('text').attr('x',dp[0]).attr('y',dp[1]-r-3).attr('text-anchor','middle')
-      .attr('font-size','9px').attr('fill',col).attr('font-weight','700').attr('pointer-events','none').text(p.partner);
-    // playback only: tween width/opacity/radius from last year's values (0 for a new partner), so
-    // stepping through the years reads as flows swelling and shrinking rather than as a slideshow.
-    if(animArrows){
-      pth.attr('stroke-width',prev?prev.w:0.4).attr('stroke-opacity',prev?prev.o:0)
-         .transition().duration(ARROW_MS).ease(d3.easeCubicOut)
-         .attr('stroke-width',w).attr('stroke-opacity',op);
-      cir.attr('r',prev?prev.r:0)
-         .transition().duration(ARROW_MS).ease(d3.easeCubicOut).attr('r',r);
-    }
-    nextArrows.set(key,{w,o:op,r});
+    const bow=len*0.26+5;
+    ag.append('path').attr('d',`M${A[0]},${A[1]} Q${mx+(-dy/len)*bow},${my+(dx/len)*bow} ${B[0]},${B[1]}`)
+      .attr('fill','none').attr('stroke',col).attr('stroke-opacity',.72)
+      .attr('stroke-width',w).attr('stroke-linecap','round').attr('marker-end','url(#ah2-'+p.dir+')');
+    ag.append('circle').attr('cx',tgt[0]).attr('cy',tgt[1]).attr('r',rsc(p.v))
+      .attr('fill',col).attr('fill-opacity',.5).attr('stroke',col).attr('stroke-width',1).attr('cursor','pointer')
+      .on('mousemove',e=>tip(e,'<b>'+p.partner+'</b><br>'+(p.dir==='dest'?'export destination':'import source')
+        +' · '+VIZ.fmtV(p.v)+'<br>'+(perProduct?('HS '+code+' · '+selYear):'whole technology · '+selYear)))
+      .on('mouseout',tipOut);
   });
-  prevArrows=nextArrows;
 
-  // ② domestic firms inside the focal country
-  const firms=D.firms||[]; const sr=selSR();
-  const drumOn = selStage!=='ALL'||selRole!=='ALL';
-  const firmActive=f=>{
-    if(selStage!=='ALL'&&f.stage!==selStage) return false;
-    if(selRole!=='ALL'&&f.role!==selRole) return false;
-    if(sr && (f.stage+'|'+f.role)!==sr) return false;
-    return true;
-  };
-  const anyFilter = !!sr || drumOn;
-  if(showFirms && firms.length){
-    const maxN=d3.max(firms,f=>f.n)||1;
-    const fr=d3.scaleSqrt().domain([0,maxN]).range([2.5,12]);
-    const fg=root.append('g').attr('class','firms');
-    [...firms].sort((a,b)=>b.n-a.n).forEach(f=>{
-      const ll=[+f.lon,+f.lat];
-      if(mapMode==='globe' && !front(ll)) return;   // hide firms on the far side of the globe
-      const px=proj(ll); if(!px) return; const [x,y]=px;
-      if(x<-20||x>W+20||y<-20||y>H+20) return;
-      const k=f.stage+'|'+f.role, col=VIZ.SR[k]||'#888', active=firmActive(f), r=fr(f.n);
-      fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r)
-        .attr('fill',col).attr('opacity',anyFilter?(active?0.95:0.1):0.68)
-        .attr('stroke','rgba(10,15,20,.9)').attr('stroke-width',.5).attr('cursor','pointer')
-        .on('mousemove',e=>tip(e,f.stage+' · '+f.role+'<br><b>'+f.n+'</b> firm'+(f.n>1?'s':''))).on('mouseout',tipOut);
-      if(sr&&active) fg.append('circle').attr('cx',x).attr('cy',y).attr('r',r+3)
-        .attr('fill','none').attr('stroke','#fff').attr('stroke-width',1.5).attr('pointer-events','none');
-    });
+  // ── ⑤ the readout, and the missing-sidecar note ────────────────────────────────
+  // A silent empty globe is the one failure mode this page must not have: the sidecar is
+  // gitignored, so on a fresh clone "absent" is normal and has to SAY so (register B-20).
+  const lbl=panG.append('g').attr('class','globe-label').attr('pointer-events','none');
+  if(selNode){
+    lbl.append('text').attr('x',gpos[0]).attr('y',gpos[1]-R-16).attr('text-anchor','middle')
+      .attr('font-size','12px').attr('font-weight','800').attr('fill','#fff')
+      .text((selNode.name||selNode.code).slice(0,54));
+    lbl.append('text').attr('x',gpos[0]).attr('y',gpos[1]-R-4).attr('text-anchor','middle')
+      .attr('font-size','9.5px').attr('fill','rgba(255,255,255,.62)')
+      .text(navMode==='sr' ? selNode.stage+' · '+selNode.role
+                           : 'HS '+selNode.code+' · '+selNode.stage+' · '+selNode.role);
+  }
+  // ── ⑥ pan the chain so the globe sits in the clear ──────────────────────────────
+  // Set last, once R and gpos are both known. The globe is drawn AT its node — that does not
+  // change — and the chain slides underneath so the node in question is somewhere the sphere,
+  // its label and its bands are all actually visible. Without this the globe is correctly
+  // positioned and mostly hidden under #rstack, which looks identical to a broken page.
+  if(selCn){
+    const visL=(lb?lb.right:16)+8, visR=(rb?rb.left:W-16)-8;
+    const dx=(visL+visR)/2-gpos[0];       // slide the node to the middle of the clear band
+    const dy=H/2-gpos[1];
+    panG.attr('transform',`translate(${dx.toFixed(1)},${dy.toFixed(1)})`);
   }
 
-  // (product navigator lives in the right-hand solar-system panel — see drawNav)
+  const note=FLOW_STATE==='missing'
+    ? 'per-product flows unavailable — arrows show the whole technology. Build with:  Rscript scripts/proto/build_datadriven_proto.R --flows-only'
+    : FLOW_STATE==='loading' ? 'loading per-product flows…'
+    : (!perProduct&&FLOW_STATE==='ready') ? 'no recorded trade for this product at '+selYear+' — arrows show the whole technology'
+    : '';
+  if(note){
+    const t=lbl.append('text').attr('x',gpos[0]).attr('y',gpos[1]+R+18).attr('text-anchor','middle')
+      .attr('font-size','10px').attr('fill',FLOW_STATE==='missing'?'#fbbf24':'rgba(255,255,255,.55)');
+    t.text(note.length>96?note.slice(0,94)+'…':note);
+    if(FLOW_STATE==='missing') t.append('title').text(note);
+  }
 }
 
 /* ── Supply Chain Map — two view modes, toggled via #nav-mode-* buttons ───────── */
-let navMode='product';   // 'product' (per-HS-code dendrite) | 'sr' (7-node stage/role network)
+// navMode is declared up with the rest of the state — chainLayout() reads it and is
+// defined earlier in this file.
 function drawNav(){ navMode==='sr' ? drawNavSR() : drawNavProduct(); }
 function setNavMode(m){
   if(navMode===m) return;
+  /* Carry the selection across the switch rather than dropping it. Going in, a picked
+     HS code lights the lane it sits in; coming out, the SAME code is restored — not the
+     largest node, which is what a bare mode flip would land on and would read as the
+     page quietly changing the subject. */
+  if(m==='sr'){
+    navModeMemoCode=selProduct;
+    const k=selSR();                       // computed BEFORE selProduct is cleared
+    if(k){ const [st,ro]=k.split('|'); selStage=st; selRole=ro; }
+    selProduct=null;
+  }else if(navModeMemoCode){
+    selProduct=navModeMemoCode; navModeMemoCode=null;
+    selStage='ALL'; selRole='ALL';
+  }
   navMode=m;
   document.getElementById('nav-mode-product').classList.toggle('active',m==='product');
   document.getElementById('nav-mode-sr').classList.toggle('active',m==='sr');
   document.getElementById('nav-hd-sub').textContent = m==='sr'
     ? 'value chain by stage · role — node size = this country’s trade value · click to filter'
-    : 'upstream → final product, left to right · click a node to trace it on the map';
-  drawNav();
+    : 'zoomed-out reference · the ring marks where the globe is';
+  initDrums();
+  /* redrawAll, NOT drawNav. drawNav() redraws #nav — the small overview map — and nothing
+     else, so before this the toggle moved one panel of five. #stage (the chain the globe
+     sits in), the readout and the stats all follow the mode now. */
+  redrawAll();
 }
 
 /* Process of Production (atlas-style linear step layout, ported from build_country_atlas.R
@@ -953,6 +1333,21 @@ function drawNavProduct(){
     .on('click',(e,n)=>{ selProduct=(selProduct===n.code)?null:n.code; redrawAll(); })
     .on('mousemove',(e,n)=>tip(e,'HS '+n.code+'<br><b>'+(n.full||n.name||n.code)+'</b><br>'+n.stage+' · '+n.role+' · step '+stepMap.get(n.cn)+(sval(n)?'<br>'+VIZ.fmtV(sval(n))+' · '+selYear:'')))
     .on('mouseout',tipOut);
+
+  // ── "you are here" marker ────────────────────────────────────────────────────────
+  // POSITION ONLY. This panel keeps its own layout untouched — it is the zoomed-out
+  // reference, and a reference that re-arranges itself when the selection moves is not a
+  // reference. The marker is a ring drawn over the node the stage's globe currently
+  // occupies, read from STAGE_SEL_CN so the two views can never disagree about which of
+  // several same-code process steps is selected.
+  if(STAGE_SEL_CN && nodeY.has(STAGE_SEL_CN)){
+    const [mx,my]=pos(STAGE_SEL_CN);
+    const g=svg.append('g').attr('pointer-events','none');
+    g.append('circle').attr('cx',mx).attr('cy',my).attr('r',9)
+      .attr('fill','none').attr('stroke','rgba(96,165,250,.9)').attr('stroke-width',1.6);
+    g.append('circle').attr('cx',mx).attr('cy',my).attr('r',13)
+      .attr('fill','none').attr('stroke','rgba(96,165,250,.35)').attr('stroke-width',1);
+  }
 }
 
 /* Country-level value-chain flows, ported from build_country_atlas.R drawAtlasSankey() — the
@@ -966,10 +1361,8 @@ function drawNavProduct(){
 function drawNavSR(){
   const svg=d3.select('#nav'); svg.selectAll('*').remove();
   const {W,H}=VIZ.dims('#nav');
-  const LANE_SR=['Upstream|Raw Material','Midstream|Processed Material','Midstream|Process Equipment',
-    'Midstream|Product Component','Downstream|Product Component','Downstream|Process Equipment','Final Product|Final Product'];
-  const LANE_LABEL=['Raw Material','Processed Material','Process Equipment','Product Component','Product Component','Process Equipment','Final Product'];
-  const EDGES_SR=[[0,1],[1,2],[1,3],[2,5],[3,4],[5,6],[4,6]];
+  // LANE_SR / LANE_LABEL / EDGES_SR now live at module scope — the big stage map lays out
+  // the same graph, and two copies of a 7-node topology is how two views come to disagree.
   const COLX=[0.09,0.30,0.51,0.51,0.72,0.72,0.91];        // x-fraction per lane (2&3 share a column; 5&4 share a column)
   const VSLOT=['full','full','top','bottom','bottom','top','full'];  // vertical half within that shared column
 
@@ -1076,6 +1469,9 @@ function updateLegend(){
   });
 }
 function fillDrum(innerId, options, currentVal, onChange){
+  // Absent by design on this page — see the note on #p-drums. Returning quietly keeps every
+  // caller (initDrums, updateDrumRole/Cat/Product, clearFilters) working unmodified.
+  if(!document.getElementById(innerId)) return;
   const inner=document.getElementById(innerId); if(!inner) return;
   inner.innerHTML='<div class=drum-spacer></div><div class=drum-spacer></div>'+
     options.map(o=>`<div class="drum-opt${o.value===currentVal?' drum-active':''}" data-val="${o.value}">${o.label}</div>`).join('')+
@@ -1204,10 +1600,11 @@ function updateReadout(){
   //  - The readout box is a fixed height, so a long description is shrunk and finally ellipsized
   //    by fitSelTitle() below; stx.title always carries the untruncated string, because this line
   //    is the answer to "what am I looking at" and must never become unrecoverable.
-  if(selProduct){
+  if(activeCode()){
+    const ac=activeCode();
     stx.style.color='';   // plain white (var(--ink)) for the description
-    stx.innerHTML='<span class="stx-hs" style="color:'+(TECH_COLORS[TECH]||'#e2e8f0')+'">HS '+selProduct+'</span>'+(selName()||'');
-    stx.title='HS '+selProduct+' · '+(selName()||'');
+    stx.innerHTML='<span class="stx-hs" style="color:'+(TECH_COLORS[TECH]||'#e2e8f0')+'">HS '+ac+'</span>'+(selName()||'');
+    stx.title='HS '+ac+' · '+(selName()||'');
   } else if(selStage!=='ALL'||selRole!=='ALL'){
     let col=(selStage!=='ALL'&&selRole!=='ALL')?VIZ.SR[selStage+'|'+selRole]:null;
     if(!col&&selRole==='ALL'){
@@ -1375,10 +1772,18 @@ let PY_CACHE={key:null,map:null};
 function partnerSeries(dir,partner){
   // muOn belongs in the cache key: flipping the toggle changes every point in every series, and a
   // stale cache would leave the sparklines drawing the other basis under the new numbers.
-  const key=TECH+'|'+COUNTRY+'|'+selStage+'|'+selRole+'|'+(muOn?'c':'r');
+  const key=TECH+'|'+COUNTRY+'|'+selStage+'|'+selRole+'|'+(muOn?'c':'r')+'|'+(activeCode()||'');
   if(PY_CACHE.key!==key||!PY_CACHE.map){
     const m=new Map();
-    if(srOn()){
+    const ac=activeCode();
+    if(FLOW_STATE==='ready'&&ac&&FLOWS.by.has(ac)){
+      // Per-product sparklines, so the trend under a row is the trend OF that row. The rows
+      // themselves already come from this series (see panelPartners); a sparkline still drawn
+      // from the whole technology would put a rising tech-wide curve under a falling product.
+      const sh=muShare(ac, PROD_ROLE.get(ac));
+      FLOWS.by.get(ac).forEach((byYear,dir)=>byYear.forEach((rows,yr)=>
+        rows.forEach(r=>m.set(dir+'|'+r.partner+'|'+yr,(m.get(dir+'|'+r.partner+'|'+yr)||0)+r.v*sh))));
+    } else if(srOn()){
       ((D&&D.partners_yearly_sr)||[]).forEach(p=>{
         if(!srPass(p.stage,p.role)) return;
         const k=p.dir+'|'+p.partner+'|'+p.year;
@@ -1410,6 +1815,9 @@ function renderStats(){
   // instead of re-summing the whole of D.timeline: the two agree, but the builder rounds each
   // stage·role row independently, so a full re-sum can land ±2 KUSD off D.yearly. Falling back
   // keeps the unfiltered panel byte-identical to what it printed before the drums were wired in.
+  // This `scope` picks the SERIES ONLY — it is read for .on and nothing else, and is called with
+  // no product argument on purpose. The captions get their own scopes further down, after `pf` has
+  // settled whether the product reached the headline. Do not reuse this one for labelling.
   const scope=flowScope();
   const yrRow=y=>((D.yearly||[]).find(r=>r.year===y))||null;
   let exp,imp,expN,impN;
@@ -1422,6 +1830,22 @@ function renderStats(){
     const EK=muKey('exports_kusd'), IK=muKey('imports_kusd');
     exp=cur?cur[EK]:0; imp=cur?cur[IK]:0;
     expN=next?next[EK]:null; impN=next?next[IK]:null;
+  }
+  // ── the selected product's OWN headline ─────────────────────────────────────────────────
+  // In navigator.html a single product is a filter the trade series cannot honour: the timeline
+  // is keyed year × stage × role × flow with no code dimension, so the panel keeps showing the
+  // whole technology and updateScopeFlags() raises an amber "not applied" chip. On THIS page a
+  // product is the primary selection, so a headline that silently reports the whole tech would
+  // be the wrong number under the right label. products_flow (year × code × flow, added 2026-08-06)
+  // does carry the code, so it answers exactly this and the panel switches to the product alone.
+  // Falls through untouched when the code is outside products_flow's top-150 cut — better the
+  // tech-level number, still chip-labelled, than a confident zero.
+  const pf=productFlow(activeCode());
+  if(pf){
+    const at=y=>({e:pf.get(y+'|exp')||0, i:pf.get(y+'|imp')||0});
+    const c=at(selYear), n=at(selYear+1);
+    exp=c.e; imp=c.i;
+    expN=pf.has((selYear+1)+'|exp')?n.e:null; impN=pf.has((selYear+1)+'|imp')?n.i:null;
   }
   const net=exp-imp;
   const gdp=GDP.get(D.iso+'|'+selYear);
@@ -1442,9 +1866,14 @@ function renderStats(){
   const rk=r=>r&&r>0?`#${r}`:'—';
   // Top Partners: partnersAt() picks the whole-tech series or the stage/role-segmented one, so the
   // list, its sparklines and the map arrows all move together under the drums.
-  const top=(dir)=>partnersAt(dir,selYear).slice(0,5);
+  // Top Partners must sit on the SAME series as the headline above it. Before this, the headline
+  // read the selected product while this list still read the whole technology — so Solar/India
+  // printed "$3.1B imports" over a China row of $5.3B, a partner larger than the total it sits
+  // under. Two different questions answered in one box, with nothing saying so.
+  const panelPartners=(dir,year)=>flowPartnersAt(activeCode(),dir,year)||partnersAt(dir,year);
+  const top=(dir)=>panelPartners(dir,selYear).slice(0,5);
   const partnerRow=(p,dir)=>{
-    const nextRow=partnersAt(dir,selYear+1).find(q=>q.partner===p.partner);
+    const nextRow=panelPartners(dir,selYear+1).find(q=>q.partner===p.partner);
     const col=dir==='dest'?'#3cb54a':'#f97316';
     const spk=spkQueue('pt-'+dir+'-'+p.partner, [{pts:partnerSeries(dir,p.partner), color:col}]);
     // The sparkline replaces the "--" rather than sitting next to it: a row must not carry both a
@@ -1461,18 +1890,21 @@ function renderStats(){
   // ▣ green: which drum dimensions the headline above actually applied.
   // ◌ amber: which ones it could not, and why — stated, never silently dropped.
   const filtered=anyFilter();
-  const scopeOn = scope.on
-    ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
-  const scopeOff = scope.ignored.length
-    ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the trade series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+  // `pf` above decided the headline; ask the partner series its own question. Two scopes, because
+  // the two panels can genuinely differ — see prodInFlows / prodInPartners.
+  const fScope=flowScope(!!pf), pScope=flowScope(prodInPartners());
+  const scopeOn = fScope.live
+    ? `<div class="flt-note flt-on">▣ filtered · ${fScope.applied.join(' · ')}</div>` : '';
+  const scopeOff = fScope.ignored.length
+    ? `<div class="flt-note flt-off">◌ ${fScope.ignored.join(' and ')} not applied — ${scopeOffWhy(fScope,'the total above')}</div>` : '';
   const rankNote = filtered
     ? `<div class="flt-note flt-off">◌ whole technology — world &amp; regional totals are not split by stage · role</div>` : '';
-  // Top Partners reads the same two dimensions the headline does, so it gets the same pair of
-  // notes. What it still cannot do is category / single HS code — and only that now earns amber.
-  const partnerOn = scope.on
-    ? `<div class="flt-note flt-on">▣ filtered · ${scope.applied.join(' · ')}</div>` : '';
-  const partnerOff = scope.ignored.length
-    ? `<div class="flt-note flt-off">◌ ${scope.ignored.join(' and ')} not applied — the partner series is split by stage · role only, it carries no HS-code dimension</div>` : '';
+  // Top Partners honours stage, role and — via the sidecar — the single HS code. What it still
+  // cannot do is category, and a product whose flows never loaded; only those earn amber.
+  const partnerOn = pScope.live
+    ? `<div class="flt-note flt-on">▣ filtered · ${pScope.applied.join(' · ')}</div>` : '';
+  const partnerOff = pScope.ignored.length
+    ? `<div class="flt-note flt-off">◌ ${pScope.ignored.join(' and ')} not applied — ${scopeOffWhy(pScope,'the list below')}</div>` : '';
   // ── multi-use basis note ──────────────────────────────────────────────────────────────────
   // Shown only in corrected mode: raw is the basis every earlier build used, and labelling the
   // default would be noise. Amber when the active tech has no EXIOBASE mapping at all, because
@@ -1514,13 +1946,15 @@ function renderStats(){
 
   // The partner panel is never hidden under a filter — a hidden panel is worse than a labelled
   // one. It is held back in contrast only when it is genuinely stale, i.e. when a filter is on and
-  // NONE of it reached this list (category / product alone). Under a stage/role selection the list
-  // is live and reads at full strength.
+  // NONE of it reached this list (a category alone, or a product whose flows never loaded). Under
+  // a stage/role selection — or a product the sidecar answered — the list is live and reads at
+  // full strength. Dimming it on pScope.on rather than pScope.live is what greyed out a list that
+  // was in fact showing exactly the product asked for.
   pel.innerHTML = muNote + partnerOn + partnerOff +
-    `<div class="${(!scope.on&&filtered)?'flt-stale':''}">`+
+    `<div class="${(!pScope.live&&filtered)?'flt-stale':''}">`+
     (dests.length?`<div class="ov-part-title">Top Export Destinations</div>${dests.map(p=>partnerRow(p,'dest')).join('')}`:'')+
     (srcs.length?`<div class="ov-part-title">Top Import Sources</div>${srcs.map(p=>partnerRow(p,'src')).join('')}`:'')+
-    ((!dests.length&&!srcs.length)?`<div class="ov-part-title">no partner data for ${selYear}${scope.on?' · '+scope.applied.join(' · '):''}</div>`:'')+
+    ((!dests.length&&!srcs.length)?`<div class="ov-part-title">no partner data for ${selYear}${pScope.live?' · '+pScope.applied.join(' · '):''}</div>`:'')+
     `</div>`;
   flushSparks();          // both panels are in the DOM now — draw into the queued placeholders
   updateScopeFlags();
@@ -1640,6 +2074,10 @@ async function loadCase(tech,slug){
   try{ TD=await (await fetch('data/_tech_'+tech.replace(/ /g,'_')+'.json')).json(); TD=Array.isArray(TD)?TD[0]:TD; }
   catch(e){ TD=null; }
   selProduct=null; selStage='ALL'; selRole='ALL'; selCat='ALL';   // reset filters on new case
+  // Per-product flows for the new case. NOT awaited: the stage draws immediately from the
+  // bundle (chain + whole-tech arrows) and ensureFlows() calls drawFusion() again when it
+  // resolves. Awaiting here would hold the whole page on a ~300 KB fetch to swap one series.
+  FLOW_STATE='idle'; ensureFlows();
   zoomT=d3.zoomIdentity; if(zoomB) d3.select('#stage').call(zoomB.transform, d3.zoomIdentity);  // recenter on new focal
   globeRot=null; globeScale=1;   // globe recenters/​rezooms on the new focal country
   document.getElementById('tech-sel').value=tech;
@@ -1671,10 +2109,15 @@ async function boot(){
   TECHS.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t.replace(/_/g,' ');ts.appendChild(o);});
   ts.value=TECH;
   ts.onchange=e=>loadCase(e.target.value,COUNTRY);
-  document.getElementById('sel-clear').onclick=clearFilters;   // clear all drum filters + selected product
-  document.getElementById('mapmode').onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
+  const sc=document.getElementById('sel-clear');
+  if(sc) sc.onclick=clearFilters;   // back to the default (largest) node
+  // #mapmode is deliberately absent on this page — the stage is always chain + globe, so a
+  // flat/globe toggle would be dead UI. Bind defensively rather than assuming: an unguarded
+  // getElementById().onclick here throws during init and kills every binding after it.
+  const mb=document.getElementById('mapmode');
+  if(mb) mb.onclick=()=>setMapMode(mapMode==='globe'?'flat':'globe');
   const ft=document.getElementById('firmtoggle');
-  ft.onclick=()=>{ showFirms=!showFirms; ft.classList.toggle('off',!showFirms); ft.textContent=showFirms?'🏭 Firms':'🏭 Firms (hidden)'; drawFusion(); };
+  if(ft) ft.onclick=()=>{ showFirms=!showFirms; ft.classList.toggle('off',!showFirms); ft.textContent=showFirms?'🏭 Firms':'🏭 Firms (hidden)'; drawFusion(); };
   document.getElementById('mutoggle').onclick=setMuMode;
   document.getElementById('nav-mode-product').onclick=()=>setNavMode('product');
   document.getElementById('nav-mode-sr').onclick=()=>setNavMode('sr');
