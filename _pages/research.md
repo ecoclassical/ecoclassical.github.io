@@ -18,7 +18,7 @@ Using multi-region input-output analysis, supply chain mapping, and sectoral net
 - The macroeconomic implications of rapid sectoral reallocation: which sectors are keystone nodes in the production network, and what happens when they are disrupted by the low-carbon transition?
 - The intersection of climate policy and global inequality: how decarbonisation strategies in the Global North transmit through trade and value chains to shape development trajectories in the Global South
 
-**Current output**: The Net Zero Value Chain Explorer — a computational tool mapping the industrial base of the clean energy transition across 54 industries and multiple countries, built for policy audiences.
+**Current output**: [Atlas of the Global Clean Industrial Base](https://nzipl-cvce.pages.dev/) <span class="badge badge-private" title="Sign-in required — access is limited to named collaborators">🔒 Private</span> — a trade-based intelligence platform mapping the global value chains of ten clean technologies (batteries, biofuel, electrolyzers, geothermal, heat pumps, magnets, nuclear, solar, transmission and wind, with electric vehicles in draft), built for policy audiences. Bilateral trade analytics on BACI at HS 6-digit, 1995–2024, with machine-learned competitiveness scores and firm-level location data across seven focal country case studies.
 
 ---
 
@@ -79,3 +79,9 @@ Methodological and historical work on the development of value theory, the therm
 - Engagement with Mirowski's *More Heat than Light* (1989) — arguing that the classical tradition, not the neoclassical, provides the correct thermodynamic analogy
 - The Cambridge capital controversies and the structural relationship between the LTV and the neoclassical aggregate production function
 - Georgescu-Roegen's entropy programme and its relationship to the classical labour theory of value
+
+## Visualizations
+
+### Timbuktu
+
+[Timbuktu](/files/timbuktu.html) — an interactive research library portal: citation network, sortable library, and walktrap cluster analysis of roughly 6,000 papers. Fully self-contained HTML.

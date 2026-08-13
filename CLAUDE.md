@@ -61,8 +61,11 @@ To add a page to the nav, add an entry there. To keep a page out of nav (bookmar
 ## Hidden / bookmark-only pages
 
 Pages in `files/` are plain HTML — they are served at `https://ecoclassical.github.io/files/<filename>` without going through Jekyll. This is the pattern used for:
-- `files/projects.html` — projects dashboard
-- `files/timbuktu.html` — research library
+- `files/projects.html` — **retired 2026-08-13.** Now a redirect stub to `/research/`. It and
+  `projects/index.html` were two copies of one dashboard that had drifted 29 lines apart, and
+  neither was in the nav, so both were unreachable by normal browsing. `/research/`
+  (`_pages/research.md`) is the single entry point to every project — add new projects there.
+- `files/timbuktu.html` — research library (linked from `/research/` § Visualizations)
 
 Jekyll `_pages/` files can also be hidden from the nav but will still appear in the sitemap. Prefer `files/` for truly private pages.
 
