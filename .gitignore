@@ -45,3 +45,11 @@ projects/NZIPL/docs/*expense*
 projects/NZIPL/docs/*Expense*
 projects/NZIPL/docs/*receipt*
 projects/NZIPL/docs/*invoice*
+
+# Expense / cost documentation — local only, never published.
+# Project_Usage.md was tracked and served publicly at /Project_Usage/ (a fully
+# rendered, SEO-indexed page) and /Project_Usage.md until 2026-08-13. It carries
+# itemised subscription costs and receipts. Keep local copies; do not re-add.
+Project_Usage.md
+Project_Usage.html
+Project_Usage_files/
