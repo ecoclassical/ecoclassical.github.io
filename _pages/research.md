@@ -22,18 +22,18 @@ Using multi-region input-output analysis, supply chain mapping, and sectoral net
 
 ---
 
-### Classical Economic Thermodynamics
+### The Macroeconomic Consequences of Ecological Unequal Exchange
 
-The central programme of my theoretical work. The classical political economy tradition — Smith, Ricardo, Marx, Sraffa — provides the correct thermodynamic analogue to energy conservation in physics: both a **first law** (the MELT conservation identity: value is conserved in exchange for any price system) and a **second law** (labour as irreversible thermodynamic work, abstract labour as metabolic irreversibility). The Hamiltonian formalism of Goodwin and Flaschel–Semmler describes the conservative redistribution dynamics under simple reproduction; Foley's circuit of capital provides the explicit connection between monetary flows and labour-time accounting. The neoclassical conservation programme fails because its only invariant — the Hicksian expenditure function — exists in unobservable compensated demand space.
+A two-region ecological macroeconomic model that integrates multi-regional input–output structure with stock–flow consistent dynamics, calibrated for the European Union and the Rest of the World. The programme traces how circular-economy and climate policies transmit across borders — through final demand, intermediate production, and investment — and what they do to income distribution, fiscal balances, and ecological outcomes in each region.
 
-**Current papers:**
-- [Classical Economic Thermodynamics: The Fundamental Laws of Motion of Value and Social Reproduction](/projects/classical_economic_thermodynamics/)
-- [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/)
-- [The Conservation of Value (working paper)](/projects/conservation_of_value/)
+**Current paper:**
+- *The sustainable transition is not sustainable* (revise and resubmit, *Ecological Economics*) — two-region, 54-industry ecological SFC model
+
+**Interactive view**: an interactive browser interface to the model — selecting the model's variables, running the simulation on demand, and displaying the resulting paths — is in preparation.
 
 ---
 
-### Ecological Macroeconomics and Structural Change
+### Data-Driven Multi-Sector Dynamical Models of Structural Change
 
 My applied and empirical programme. Capitalist economies are structured through complex networks of intermediate production whose topology shapes how shocks propagate, how policies transmit, and whether decarbonisation is feasible without contraction. I develop multi-sector macroeconomic models — integrating Walrasian price dynamics, classical quantity dynamics, and Keynesian demand features — and calibrate them on large input-output databases (EORA, EU KLEMS, WIOD) to study:
 
@@ -42,9 +42,19 @@ My applied and empirical programme. Capitalist economies are structured through 
 - The time scales of low-carbon structural change across industries
 
 **Current papers:**
-- *Circular economy demand shocks and the macroeconomic implications of ecological exchange* (in revision) — two-region, 54-industry ecological SFC model
 - [Stabilizing Economic Fluctuations (JEBO 2023)](/files/publications/valles-codina-2023-jebo.pdf)
 - Vallès Codina & Semmler (2024). Time Scales of the Low-Carbon Transition. *Journal of Economics and Statistics*
+
+---
+
+### Classical Economic Thermodynamics
+
+The central programme of my theoretical work. The classical political economy tradition — Smith, Ricardo, Marx, Sraffa — provides the correct thermodynamic analogue to energy conservation in physics: both a **first law** (the MELT conservation identity: value is conserved in exchange for any price system) and a **second law** (labour as irreversible thermodynamic work, abstract labour as metabolic irreversibility). The Hamiltonian formalism of Goodwin and Flaschel–Semmler describes the conservative redistribution dynamics under simple reproduction; Foley's circuit of capital provides the explicit connection between monetary flows and labour-time accounting. The neoclassical conservation programme fails because its only invariant — the Hicksian expenditure function — exists in unobservable compensated demand space.
+
+**Current papers:**
+- [Classical Economic Thermodynamics: The Fundamental Laws of Motion of Value and Social Reproduction](/projects/classical_economic_thermodynamics/)
+- [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/)
+- [The Conservation of Value (working paper)](/projects/conservation_of_value/)
 
 ---
 
@@ -58,7 +68,7 @@ The structure of intermediate production networks determines both the normal dyn
 
 ---
 
-### The Structure of Ecological Unequal Exchange
+### The Network Structure of Ecological Unequal Exchange
 
 Ecologically unequal exchange is now measurable at global scale: high-income economies appropriate raw materials, energy, land and labour from lower-income economies in physical volumes far exceeding what they export, while capturing the value added. That result — established in the form given by Dorninger et al. (2021) — is fundamentally **bilateral**, a set of net flows between country groups. This project asks the question bilateral accounting cannot answer: **how is that appropriation organised as a network?**
 
@@ -68,7 +78,7 @@ There is a precise reason the network is the right object rather than a borrowed
 
 Built on the **GLORIA** multi-regional supply-use tables (release 060, 164 regions × 120 sectors, 2012–2026), parsed in Julia with the Leontief inverse never materialised — every question is a backsolve against a stored factorization, which is what keeps the analysis tractable on ordinary hardware.
 
-**Current output**: [The Structure of Ecological Unequal Exchange](/projects/ecological_unequal_exchange/) — 2019 cross-section complete; network analysis and temporal extension in progress.
+**Current output**: [The Network Structure of Ecological Unequal Exchange](/projects/ecological_unequal_exchange/) — 2019 cross-section complete; network analysis and temporal extension in progress.
 
 ---
 
