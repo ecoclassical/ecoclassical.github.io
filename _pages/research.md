@@ -33,7 +33,7 @@ A two-region ecological macroeconomic model that integrates multi-regional input
 
 ---
 
-### Data-Driven Multi-Sector Dynamical Models of Structural Change
+### Data-Driven Models of Multi-Sector Growth under Structural Change
 
 My applied and empirical programme. Capitalist economies are structured through complex networks of intermediate production whose topology shapes how shocks propagate, how policies transmit, and whether decarbonisation is feasible without contraction. I develop multi-sector macroeconomic models — integrating Walrasian price dynamics, classical quantity dynamics, and Keynesian demand features — and calibrate them on large input-output databases (EORA, EU KLEMS, WIOD) to study:
 
