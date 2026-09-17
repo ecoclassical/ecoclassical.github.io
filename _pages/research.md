@@ -18,7 +18,7 @@ Using multi-region input-output analysis, supply chain mapping, and sectoral net
 - The macroeconomic implications of rapid sectoral reallocation: which sectors are keystone nodes in the production network, and what happens when they are disrupted by the low-carbon transition?
 - The intersection of climate policy and global inequality: how decarbonisation strategies in the Global North transmit through trade and value chains to shape development trajectories in the Global South
 
-**Current output**: [Atlas of the Global Clean Industrial Base](https://nzipl-cvce.pages.dev/) <span class="badge badge-private" title="Sign-in required — access is limited to named collaborators">🔒 Private</span> — a trade-based intelligence platform mapping the global value chains of ten clean technologies (batteries, biofuel, electrolyzers, geothermal, heat pumps, magnets, nuclear, solar, transmission and wind, with electric vehicles in draft), built for policy audiences. Bilateral trade analytics on BACI at HS 6-digit, 1995–2024, with machine-learned competitiveness scores and firm-level location data across seven focal country case studies.
+**Current output**: [Atlas of the Global Clean Industrial Base](https://nzipl-cvce.pages.dev/) — a trade-based intelligence platform mapping the global value chains of ten clean technologies (batteries, biofuel, electrolyzers, geothermal, heat pumps, magnets, nuclear, solar, transmission and wind, with electric vehicles in draft), built for policy audiences. Bilateral trade analytics on BACI at HS 6-digit, 1995–2024, with machine-learned competitiveness scores and firm-level location data across seven focal country case studies.
 
 ---
 
@@ -27,8 +27,8 @@ Using multi-region input-output analysis, supply chain mapping, and sectoral net
 The central programme of my theoretical work. The classical political economy tradition — Smith, Ricardo, Marx, Sraffa — provides the correct thermodynamic analogue to energy conservation in physics: both a **first law** (the MELT conservation identity: value is conserved in exchange for any price system) and a **second law** (labour as irreversible thermodynamic work, abstract labour as metabolic irreversibility). The Hamiltonian formalism of Goodwin and Flaschel–Semmler describes the conservative redistribution dynamics under simple reproduction; Foley's circuit of capital provides the explicit connection between monetary flows and labour-time accounting. The neoclassical conservation programme fails because its only invariant — the Hicksian expenditure function — exists in unobservable compensated demand space.
 
 **Current papers:**
-- [Classical Economic Thermodynamics: The Fundamental Laws of Motion of Value and Social Reproduction](/projects/classical_economic_thermodynamics/) — submitted to *Physica A*
-- [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/) — submitted to *Physical Review E*
+- [Classical Economic Thermodynamics: The Fundamental Laws of Motion of Value and Social Reproduction](/projects/classical_economic_thermodynamics/)
+- [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/)
 - [The Conservation of Value (working paper)](/projects/conservation_of_value/)
 
 ---
