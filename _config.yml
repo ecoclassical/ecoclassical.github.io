@@ -176,6 +176,7 @@ exclude:
   - assets/js/vendor
   - CHANGELOG
   - CLAUDE.md
+  - C_V.pdf
   - Capfile
   - config
   - Dockerfile
@@ -187,6 +188,12 @@ exclude:
   - log
   - node_modules
   - package.json*
+  # Jekyll publishes these; .gitignore only hides them from git. The
+  # subscription-cost document is kept on disk as the source for an
+  # expense claim, so it is excluded here rather than deleted.
+  - Project_Usage.md
+  - Project_Usage.html
+  - Project_Usage_files/
   - Rakefile
   - README
   - tmp
