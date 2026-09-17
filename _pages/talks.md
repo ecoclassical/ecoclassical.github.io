@@ -57,7 +57,7 @@ author_profile: false
 - **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022) [slides](../assets/files/AHE_talk_june6_2022.pdf)  
   *European Association for Evolutionary Political Economy*, Napoli, IT
 
-- **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022)  [slides](../assets/filesAHE_talk_june6_2022.pdf)   
+- **Input-Output and Network Analysis of the Industrial Ecosystem of Health and Assistive Technology Industries** (2022)  [slides](../assets/files/AHE_talk_june6_2022.pdf)   
   *Association for Heterodox Economics*, London, UK
 
 - **Assessing the Speed of Substitution of Carbon Technologies** (2021)  

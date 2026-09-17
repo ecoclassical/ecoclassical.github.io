@@ -35,7 +35,7 @@ author:
   arxiv            : # URL - Update with the correct link to your profile
   googlescholar    : "https://scholar.google.com/citations?user=jQttkoQAAAAJ"
   impactstory      : # URL
-  orcid            : "https://orcid.org/my-orcid?orcid=0000-0002-1361-8243"
+  orcid            : "https://orcid.org/0000-0002-1361-8243"
   semantic         : # URL
 #  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   researchgate     : "https://www.researchgate.net/profile/Oriol-Valles-Codina?ev=hdr_xprf"
@@ -175,6 +175,7 @@ exclude:
   - assets/js/plugins
   - assets/js/vendor
   - CHANGELOG
+  - CLAUDE.md
   - Capfile
   - config
   - Dockerfile
