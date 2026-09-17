@@ -27,7 +27,7 @@ Using multi-region input-output analysis, supply chain mapping, and sectoral net
 A two-region ecological macroeconomic model that integrates multi-regional input–output structure with stock–flow consistent dynamics, calibrated for the European Union and the Rest of the World. The programme traces how circular-economy and climate policies transmit across borders — through final demand, intermediate production, and investment — and what they do to income distribution, fiscal balances, and ecological outcomes in each region.
 
 **Current paper:**
-- *The sustainable transition is not sustainable* (revise and resubmit, *Ecological Economics*) — two-region, 54-industry ecological SFC model
+- *The Macroeconomic Consequences of Ecological Unequal Exchange* (revise and resubmit, *Ecological Economics*) — two-region, 54-industry ecological SFC model
 
 **Interactive view**: an interactive browser interface to the model — selecting the model's variables, running the simulation on demand, and displaying the resulting paths — is in preparation.
 
