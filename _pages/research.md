@@ -29,7 +29,7 @@ A two-region ecological macroeconomic model that integrates multi-regional input
 **Current paper:**
 - *The Macroeconomic Consequences of Ecological Unequal Exchange* (revise and resubmit, *Ecological Economics*) — two-region, 54-industry ecological SFC model
 
-**Interactive view**: an interactive browser interface to the model — selecting the model's variables, running the simulation on demand, and displaying the resulting paths — is in preparation.
+**Interactive view**: [a browser interface to the model](/projects/leeds_model/) — choose a variable and a scenario, adjust the substitution intensity and the shock period, and the page computes the baseline and the scenario in your browser and plots both paths. Nothing is sent anywhere.
 
 ---
 
@@ -91,6 +91,10 @@ Methodological and historical work on the development of value theory, the therm
 - Georgescu-Roegen's entropy programme and its relationship to the classical labour theory of value
 
 ## Visualizations
+
+### The ecological unequal exchange model
+
+[The model in the browser](/projects/leeds_model/) — the two-region, 54-industry ecological SFC–IO model behind *The Macroeconomic Consequences of Ecological Unequal Exchange*. It runs the 99-period simulation on demand from the model's own exported initial state: four model arms, fourteen scenarios, and a variable-and-sector selector. Fully client-side, and calibrated on EXIOBASE 3.
 
 ### Timbuktu
 

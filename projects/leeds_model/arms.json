@@ -1,0 +1,22 @@
+[
+  {
+    "arm": "submitted",
+    "label": "Submitted (March 2026)",
+    "note": "Reproduces the 2026-04-03 submission bit for bit. The only arm that reproduces the published paper; it must never change."
+  },
+  {
+    "arm": "author_variant",
+    "label": "Author variant tariff base",
+    "note": "Tariff revenue on the foreign market price with the (1 + tar) divisor -- the author's own commented-out line. Carries the exporting region's VAT. Stale sector indices retained, as generated 2026-09-09."
+  },
+  {
+    "arm": "customs",
+    "label": "Customs tariff base",
+    "note": "Tariff revenue on the foreign pre-VAT price with the (1 + tar) divisor (destination principle). Stale sector indices retained, as generated 2026-09-09. This arm is the control for the index corrections: it differs from `revised` in rec_spec and waste_spec only."
+  },
+  {
+    "arm": "revised",
+    "label": "Revised (under revision)",
+    "note": "The model as qmd/paper_revision_2026-11-13.qmd describes it: customs tariff base (adopted in 094fef0) plus the two sector indices corrected. Differs from `customs` in the material and waste reporting blocks and nothing else."
+  }
+]

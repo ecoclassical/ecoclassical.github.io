@@ -1,0 +1,13 @@
+{
+  "arm": "revised",
+  "label": "Revised (under revision)",
+  "initial_state": "full_mrio_initial_state.xlsx",
+  "spec": {"tar_spec":"customs","rec_spec":"secondary","waste_spec":"treatment","price_spec":"coded"},
+  "dims": {"n_vars":              6713,"sectors_per_region":                54,"regions":                 2,"n_sectors":               108,"n_params":               126},
+  "layout": "column-major float64 little-endian",
+  "solver": {"tolerance":9.9999999999999995e-07,"max_iterations":               100,"consistency_threshold":              0.01,"nPeriods":               100,"t_shock":                70},
+  "source_hash": {"MVP_model_2026.R":"850c6c8ae4ff8183221d268f02141404","run_model_2026.R":"1f172e792e0b3ef7b9ac8c5c6b8473c7","demand_scenarios_2026.R":"5529d2c7c3f4928fbf3940cbd7e9588a","production_scenarios_2026.R":"2e862ad8dd1c933b56d5fbd94b3d745c"},
+  "bin_md5": {"state.bin":"1f0a90259616ca45800067bc858d9490","A.bin":"f8ba32c829c72b8cd681408941189a4d","B.bin":"72fa001dc5cd230ca93c7d39adf9ffad"},
+  "generated": "2026-09-17T22:29:17-0400"
+}
+
