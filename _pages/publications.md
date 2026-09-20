@@ -5,17 +5,6 @@ permalink: /publications/
 author_profile: false
 ---
 
-<div style="float:right; width:44%; margin:0 0 1.2rem 1.6rem;">
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-    <iframe src="/files/publications_donut.html"
-            style="width:100%; height:170px; border:none; overflow:hidden; border-radius:6px;">
-    </iframe>
-    <iframe src="/files/publications_timeline.html"
-            style="width:100%; height:170px; border:none; overflow:hidden; border-radius:6px;">
-    </iframe>
-  </div>
-</div>
-
 {% assign types = "Article,Book,Book chapter,Encyclopedia,Working paper,Work in progress" | split: "," %}
 {% assign all_pubs = site.data.publications | sort: "year" | reverse %}
 
@@ -44,3 +33,12 @@ author_profile: false
 {% endfor %}
 {% endif %}
 {% endfor %}
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem;">
+  <iframe src="/files/publications_donut.html"
+          style="width:100%; height:400px; border:none; overflow:hidden; border-radius:6px;">
+  </iframe>
+  <iframe src="/files/publications_timeline.html"
+          style="width:100%; height:400px; border:none; overflow:hidden; border-radius:6px;">
+  </iframe>
+</div>
