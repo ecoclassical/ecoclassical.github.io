@@ -1,6 +1,6 @@
 {
   "built_date": "2026-10-01",
-  "commit": "ccb8662a81ac18f831279a91bf4b4027c840db3f",
+  "commit": "40408fc581c4ab22176c23ff0a8ed7e8b9a4070b",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -44,8 +44,8 @@
     },
     "evidence/output/html/trackers/closure_region.html": {
       "source": "output/html/trackers/closure_region.html",
-      "sha256": "9daac4bebb95595aa1b50d539d7a572fce8826a903f8edf8f3717c2ee3fc8301",
-      "bytes": 65316
+      "sha256": "c28fa87b6ecdbb365f2bdcab0a2db7f3446cba8ec7729f7fa790f8cbf0f31de3",
+      "bytes": 65623
     },
     "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html": {
       "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
@@ -62,6 +62,11 @@
       "sha256": "49810ab9b65e7eb4517895737d6a3bd086cc441657952d79e0f2cef255550966",
       "bytes": 7102553
     },
+    "evidence/output/html/reports/2026-10-01-scenario-grid.html": {
+      "source": "output/html/reports/2026-10-01-scenario-grid.html",
+      "sha256": "ee8dff5e814cfae8b3a018097c6362a0186343077daafae605445d6948b1dac1",
+      "bytes": 2182935
+    },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.docx": {
       "source": "output/docx/appendices/2026-09-30-model-description-revised.docx",
       "sha256": "f377fe86396b20d02ad020ad78004663d8e60fa1dfb8f6932a40d075aa9f68ef",
@@ -69,8 +74,8 @@
     }
   },
   "inputs": {
-    "web/evidence/pages.json": "901889f69347fe2c7315dad75ffe9ba77ea6970fa932abd81a944e121c14a96b",
-    "output/calibration/scenario_grid_20261001_status.csv": "957fb6ce9b4ad9fdb884aaf8ebbf1e86f6b29261ace91188d93ac8f1298b9fb2"
+    "web/evidence/pages.json": "0f37d9209c38e1d6685dde94bed52b83431cc3504d59ed19063c7775b475631a",
+    "output/calibration/scenario_grid_20261001_status.csv": "98b2b33894ba411abc1fbe7278a22211aa32fc1ef7391cd5163dfa515c5ee612"
   },
   "generated": [
     "pages.json",

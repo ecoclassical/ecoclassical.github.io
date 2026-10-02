@@ -70,5 +70,13 @@
     "source": "output/html/reports/2026-10-01-closure-dynamics.html",
     "description": "Dependency graphs, transition modes and the limits of the numerical stability interpretation.",
     "href": "evidence/output/html/reports/2026-10-01-closure-dynamics.html"
+  },
+  {
+    "id": "scenario-grid",
+    "section": "Scenarios",
+    "title": "Scenario grid \u00b7 checked results",
+    "source": "output/html/reports/2026-10-01-scenario-grid.html",
+    "description": "Accepted-cache responses across closures and regional setups; the report states its dated coverage snapshot.",
+    "href": "evidence/output/html/reports/2026-10-01-scenario-grid.html"
   }
 ]
