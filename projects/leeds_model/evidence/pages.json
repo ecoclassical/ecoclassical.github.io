@@ -1,0 +1,74 @@
+[
+  {
+    "id": "equations",
+    "section": "Model",
+    "title": "Submitted \u2192 revised equations",
+    "source": "model/equations/model-equations-submitted-to-revised.html",
+    "description": "Inspect equation changes, model blocks and arm-specific expressions.",
+    "href": "evidence/model/equations/model-equations-submitted-to-revised.html"
+  },
+  {
+    "id": "arms",
+    "section": "Model",
+    "title": "Compare model arms",
+    "source": "model/equations/view-arms.html",
+    "description": "Read the existing arm comparison with its own dated coverage.",
+    "href": "evidence/model/equations/view-arms.html"
+  },
+  {
+    "id": "description",
+    "section": "Model",
+    "title": "Canonical model description",
+    "source": "output/html/appendices/2026-09-30-model-description-revised.html",
+    "description": "The written description of the canonical revised model and its closures.",
+    "href": "evidence/output/html/appendices/2026-09-30-model-description-revised.html"
+  },
+  {
+    "id": "equations-tracker",
+    "section": "Model",
+    "title": "Equation change tracker",
+    "source": "output/html/trackers/equations.html",
+    "description": "Changes, reasons and implementation status, from submission to the revised model.",
+    "href": "evidence/output/html/trackers/equations.html"
+  },
+  {
+    "id": "closures",
+    "section": "Closures",
+    "title": "Closure \u00d7 region grid",
+    "source": "output/html/tables/closure_region_grid.html",
+    "description": "Baseline readiness by closure and regional setup; scenario completion is recorded separately.",
+    "href": "evidence/output/html/tables/closure_region_grid.html"
+  },
+  {
+    "id": "closure-tracker",
+    "section": "Closures",
+    "title": "Closure progress tracker",
+    "source": "output/html/trackers/closure_region.html",
+    "description": "Calibrations, deferred decisions and outstanding work.",
+    "href": "evidence/output/html/trackers/closure_region.html"
+  },
+  {
+    "id": "financial",
+    "section": "Closures",
+    "title": "Financial dynamics and impulses",
+    "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
+    "description": "What absorbs an external imbalance under each closure, measured against its own baseline.",
+    "href": "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html"
+  },
+  {
+    "id": "transmission",
+    "section": "Scenarios",
+    "title": "Revised versus submitted transmission",
+    "source": "output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html",
+    "description": "Canonical scenario responses and a stated rule fitted to the submitted labels.",
+    "href": "evidence/output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html"
+  },
+  {
+    "id": "dynamics",
+    "section": "Dynamics",
+    "title": "Dependency structure and local dynamics",
+    "source": "output/html/reports/2026-10-01-closure-dynamics.html",
+    "description": "Dependency graphs, transition modes and the limits of the numerical stability interpretation.",
+    "href": "evidence/output/html/reports/2026-10-01-closure-dynamics.html"
+  }
+]

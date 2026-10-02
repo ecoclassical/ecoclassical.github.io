@@ -1,0 +1,80 @@
+{
+  "built_date": "2026-10-01",
+  "commit": "ccb8662a81ac18f831279a91bf4b4027c840db3f",
+  "files": {
+    "index.html": {
+      "source": "web/evidence/index.html",
+      "sha256": "05599e9bd945bc7c682cbd5d81208fd5d6500a989e7fd5a2df24529735788937",
+      "bytes": 4377
+    },
+    "style.css": {
+      "source": "web/evidence/style.css",
+      "sha256": "f10fc7ef4c32f0cf8bf317d89abe290cada474018042fda4ec3b5bbe91b51242",
+      "bytes": 3830
+    },
+    "main.mjs": {
+      "source": "web/evidence/main.mjs",
+      "sha256": "3ed556047806e6baf6bb76ff31ce563d42d390d9b1c858866dbf08bc38ed3dfe",
+      "bytes": 2825
+    },
+    "evidence/model/equations/model-equations-submitted-to-revised.html": {
+      "source": "model/equations/model-equations-submitted-to-revised.html",
+      "sha256": "261eec95492593a6f5445d58ae330b5a2786662f5654a8e86a84920b10401a1f",
+      "bytes": 4864461
+    },
+    "evidence/model/equations/view-arms.html": {
+      "source": "model/equations/view-arms.html",
+      "sha256": "0e0f1e4f87012818a9a35e12bcab8073190ad7859eeae26f1f815967a8a71499",
+      "bytes": 20007826
+    },
+    "evidence/output/html/appendices/2026-09-30-model-description-revised.html": {
+      "source": "output/html/appendices/2026-09-30-model-description-revised.html",
+      "sha256": "4875e351d8be94e8fe1980f2d45244f06f2f9efc5f15852fdee2736faf4f8657",
+      "bytes": 1958303
+    },
+    "evidence/output/html/trackers/equations.html": {
+      "source": "output/html/trackers/equations.html",
+      "sha256": "cb25313c838214e07db3853e1c9e476aa86b4712a0d9a9b316392f1bc033a71d",
+      "bytes": 92944
+    },
+    "evidence/output/html/tables/closure_region_grid.html": {
+      "source": "output/html/tables/closure_region_grid.html",
+      "sha256": "815bf92093ee92ab335746315933462bd0e43af7ceeacff17839caac56901c53",
+      "bytes": 58124
+    },
+    "evidence/output/html/trackers/closure_region.html": {
+      "source": "output/html/trackers/closure_region.html",
+      "sha256": "9daac4bebb95595aa1b50d539d7a572fce8826a903f8edf8f3717c2ee3fc8301",
+      "bytes": 65316
+    },
+    "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html": {
+      "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
+      "sha256": "008fe8bdccf622b0956ffb669273fa309569bd20a1db05b7a54e6cbd849480b6",
+      "bytes": 3501469
+    },
+    "evidence/output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html": {
+      "source": "output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html",
+      "sha256": "217175415e543ba9e29e40f7bb9423280e2f8df9a6085b8567e7af9b17551e42",
+      "bytes": 2044315
+    },
+    "evidence/output/html/reports/2026-10-01-closure-dynamics.html": {
+      "source": "output/html/reports/2026-10-01-closure-dynamics.html",
+      "sha256": "49810ab9b65e7eb4517895737d6a3bd086cc441657952d79e0f2cef255550966",
+      "bytes": 7102553
+    },
+    "evidence/output/html/appendices/2026-09-30-model-description-revised.docx": {
+      "source": "output/docx/appendices/2026-09-30-model-description-revised.docx",
+      "sha256": "f377fe86396b20d02ad020ad78004663d8e60fa1dfb8f6932a40d075aa9f68ef",
+      "bytes": 41371
+    }
+  },
+  "inputs": {
+    "web/evidence/pages.json": "901889f69347fe2c7315dad75ffe9ba77ea6970fa932abd81a944e121c14a96b",
+    "output/calibration/scenario_grid_20261001_status.csv": "957fb6ce9b4ad9fdb884aaf8ebbf1e86f6b29261ace91188d93ac8f1298b9fb2"
+  },
+  "generated": [
+    "pages.json",
+    "coverage.json",
+    "manifest.json"
+  ]
+}

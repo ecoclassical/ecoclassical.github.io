@@ -29,7 +29,7 @@ A two-region ecological macroeconomic model that integrates multi-regional input
 **Current paper:**
 - *The Macroeconomic Consequences of Ecological Unequal Exchange* (revise and resubmit, *Ecological Economics*) — two-region, 54-industry ecological SFC model
 
-**Interactive view**: [a browser interface to the model](/projects/leeds_model/) — choose a variable and a scenario, adjust the substitution intensity and the shock period, and the page computes the baseline and the scenario in your browser and plots both paths. Nothing is sent anywhere.
+**Model and results:** [the research evidence site](/projects/leeds_model/evidence/) — inspect the submitted-to-revised equations, the canonical model description, closure comparisons, circular-economy scenario responses and dynamical analysis. The reports retain their source bases and numerical qualifications. The [earlier browser-engine interface](/projects/leeds_model/) remains available as a historical port; it is not the canonical revised solver.
 
 ---
 
@@ -94,7 +94,7 @@ Methodological and historical work on the development of value theory, the therm
 
 ### The ecological unequal exchange model
 
-[The model in the browser](/projects/leeds_model/) — the two-region, 54-industry ecological SFC–IO model behind *The Macroeconomic Consequences of Ecological Unequal Exchange*. It runs the 99-period simulation on demand from the model's own exported initial state: four model arms, fourteen scenarios, and a variable-and-sector selector. Fully client-side, and calibrated on EXIOBASE 3.
+[Model and results](/projects/leeds_model/evidence/) — the ecological SFC–IO model behind *The Macroeconomic Consequences of Ecological Unequal Exchange*: interactive equation and arm views, closure and regional comparisons, scenario transmission and local dynamics, with the technical reports attached.
 
 ### Timbuktu
 

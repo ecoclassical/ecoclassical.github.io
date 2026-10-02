@@ -1,0 +1,70 @@
+{
+  "measured_at": "2026-10-02T01:48:01+00:00",
+  "cells": [
+    {
+      "arm": "revised",
+      "closure": "OPENFIX-gold",
+      "region": "EU/RoW",
+      "accepted": 12,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_ns",
+      "closure": "OPENFIX-gold",
+      "region": "North/South",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_openfixg",
+      "closure": "OPENFIXG",
+      "region": "EU/RoW",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_ns_openfixg",
+      "closure": "OPENFIXG",
+      "region": "North/South",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_quasifloat",
+      "closure": "QUASIFLOAT",
+      "region": "EU/RoW",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_ns_quasifloat",
+      "closure": "QUASIFLOAT",
+      "region": "North/South",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_openfix_fiat",
+      "closure": "OPENFIX-fiat",
+      "region": "EU/RoW",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_ns_openfix_fiat",
+      "closure": "OPENFIX-fiat",
+      "region": "North/South",
+      "accepted": 0,
+      "failed": 0,
+      "expected": 12
+    }
+  ],
+  "basis": "Source: output/calibration/scenario_grid_20261001_status.csv. Included scenarios 1\u20134 and 6\u201313; accepted means cache validation passed. Counts are zero where validation has not yet been recorded."
+}
