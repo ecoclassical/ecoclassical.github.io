@@ -14,22 +14,33 @@ author_profile: false
 ## {{ g.name }}
 
 {% for p in visible %}
-- {% if p.url != "" and p.url != nil %}<a href="{{ p.url | strip }}" target="_blank" rel="noopener">{% endif %}**{{ p.title }}**{% if p.url != "" and p.url != nil %}</a>{% endif %} ({{ p.year }})
-  {{ p.authors }}.
-  {% if p.venue != "" and p.venue != nil %}*{{ p.venue }}*{% endif %}{% if p.volume != "" and p.volume != nil %}, {{ p.volume }}{% endif %}{% if p.issue != "" and p.issue != nil %}({{ p.issue }}){% endif %}{% if p.pages != "" and p.pages != nil %}, {{ p.pages }}{% endif %}.
-  {% assign st = p.status | strip %}
-  {% if st != "" and st != "Published" %}
-    {% assign c = "#7a8aa0" %}
-    {% if st == "Revise and resubmit" or st == "R&R" %}{% assign c = "#f9a84f" %}
-    {% elsif st == "Submitted" or st == "With editor" or st == "Under review" %}{% assign c = "#6fa8dc" %}
-    {% elsif st == "Accepted" or st == "In press" %}{% assign c = "#7fbf7f" %}
-    {% elsif st == "Rejected" or st == "Desk rejected" or st == "Withdrawn" %}{% assign c = "#c07878" %}
+<div style="margin-bottom:1.15rem;">
+  <div style="line-height:1.45;">
+    {% if p.url != "" and p.url != nil %}<a href="{{ p.url | strip }}" target="_blank" rel="noopener">{% endif %}<strong>{{ p.title }}</strong>{% if p.url != "" and p.url != nil %}</a>{% endif %} <span style="opacity:0.65;">({{ p.year }})</span>
+  </div>
+  <div style="font-size:0.9rem; line-height:1.5; margin-top:0.15rem; opacity:0.92;">
+    {{ p.authors }}.
+    {% if p.venue != "" and p.venue != nil %}<em>{{ p.venue }}</em>{% endif %}{% if p.volume != "" and p.volume != nil %}, {{ p.volume }}{% endif %}{% if p.issue != "" and p.issue != nil %}({{ p.issue }}){% endif %}{% if p.pages != "" and p.pages != nil %}, {{ p.pages }}{% endif %}.
+    {% assign st = p.status | strip %}
+    {% if st != "" and st != "Published" %}
+      {% if st == "Revise and resubmit" or st == "R&R" %}
+        <span style="font-size:0.72rem;color:#f9a84f;border:1px solid #f9a84f;padding:1px 7px;border-radius:3px;margin-left:4px;">{{ st | downcase }}</span>
+      {% elsif st == "In progress" %}
+        <span style="font-size:0.72rem;color:#ffffff;background:#8b1a1a;border:1px solid #8b1a1a;padding:2px 8px;border-radius:4px;margin-left:4px;">{{ st | downcase }}</span>
+      {% elsif st == "Submitted" or st == "With editor" or st == "Under review" %}
+        <span style="font-size:0.72rem;color:#6fa8dc;border:1px solid #6fa8dc;padding:1px 7px;border-radius:3px;margin-left:4px;">{{ st | downcase }}</span>
+      {% elsif st == "Accepted" or st == "In press" %}
+        <span style="font-size:0.72rem;color:#7fbf7f;border:1px solid #7fbf7f;padding:1px 7px;border-radius:3px;margin-left:4px;">{{ st | downcase }}</span>
+      {% elsif st == "Rejected" or st == "Desk rejected" or st == "Withdrawn" %}
+        <span style="font-size:0.72rem;color:#c07878;border:1px solid #c07878;padding:1px 7px;border-radius:3px;margin-left:4px;">{{ st | downcase }}</span>
+      {% else %}
+        <span style="font-size:0.72rem;color:#7a8aa0;border:1px solid #7a8aa0;padding:1px 7px;border-radius:3px;margin-left:4px;">{{ st | downcase }}</span>
+      {% endif %}
     {% endif %}
-    <span style="font-size:0.75rem;color:{{ c }};border:1px solid {{ c }};padding:1px 7px;border-radius:3px;margin-left:4px;opacity:0.9;">{{ st | downcase }}</span>
-  {% endif %}
-  {% if p.pdf != "" and p.pdf != nil %} · <a href="{{ p.pdf }}" style="font-size:0.78rem;">PDF</a>{% endif %}
-  {% if p.url != "" and p.url != nil %} · <a href="{{ p.url | strip }}" target="_blank" rel="noopener" style="font-size:0.78rem;">Publisher</a>{% endif %}
-
+    {% if p.pdf != "" and p.pdf != nil %} · <a href="{{ p.pdf }}" style="font-size:0.82rem;">PDF</a>{% endif %}
+    {% if p.url != "" and p.url != nil %} · <a href="{{ p.url | strip }}" target="_blank" rel="noopener" style="font-size:0.82rem;">Publisher</a>{% endif %}
+  </div>
+</div>
 {% endfor %}
 {% endif %}
 {% endfor %}
