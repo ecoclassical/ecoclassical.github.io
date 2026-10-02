@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-10-02T02:56:25+00:00",
+  "measured_at": "2026-10-02T04:39:34+00:00",
   "cells": [
     {
       "arm": "revised",
@@ -21,7 +21,7 @@
       "arm": "revised_openfixg",
       "closure": "OPENFIXG",
       "region": "EU/RoW",
-      "accepted": 4,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     },
@@ -29,7 +29,7 @@
       "arm": "revised_ns_openfixg",
       "closure": "OPENFIXG",
       "region": "North/South",
-      "accepted": 0,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     },
@@ -37,7 +37,7 @@
       "arm": "revised_quasifloat",
       "closure": "QUASIFLOAT",
       "region": "EU/RoW",
-      "accepted": 0,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     },
@@ -45,7 +45,7 @@
       "arm": "revised_ns_quasifloat",
       "closure": "QUASIFLOAT",
       "region": "North/South",
-      "accepted": 0,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     },

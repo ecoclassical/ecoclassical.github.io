@@ -1,6 +1,6 @@
 {
-  "built_date": "2026-10-01",
-  "commit": "d664d82d801ed7d2c0b18f62d89b0ff888728280",
+  "built_date": "2026-10-02",
+  "commit": "54dc06fe69691b18b5d5eb5e82ac3323c8273039",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -39,13 +39,13 @@
     },
     "evidence/output/html/tables/closure_region_grid.html": {
       "source": "output/html/tables/closure_region_grid.html",
-      "sha256": "aa204c96eb5df6f74384b9e2edd7066394fe96e2bf51928a71be317e41097fd6",
-      "bytes": 49897
+      "sha256": "d1987bac253abb822abdb09c5c1ed3ee8cafe4ee593fa7e5990719b7a28838d9",
+      "bytes": 50042
     },
     "evidence/output/html/trackers/closure_region.html": {
       "source": "output/html/trackers/closure_region.html",
-      "sha256": "ad34a6d68f6ad79ae6cda9e3a5ffa77fe162ff0b68b89008e4071f29477d5883",
-      "bytes": 65575
+      "sha256": "7eefd87c270db247bb3bb4a5fd39b8a632d5efe30781af4d58ade462bc351df0",
+      "bytes": 65680
     },
     "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html": {
       "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
@@ -64,8 +64,8 @@
     },
     "evidence/output/html/reports/2026-10-01-scenario-grid.html": {
       "source": "output/html/reports/2026-10-01-scenario-grid.html",
-      "sha256": "41336d94b9792c14aebc21c9d25f1b90ea12c4d17ccdcf7009bab9a35de923d7",
-      "bytes": 2333149
+      "sha256": "94e3e3850305b3d31ce043183caca892bfb1688e49a9d2654984310c7c6e14e0",
+      "bytes": 2743663
     },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.docx": {
       "source": "output/docx/appendices/2026-09-30-model-description-revised.docx",
@@ -75,7 +75,7 @@
   },
   "inputs": {
     "web/evidence/pages.json": "0f37d9209c38e1d6685dde94bed52b83431cc3504d59ed19063c7775b475631a",
-    "output/calibration/scenario_grid_20261001_status.csv": "92cb449cb9ad85ce39383a65f79f0372873082849f86c8da50e4cf55c199be96"
+    "output/calibration/scenario_grid_20261001_status.csv": "3e15bf241b2375720c4f82927f1cc763b7df8b0f906a2147033e7e9361c32fb0"
   },
   "generated": [
     "pages.json",
