@@ -5,17 +5,16 @@ permalink: /publications/
 author_profile: false
 ---
 
-{% assign types = "Article,Book,Book chapter,Encyclopedia,Working paper,Work in progress" | split: "," %}
-{% assign all_pubs = site.data.publications | sort: "year" | reverse %}
+{% assign groups = site.data.publications | group_by: "label" %}
+{% for g in groups %}
+{% assign visible = "" | split: "" %}
+{% for p in g.items %}{% if p.show == "true" %}{% assign visible = visible | push: p %}{% endif %}{% endfor %}
+{% if visible.size > 0 %}
 
-{% for ptype in types %}
-{% assign section_pubs = all_pubs | where: "type", ptype %}
-{% if section_pubs.size > 0 %}
+## {{ g.name }}
 
-## {{ ptype }}s
-
-{% for p in section_pubs %}
-- {% if p.url != "" and p.url != nil %}<a href="{{ p.url | strip }}" target="_blank">{% endif %}**{{ p.title }}**{% if p.url != "" and p.url != nil %}</a>{% endif %} ({{ p.year }})
+{% for p in visible %}
+- {% if p.url != "" and p.url != nil %}<a href="{{ p.url | strip }}" target="_blank" rel="noopener">{% endif %}**{{ p.title }}**{% if p.url != "" and p.url != nil %}</a>{% endif %} ({{ p.year }})
   {{ p.authors }}.
   {% if p.venue != "" and p.venue != nil %}*{{ p.venue }}*{% endif %}{% if p.volume != "" and p.volume != nil %}, {{ p.volume }}{% endif %}{% if p.issue != "" and p.issue != nil %}({{ p.issue }}){% endif %}{% if p.pages != "" and p.pages != nil %}, {{ p.pages }}{% endif %}.
   {% assign st = p.status | strip %}
@@ -29,6 +28,7 @@ author_profile: false
     <span style="font-size:0.75rem;color:{{ c }};border:1px solid {{ c }};padding:1px 7px;border-radius:3px;margin-left:4px;opacity:0.9;">{{ st | downcase }}</span>
   {% endif %}
   {% if p.pdf != "" and p.pdf != nil %} · <a href="{{ p.pdf }}" style="font-size:0.78rem;">PDF</a>{% endif %}
+  {% if p.url != "" and p.url != nil %} · <a href="{{ p.url | strip }}" target="_blank" rel="noopener" style="font-size:0.78rem;">Publisher</a>{% endif %}
 
 {% endfor %}
 {% endif %}

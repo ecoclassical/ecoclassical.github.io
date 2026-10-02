@@ -3,7 +3,7 @@ layout: dark
 title: "CV"
 permalink: /cv/
 author_profile: false
-published: false
+published: true
 redirect_from:
   - /resume
 ---
