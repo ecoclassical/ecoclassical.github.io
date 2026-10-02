@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-10-02T02:12:00+00:00",
+  "measured_at": "2026-10-02T02:56:25+00:00",
   "cells": [
     {
       "arm": "revised",
@@ -13,7 +13,7 @@
       "arm": "revised_ns",
       "closure": "OPENFIX-gold",
       "region": "North/South",
-      "accepted": 2,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     },
@@ -21,7 +21,7 @@
       "arm": "revised_openfixg",
       "closure": "OPENFIXG",
       "region": "EU/RoW",
-      "accepted": 0,
+      "accepted": 4,
       "failed": 0,
       "expected": 12
     },
@@ -53,7 +53,7 @@
       "arm": "revised_openfix_fiat",
       "closure": "OPENFIX-fiat",
       "region": "EU/RoW",
-      "accepted": 10,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     },
@@ -61,7 +61,7 @@
       "arm": "revised_ns_openfix_fiat",
       "closure": "OPENFIX-fiat",
       "region": "North/South",
-      "accepted": 0,
+      "accepted": 12,
       "failed": 0,
       "expected": 12
     }
