@@ -1,6 +1,6 @@
 {
   "built_date": "2026-10-02",
-  "commit": "54dc06fe69691b18b5d5eb5e82ac3323c8273039",
+  "commit": "97794e1be31f7ea17e47c6b9bf6c36906233a518",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -64,8 +64,8 @@
     },
     "evidence/output/html/reports/2026-10-01-scenario-grid.html": {
       "source": "output/html/reports/2026-10-01-scenario-grid.html",
-      "sha256": "94e3e3850305b3d31ce043183caca892bfb1688e49a9d2654984310c7c6e14e0",
-      "bytes": 2743663
+      "sha256": "23fb5c691b4436975815c383099a1af085fac5e97ec8d953de9afd27973da3d9",
+      "bytes": 2745019
     },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.docx": {
       "source": "output/docx/appendices/2026-09-30-model-description-revised.docx",
