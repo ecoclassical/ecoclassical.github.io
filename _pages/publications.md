@@ -19,7 +19,7 @@ author_profile: false
     {% if p.url != "" and p.url != nil %}<a href="{{ p.url | strip }}" target="_blank" rel="noopener">{% endif %}<strong>{{ p.title }}</strong>{% if p.url != "" and p.url != nil %}</a>{% endif %} <span style="opacity:0.65;">({{ p.year }})</span>
   </div>
   <div style="font-size:0.9rem; line-height:1.5; margin-top:0.15rem; opacity:0.92;">
-    {{ p.authors }}.
+    {{ p.authors }}
     {% if p.venue != "" and p.venue != nil %}<em>{{ p.venue }}</em>{% endif %}{% if p.volume != "" and p.volume != nil %}, {{ p.volume }}{% endif %}{% if p.issue != "" and p.issue != nil %}({{ p.issue }}){% endif %}{% if p.pages != "" and p.pages != nil %}, {{ p.pages }}{% endif %}.
     {% assign st = p.status | strip %}
     {% if st != "" and st != "Published" %}
