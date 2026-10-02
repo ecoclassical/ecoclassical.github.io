@@ -1,0 +1,41 @@
+/* Shared responsive header for the home and dark page layouts. */
+@media (max-width: 760px) {
+  .nav-inner {
+    height: auto;
+    min-height: 52px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .nav-name {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    white-space: nowrap;
+  }
+  .nav-links {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 6px 10px;
+  }
+}
+@media (max-width: 640px) {
+  .wrap, .nav-inner { padding-left: 20px; padding-right: 20px; }
+  .hero { padding: 2.5rem 0 2rem; }
+  .hero-role { margin-bottom: 0; }
+  .bio-grid, .visuals { padding: 2rem 0; }
+  .page-header { padding: 2rem 0 1.5rem; margin-bottom: 1.5rem; }
+  .page-content { overflow-wrap: anywhere; }
+  .page-content img { max-width: 100%; height: auto; }
+}
