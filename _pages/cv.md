@@ -52,21 +52,6 @@ redirect_from:
 - Complexity science
 
 
-**Languages**
+<div><strong>Languages</strong>: Catalan (native) · Spanish (native) · English (near-native) · Italian (fluent) · German (basic) · Arabic (basic)</div>
 
-- Catalan (native)
-- Spanish (native)
-- English (near-native)
-- Italian (fluent)
-- German (basic)
-- Arabic (basic)
-
-**Programming, markup, and tools**
-
-- R (expert)
-- Markdown / R Markdown / Quarto (expert)
-- Shiny (advanced)
-- Git / GitHub (advanced)
-- LaTeX (advanced)
-- C, C++ (intermediate)
-- Julia, Python, Perl, MATLAB, HTML, PHP (working knowledge)
+<div><strong>Programming, markup, and tools</strong>: R (expert) · Markdown / R Markdown / Quarto (expert) · Shiny (advanced) · Git / GitHub (advanced) · LaTeX (advanced) · C, C++ (intermediate) · Julia, Python, Perl, MATLAB, HTML, PHP (working knowledge)</div>
