@@ -1,0 +1,125 @@
+{
+  "Background": [
+    {
+      "label": "Background",
+      "page": "background"
+    }
+  ],
+  "Model Equations": [
+    {
+      "label": "Arm viewer",
+      "page": "arms"
+    },
+    {
+      "label": "All equations",
+      "page": "equations",
+      "native": "all-equations"
+    },
+    {
+      "label": "Changed equations",
+      "page": "equations",
+      "native": "changed-equations"
+    },
+    {
+      "label": "Description",
+      "page": "description"
+    },
+    {
+      "label": "Changelog",
+      "page": "equations",
+      "native": "change-log"
+    },
+    {
+      "label": "Edits",
+      "page": "equations",
+      "native": "edits"
+    },
+    {
+      "label": "Arms",
+      "page": "equations",
+      "native": "arms"
+    }
+  ],
+  "Closures": [
+    {
+      "label": "All equations",
+      "page": "closure-equations",
+      "native": "all-equations"
+    },
+    {
+      "label": "Changed equations",
+      "page": "closure-equations",
+      "native": "changed-equations"
+    },
+    {
+      "label": "Description",
+      "page": "closure-description"
+    },
+    {
+      "label": "Plot viewer",
+      "page": "view-closures"
+    }
+  ],
+  "Scenarios": [
+    {
+      "label": "Plot viewer",
+      "page": "view-scenarios"
+    },
+    {
+      "label": "Scenario definitions",
+      "page": "scenario-definitions"
+    }
+  ],
+  "Analysis": [
+    {
+      "label": "Dendrograms",
+      "page": "analysis-visuals",
+      "native": "hierarchy"
+    },
+    {
+      "label": "PCA",
+      "page": "analysis-visuals",
+      "native": "pca"
+    },
+    {
+      "label": "Regime map",
+      "page": "analysis-visuals",
+      "native": "regimes"
+    },
+    {
+      "label": "ANOVA",
+      "page": "analysis-visuals",
+      "native": "anova"
+    },
+    {
+      "label": "Signed responses",
+      "page": "analysis-visuals",
+      "native": "signs"
+    },
+    {
+      "label": "Submitted comparison",
+      "page": "analysis-visuals",
+      "native": "comparison"
+    },
+    {
+      "label": "Report",
+      "page": "regime-report"
+    }
+  ],
+  "Discussion": [
+    {
+      "label": "Current discussion",
+      "page": "discussion"
+    },
+    {
+      "label": "Submitted discussion",
+      "page": "submitted-discussion"
+    }
+  ],
+  "Documentation": [
+    {
+      "label": "Reports by topic",
+      "page": "documentation"
+    }
+  ]
+}

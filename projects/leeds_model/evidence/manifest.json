@@ -1,85 +1,577 @@
 {
-  "built_date": "2026-10-02",
-  "commit": "97794e1be31f7ea17e47c6b9bf6c36906233a518",
+  "working_tree_dirty": true,
+  "built_date": "2026-10-03",
+  "commit": "e06d6a0d4491a3f21b6fb05170e521688b660a3f",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
-      "sha256": "05599e9bd945bc7c682cbd5d81208fd5d6500a989e7fd5a2df24529735788937",
-      "bytes": 4377
+      "sha256": "76a12ae737149a9b865e57951ea3117604d5f11bcb4c7ff17b2521b50d588466",
+      "bytes": 991
     },
     "style.css": {
       "source": "web/evidence/style.css",
-      "sha256": "f10fc7ef4c32f0cf8bf317d89abe290cada474018042fda4ec3b5bbe91b51242",
-      "bytes": 3830
+      "sha256": "a61e2915d8622545ddf7e2c3e037b93f1714c03b2e5d36fa0c5be8c999469881",
+      "bytes": 5022
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "3ed556047806e6baf6bb76ff31ce563d42d390d9b1c858866dbf08bc38ed3dfe",
-      "bytes": 2825
+      "sha256": "cb148a7f86b0c485368fae03ec04f3adac25f9c93a2bd3f8c3e99167578731cf",
+      "bytes": 6706
+    },
+    "sections.json": {
+      "source": "web/evidence/sections.json",
+      "sha256": "c4e09f696da63f5ca999d5fa41caa8515b6a81d56da89621f0590e48b0bc3215",
+      "bytes": 118
+    },
+    "section-tabs.json": {
+      "source": "web/evidence/section-tabs.json",
+      "sha256": "847163aacfd53d190b05126bf1307ed6a4be46944be7b9a7afba3c6f4e40e290",
+      "bytes": 2323
+    },
+    "simulation-manifest.json": {
+      "source": "output/calibration/simulation_manifest_20261002_xi.json",
+      "sha256": "946bf8c1f30d304630c68cd0188290d5847cc7e8e488e7eb3c633b69b3a294ca",
+      "bytes": 865413
+    },
+    "evidence/output/html/site/background.html": {
+      "source": "output/html/site/background.html",
+      "sha256": "23dfe93488d0771b01197b9ea845bd0a2cb6f565a8c147e83c1571909ac8205e",
+      "bytes": 1921199
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
       "sha256": "261eec95492593a6f5445d58ae330b5a2786662f5654a8e86a84920b10401a1f",
       "bytes": 4864461
     },
-    "evidence/model/equations/view-arms.html": {
-      "source": "model/equations/view-arms.html",
-      "sha256": "0e0f1e4f87012818a9a35e12bcab8073190ad7859eeae26f1f815967a8a71499",
-      "bytes": 20007826
-    },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.html": {
       "source": "output/html/appendices/2026-09-30-model-description-revised.html",
       "sha256": "4875e351d8be94e8fe1980f2d45244f06f2f9efc5f15852fdee2736faf4f8657",
       "bytes": 1958303
     },
-    "evidence/output/html/trackers/equations.html": {
-      "source": "output/html/trackers/equations.html",
-      "sha256": "cb25313c838214e07db3853e1c9e476aa86b4712a0d9a9b316392f1bc033a71d",
-      "bytes": 92944
+    "evidence/model/equations/view-arms.html": {
+      "source": "model/equations/view-arms.html",
+      "sha256": "82fb968470036d4d896d6365d0120f4b99cb3fc9d884b14eedf3d56ef949fa40",
+      "bytes": 14409233
+    },
+    "evidence/model/equations/model-equations-closures.html": {
+      "source": "model/equations/model-equations-closures.html",
+      "sha256": "bf163ab6fc12010f3a288bbe50eb5871a320947bfeb3f179a340b33c3f35d8ac",
+      "bytes": 1252345
+    },
+    "evidence/output/html/reports/closures/view-closures.html": {
+      "source": "output/html/reports/closures/view-closures.html",
+      "sha256": "10ca43f88a4bb163fd35a5944634d62cda99ad50c0de53e77efcd389158a7abc",
+      "bytes": 14754984
     },
     "evidence/output/html/tables/closure_region_grid.html": {
       "source": "output/html/tables/closure_region_grid.html",
       "sha256": "d1987bac253abb822abdb09c5c1ed3ee8cafe4ee593fa7e5990719b7a28838d9",
       "bytes": 50042
     },
-    "evidence/output/html/trackers/closure_region.html": {
-      "source": "output/html/trackers/closure_region.html",
-      "sha256": "7eefd87c270db247bb3bb4a5fd39b8a632d5efe30781af4d58ade462bc351df0",
-      "bytes": 65680
+    "evidence/output/html/tables/scenarios.html": {
+      "source": "output/html/tables/scenarios.html",
+      "sha256": "7aa0e43a0db82149b6a8d6e61eb1cdddb4c156c73c952b96142327fa7c1feab3",
+      "bytes": 4155
     },
-    "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html": {
-      "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
-      "sha256": "008fe8bdccf622b0956ffb669273fa309569bd20a1db05b7a54e6cbd849480b6",
-      "bytes": 3501469
+    "evidence/output/html/reports/scenarios/view-scenarios.html": {
+      "source": "output/html/reports/scenarios/view-scenarios.html",
+      "sha256": "ff951db2cb6c0b2595322ade67073208021e9732723746d1d27f9d1b5b800fe0",
+      "bytes": 14755007
+    },
+    "evidence/output/html/site/analysis-visuals.html": {
+      "source": "output/html/site/analysis-visuals.html",
+      "sha256": "5de8f23702621f52c499ce4a201f17c037bb9919cac56645c4a10d59e3fc9a83",
+      "bytes": 4930257
+    },
+    "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html": {
+      "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
+      "sha256": "6fcbe51e2fb689bccf32501afd135766056daeff39fd698f59e074694f3a4d34",
+      "bytes": 2044852
+    },
+    "evidence/output/html/site/cross-border-anova.html": {
+      "source": "output/html/site/cross-border-anova.html",
+      "sha256": "746d056ce75ddd3ce40667b16a9f62138c006e25aa89339e1539477662e6e9ab",
+      "bytes": 2599265
+    },
+    "evidence/output/html/reports/cross_border_analysis.html": {
+      "source": "output/html/reports/cross_border_analysis.html",
+      "sha256": "c17c859784abd15aa817179aab5f092d28a7d7dc95b17e7c082221d2d5206702",
+      "bytes": 3664533
+    },
+    "evidence/output/html/reports/cross_border_analysis_excl_construction.html": {
+      "source": "output/html/reports/cross_border_analysis_excl_construction.html",
+      "sha256": "3942a86a7c95978e865f9d8013e44ec8cb167cd022852e7bb0abaebac8c5e826",
+      "bytes": 3586545
+    },
+    "evidence/output/html/reports/2026-10-02-transmission-variance-and-cluster-structure.html": {
+      "source": "output/html/reports/2026-10-02-transmission-variance-and-cluster-structure.html",
+      "sha256": "4e109be2e2bd580c8b6b6780c2102e0fbe311054a4a6d5487cecac1c26fbd225",
+      "bytes": 2861412
     },
     "evidence/output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html": {
       "source": "output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html",
       "sha256": "217175415e543ba9e29e40f7bb9423280e2f8df9a6085b8567e7af9b17551e42",
       "bytes": 2044315
     },
-    "evidence/output/html/reports/2026-10-01-closure-dynamics.html": {
-      "source": "output/html/reports/2026-10-01-closure-dynamics.html",
-      "sha256": "49810ab9b65e7eb4517895737d6a3bd086cc441657952d79e0f2cef255550966",
-      "bytes": 7102553
-    },
     "evidence/output/html/reports/2026-10-01-scenario-grid.html": {
       "source": "output/html/reports/2026-10-01-scenario-grid.html",
       "sha256": "23fb5c691b4436975815c383099a1af085fac5e97ec8d953de9afd27973da3d9",
       "bytes": 2745019
     },
+    "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html": {
+      "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
+      "sha256": "008fe8bdccf622b0956ffb669273fa309569bd20a1db05b7a54e6cbd849480b6",
+      "bytes": 3501469
+    },
+    "evidence/output/html/reports/2026-10-01-closure-dynamics.html": {
+      "source": "output/html/reports/2026-10-01-closure-dynamics.html",
+      "sha256": "49810ab9b65e7eb4517895737d6a3bd086cc441657952d79e0f2cef255550966",
+      "bytes": 7102553
+    },
+    "evidence/output/html/site/discussion.html": {
+      "source": "output/html/site/discussion.html",
+      "sha256": "3a1c3f37bb418a67e50740d02b71dd746cfc5c18bbfed6345cd9fd36e1a4406c",
+      "bytes": 1892357
+    },
+    "evidence/output/html/site/submitted-discussion.html": {
+      "source": "output/html/site/submitted-discussion.html",
+      "sha256": "366613ec25d183127182f6c3cb3a00ba63954d5e587ee33598662e0fb063d81e",
+      "bytes": 3220066
+    },
+    "evidence/output/html/reports/2026-10-02-xi-premium-recalibration.html": {
+      "source": "output/html/reports/2026-10-02-xi-premium-recalibration.html",
+      "sha256": "e2ab7801074060d62d3a7ffcd368e859c8f83d3a485d99db736238deb88c16b1",
+      "bytes": 1913584
+    },
+    "evidence/output/html/reports/2026-10-02-openflex-xi-comparison.html": {
+      "source": "output/html/reports/2026-10-02-openflex-xi-comparison.html",
+      "sha256": "e26c4babd32c66e348dd7627eb31375ace809c406b69f8629333fd3498d03a60",
+      "bytes": 2018022
+    },
+    "evidence/output/html/reports/2026-10-02-cif-armington-execution-audit.html": {
+      "source": "output/html/reports/2026-10-02-cif-armington-execution-audit.html",
+      "sha256": "09093ccae67763ee283e9441e75e7b6e421b2723592e2954bfe37f424d19f3c5",
+      "bytes": 1187999
+    },
+    "evidence/output/html/trackers/equations.html": {
+      "source": "output/html/trackers/equations.html",
+      "sha256": "cb25313c838214e07db3853e1c9e476aa86b4712a0d9a9b316392f1bc033a71d",
+      "bytes": 92944
+    },
+    "evidence/output/html/trackers/closure_region_scenario.html": {
+      "source": "output/html/trackers/closure_region_scenario.html",
+      "sha256": "b41e09f330b85031bec24adb16f6bc68484a7bbeb4fb1ac096ff444ce45c0e3c",
+      "bytes": 30331
+    },
+    "evidence/output/html/trackers/grid_regeneration.html": {
+      "source": "output/html/trackers/grid_regeneration.html",
+      "sha256": "58a7f7667783f5b9ac618646b56746686c97089499dcd26a1f0bb5a57b784348",
+      "bytes": 25666
+    },
+    "evidence/output/html/trackers/closure_region.html": {
+      "source": "output/html/trackers/closure_region.html",
+      "sha256": "7eefd87c270db247bb3bb4a5fd39b8a632d5efe30781af4d58ade462bc351df0",
+      "bytes": 65680
+    },
+    "evidence/output/html/reports/2026-10-02-openflex-same-cache-feedback.html": {
+      "source": "output/html/reports/2026-10-02-openflex-same-cache-feedback.html",
+      "sha256": "8706b3fe038f7e077dbab90217b09e497878c7c8f2919026d3e73615f78acbe8",
+      "bytes": 2126175
+    },
+    "evidence/output/html/reports/2026-10-02-openflex-clearing-audit.html": {
+      "source": "output/html/reports/2026-10-02-openflex-clearing-audit.html",
+      "sha256": "5cbbb5bef488529a5fdb10a3521e42247c049e8ba7af3dc5a68bc68bee5066f8",
+      "bytes": 1890032
+    },
+    "evidence/output/html/site/documentation-public.html": {
+      "source": "output/html/site/documentation-public.html",
+      "sha256": "42df0bf2bfe302bf8876de7b621be439b9440a083f758702e1979a652a503dac",
+      "bytes": 21963
+    },
+    "evidence/output/html/reports/2026-10-03-evidence-synthesis.html": {
+      "source": "output/html/reports/2026-10-03-evidence-synthesis.html",
+      "sha256": "20ef1086405cadd9635a7740ef5b37e8ddb7e4a69140276cbb28346f7a00af65",
+      "bytes": 1992578
+    },
+    "evidence/output/html/site/closure-descriptions.html": {
+      "source": "output/html/site/closure-descriptions.html",
+      "sha256": "26535df79e029af80aa15ba84d5b3b5a0d15890f20782c795c50981313c95c01",
+      "bytes": 1982966
+    },
+    "evidence/output/html/reports/2026-09-29-revised-real-scale-leave-one-out.html": {
+      "source": "output/html/reports/2026-09-29-revised-real-scale-leave-one-out.html",
+      "sha256": "d74c36a1f2d1124d43ba13b58234237a2da2272245df21e717422a154ee416c1",
+      "bytes": 1845810
+    },
+    "evidence/output/html/reports/2026-09-29-calibration-ratios.html": {
+      "source": "output/html/reports/2026-09-29-calibration-ratios.html",
+      "sha256": "2fcaaa20b8286efe82b865a391950674cb095944392502bcad2787c4f5f07b90",
+      "bytes": 2576940
+    },
+    "evidence/output/html/reports/2026-09-28-calibration-per-draw-visualization.html": {
+      "source": "output/html/reports/2026-09-28-calibration-per-draw-visualization.html",
+      "sha256": "ad8771b985ab07d6c2cbd4396af5e9abe420cbec8f17d61f0a8d7a32f8718f82",
+      "bytes": 2944157
+    },
+    "evidence/output/html/reports/2026-09-28-revised-calibration.html": {
+      "source": "output/html/reports/2026-09-28-revised-calibration.html",
+      "sha256": "275b8c16f70e709dedda9e9e0225459d37dc14991f9d7d35ddb317a11202317e",
+      "bytes": 1987160
+    },
+    "evidence/output/html/reports/2026-09-27-calibration-search-trajectory.html": {
+      "source": "output/html/reports/2026-09-27-calibration-search-trajectory.html",
+      "sha256": "1ee6a49139d18bc2f9318f295e0e163486d5dbc883632dda4d7a3fe1a6afcb8a",
+      "bytes": 2814973
+    },
+    "evidence/output/html/reports/2026-09-26-calibration-equation-changes.html": {
+      "source": "output/html/reports/2026-09-26-calibration-equation-changes.html",
+      "sha256": "6f0bfb65e647dd32501f101915eeb351c5655a6630ddd9acd8beb5d1112a4b24",
+      "bytes": 1903937
+    },
+    "evidence/output/html/reports/2026-09-26-sraffian-baseline-calibration.html": {
+      "source": "output/html/reports/2026-09-26-sraffian-baseline-calibration.html",
+      "sha256": "d0a99c498ca40658bcfb9698477867739fcb0aae7b91ba9bfb5299db5224466b",
+      "bytes": 1913144
+    },
+    "evidence/output/html/reports/2026-09-26-stability-structure.html": {
+      "source": "output/html/reports/2026-09-26-stability-structure.html",
+      "sha256": "d626ed3cf8171f14872b98f7f8bcc8b320ff71f0b3165f5fb962679c6155677d",
+      "bytes": 1926161
+    },
+    "evidence/output/html/reports/2026-09-22-bill-stock-instability.html": {
+      "source": "output/html/reports/2026-09-22-bill-stock-instability.html",
+      "sha256": "db71594f4b0caa158c2a643c9e891c359bb2f1edf70c13b544c33436f4580e21",
+      "bytes": 2014981
+    },
+    "evidence/output/html/reports/2026-09-10-regime-structure.html": {
+      "source": "output/html/reports/2026-09-10-regime-structure.html",
+      "sha256": "85c6d4b10fedca43325546c4be9f58c07f490a7d37c1982b1eb75e3cadc45edc",
+      "bytes": 3503637
+    },
+    "evidence/output/html/reports/2026-09-09-transition-matrix-spectrum.html": {
+      "source": "output/html/reports/2026-09-09-transition-matrix-spectrum.html",
+      "sha256": "d6af25b55ecd4f179c64be4c04ac37305f4a170445b7f9992be82f027a6f6a0a",
+      "bytes": 2020143
+    },
+    "evidence/output/html/reports/2026-09-09-dependency-graph.html": {
+      "source": "output/html/reports/2026-09-09-dependency-graph.html",
+      "sha256": "bf24158052abdf311f6ebe7b119f782e55e5aae63864cfdddab6742f3b5c28cb",
+      "bytes": 3620490
+    },
+    "evidence/output/html/reports/2026-09-09-dynamical-form.html": {
+      "source": "output/html/reports/2026-09-09-dynamical-form.html",
+      "sha256": "52833d9b7925d25c78e4d9496e34f6bbdf626b1e71c48c9aecf9b98d801c19d5",
+      "bytes": 2017547
+    },
+    "evidence/output/html/reports/2026-10-02-openflex-diagnostics-results.html": {
+      "source": "output/html/reports/2026-10-02-openflex-diagnostics-results.html",
+      "sha256": "233556d2dcc30be2fbc26fe5b05a53021c4a4b1927bb3a92822972422ba139dd",
+      "bytes": 2212988
+    },
+    "evidence/output/html/reports/2026-09-30-marshall-lerner-quasifloat-armington.html": {
+      "source": "output/html/reports/2026-09-30-marshall-lerner-quasifloat-armington.html",
+      "sha256": "f62b21a604a0698bb1b38273db94f219c976ec2887d8c5700c9c4672faddab4d",
+      "bytes": 2022365
+    },
+    "evidence/output/html/reports/2026-09-30-closures-state-and-path-to-stationarity.html": {
+      "source": "output/html/reports/2026-09-30-closures-state-and-path-to-stationarity.html",
+      "sha256": "12b010b20b18339b2e31d4cb6569857c05c720c326e147786cf66f928c3987e4",
+      "bytes": 1999959
+    },
+    "evidence/output/html/reports/2026-09-30-equation-changes-submitted-to-revised.html": {
+      "source": "output/html/reports/2026-09-30-equation-changes-submitted-to-revised.html",
+      "sha256": "4fe2c123869403fa60302865997f6521de792f9487b4950b2413a80c18c35596",
+      "bytes": 2067639
+    },
+    "evidence/output/html/reports/2026-09-29-equation-audit.html": {
+      "source": "output/html/reports/2026-09-29-equation-audit.html",
+      "sha256": "46d00c165ee3c51c2cfc253a9e1aaa9848c6359f0e99e85c821dca363291710b",
+      "bytes": 2247954
+    },
+    "evidence/output/html/reports/2026-09-25-model-equations.html": {
+      "source": "output/html/reports/2026-09-25-model-equations.html",
+      "sha256": "bde3147df0125bb83511a448f9eb470cb350410491b832db469318ef4bc708c8",
+      "bytes": 1904927
+    },
+    "evidence/output/html/reports/2026-09-25-model-equations-report.html": {
+      "source": "output/html/reports/2026-09-25-model-equations-report.html",
+      "sha256": "b09ea1dd8566dfb268f989f0629f48ae8ee83fe0503199473ab75fc6705432e8",
+      "bytes": 2037343
+    },
+    "evidence/output/html/reports/2026-09-22-docx-code-differences-verdicts.html": {
+      "source": "output/html/reports/2026-09-22-docx-code-differences-verdicts.html",
+      "sha256": "e8d436052d7902231955a8eca91faf0922e57e434dfac932f001d8464f348443",
+      "bytes": 2002497
+    },
+    "evidence/output/html/reports/2026-09-22-model-equations-report.html": {
+      "source": "output/html/reports/2026-09-22-model-equations-report.html",
+      "sha256": "b09ea1dd8566dfb268f989f0629f48ae8ee83fe0503199473ab75fc6705432e8",
+      "bytes": 2037343
+    },
+    "evidence/output/html/reports/2026-09-20-equation-catalogue-complete.html": {
+      "source": "output/html/reports/2026-09-20-equation-catalogue-complete.html",
+      "sha256": "ad9cb554b835d07a644690c77d8e3785721597fcc1ca6930131aa41ed6e8d637",
+      "bytes": 1998198
+    },
+    "evidence/output/html/reports/2026-09-20-consistent-block-audit.html": {
+      "source": "output/html/reports/2026-09-20-consistent-block-audit.html",
+      "sha256": "049d7c1a004e68dd1c2fb00fd6d5318c2a8549f5f0621eb47b187b6d705a5640",
+      "bytes": 2023055
+    },
+    "evidence/output/html/reports/arms/view-arms.html": {
+      "source": "output/html/reports/arms/view-arms.html",
+      "sha256": "2d2214481f4bf080236c6812073ee5b32e45515b7b173aa4b3559472e11d7deb",
+      "bytes": 14409162
+    },
+    "evidence/output/html/reports/2026-09-28-shp-vs-profit-share-revised.html": {
+      "source": "output/html/reports/2026-09-28-shp-vs-profit-share-revised.html",
+      "sha256": "7fc7eb2ed0e6190b98b5692da37e9a9d0018f366581767cf6e2f9fefb8064396",
+      "bytes": 1982391
+    },
+    "evidence/output/html/reports/2026-09-28-tax-rate-fiscal-rule-incidence.html": {
+      "source": "output/html/reports/2026-09-28-tax-rate-fiscal-rule-incidence.html",
+      "sha256": "224a6e14dc8815a1620186c16fe4b38fbefab862b13164d86100d426387b53af",
+      "bytes": 1898328
+    },
+    "evidence/output/html/reports/2026-09-28-sraffian-profit-rate-and-interest-rates.html": {
+      "source": "output/html/reports/2026-09-28-sraffian-profit-rate-and-interest-rates.html",
+      "sha256": "0a6756ba5e2f5908bf436009ae076d5f0e4a3a18c29da4dd817cd1b0fe47ec90",
+      "bytes": 1902277
+    },
+    "evidence/output/html/reports/2026-09-28-sraffian-to-revised.html": {
+      "source": "output/html/reports/2026-09-28-sraffian-to-revised.html",
+      "sha256": "bc018f6fe3c8406429cbaf12576994deb2dd69cb67161f316cab4639381d5002",
+      "bytes": 1948478
+    },
+    "evidence/output/html/reports/2026-09-25-sraffian-wage-convention-correction.html": {
+      "source": "output/html/reports/2026-09-25-sraffian-wage-convention-correction.html",
+      "sha256": "a4bff5377886140ecca30bad538761518bf237e8d859d795ec017d8ff1ba8ddc",
+      "bytes": 1989864
+    },
+    "evidence/output/html/reports/2026-09-25-exiobase-depreciation-structure.html": {
+      "source": "output/html/reports/2026-09-25-exiobase-depreciation-structure.html",
+      "sha256": "fc8629916cbe40f6447487340aa33c13122cfce53a88013579a3f865b17966e5",
+      "bytes": 1991757
+    },
+    "evidence/output/html/reports/2026-09-24-portfolio-lambda-generalisation.html": {
+      "source": "output/html/reports/2026-09-24-portfolio-lambda-generalisation.html",
+      "sha256": "d55c56e1446313e0197400dfd6949f466fd6c2dc5a49f0631627d28af6a55449",
+      "bytes": 2079261
+    },
+    "evidence/output/html/reports/2026-09-23-sraffian-uniform-profit-rate.html": {
+      "source": "output/html/reports/2026-09-23-sraffian-uniform-profit-rate.html",
+      "sha256": "a37965b64afdba624c4d3b72e58d88fbe1a16dcfcb891a324a1ecf37d4479c74",
+      "bytes": 2313355
+    },
+    "evidence/output/html/reports/2026-09-11-fiscal-and-external-accounts.html": {
+      "source": "output/html/reports/2026-09-11-fiscal-and-external-accounts.html",
+      "sha256": "7fd7cef0b5680e61d318b01253bffb2fa9eb3cc8640072cdfd8d577bef5e5332",
+      "bytes": 2219961
+    },
+    "evidence/output/html/reports/2026-09-09-tax-wedge-stage.html": {
+      "source": "output/html/reports/2026-09-09-tax-wedge-stage.html",
+      "sha256": "db471d8088d9fea965ea7f8f509f4562da7623981cb5f59a055d88373945565b",
+      "bytes": 2024311
+    },
+    "evidence/output/html/reports/2026-09-09-portfolio-identification.html": {
+      "source": "output/html/reports/2026-09-09-portfolio-identification.html",
+      "sha256": "ecb16895af3b25dd1f5ee3e207b4b39d9f8d751359516761268a4709bf136266",
+      "bytes": 2019087
+    },
+    "evidence/output/html/reports/arms/lambda.html": {
+      "source": "output/html/reports/arms/lambda.html",
+      "sha256": "a737cd18df4888ef57faf8819063a7a48c922b66595e0c1a68754d5f0017b973",
+      "bytes": 4669755
+    },
+    "evidence/output/html/reports/arms/sraffian.html": {
+      "source": "output/html/reports/arms/sraffian.html",
+      "sha256": "2fc3bd763d31350c17f9b4251552b69efc4ac03fe1a08b8e7275eb14038c9e01",
+      "bytes": 4884413
+    },
+    "evidence/output/html/reports/2026-09-26-n-region-trade-generalisation.html": {
+      "source": "output/html/reports/2026-09-26-n-region-trade-generalisation.html",
+      "sha256": "b1cab5817d0f0a3e31beb3160e8abfb688e72916ef8e9e77bb7ba83989484b01",
+      "bytes": 1992571
+    },
+    "evidence/output/html/reports/2026-09-11-consistent-price-block-design.html": {
+      "source": "output/html/reports/2026-09-11-consistent-price-block-design.html",
+      "sha256": "232f449c15d8bb23a2f4d87c9f118141acf84739630f9875c6d594a9e3b7b7d1",
+      "bytes": 1996757
+    },
+    "evidence/output/html/reports/arms/adjudicated.html": {
+      "source": "output/html/reports/arms/adjudicated.html",
+      "sha256": "d6e8af5a47e19ecae433d3177bf3367d5d8febf5ac5d280e11fa490f3c2368f2",
+      "bytes": 4679094
+    },
+    "evidence/output/html/reports/arms/consistent_pricing.html": {
+      "source": "output/html/reports/arms/consistent_pricing.html",
+      "sha256": "44d9203ae506d1dddb917f075d644a11a6a0fe526e1f91caaf0bd915356932e0",
+      "bytes": 4854904
+    },
+    "evidence/output/html/reports/arms/customs.html": {
+      "source": "output/html/reports/arms/customs.html",
+      "sha256": "cc84ac1461bd50d7e94a814d4346f0a8652a2e022801c5bcdfb78581e85d6924",
+      "bytes": 4667768
+    },
+    "evidence/output/html/reports/arms/inflation.html": {
+      "source": "output/html/reports/arms/inflation.html",
+      "sha256": "4bd2c0057e40850b8ce4252442fd12a52ba06a5d2ff6efe4d46fa01222f2c734",
+      "bytes": 4818349
+    },
+    "evidence/output/html/reports/arms/revised.html": {
+      "source": "output/html/reports/arms/revised.html",
+      "sha256": "acafecc83ecdc5d662e96b062f2ca6ca6ff3ec7eccc98b1ff0fbfc6988fa3dc9",
+      "bytes": 4577388
+    },
+    "evidence/output/html/reports/arms/stale_author_variant.html": {
+      "source": "output/html/reports/arms/stale_author_variant.html",
+      "sha256": "be442695ee0b20caf033ded5cf6a739f31a112bcfef922e16cc092b2d36e94f4",
+      "bytes": 4671264
+    },
+    "evidence/output/html/reports/arms/submitted.html": {
+      "source": "output/html/reports/arms/submitted.html",
+      "sha256": "a62739433cc352ec293896e5c457aca39aa503aba0112850ee31ab4c51c9503f",
+      "bytes": 4938944
+    },
+    "evidence/output/html/reports/2026-10-02-pooled-transmission-clusters.html": {
+      "source": "output/html/reports/2026-10-02-pooled-transmission-clusters.html",
+      "sha256": "c4c81ed636a9def97daf0793e5e3aacd6d453cd5db9b6b75e01c3acb924011b8",
+      "bytes": 2391631
+    },
+    "evidence/output/html/reports/2026-10-02-cross-border-regimes-by-region-and-closure.html": {
+      "source": "output/html/reports/2026-10-02-cross-border-regimes-by-region-and-closure.html",
+      "sha256": "8dd443fafef02e63d877993fc2654932ee8b204842da97f83552ce3c655e8b08",
+      "bytes": 2578431
+    },
+    "evidence/output/html/reports/2026-10-02-scenario-grid-review.html": {
+      "source": "output/html/reports/2026-10-02-scenario-grid-review.html",
+      "sha256": "c70245bafc19f5c848c3e30eaf9d79792db4ad661f7b251f98f33f6c0eb03a6e",
+      "bytes": 1937186
+    },
+    "evidence/output/html/reports/2026-09-11-consistent-price-block-design.pdf": {
+      "source": "output/pdf/reports/2026-09-11-consistent-price-block-design.pdf",
+      "sha256": "7a1c9a7ddad1a87a49c3e53ff4119ec58a05d81243053e949da4c3955b743970",
+      "bytes": 278676
+    },
+    "evidence/output/html/reports/2026-09-29-equation-audit.pdf": {
+      "source": "output/pdf/reports/2026-09-29-equation-audit.pdf",
+      "sha256": "a7bc3e9b50c39d01b0866d10807803827ffcb2e1e5f76b7076f311d26980edd7",
+      "bytes": 255726
+    },
+    "evidence/output/html/reports/2026-09-29-calibration-ratios.pdf": {
+      "source": "output/pdf/reports/2026-09-29-calibration-ratios.pdf",
+      "sha256": "ce1348a799c68caf6f548e7533df675b14fd1ad192fa1cb5ccf512bc8ddd68e9",
+      "bytes": 479720
+    },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.docx": {
-      "source": "output/docx/appendices/2026-09-30-model-description-revised.docx",
-      "sha256": "f377fe86396b20d02ad020ad78004663d8e60fa1dfb8f6932a40d075aa9f68ef",
-      "bytes": 41371
+      "source": "output/docx/revised/2026-09-30-model-description-revised.docx",
+      "sha256": "0726655b0f4f38bfc4991a6c0f4cc4d4bed06780de7b098e9452f577a8e4cf9c",
+      "bytes": 41392
     }
   },
   "inputs": {
-    "web/evidence/pages.json": "0f37d9209c38e1d6685dde94bed52b83431cc3504d59ed19063c7775b475631a",
-    "output/calibration/scenario_grid_20261001_status.csv": "3e15bf241b2375720c4f82927f1cc763b7df8b0f906a2147033e7e9361c32fb0"
+    "web/evidence/sections.json": "c4e09f696da63f5ca999d5fa41caa8515b6a81d56da89621f0590e48b0bc3215",
+    "web/evidence/pages.json": "0552f819099e09b351128ca47ae9783e3c848fe91cd4e75b4218839667c684fc",
+    "tools/site/build_evidence_site.py": "0146c329bddf82f400e9a74fcf79b105b5e0ae4431d64054d14b149b8c921948",
+    "tools/site/comparison-viewer.html": "3aeebfb775d83258787a7aca72b105d5a93787511148e924610182f04bbd8c85",
+    "tools/site/cluster-explorer.html": "2d26c6af0ae35592590317ae179c4172c553109736e86a858852305fe96b9e6e",
+    "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
+    "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
+    "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
+    "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
+    "qmd/site/closure-descriptions.qmd": "12cddd87ce1491c22a45f8792ddcbf6edf9ad134d863e2454b34ae9d46b76c22",
+    "qmd/site/cross-border-anova.qmd": "f10fde3a434fadf3dd162b169e0255910a5709f464ce75e6f1aa2363fb7246ee",
+    "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
+    "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
+    "R/scenarios/export_transmission_labels.R": "cff27f85e1d039bde0b6ef0a2fc4e60cff547dc837a9d3fbce77093970328beb",
+    "tools/site/dendrogram-explorer.html": "182363800a91be71ee67902af4d515e6f0050d1892e96db504761b0e4595ce95",
+    "web/evidence/section-tabs.json": "847163aacfd53d190b05126bf1307ed6a4be46944be7b9a7afba3c6f4e40e290",
+    "tools/site/generate_analysis_visuals.R": "f1be49c4e5c80735b12b315f5d9aa98874659a2b30e30a712fa1d33033ccd3e3",
+    "tools/site/analysis-visuals.js": "e9b833436c1b484da1ee89808d7f97ec24378c13046e8175ed60b7a5eacb5ba7",
+    "tools/site/audit_report_inventory.py": "52d78421ce6638076bf7c7fa9540fea8f8c39221c2c464bd749893bc32c50c59",
+    "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
+    "output/calibration/report_inventory_20261003.json": "9053969ff4ad658d7fc69f751a1f7808f4343391bfb5c74b3595026ccbf5bc56",
+    "qmd/reports/2026-10-03-cross-border-transmission-regimes.qmd": "9e556fb72c27f47b10c26766eef5feee9fa5d8830072b28d840e9e6257644832",
+    "qmd/reports/2026-10-03-evidence-synthesis.qmd": "7d08b808d1aee3ad823a016d35f94dba2393d744c31c24ffc233ef06d8a6a074",
+    "tools/site/publication-scope.json": "7744e6e1d31105003dcd487515e830bfc42ef3236cb63ceb67aa894b0ba38998",
+    "tools/site/generate_paper_pages.py": "9e7c1f71829b952a5bc8240b6f23eaf2eaeabfc5b85b53dc389a80f26a714829",
+    "output/calibration/website_paper_excerpt_provenance.json": "1316b27b655e4628bfa20796e26ec56e867e2b3ec3295f6635eb7d025b73f2b0",
+    "data/current_results.json": "65f282eb5008f098a583e40cf396ee40a5ea5e9ae98e4b8e36f6b38f4c2348da"
   },
   "generated": [
     "pages.json",
     "coverage.json",
-    "manifest.json"
-  ]
+    "manifest.json",
+    "pages/background.html",
+    "pages/equations.html",
+    "pages/description.html",
+    "pages/arms.html",
+    "pages/closure-equations.html",
+    "pages/view-closures.html",
+    "pages/closures.html",
+    "pages/scenario-definitions.html",
+    "pages/view-scenarios.html",
+    "pages/analysis-visuals.html",
+    "pages/regime-report.html",
+    "pages/anova-current.html",
+    "pages/anova-submitted.html",
+    "pages/anova-submitted-excl.html",
+    "pages/anova-revised-history.html",
+    "pages/transmission.html",
+    "pages/scenario-grid.html",
+    "pages/financial.html",
+    "pages/dynamics.html",
+    "pages/discussion.html",
+    "pages/submitted-discussion.html",
+    "pages/xi-premium.html",
+    "pages/openflex-xi.html",
+    "pages/cif-audit.html",
+    "pages/equations-tracker.html",
+    "pages/closure-scenarios.html",
+    "pages/xi-regeneration.html",
+    "pages/closure-tracker.html",
+    "pages/openflex-feedback-history.html",
+    "pages/openflex-clearing.html",
+    "pages/documentation.html",
+    "pages/synthesis.html",
+    "pages/closure-description.html"
+  ],
+  "publication_scope": "public",
+  "generated_sha256": {
+    "pages.json": "dc1ec14ed8a123d111638de19cfe5f9ca86e161dcd1db3d07e2e99cb45655f2e",
+    "coverage.json": "00ab0b282c07f26f0e129e2724bf4aa858a9fa6e2a7662b848cdfce73542141f",
+    "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
+    "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
+    "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
+    "pages/arms.html": "eaf2eecf1ccb629be0dce0c46c831748e751367d59218e0134cfc891ed4578c4",
+    "pages/closure-equations.html": "b97dcf6754c2b29f6630061165a3f33754871c82934cef004fa2c962c89e8910",
+    "pages/view-closures.html": "0503339ab1978b9a13a857f40c039401eae0e90769b0b089e3e40ec85d3b5793",
+    "pages/closures.html": "cdf1d522dc1fff75777b1ef0a32756c96713e114b96440b41605851213be1185",
+    "pages/scenario-definitions.html": "3055c45f1ab8d08a2840794995de87da7a3d55cff57bbed463c9e5ccb83b2dde",
+    "pages/view-scenarios.html": "b63bc4ca049e285b194358af61dde907d838c143e56cc8ebb2d3d90298565f43",
+    "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
+    "pages/regime-report.html": "57b064d2a151972da0f97bc5ff57feb491267820bc47509e4d39c63a8c491142",
+    "pages/anova-current.html": "b302f0a9f9b9583081611159cb350b7209f8ed04e2b0976c373027990122e422",
+    "pages/anova-submitted.html": "66bb5503ff59227621dc63b9ba8ffce1692846e5ef46b55c996e17d3441ed685",
+    "pages/anova-submitted-excl.html": "ec78e5cdffe5112510c988b239ed58f1287e6097de4edc5c51695f56265bd6a1",
+    "pages/anova-revised-history.html": "75e4cd0dec841d9a7d345b4298bb16a96a416d3425a3e0527b9a00ed47f0c94a",
+    "pages/transmission.html": "0cf8f6dd2fd439190b603bbdd501c8df0c9f0abde4b2f51b6781f07f7f97741a",
+    "pages/scenario-grid.html": "cc716ab9bcdb12ef7558be3b0809e73210cf372413806510a02d3ca6f606fdf8",
+    "pages/financial.html": "289868fba68936acc1599fd99a8d3aa2747cb6aae70eb9c43c5cb4350fb8b57d",
+    "pages/dynamics.html": "d273950adb786e38b31807efbe6bfc63b4dc3f4c9236b0410a9afa31a0d1fd9d",
+    "pages/discussion.html": "bb034dcc426f0582d8b8e536482403e8c1ba82461d831445d0ff916b026205bc",
+    "pages/submitted-discussion.html": "6daba5c6a5e07c10df6ec53db50fe0de530bae3d21aa6af917656dda25142658",
+    "pages/xi-premium.html": "5cee1fab5eb026436b85852f04cb806f8f9d50bfa3e0d353a610bd0277ef38c3",
+    "pages/openflex-xi.html": "00f2a9e18d9fb92b3d7a435b90267bfc5fa7dfe8e580c241cff4c812092cf9d6",
+    "pages/cif-audit.html": "b00fc22eaedaadea746ea56e1fadfa1faa408895bea61394ef73c1e87bbb401f",
+    "pages/equations-tracker.html": "1ebf9fb8ae66dbea88401516b900e78f152e490462ab2afa0a48c80c102194c1",
+    "pages/closure-scenarios.html": "d9acf5b517891c857fa0f5d8c464715dc1287584c230969cfd290438cf3ea9b0",
+    "pages/xi-regeneration.html": "f80113f8d5f62dbcf4aace1c55185a4af09f476937a641c9d6c5dada1ea5cb6b",
+    "pages/closure-tracker.html": "cc2292c5f4a61ce494e9e68a84759bae530d8450d8d11d31a18eccd39d8f62e9",
+    "pages/openflex-feedback-history.html": "8a9c1fd5b594fb6526158f13cc13462eaddb130e2d85ff4e50d3992372bfa735",
+    "pages/openflex-clearing.html": "60eddb442006d94b975dab8e41537f10321cc938b7f50686c1929c27de662461",
+    "pages/documentation.html": "011c90bf739f505434144fc5007a64e19c03606441f63f53e165cfa83007ccf2",
+    "pages/synthesis.html": "3fa7b3c0169d0829f800df447135a323525d809bb227119fe65703f3db628967",
+    "pages/closure-description.html": "6dad7773106bde44b8872597267e70515e51d1f90d5c058bfbe8f96b4d2ef758"
+  }
 }

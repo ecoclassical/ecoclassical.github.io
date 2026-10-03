@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-10-02T10:58:03+00:00",
+  "measured_at": "2026-10-03T11:59:20+00:00",
   "cells": [
     {
       "arm": "revised",
@@ -66,5 +66,5 @@
       "expected": 12
     }
   ],
-  "basis": "Source: output/calibration/scenario_grid_20261001_status.csv. Included scenarios 1\u20134 and 6\u201313; accepted means cache validation passed. Counts are zero where validation has not yet been recorded."
+  "basis": "Source: output/calibration/scenario_grid_20261002_xi_status.csv. Included scenarios 1\u20134 and 6\u201313; accepted means cache validation passed. Counts are zero where validation has not yet been recorded."
 }

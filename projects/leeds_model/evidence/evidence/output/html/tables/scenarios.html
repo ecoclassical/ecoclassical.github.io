@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEEDS_MODEL — scenario registry</title>
+<style>
+:root { color-scheme: light; }
+body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 2rem; color: #222; }
+h1 { font-size: 1.3rem; margin-bottom: .2rem; }
+p.sub { color: #666; margin-top: 0; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+th, td { border: 1px solid #ddd; padding: .4rem .5rem; text-align: left; vertical-align: top; }
+th { background: #f5f5f5; position: sticky; top: 0; }
+tr:nth-child(even) td { background: #fafafa; }
+</style></head><body>
+<h1>LEEDS_MODEL — scenario registry</h1>
+<p class="sub">14 scenarios · source <code>data/scenarios.csv</code> · rendered into the <code>output/html/tables/</code> family (the /tabulate scheme)</p>
+<table><thead><tr><th>shock</th>
+<th>domain</th>
+<th>sector</th>
+<th>transaction</th>
+<th>shift</th>
+<th>target</th>
+<th>primary</th>
+<th>secondary</th>
+<th>rho</th>
+<th>display_name</th></tr></thead><tbody>
+<tr><td>1</td><td>Final Demand</td><td>Household</td><td>Consumption</td><td>Food</td><td>beta</td><td>7</td><td>8</td><td>0.2</td><td>Scenario 1 | Final Demand | Household Consumption | Food Shift</td></tr>
+<tr><td>2</td><td>Final Demand</td><td>Household</td><td>Consumption</td><td>Energy</td><td>beta</td><td>31</td><td>32</td><td>0.2</td><td>Scenario 2 | Final Demand | Household Consumption | Energy Shift</td></tr>
+<tr><td>3</td><td>Final Demand</td><td>Household</td><td>Consumption</td><td>Wood</td><td>beta</td><td>11</td><td>12</td><td>0.2</td><td>Scenario 3 | Final Demand | Household Consumption | Wood Shift</td></tr>
+<tr><td>4</td><td>Final Demand</td><td>Government</td><td>Consumption</td><td>Plastics</td><td>sigma</td><td>17</td><td>18</td><td>0.2</td><td>Scenario 4 | Final Demand | Government Consumption | Plastics Shift</td></tr>
+<tr><td>5</td><td>Final Demand</td><td>Firm</td><td>Fixed Investment</td><td>Construction</td><td>iota</td><td>36</td><td>37</td><td>0.05</td><td>Scenario 5 | Final Demand | Firm Fixed Investment | Construction Shift</td></tr>
+<tr><td>6</td><td>Final Demand</td><td>Firm</td><td>Fixed Investment</td><td>Metal</td><td>iota</td><td>26</td><td>27</td><td>0.2</td><td>Scenario 6 | Final Demand | Firm Fixed Investment | Metal Shift</td></tr>
+<tr><td>7</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Wood</td><td>a</td><td>11</td><td>12</td><td>0.2</td><td>Scenario 7 | Intermediate Demand | Firm Production | Wood Shift</td></tr>
+<tr><td>8</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Pulp</td><td>a</td><td>13</td><td>14</td><td>0.2</td><td>Scenario 8 | Intermediate Demand | Firm Production | Pulp Shift</td></tr>
+<tr><td>9</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Plastics</td><td>a</td><td>17</td><td>18</td><td>0.2</td><td>Scenario 9 | Intermediate Demand | Firm Production | Plastics Shift</td></tr>
+<tr><td>10</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Metal</td><td>a</td><td>26</td><td>27</td><td>0.2</td><td>Scenario 10 | Intermediate Demand | Firm Production | Metal Shift</td></tr>
+<tr><td>11</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Glass</td><td>a</td><td>21</td><td>22</td><td>0.2</td><td>Scenario 11 | Intermediate Demand | Firm Production | Glass Shift</td></tr>
+<tr><td>12</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Cement</td><td>a</td><td>24</td><td>25</td><td>0.2</td><td>Scenario 12 | Intermediate Demand | Firm Production | Cement Shift</td></tr>
+<tr><td>13</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Energy</td><td>a</td><td>31</td><td>32</td><td>0.2</td><td>Scenario 13 | Intermediate Demand | Firm Production | Energy Shift</td></tr>
+<tr><td>14</td><td>Intermediate Demand</td><td>Firm</td><td>Production</td><td>Construction</td><td>a</td><td>36</td><td>37</td><td>0.05</td><td>Scenario 14 | Intermediate Demand | Firm Production | Construction Shift</td></tr>
+</tbody></table>
+</body></html>

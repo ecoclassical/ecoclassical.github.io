@@ -1,82 +1,299 @@
 [
   {
+    "id": "background",
+    "section": "Background",
+    "title": "Introduction and model overview \u2014 submitted paper",
+    "source": "output/html/site/background.html",
+    "description": "The submitted Introduction, literature background, model blocks and calibration, with references.",
+    "artifact": "evidence/output/html/site/background.html",
+    "href": "pages/background.html"
+  },
+  {
     "id": "equations",
-    "section": "Model",
+    "section": "Model Equations",
     "title": "Submitted \u2192 revised equations",
     "source": "model/equations/model-equations-submitted-to-revised.html",
     "description": "Inspect equation changes, model blocks and arm-specific expressions.",
-    "href": "evidence/model/equations/model-equations-submitted-to-revised.html"
-  },
-  {
-    "id": "arms",
-    "section": "Model",
-    "title": "Compare model arms",
-    "source": "model/equations/view-arms.html",
-    "description": "Read the existing arm comparison with its own dated coverage.",
-    "href": "evidence/model/equations/view-arms.html"
+    "artifact": "evidence/model/equations/model-equations-submitted-to-revised.html",
+    "href": "pages/equations.html"
   },
   {
     "id": "description",
-    "section": "Model",
+    "section": "Model Equations",
     "title": "Canonical model description",
     "source": "output/html/appendices/2026-09-30-model-description-revised.html",
     "description": "The written description of the canonical revised model and its closures.",
-    "href": "evidence/output/html/appendices/2026-09-30-model-description-revised.html"
+    "artifact": "evidence/output/html/appendices/2026-09-30-model-description-revised.html",
+    "href": "pages/description.html"
   },
   {
-    "id": "equations-tracker",
-    "section": "Model",
-    "title": "Equation change tracker",
-    "source": "output/html/trackers/equations.html",
-    "description": "Changes, reasons and implementation status, from submission to the revised model.",
-    "href": "evidence/output/html/trackers/equations.html"
+    "id": "arms",
+    "section": "Model Equations",
+    "title": "Compare model arms",
+    "source": "model/equations/view-arms.html",
+    "description": "Read the existing arm comparison with its own dated coverage.",
+    "artifact": "evidence/model/equations/view-arms.html",
+    "href": "pages/arms.html"
+  },
+  {
+    "id": "closure-equations",
+    "section": "Closures",
+    "title": "Compare external-closure equations",
+    "source": "model/equations/model-equations-closures.html",
+    "description": "Equation changes from canonical gold settlement to the alternative external closures.",
+    "artifact": "evidence/model/equations/model-equations-closures.html",
+    "href": "pages/closure-equations.html"
+  },
+  {
+    "id": "view-closures",
+    "section": "Closures",
+    "title": "Compare closure baselines",
+    "source": "output/html/reports/closures/view-closures.html",
+    "description": "Four settlement rules within a fixed regional setup, with cache provenance.",
+    "artifact": "evidence/output/html/reports/closures/view-closures.html",
+    "href": "pages/view-closures.html"
   },
   {
     "id": "closures",
     "section": "Closures",
-    "title": "Closure \u00d7 region grid",
+    "title": "Closure \u00d7 region grid \u2014 2026-10-01 snapshot",
     "source": "output/html/tables/closure_region_grid.html",
-    "description": "Baseline readiness by closure and regional setup; scenario completion is recorded separately.",
-    "href": "evidence/output/html/tables/closure_region_grid.html"
+    "description": "Historical pre-\u039e snapshot. Current qualification and completion are in the closure \u00d7 region \u00d7 scenario page and current viewers.",
+    "artifact": "evidence/output/html/tables/closure_region_grid.html",
+    "href": "pages/closures.html"
   },
   {
-    "id": "closure-tracker",
-    "section": "Closures",
-    "title": "Closure progress tracker",
-    "source": "output/html/trackers/closure_region.html",
-    "description": "Calibrations, deferred decisions and outstanding work.",
-    "href": "evidence/output/html/trackers/closure_region.html"
+    "id": "scenario-definitions",
+    "section": "Scenarios",
+    "title": "Circular-economy scenario definitions",
+    "source": "output/html/tables/scenarios.html",
+    "description": "The fourteen submitted interventions; the current grid includes 1\u20134 and 6\u201313.",
+    "artifact": "evidence/output/html/tables/scenarios.html",
+    "href": "pages/scenario-definitions.html"
   },
   {
-    "id": "financial",
-    "section": "Closures",
-    "title": "Financial dynamics and impulses",
-    "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
-    "description": "What absorbs an external imbalance under each closure, measured against its own baseline.",
-    "href": "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html"
+    "id": "view-scenarios",
+    "section": "Scenarios",
+    "title": "Explore scenario responses",
+    "source": "output/html/reports/scenarios/view-scenarios.html",
+    "description": "Signed responses against each arm\u2019s matching baseline, across 96 accepted experiments.",
+    "artifact": "evidence/output/html/reports/scenarios/view-scenarios.html",
+    "href": "pages/view-scenarios.html"
+  },
+  {
+    "id": "analysis-visuals",
+    "section": "Analysis",
+    "title": "Cross-border response analysis",
+    "source": "output/html/site/analysis-visuals.html",
+    "description": "Dendrograms, PCA, closure regime map, ANOVA and signed responses.",
+    "artifact": "evidence/output/html/site/analysis-visuals.html",
+    "href": "pages/analysis-visuals.html"
+  },
+  {
+    "id": "regime-report",
+    "section": "Analysis",
+    "title": "Cross-border transmission regimes \u2014 definitions and results",
+    "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
+    "description": "Defined regimes, signed magnitude tables and current-paper interpretation.",
+    "artifact": "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
+    "href": "pages/regime-report.html"
+  },
+  {
+    "id": "anova-current",
+    "section": "Documentation",
+    "title": "Cross-border ANOVA \u2014 current revised grid",
+    "source": "output/html/site/cross-border-anova.html",
+    "description": "Current-tag scenario/setup/closure decomposition, clustering sensitivity and signed labels.",
+    "artifact": "evidence/output/html/site/cross-border-anova.html",
+    "href": "pages/anova-current.html"
+  },
+  {
+    "id": "anova-submitted",
+    "section": "Documentation",
+    "title": "Cross-border ANOVA \u2014 submitted scenarios",
+    "source": "output/html/reports/cross_border_analysis.html",
+    "description": "Historical submitted-model ANOVA and clustering across all fourteen interventions.",
+    "artifact": "evidence/output/html/reports/cross_border_analysis.html",
+    "href": "pages/anova-submitted.html"
+  },
+  {
+    "id": "anova-submitted-excl",
+    "section": "Documentation",
+    "title": "Cross-border ANOVA \u2014 submitted, excluding construction",
+    "source": "output/html/reports/cross_border_analysis_excl_construction.html",
+    "description": "Historical twelve-intervention analysis with scenarios 5 and 14 excluded.",
+    "artifact": "evidence/output/html/reports/cross_border_analysis_excl_construction.html",
+    "href": "pages/anova-submitted-excl.html"
+  },
+  {
+    "id": "anova-revised-history",
+    "section": "Documentation",
+    "title": "Revised-grid variation and clusters \u2014 pre-\u039e snapshot",
+    "source": "output/html/reports/2026-10-02-transmission-variance-and-cluster-structure.html",
+    "description": "Detailed dated factorial and clustering methods before premium recalibration; current measurements are on the current-grid ANOVA page.",
+    "artifact": "evidence/output/html/reports/2026-10-02-transmission-variance-and-cluster-structure.html",
+    "href": "pages/anova-revised-history.html"
   },
   {
     "id": "transmission",
-    "section": "Scenarios",
-    "title": "Revised versus submitted transmission",
+    "section": "Documentation",
+    "title": "Revised versus submitted transmission \u2014 2026-10-01",
     "source": "output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html",
-    "description": "Canonical scenario responses and a stated rule fitted to the submitted labels.",
-    "href": "evidence/output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html"
-  },
-  {
-    "id": "dynamics",
-    "section": "Dynamics",
-    "title": "Dependency structure and local dynamics",
-    "source": "output/html/reports/2026-10-01-closure-dynamics.html",
-    "description": "Dependency graphs, transition modes and the limits of the numerical stability interpretation.",
-    "href": "evidence/output/html/reports/2026-10-01-closure-dynamics.html"
+    "description": "Historical evidence (2026-10-01, before \u039e recalibration). Canonical scenario responses and a stated rule fitted to the submitted labels.",
+    "artifact": "evidence/output/html/reports/2026-10-01-transmission-regimes-revised-vs-submitted.html",
+    "href": "pages/transmission.html"
   },
   {
     "id": "scenario-grid",
-    "section": "Scenarios",
-    "title": "Scenario grid \u00b7 checked results",
+    "section": "Documentation",
+    "title": "Scenario grid \u00b7 checked results \u2014 2026-10-01",
     "source": "output/html/reports/2026-10-01-scenario-grid.html",
-    "description": "Accepted-cache responses across closures and regional setups; the report states its dated coverage snapshot.",
-    "href": "evidence/output/html/reports/2026-10-01-scenario-grid.html"
+    "description": "Historical evidence (2026-10-01, before \u039e recalibration). Accepted-cache responses across closures and regional setups; the report states its dated coverage snapshot.",
+    "artifact": "evidence/output/html/reports/2026-10-01-scenario-grid.html",
+    "href": "pages/scenario-grid.html"
+  },
+  {
+    "id": "financial",
+    "section": "Documentation",
+    "title": "Financial dynamics and impulses \u2014 2026-10-01",
+    "source": "output/html/reports/2026-10-01-closure-financial-dynamics.html",
+    "description": "Historical evidence (2026-10-01, before \u039e recalibration). What absorbs an external imbalance under each closure, measured against its own baseline.",
+    "artifact": "evidence/output/html/reports/2026-10-01-closure-financial-dynamics.html",
+    "href": "pages/financial.html"
+  },
+  {
+    "id": "dynamics",
+    "section": "Documentation",
+    "title": "Dependency structure and local dynamics \u2014 2026-10-01",
+    "source": "output/html/reports/2026-10-01-closure-dynamics.html",
+    "description": "Historical evidence (2026-10-01, before \u039e recalibration). Dependency graphs, transition modes and the limits of the numerical stability interpretation.",
+    "artifact": "evidence/output/html/reports/2026-10-01-closure-dynamics.html",
+    "href": "pages/dynamics.html"
+  },
+  {
+    "id": "discussion",
+    "section": "Discussion",
+    "title": "Current interpretation, limitations and open decisions",
+    "source": "output/html/site/discussion.html",
+    "description": "What current findings support, the quasi-float exception and three remaining author choices.",
+    "artifact": "evidence/output/html/site/discussion.html",
+    "href": "pages/discussion.html"
+  },
+  {
+    "id": "submitted-discussion",
+    "section": "Discussion",
+    "title": "Discussion and conclusions \u2014 submitted paper",
+    "source": "output/html/site/submitted-discussion.html",
+    "description": "Submitted demand-scale, transition-regime and trilemma discussion and conclusions, preserved as historical text.",
+    "artifact": "evidence/output/html/site/submitted-discussion.html",
+    "href": "pages/submitted-discussion.html"
+  },
+  {
+    "id": "xi-premium",
+    "section": "Documentation",
+    "title": "\u039e premium recalibration \u2014 before and after",
+    "source": "output/html/reports/2026-10-02-xi-premium-recalibration.html",
+    "description": "Current 20261002_xi results, unchanged labels and documented quasi-float drift.",
+    "artifact": "evidence/output/html/reports/2026-10-02-xi-premium-recalibration.html",
+    "href": "pages/xi-premium.html"
+  },
+  {
+    "id": "openflex-xi",
+    "section": "Documentation",
+    "title": "OPENFLEX old/new calibration feedback",
+    "source": "output/html/reports/2026-10-02-openflex-xi-comparison.html",
+    "description": "Two retained trajectories and finite-window spending pulses; divergence and causal limits.",
+    "artifact": "evidence/output/html/reports/2026-10-02-openflex-xi-comparison.html",
+    "href": "pages/openflex-xi.html"
+  },
+  {
+    "id": "cif-audit",
+    "section": "Documentation",
+    "title": "CIF and Armington execution audit",
+    "source": "output/html/reports/2026-10-02-cif-armington-execution-audit.html",
+    "description": "Why the historical price-check harness failed, its corrected checks and actual dependencies.",
+    "artifact": "evidence/output/html/reports/2026-10-02-cif-armington-execution-audit.html",
+    "href": "pages/cif-audit.html"
+  },
+  {
+    "id": "equations-tracker",
+    "section": "Documentation",
+    "title": "Equation change tracker",
+    "source": "output/html/trackers/equations.html",
+    "description": "Changes, reasons and implementation status, from submission to the revised model.",
+    "artifact": "evidence/output/html/trackers/equations.html",
+    "href": "pages/equations-tracker.html"
+  },
+  {
+    "id": "closure-scenarios",
+    "section": "Documentation",
+    "title": "Closure \u00d7 region \u00d7 scenario completion",
+    "source": "output/html/trackers/closure_region_scenario.html",
+    "description": "96/96 accepted runs; quasi-float retains a documented baseline exception.",
+    "artifact": "evidence/output/html/trackers/closure_region_scenario.html",
+    "href": "pages/closure-scenarios.html"
+  },
+  {
+    "id": "xi-regeneration",
+    "section": "Documentation",
+    "title": "\u039e regeneration progress",
+    "source": "output/html/trackers/grid_regeneration.html",
+    "description": "Completed pipeline and remaining author decisions.",
+    "artifact": "evidence/output/html/trackers/grid_regeneration.html",
+    "href": "pages/xi-regeneration.html"
+  },
+  {
+    "id": "closure-tracker",
+    "section": "Documentation",
+    "title": "Closure progress tracker \u2014 2026-10-01 snapshot",
+    "source": "output/html/trackers/closure_region.html",
+    "description": "Historical pre-\u039e snapshot. Current qualification and completion are in the closure \u00d7 region \u00d7 scenario page and current viewers.",
+    "artifact": "evidence/output/html/trackers/closure_region.html",
+    "href": "pages/closure-tracker.html"
+  },
+  {
+    "id": "openflex-feedback-history",
+    "section": "Documentation",
+    "title": "OPENFLEX same-cache feedback \u2014 original calibration",
+    "source": "output/html/reports/2026-10-02-openflex-same-cache-feedback.html",
+    "description": "Detailed local transitions, feasible spending pulses, price-conversion checks and accounting qualifications for the retained old experiment.",
+    "artifact": "evidence/output/html/reports/2026-10-02-openflex-same-cache-feedback.html",
+    "href": "pages/openflex-feedback-history.html"
+  },
+  {
+    "id": "openflex-clearing",
+    "section": "Documentation",
+    "title": "OPENFLEX currency and clearing audit",
+    "source": "output/html/reports/2026-10-02-openflex-clearing-audit.html",
+    "description": "Independent exchange-quote, supply/demand and currency-conversion reconstruction.",
+    "artifact": "evidence/output/html/reports/2026-10-02-openflex-clearing-audit.html",
+    "href": "pages/openflex-clearing.html"
+  },
+  {
+    "id": "documentation",
+    "section": "Documentation",
+    "title": "Documentation by topic",
+    "source": "output/html/site/documentation-public.html",
+    "description": "Searchable report folders and current/historical interpretation.",
+    "artifact": "evidence/output/html/site/documentation-public.html",
+    "href": "pages/documentation.html"
+  },
+  {
+    "id": "synthesis",
+    "section": "Documentation",
+    "title": "Evidence synthesis and remaining revision work",
+    "source": "output/html/reports/2026-10-03-evidence-synthesis.html",
+    "description": "Reconciled conclusions, master-plan status, reviewer readiness and OPENFLEX.",
+    "artifact": "evidence/output/html/reports/2026-10-03-evidence-synthesis.html",
+    "href": "pages/synthesis.html"
+  },
+  {
+    "id": "closure-description",
+    "section": "Closures",
+    "title": "Closure motivation, baseline and adjustment",
+    "source": "output/html/site/closure-descriptions.html",
+    "description": "One consolidated draft paper section describing all six closure specifications.",
+    "artifact": "evidence/output/html/site/closure-descriptions.html",
+    "href": "pages/closure-description.html"
   }
 ]
