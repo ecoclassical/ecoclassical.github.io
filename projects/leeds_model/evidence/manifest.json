@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": false,
   "built_date": "2026-10-05",
-  "commit": "2926ab95d762ada6df4dcd8f2438865997f4ed68",
+  "commit": "88fec102e16fcf73e43d4b4163bf82a597e93f62",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -80,8 +80,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "b8a2e547dcadfa155ff3ef95d952f26eb9107a054dfc134e068b1d2c44d9417e",
-      "bytes": 4935373
+      "sha256": "6ea2d98fa2923dece1c422788af7770aa8c0e9c5acde36ad30b6b77da0869b5f",
+      "bytes": 4936189
     },
     "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html": {
       "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
@@ -474,7 +474,7 @@
     "web/evidence/pages.json": "0552f819099e09b351128ca47ae9783e3c848fe91cd4e75b4218839667c684fc",
     "tools/site/build_evidence_site.py": "0146c329bddf82f400e9a74fcf79b105b5e0ae4431d64054d14b149b8c921948",
     "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
-    "tools/site/cluster-explorer.html": "a0924662307a18286ea1fbe6e06c2a8905c3514dbd48d0cee5050c5bb2767739",
+    "tools/site/cluster-explorer.html": "d1d9b66e6b3a7136203fd8c5eaa55cd1d1f8835a3fc48247ab4ca00ddb4ec3a6",
     "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
     "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
     "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
@@ -539,7 +539,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "dc1ec14ed8a123d111638de19cfe5f9ca86e161dcd1db3d07e2e99cb45655f2e",
-    "coverage.json": "47bd71324a9064ec809be7388b5e93cdcb030c6c1a9880c956d6ce0158ee3135",
+    "coverage.json": "dfaa79466cd5c06a39bf4ef88073222aec459f53a0d75a0a3d7c141ced25c0aa",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
