@@ -48,6 +48,7 @@ FORM_TO_TYPE = {
     "article": "Article",
     "book": "Book",
     "book chapter": "Book chapter",
+    "thesis": "Thesis",
     "encyclopedia entry": "Encyclopedia",
     "working paper": "Working paper",
     "draft": "Working paper",

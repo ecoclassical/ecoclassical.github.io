@@ -12,7 +12,7 @@ library(htmlwidgets)
 pubs <- read.csv("_data/publications.csv", stringsAsFactors = FALSE) %>%
   filter(status != "In progress") %>%
   mutate(type = fct_relevel(as.factor(type),
-    "Article", "Book", "Book chapter", "Encyclopedia", "Working paper"))
+    "Article", "Book", "Book chapter", "Encyclopedia", "Working paper", "Thesis"))
 
 # ── Site palette ──────────────────────────────────────────────────────────────
 
@@ -21,7 +21,8 @@ pal <- c(
   "Book"          = "#38d9a9",
   "Book chapter"  = "#f9a84f",
   "Encyclopedia"  = "#c084fc",
-  "Working paper" = "#f87171"
+  "Working paper" = "#f87171",
+  "Thesis"        = "#f472b6"
 )
 
 bg      <- "#080d18"
