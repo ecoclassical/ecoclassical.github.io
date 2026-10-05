@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": false,
   "built_date": "2026-10-05",
-  "commit": "88fec102e16fcf73e43d4b4163bf82a597e93f62",
+  "commit": "1997acaf04315a451846cea2e68747c41e6efdd5",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -80,8 +80,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "6ea2d98fa2923dece1c422788af7770aa8c0e9c5acde36ad30b6b77da0869b5f",
-      "bytes": 4936189
+      "sha256": "7c773ef2ec2ee08de0ed4a92a5c9f470dea536e493c7f93b4cfd5a0dc97497e0",
+      "bytes": 5002306
     },
     "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html": {
       "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
@@ -90,8 +90,8 @@
     },
     "evidence/output/html/site/cross-border-anova.html": {
       "source": "output/html/site/cross-border-anova.html",
-      "sha256": "746d056ce75ddd3ce40667b16a9f62138c006e25aa89339e1539477662e6e9ab",
-      "bytes": 2599265
+      "sha256": "646b0c14ec88f94278a35b3d862857d86da561b2d150e51da706bbbe2c2a28f8",
+      "bytes": 2671955
     },
     "evidence/output/html/reports/cross_border_analysis.html": {
       "source": "output/html/reports/cross_border_analysis.html",
@@ -474,19 +474,19 @@
     "web/evidence/pages.json": "0552f819099e09b351128ca47ae9783e3c848fe91cd4e75b4218839667c684fc",
     "tools/site/build_evidence_site.py": "0146c329bddf82f400e9a74fcf79b105b5e0ae4431d64054d14b149b8c921948",
     "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
-    "tools/site/cluster-explorer.html": "d1d9b66e6b3a7136203fd8c5eaa55cd1d1f8835a3fc48247ab4ca00ddb4ec3a6",
+    "tools/site/cluster-explorer.html": "ec5a5c3920a69c4bc9cb1ba5aee5d9c2aa204a9a8dd264bb6519fcbc3548e8e0",
     "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
     "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
     "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
     "qmd/site/closure-descriptions.qmd": "12cddd87ce1491c22a45f8792ddcbf6edf9ad134d863e2454b34ae9d46b76c22",
-    "qmd/site/cross-border-anova.qmd": "f10fde3a434fadf3dd162b169e0255910a5709f464ce75e6f1aa2363fb7246ee",
+    "qmd/site/cross-border-anova.qmd": "4226be494e8a926a4387af4c6232f42c66c449be99bbeb21f2e82864c011f9d1",
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
-    "R/scenarios/export_transmission_labels.R": "cff27f85e1d039bde0b6ef0a2fc4e60cff547dc837a9d3fbce77093970328beb",
-    "tools/site/dendrogram-explorer.html": "e1ac28651988e4de98dcdb50d7b860e8bfbbbebc206434338765b2d2330513ea",
+    "R/scenarios/export_transmission_labels.R": "27282929fe7ab1150b888f1e6f53d39b341df8c483ff21baa77b35d16eecf906",
+    "tools/site/dendrogram-explorer.html": "1624d6546a098f46f487a80ce81bfc7c94c94599bc8abd1f3d9508aa868d04af",
     "web/evidence/section-tabs.json": "847163aacfd53d190b05126bf1307ed6a4be46944be7b9a7afba3c6f4e40e290",
-    "tools/site/generate_analysis_visuals.R": "de9c41fc7076238154466095f93bf773aabf7696b9f9d170e509e364ad0c386f",
+    "tools/site/generate_analysis_visuals.R": "ef23601ae8f96bed4b496b7eaff8aa6aaf3ab17360916bb69b65c662c366e799",
     "tools/site/analysis-visuals.js": "e9b833436c1b484da1ee89808d7f97ec24378c13046e8175ed60b7a5eacb5ba7",
     "tools/site/audit_report_inventory.py": "52d78421ce6638076bf7c7fa9540fea8f8c39221c2c464bd749893bc32c50c59",
     "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
@@ -539,7 +539,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "dc1ec14ed8a123d111638de19cfe5f9ca86e161dcd1db3d07e2e99cb45655f2e",
-    "coverage.json": "dfaa79466cd5c06a39bf4ef88073222aec459f53a0d75a0a3d7c141ced25c0aa",
+    "coverage.json": "c5f13af063f32f0fc7a3708df5ed5a5d5a27d3db2ddb745607de6952094233e4",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
