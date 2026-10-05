@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": true,
-  "built_date": "2026-10-03",
-  "commit": "e06d6a0d4491a3f21b6fb05170e521688b660a3f",
+  "working_tree_dirty": false,
+  "built_date": "2026-10-05",
+  "commit": "580b289853d1ae743a291e8f576c5c26b3ed25f8",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -40,8 +40,8 @@
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
-      "sha256": "261eec95492593a6f5445d58ae330b5a2786662f5654a8e86a84920b10401a1f",
-      "bytes": 4864461
+      "sha256": "82749fae1131f3e25bd1fb832a6a1322cf8e49890c4e0429e41d8126889be264",
+      "bytes": 4867227
     },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.html": {
       "source": "output/html/appendices/2026-09-30-model-description-revised.html",
@@ -55,8 +55,8 @@
     },
     "evidence/model/equations/model-equations-closures.html": {
       "source": "model/equations/model-equations-closures.html",
-      "sha256": "bf163ab6fc12010f3a288bbe50eb5871a320947bfeb3f179a340b33c3f35d8ac",
-      "bytes": 1252345
+      "sha256": "e1b56d29ff74d4d22008c1923e998ad13e225cd931588fc122b0be4f23e99ce0",
+      "bytes": 1252570
     },
     "evidence/output/html/reports/closures/view-closures.html": {
       "source": "output/html/reports/closures/view-closures.html",
@@ -75,13 +75,13 @@
     },
     "evidence/output/html/reports/scenarios/view-scenarios.html": {
       "source": "output/html/reports/scenarios/view-scenarios.html",
-      "sha256": "ff951db2cb6c0b2595322ade67073208021e9732723746d1d27f9d1b5b800fe0",
-      "bytes": 14755007
+      "sha256": "3bc948c93cd6a181d0d8bd1ec2e2a394c152aa89094dae0b9b0d3df4a4e87d0e",
+      "bytes": 14759218
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "5de8f23702621f52c499ce4a201f17c037bb9919cac56645c4a10d59e3fc9a83",
-      "bytes": 4930257
+      "sha256": "0ed10ef540c8eb521fc64ea3a418d8319cc064a65799e71140634ae5b0a85f45",
+      "bytes": 4934021
     },
     "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html": {
       "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
@@ -473,8 +473,8 @@
     "web/evidence/sections.json": "c4e09f696da63f5ca999d5fa41caa8515b6a81d56da89621f0590e48b0bc3215",
     "web/evidence/pages.json": "0552f819099e09b351128ca47ae9783e3c848fe91cd4e75b4218839667c684fc",
     "tools/site/build_evidence_site.py": "0146c329bddf82f400e9a74fcf79b105b5e0ae4431d64054d14b149b8c921948",
-    "tools/site/comparison-viewer.html": "3aeebfb775d83258787a7aca72b105d5a93787511148e924610182f04bbd8c85",
-    "tools/site/cluster-explorer.html": "2d26c6af0ae35592590317ae179c4172c553109736e86a858852305fe96b9e6e",
+    "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
+    "tools/site/cluster-explorer.html": "3424f941f8cb44e710b9990bc39aefcd2b436652ba9fb2983934f4bc1a889d54",
     "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
     "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
     "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
@@ -484,9 +484,9 @@
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "cff27f85e1d039bde0b6ef0a2fc4e60cff547dc837a9d3fbce77093970328beb",
-    "tools/site/dendrogram-explorer.html": "182363800a91be71ee67902af4d515e6f0050d1892e96db504761b0e4595ce95",
+    "tools/site/dendrogram-explorer.html": "e1ac28651988e4de98dcdb50d7b860e8bfbbbebc206434338765b2d2330513ea",
     "web/evidence/section-tabs.json": "847163aacfd53d190b05126bf1307ed6a4be46944be7b9a7afba3c6f4e40e290",
-    "tools/site/generate_analysis_visuals.R": "f1be49c4e5c80735b12b315f5d9aa98874659a2b30e30a712fa1d33033ccd3e3",
+    "tools/site/generate_analysis_visuals.R": "de9c41fc7076238154466095f93bf773aabf7696b9f9d170e509e364ad0c386f",
     "tools/site/analysis-visuals.js": "e9b833436c1b484da1ee89808d7f97ec24378c13046e8175ed60b7a5eacb5ba7",
     "tools/site/audit_report_inventory.py": "52d78421ce6638076bf7c7fa9540fea8f8c39221c2c464bd749893bc32c50c59",
     "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
@@ -539,7 +539,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "dc1ec14ed8a123d111638de19cfe5f9ca86e161dcd1db3d07e2e99cb45655f2e",
-    "coverage.json": "00ab0b282c07f26f0e129e2724bf4aa858a9fa6e2a7662b848cdfce73542141f",
+    "coverage.json": "cc597658104ddf0d2f7caa8e32072c7d01ec4ed6c51d28b97829657740c46b7e",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
