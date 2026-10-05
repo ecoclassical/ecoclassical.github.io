@@ -22,7 +22,7 @@ repository               : "ecoclassical/academicpages.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profile.jpg"
   name             : "Oriol Vallès Codina"
   pronouns         : # example: "she/her"  
   bio              : "Ecological Macroeconomist at the Net Zero Industrial Policy Lab (Johns Hopkins University)"
