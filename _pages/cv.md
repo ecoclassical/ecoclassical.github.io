@@ -49,9 +49,9 @@ redirect_from:
 ---
 
 - Ecological macroeconomics  
-- Multi-sector growth and structural change  
+- Multi-sector growth, structural change, and development  
+- Econometrics  
 - Classical political economy  
-- Uneven development  
 - History of economic thought  
 - Data science  
 - Complexity science
