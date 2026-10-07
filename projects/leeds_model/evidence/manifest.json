@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": false,
-  "built_date": "2026-10-05",
-  "commit": "1997acaf04315a451846cea2e68747c41e6efdd5",
+  "built_date": "2026-10-07",
+  "commit": "b59ed722aa56a4ce0a54f91760eab7bcdb46c827",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "847163aacfd53d190b05126bf1307ed6a4be46944be7b9a7afba3c6f4e40e290",
-      "bytes": 2323
+      "sha256": "05cfe0fa46e77b53066dbefcefcff4a62d0614e2099d07031418c07c92cd4cd0",
+      "bytes": 2505
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261002_xi.json",
@@ -80,18 +80,23 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "7c773ef2ec2ee08de0ed4a92a5c9f470dea536e493c7f93b4cfd5a0dc97497e0",
-      "bytes": 5002306
+      "sha256": "32103b8bd325cd6903b1ce9a23c9e2389fcc2af79d5801126841b727bfb8ce96",
+      "bytes": 5888570
     },
-    "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html": {
-      "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
-      "sha256": "6fcbe51e2fb689bccf32501afd135766056daeff39fd698f59e074694f3a4d34",
-      "bytes": 2044852
+    "evidence/output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html": {
+      "source": "output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
+      "sha256": "5cf7dc5a39d96b390e8ea5aa1748d101dbe15d5c317878f3fd3bdf1acdcab119",
+      "bytes": 2049398
+    },
+    "evidence/output/html/reports/2026-10-07-transmission-families-setups-and-hierarchies.html": {
+      "source": "output/html/reports/2026-10-07-transmission-families-setups-and-hierarchies.html",
+      "sha256": "b28eb51228404521e3136f84d63426eb8c89128318a852128216cc591a5a0346",
+      "bytes": 1941605
     },
     "evidence/output/html/site/cross-border-anova.html": {
       "source": "output/html/site/cross-border-anova.html",
-      "sha256": "646b0c14ec88f94278a35b3d862857d86da561b2d150e51da706bbbe2c2a28f8",
-      "bytes": 2671955
+      "sha256": "fde8e6f0e3909b061ac2dd3f64e7d61de2f9f68b6e80c738215a7623dc4d9f35",
+      "bytes": 3027422
     },
     "evidence/output/html/reports/cross_border_analysis.html": {
       "source": "output/html/reports/cross_border_analysis.html",
@@ -185,8 +190,8 @@
     },
     "evidence/output/html/site/documentation-public.html": {
       "source": "output/html/site/documentation-public.html",
-      "sha256": "42df0bf2bfe302bf8876de7b621be439b9440a083f758702e1979a652a503dac",
-      "bytes": 21963
+      "sha256": "5e2f1a31cba3b288f4c261ff245b1d70201982c01fc2538b54681b8e49c01a3c",
+      "bytes": 25574
     },
     "evidence/output/html/reports/2026-10-03-evidence-synthesis.html": {
       "source": "output/html/reports/2026-10-03-evidence-synthesis.html",
@@ -262,6 +267,71 @@
       "source": "output/html/reports/2026-09-09-dynamical-form.html",
       "sha256": "52833d9b7925d25c78e4d9496e34f6bbdf626b1e71c48c9aecf9b98d801c19d5",
       "bytes": 2017547
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-alternative-closure.html": {
+      "source": "output/html/reports/2026-10-03-openflex-alternative-closure.html",
+      "sha256": "56cfcc8dd6a0abccbdf5b6e8d88c1a43296cf7eb9e65b4d505769878af2ba9ae",
+      "bytes": 1182628
+    },
+    "evidence/output/html/reports/2026-10-03-gemmes-flexible-exchange-rate.html": {
+      "source": "output/html/reports/2026-10-03-gemmes-flexible-exchange-rate.html",
+      "sha256": "e0cd4e9ed0075bb93080fb066bc13f48c210128ee0634f19eda55dc7c639a31b",
+      "bytes": 1979221
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-lag-read-closure.html": {
+      "source": "output/html/reports/2026-10-03-openflex-lag-read-closure.html",
+      "sha256": "3a390722aa0a318c0412d04b31fa90897458dc68c2c0dbdf06e60f484fc32d30",
+      "bytes": 1902386
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-joint-history.html": {
+      "source": "output/html/reports/2026-10-03-openflex-joint-history.html",
+      "sha256": "015cd9f0a6c80dae4c24d9aac6bcf1ead3a1f65ff5cbfd1c820fe0819bfad28f",
+      "bytes": 1987840
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-revaluation-probe.html": {
+      "source": "output/html/reports/2026-10-03-openflex-revaluation-probe.html",
+      "sha256": "ae46f74888906bd06a86ae2046795fae976cd7840b7dccc9ed06a35bff07d891",
+      "bytes": 1990861
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-revaluation-channel.html": {
+      "source": "output/html/reports/2026-10-03-openflex-revaluation-channel.html",
+      "sha256": "2c6c9cffb4f670f5f2f91f68087e36dbb225a39d8654974fe33621026774a7cc",
+      "bytes": 1985327
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-financial-coordinates.html": {
+      "source": "output/html/reports/2026-10-03-openflex-financial-coordinates.html",
+      "sha256": "e6c94913e8e35639e33033cb3ab76b1220bf9c3d3c7a47a095576588ea7a2e18",
+      "bytes": 1905238
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-reachable-history.html": {
+      "source": "output/html/reports/2026-10-03-openflex-reachable-history.html",
+      "sha256": "d8275ec68c6728bd0138c9b7f4a61f114274fd0deacfde53c54d714afc57f4e8",
+      "bytes": 2001913
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-matrix-reconciliation.html": {
+      "source": "output/html/reports/2026-10-03-openflex-matrix-reconciliation.html",
+      "sha256": "b8a6edfdbbf6acd1782610494a454750b52505cab87abd43c46ebbfab4e0ce5f",
+      "bytes": 1989603
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-benchmark-investigation.html": {
+      "source": "output/html/reports/2026-10-03-openflex-benchmark-investigation.html",
+      "sha256": "8003f96147a472da110c79cb32afdf1feeeca9e7e5b5bdbd6ef568aed11ded98",
+      "bytes": 2164845
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-real-capital.html": {
+      "source": "output/html/reports/2026-10-03-openflex-real-capital.html",
+      "sha256": "d427c962d8d60fba2b6f02e6681a6bf6f984bf228da0286082ec4a14994b5a12",
+      "bytes": 1989286
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-decision.html": {
+      "source": "output/html/reports/2026-10-03-openflex-decision.html",
+      "sha256": "238221b95bf33dcb1788c1c4c95d2fc218cfc542a2807ac15725a72917e84fb9",
+      "bytes": 1998616
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-delayed-feedback.html": {
+      "source": "output/html/reports/2026-10-03-openflex-delayed-feedback.html",
+      "sha256": "b5e0503e7dfc0632407a0216608a0e58a62edc761365e6f84bd2b558a4b0407d",
+      "bytes": 1986113
     },
     "evidence/output/html/reports/2026-10-02-openflex-diagnostics-results.html": {
       "source": "output/html/reports/2026-10-02-openflex-diagnostics-results.html",
@@ -433,6 +503,11 @@
       "sha256": "a62739433cc352ec293896e5c457aca39aa503aba0112850ee31ab4c51c9503f",
       "bytes": 4938944
     },
+    "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html": {
+      "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
+      "sha256": "6fcbe51e2fb689bccf32501afd135766056daeff39fd698f59e074694f3a4d34",
+      "bytes": 2044852
+    },
     "evidence/output/html/reports/2026-10-02-pooled-transmission-clusters.html": {
       "source": "output/html/reports/2026-10-02-pooled-transmission-clusters.html",
       "sha256": "c4c81ed636a9def97daf0793e5e3aacd6d453cd5db9b6b75e01c3acb924011b8",
@@ -458,6 +533,21 @@
       "sha256": "a7bc3e9b50c39d01b0866d10807803827ffcb2e1e5f76b7076f311d26980edd7",
       "bytes": 255726
     },
+    "evidence/output/html/reports/2026-10-03-openflex-delayed-feedback.pdf": {
+      "source": "output/pdf/reports/2026-10-03-openflex-delayed-feedback.pdf",
+      "sha256": "7eb32e6d7303b39bdba43782a24205006ecfa587c1971674fd78557a8925e6fd",
+      "bytes": 38448
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-decision.pdf": {
+      "source": "output/pdf/reports/2026-10-03-openflex-decision.pdf",
+      "sha256": "b005290c8847d62d952133cff19bf2f3b98575369ca112bfe2ba7645ecfc1238",
+      "bytes": 46812
+    },
+    "evidence/output/html/reports/2026-10-03-openflex-benchmark-investigation.pdf": {
+      "source": "output/pdf/reports/2026-10-03-openflex-benchmark-investigation.pdf",
+      "sha256": "cb02a32e7fe98f192d92fc2777ad7d628a967b463523ad7736cb11e7ee4444c4",
+      "bytes": 53448
+    },
     "evidence/output/html/reports/2026-09-29-calibration-ratios.pdf": {
       "source": "output/pdf/reports/2026-09-29-calibration-ratios.pdf",
       "sha256": "ce1348a799c68caf6f548e7533df675b14fd1ad192fa1cb5ccf512bc8ddd68e9",
@@ -471,27 +561,31 @@
   },
   "inputs": {
     "web/evidence/sections.json": "c4e09f696da63f5ca999d5fa41caa8515b6a81d56da89621f0590e48b0bc3215",
-    "web/evidence/pages.json": "0552f819099e09b351128ca47ae9783e3c848fe91cd4e75b4218839667c684fc",
-    "tools/site/build_evidence_site.py": "0146c329bddf82f400e9a74fcf79b105b5e0ae4431d64054d14b149b8c921948",
+    "web/evidence/pages.json": "640d00520263f59341c2c7eed7b3528e4a7881821a2b56a3c6c2c937c2d87a37",
+    "tools/site/build_evidence_site.py": "005c062aaa41ad177b790a4ba8cd5a529e61f6b2510dc1ef25c7836816dc8479",
     "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
-    "tools/site/cluster-explorer.html": "ec5a5c3920a69c4bc9cb1ba5aee5d9c2aa204a9a8dd264bb6519fcbc3548e8e0",
+    "tools/site/cluster-explorer.html": "d2379b8589a4005d85765c8332405b850835b878cf59a380d09a72025701636f",
     "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
     "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
     "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
     "qmd/site/closure-descriptions.qmd": "12cddd87ce1491c22a45f8792ddcbf6edf9ad134d863e2454b34ae9d46b76c22",
-    "qmd/site/cross-border-anova.qmd": "4226be494e8a926a4387af4c6232f42c66c449be99bbeb21f2e82864c011f9d1",
+    "qmd/site/cross-border-anova.qmd": "09df86aad53ae67f0d624528c7e3fba4e1dd1a0330a0c7e0093e83bfce94c9fa",
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "27282929fe7ab1150b888f1e6f53d39b341df8c483ff21baa77b35d16eecf906",
-    "tools/site/dendrogram-explorer.html": "1624d6546a098f46f487a80ce81bfc7c94c94599bc8abd1f3d9508aa868d04af",
-    "web/evidence/section-tabs.json": "847163aacfd53d190b05126bf1307ed6a4be46944be7b9a7afba3c6f4e40e290",
-    "tools/site/generate_analysis_visuals.R": "ef23601ae8f96bed4b496b7eaff8aa6aaf3ab17360916bb69b65c662c366e799",
-    "tools/site/analysis-visuals.js": "e9b833436c1b484da1ee89808d7f97ec24378c13046e8175ed60b7a5eacb5ba7",
-    "tools/site/audit_report_inventory.py": "52d78421ce6638076bf7c7fa9540fea8f8c39221c2c464bd749893bc32c50c59",
+    "tools/site/dendrogram-explorer.html": "7545ecfc7429b761da7e9822b4fa2e2712eba46a23710acde4525b5330779ff6",
+    "web/evidence/section-tabs.json": "05cfe0fa46e77b53066dbefcefcff4a62d0614e2099d07031418c07c92cd4cd0",
+    "tools/site/generate_analysis_visuals.R": "4a41a254d82bef63d07988833e6a44cacc2df7ca1041ead5e695e9343303a6f0",
+    "tools/site/analysis-visuals.js": "3f02b11e51094f53351f252d2ee87a420d27d765d68bd4f6ee506ac9e6f63f49",
+    "tools/site/regime-map.html": "15b246bef23c8585a14e44dc0b3cc9213207802efa50944fee7f1b0dc873c053",
+    "tools/site/heatmap-explorer.html": "ff9dadb77bbc84613854f17fd0c0a8f1edc952acb3ed310715957c05576d983c",
+    "R/scenarios/setup_views.R": "68a72138ecece1e54f8e04ffc2c5c5bb08de5fae740b4aa3341cfce4368a4d95",
+    "tools/site/audit_report_inventory.py": "a0a45ed926c721e119b4523eabb7f9909d31cf80462da11257f7cb406010227a",
     "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
-    "output/calibration/report_inventory_20261003.json": "9053969ff4ad658d7fc69f751a1f7808f4343391bfb5c74b3595026ccbf5bc56",
-    "qmd/reports/2026-10-03-cross-border-transmission-regimes.qmd": "9e556fb72c27f47b10c26766eef5feee9fa5d8830072b28d840e9e6257644832",
+    "output/calibration/report_inventory_20261003.json": "07f3abc314e5455d937688c9954c160df5f8dbae126c8b1eef27b61ef228636c",
+    "qmd/reports/2026-10-05-scenario-classification-closure-and-setup.qmd": "a4a837ac8262bc1d87eba32cda546387806dba2facb3ed943a4b0e447fa832bf",
+    "qmd/reports/2026-10-07-transmission-families-setups-and-hierarchies.qmd": "645cb792ad9f416f4765b5d9bdf00a31eb7ba8746f8ed45a5536796331e1904b",
     "qmd/reports/2026-10-03-evidence-synthesis.qmd": "7d08b808d1aee3ad823a016d35f94dba2393d744c31c24ffc233ef06d8a6a074",
     "tools/site/publication-scope.json": "7744e6e1d31105003dcd487515e830bfc42ef3236cb63ceb67aa894b0ba38998",
     "tools/site/generate_paper_pages.py": "9e7c1f71829b952a5bc8240b6f23eaf2eaeabfc5b85b53dc389a80f26a714829",
@@ -513,6 +607,7 @@
     "pages/view-scenarios.html",
     "pages/analysis-visuals.html",
     "pages/regime-report.html",
+    "pages/hierarchy-report.html",
     "pages/anova-current.html",
     "pages/anova-submitted.html",
     "pages/anova-submitted-excl.html",
@@ -538,8 +633,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "dc1ec14ed8a123d111638de19cfe5f9ca86e161dcd1db3d07e2e99cb45655f2e",
-    "coverage.json": "c5f13af063f32f0fc7a3708df5ed5a5d5a27d3db2ddb745607de6952094233e4",
+    "pages.json": "e9ab4faa4a5405af9e2cdc80d79f3b8a12b4b419b75533ffc2e17db4538ea407",
+    "coverage.json": "f79b4b093f8f0ba1f6f544aa8e90a59caeb84728c5116147989fe47842f0079c",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
@@ -550,7 +645,8 @@
     "pages/scenario-definitions.html": "3055c45f1ab8d08a2840794995de87da7a3d55cff57bbed463c9e5ccb83b2dde",
     "pages/view-scenarios.html": "b63bc4ca049e285b194358af61dde907d838c143e56cc8ebb2d3d90298565f43",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
-    "pages/regime-report.html": "57b064d2a151972da0f97bc5ff57feb491267820bc47509e4d39c63a8c491142",
+    "pages/regime-report.html": "115e693fdf3bbab1aa7955f8e82c0e6b07d78aa1793836d548282e5d8f9ab558",
+    "pages/hierarchy-report.html": "5856c1cd47edad36d970af30477afd3bde4a7344e73cdad066a2d6cd5a858b2f",
     "pages/anova-current.html": "b302f0a9f9b9583081611159cb350b7209f8ed04e2b0976c373027990122e422",
     "pages/anova-submitted.html": "66bb5503ff59227621dc63b9ba8ffce1692846e5ef46b55c996e17d3441ed685",
     "pages/anova-submitted-excl.html": "ec78e5cdffe5112510c988b239ed58f1287e6097de4edc5c51695f56265bd6a1",

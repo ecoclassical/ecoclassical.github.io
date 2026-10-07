@@ -87,6 +87,11 @@
       "native": "regimes"
     },
     {
+      "label": "Heatmap",
+      "page": "analysis-visuals",
+      "native": "heatmap"
+    },
+    {
       "label": "ANOVA",
       "page": "analysis-visuals",
       "native": "anova"
@@ -104,6 +109,10 @@
     {
       "label": "Report",
       "page": "regime-report"
+    },
+    {
+      "label": "Hierarchies report",
+      "page": "hierarchy-report"
     }
   ],
   "Discussion": [

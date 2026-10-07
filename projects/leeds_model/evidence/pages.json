@@ -92,11 +92,20 @@
   {
     "id": "regime-report",
     "section": "Analysis",
-    "title": "Cross-border transmission regimes \u2014 definitions and results",
-    "source": "output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
-    "description": "Defined regimes, signed magnitude tables and current-paper interpretation.",
-    "artifact": "evidence/output/html/reports/2026-10-03-cross-border-transmission-regimes.html",
+    "title": "Scenario classification, closure and regional setup",
+    "source": "output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
+    "description": "Three transmission families from the response hierarchy; what the monetary and fiscal closures and the regional setup do to them.",
+    "artifact": "evidence/output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
     "href": "pages/regime-report.html"
+  },
+  {
+    "id": "hierarchy-report",
+    "section": "Analysis",
+    "title": "Families by outcome block, setup, and monetary \u00d7 ecological hierarchy",
+    "source": "output/html/reports/2026-10-07-transmission-families-setups-and-hierarchies.html",
+    "description": "What each family does to every outcome block in each setup; North/South structure; crossed versus aligned monetary and ecological hierarchies under the closures.",
+    "artifact": "evidence/output/html/reports/2026-10-07-transmission-families-setups-and-hierarchies.html",
+    "href": "pages/hierarchy-report.html"
   },
   {
     "id": "anova-current",
