@@ -4,56 +4,43 @@ title: "Oriol Vallès Codina"
 layout: home
 ---
 
-<section class="hero">
-  <div class="eyebrow">Ecological Macroeconomist</div>
-  <h1>Oriol Vallès Codina</h1>
-  <div class="hero-role">
-    Senior Research Associate · Net Zero Industrial Policy Lab<br>
-    Department of Political Science, Johns Hopkins University
-  </div>
-</section>
-
-<section class="bio-grid">
-  <div class="bio-left">
-    <div class="section-label">About</div>
+<section class="hero" aria-label="Introduction">
+  <div class="hero-left">
+    <div class="hero-id">
+      <img class="hero-photo" src="/images/profile.jpg" alt="Portrait of Oriol Vallès Codina" width="120" height="120">
+      <div>
+        <div class="eyebrow">Ecological Macroeconomist</div>
+        <h1>Oriol Vallès Codina</h1>
+        <div class="hero-role">
+          Senior Research Associate · Net Zero Industrial Policy Lab<br>
+          Department of Political Science, Johns Hopkins University
+        </div>
+      </div>
+    </div>
     <div class="bio">
-      <p>I work at the intersection of ecological macroeconomics, classical political economy, and the history of economic thought. My research develops formal frameworks — thermodynamic, dynamical, and network-theoretic — for understanding value, accumulation, and ecological limits in capitalist economies.</p>
-      <p>I use dynamical systems, input-output analysis, networks, and statistical inference to address foundational questions about growth, distribution, and ecological crisis — questions first raised by the classical economists of the nineteenth century and still unresolved.</p>
+      <p>I am an ecological macroeconomist working in the classical tradition of political economy. My research returns to the questions the nineteenth-century classical economists raised and left unresolved — whether the limits to growth are set by scarce natural resources or by social inequality, and how growth, distribution and the environment shape one another — and asks them of an economy now facing climate and geopolitical risk.</p>
+      <p>I answer them with formal, quantitative tools: stock-flow-consistent macroeconomics, multi-regional input–output analysis, dynamical systems, network theory, statistical inference and machine learning. At the Net Zero Industrial Policy Lab I develop the <a href="https://nzipl-cvce.pages.dev/" target="_blank" rel="noopener">Clean Value Chain Explorer</a>, a platform that maps the inputs, trade and competitiveness of clean technologies worldwide.</p>
     </div>
   </div>
-  <div class="bio-right">
+  <div class="hero-right">
     <div class="section-label">Research Questions</div>
     <ul class="q-list">
       <li>
         <span class="q-dot green"></span>
-        Can classical political economy provide a genuine thermodynamic conservation law? How does the labour theory of value deliver both a first-law analogue (the MELT conservation identity) and a second-law analogue (labour as irreversible metabolic work)?
+        Do climate policies centred in the Global North benefit or harm the Global South? When the carbon-importing core decarbonises, who bears the macroeconomic cost in the carbon-exporting periphery?
       </li>
       <li>
         <span class="q-dot blue"></span>
-        How do multi-sector economies stabilise or destabilise in the face of demand and supply shocks — and what policies can simultaneously reduce economic volatility and environmental impact?
+        Can states steer a multi-sector economy towards sustainability while keeping employment and prices stable — through price caps, tax-subsidy schemes and industrial policy in strategic sectors?
       </li>
       <li>
         <span class="q-dot orange"></span>
-        What is the correct structural account of economic crisis? Can Sraffian production theory be unified with autocatalytic set theory to explain why crises are discontinuous — phase transitions rather than smooth departures from equilibrium?
+        How do shocks and investments propagate through production networks, and what in the structure of an input–output system governs how fast the multiplier process converges?
       </li>
       <li>
         <span class="q-dot purple"></span>
-        What are the thermodynamic limits of capitalist accumulation? How do the exhaustion of living labour and the exhaustion of natural entropy sinks jointly define the secular entropy maximum?
+        Are the limits to accumulation set by nature or by distribution? Is degrowth the classical tendency of the rate of profit to fall asserting itself — and does the labour theory of value yield a conservation law of value alongside the irreversibility of production?
       </li>
     </ul>
-  </div>
-</section>
-
-<section class="visuals">
-  <div class="section-label">Work in Progress</div>
-  <div class="vis-grid">
-    <div class="vis-card">
-      <img src="/images/ntrwk_mex_total.png" alt="Input-Output Network of Mexico">
-      <div class="vis-caption">Input-output network of Mexico (800+ sectors). Star-shaped hierarchy with few core industrial hubs.</div>
-    </div>
-    <div class="vis-card">
-      <img src="/images/const_tech_dynamics.png" alt="Multi-Sector Growth Dynamics">
-      <div class="vis-caption">Conservative multi-sector dynamics under constant technology. Classical price-quantity oscillations.</div>
-    </div>
   </div>
 </section>

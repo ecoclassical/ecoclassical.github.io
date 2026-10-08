@@ -22,7 +22,8 @@
       --orange:   #f9a84f;
       --purple:   #c084fc;
       --font:     -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
-      --max:      1380px;
+      --max:      1760px;
+      --hero-fs:  clamp(0.97rem, 1.05vw, 1.17rem);
     }
 
     html { scroll-behavior: smooth; }
@@ -58,7 +59,7 @@
       position: relative; z-index: 1;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 clamp(24px, 4vw, 72px);
     }
 
     /* ── Nav ── */
@@ -72,7 +73,7 @@
     .nav-inner {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 clamp(24px, 4vw, 72px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -106,41 +107,130 @@
       background: rgba(56,217,169,0.08);
     }
 
-    /* ── Hero ── */
+    .nav-left { display: flex; align-items: center; gap: 1.1rem; min-width: 0; flex-wrap: wrap; }
+    .nav-contact { display: flex; gap: 0.1rem; flex-wrap: wrap; padding-left: 1.1rem; border-left: 1px solid var(--bhi); }
+    .nav-contact a {
+      font-size: 0.76rem; color: var(--muted); text-decoration: none;
+      padding: 3px 7px; border-radius: 4px; transition: color 0.15s, background 0.15s;
+    }
+    .nav-contact a:hover { color: var(--green); background: rgba(56,217,169,0.08); }
+    @media (max-width: 860px) {
+      .nav-inner { height: auto; padding-top: 0.6rem; padding-bottom: 0.6rem; flex-wrap: wrap; }
+      .nav-contact { padding-left: 0; border-left: none; margin-left: -7px; }
+    }
+
+    /* ── Hero: identity + about (left), research questions (right) ── */
     .hero {
-      padding: 5rem 0 3.5rem;
-      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      grid-template-areas:
+        "id  label"
+        "bio list";
+      column-gap: clamp(3rem, 6vw, 6rem);
+      row-gap: 2.4rem;
+      align-content: end;
+      /* fill the viewport below the 52px nav; content sits low, small bottom margin */
+      min-height: calc(100vh - 53px);
+      padding: 4rem 0 2.5rem;
+    }
+    /* Flatten the two columns into the grid so the first line of the About
+       text and the first research question share a row and a baseline. */
+    .hero-left, .hero-right { display: contents; }
+    .hero-id { grid-area: id; }
+    .hero .bio { grid-area: bio; align-self: start; }
+    .hero-right .section-label { grid-area: label; align-self: end; margin-bottom: 0; font-size: 0.816rem; }  /* 1.2 × 0.68rem */
+    .hero-right .q-list { grid-area: list; align-self: start; }
+    .hero-right .q-dot { margin-top: calc(0.875em - 3px); }  /* centred on a 1.75 line */
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-areas: "id" "bio" "label" "list";
+        row-gap: 2rem; min-height: 0; padding: 2.5rem 0 3rem;
+      }
+      .hero-right .section-label { margin-top: 1rem; }
+    }
+    .hero-id {
+      display: flex; align-items: center; gap: 1.8rem;
+    }
+    .hero-photo {
+      flex-shrink: 0;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(56,217,169,0.55);
+      box-shadow: 0 0 0 5px rgba(56,217,169,0.08);
     }
     .eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
       text-transform: uppercase; color: var(--green);
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.5rem;
     }
     .eyebrow::before {
       content: ""; display: inline-block;
       width: 20px; height: 1px; background: var(--green);
     }
     .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-size: clamp(1.8rem, 3.6vw, 2.8rem);
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.15;
       color: #fff;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.4rem;
     }
     .hero-role {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--muted);
-      margin-bottom: 1.8rem;
       line-height: 1.5;
     }
-    .hero-bio {
-      color: var(--text);
-      max-width: 58ch;
-      font-size: 0.95rem;
+    .hero .bio p { font-size: var(--hero-fs); line-height: 1.75; }
+    .hero .bio p + p { margin-top: 1.1em; }
+    .hero-right .q-list li { font-size: var(--hero-fs); line-height: 1.75; padding: 1.4rem 0; gap: 1.2rem; }
+    .hero-right .q-list li:first-child { padding-top: 0; }
+    .hero-right .q-list li:last-child { padding-bottom: 0; }
+
+    .bio a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(56,217,169,0.35); }
+    .bio a:hover { border-bottom-color: var(--green); }
+
+    /* ── Figure slideshow (images/featured/, captions in _data/featured.yml) ── */
+    .figures { padding: 2.5rem 0 3rem; border-bottom: 1px solid var(--border); }
+    .fig-stage {
+      position: relative;
+      height: clamp(240px, 34vw, 440px);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
     }
-    .hero-bio p + p { margin-top: 0.85em; }
+    .fig {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.2rem;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .fig.on { opacity: 1; }
+    .fig img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    @media (prefers-reduced-motion: reduce) { .fig { transition: none; } }
+    .fig-bar {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1.2rem;
+      margin-top: 0.9rem;
+    }
+    .cap-text { font-size: 0.78rem; color: var(--muted); line-height: 1.55; max-width: 90ch; min-height: 2.4em; }
+    .cap-count { font-variant-numeric: tabular-nums; color: rgba(226,232,240,0.55); margin-right: 0.7rem; letter-spacing: 0.06em; }
+    .cap-tag { font-weight: 700; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; margin-right: 0.35rem; }
+    .cap-tag.green  { color: var(--green); }
+    .cap-tag.blue   { color: var(--blue); }
+    .cap-tag.orange { color: var(--orange); }
+    .cap-tag.purple { color: var(--purple); }
+    .cap-controls { display: flex; gap: 0.35rem; flex-shrink: 0; }
+    .cap-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1px solid var(--bhi); background: var(--surface);
+      color: var(--text); font-size: 0.8rem; line-height: 1; cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .cap-btn:hover, .cap-btn:focus-visible { border-color: var(--green); color: var(--green); outline: none; }
 
     /* ── Bio two-column grid ── */
     .bio-grid {
@@ -247,9 +337,17 @@
 
 <nav aria-label="Main navigation">
   <div class="nav-inner">
-    <a class="nav-name" href="/">Oriol Vallès Codina</a>
+    <div class="nav-left">
+      <a class="nav-name" href="/">Oriol Vallès Codina</a>
+      <div class="nav-contact">
+        <a href="mailto:oriolvallescodina@gmail.com">Email</a>
+        <a href="https://scholar.google.com/citations?user=jQttkoQAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+        <a href="https://orcid.org/0000-0002-1361-8243" target="_blank" rel="noopener">ORCID</a>
+        <a href="/cv/">CV</a>
+        <a href="https://www.netzeropolicylab.com/" target="_blank" rel="noopener">NZIPL</a>
+      </div>
+    </div>
     <div class="nav-links">
-      <a href="/cv/">CV</a>
       <a href="/research/">Research</a>
       <a href="/publications/">Publications</a>
       <a href="/talks/">Talks</a>
@@ -261,16 +359,6 @@
 <div class="wrap">
   {{ content }}
 
-  <div class="contact-strip">
-    <div class="contact-links">
-      <a href="mailto:oriolvallescodina@gmail.com">Email</a>
-      <a href="https://scholar.google.com/citations?user=jQttkoQAAAAJ" target="_blank">Google Scholar</a>
-      <a href="https://orcid.org/0000-0002-1361-8243" target="_blank">ORCID</a>
-      <a href="/cv/">CV</a>
-      <a href="https://www.netzeropolicylab.com/" target="_blank">NZIPL</a>
-    </div>
-    <span class="contact-note">ecoclassical.github.io</span>
-  </div>
 </div>
 
 </body>
