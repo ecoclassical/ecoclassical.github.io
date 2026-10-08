@@ -23,7 +23,7 @@
       --purple:   #c084fc;
       --font:     -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
       --max:      1760px;
-      --hero-fs:  clamp(0.97rem, 1.05vw, 1.17rem);
+      --hero-fs:  clamp(0.8245rem, 0.8925vw, 0.9945rem);  /* 0.85 × (0.97rem, 1.05vw, 1.17rem) */
     }
 
     html { scroll-behavior: smooth; }
@@ -185,7 +185,7 @@
     }
     .hero .bio p { font-size: var(--hero-fs); line-height: 1.75; }
     .hero .bio p + p { margin-top: 1.1em; }
-    .hero-right .q-list li { font-size: var(--hero-fs); line-height: 1.75; padding: 1.4rem 0; gap: 1.2rem; }
+    .hero-right .q-list li { font-size: var(--hero-fs); line-height: 1.75; padding: 1.05rem 0; gap: 1.2rem; border-bottom: none; }  /* 0.75 × 1.4rem */
     .hero-right .q-list li:first-child { padding-top: 0; }
     .hero-right .q-list li:last-child { padding-bottom: 0; }
 
