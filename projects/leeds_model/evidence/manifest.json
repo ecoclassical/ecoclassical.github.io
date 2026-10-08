@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": false,
-  "built_date": "2026-10-07",
-  "commit": "b59ed722aa56a4ce0a54f91760eab7bcdb46c827",
+  "built_date": "2026-10-08",
+  "commit": "13658b75f46e46b778c146071f04fcf7fecbecae",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -15,18 +15,18 @@
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "cb148a7f86b0c485368fae03ec04f3adac25f9c93a2bd3f8c3e99167578731cf",
-      "bytes": 6706
+      "sha256": "e37eff15964f8fa49e57609c64cc9b874859dfa5aa64cec7f4d2edff30a64e4c",
+      "bytes": 6815
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
-      "sha256": "c4e09f696da63f5ca999d5fa41caa8515b6a81d56da89621f0590e48b0bc3215",
-      "bytes": 118
+      "sha256": "ca560d36da5034c35270fbefab411fdb3d801cd7f429d9a149a9883c0059c9b9",
+      "bytes": 143
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "05cfe0fa46e77b53066dbefcefcff4a62d0614e2099d07031418c07c92cd4cd0",
-      "bytes": 2505
+      "sha256": "beeffafac2d9859ff81b6b5baf0c86aa2b6f110528d6b6f9c359eab45279bd72",
+      "bytes": 4398
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261002_xi.json",
@@ -80,8 +80,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "32103b8bd325cd6903b1ce9a23c9e2389fcc2af79d5801126841b727bfb8ce96",
-      "bytes": 5888570
+      "sha256": "79582dc9c0a253f86de3b39bf1fdb21350367a73e9db17cf0deda69b719d10a7",
+      "bytes": 6376716
     },
     "evidence/output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html": {
       "source": "output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
@@ -200,8 +200,18 @@
     },
     "evidence/output/html/site/closure-descriptions.html": {
       "source": "output/html/site/closure-descriptions.html",
-      "sha256": "26535df79e029af80aa15ba84d5b3b5a0d15890f20782c795c50981313c95c01",
-      "bytes": 1982966
+      "sha256": "4edc7043f2cc288caaa849550b047f32d5a0c73596bb6e6980922c26876e17ce",
+      "bytes": 1985957
+    },
+    "evidence/output/html/site/paper-figures.html": {
+      "source": "output/html/site/paper-figures.html",
+      "sha256": "ceed0972e32b0f84134b715e0dc4774f9329ae615edd6a12549d2b370a903c2f",
+      "bytes": 6060408
+    },
+    "evidence/output/html/site/paper-tables.html": {
+      "source": "output/html/site/paper-tables.html",
+      "sha256": "25953ec97c16cc6945f3d5b25bb1a8a11171f1781fd9987fd5d97beebfc471e4",
+      "bytes": 132282
     },
     "evidence/output/html/reports/2026-09-29-revised-real-scale-leave-one-out.html": {
       "source": "output/html/reports/2026-09-29-revised-real-scale-leave-one-out.html",
@@ -560,26 +570,36 @@
     }
   },
   "inputs": {
-    "web/evidence/sections.json": "c4e09f696da63f5ca999d5fa41caa8515b6a81d56da89621f0590e48b0bc3215",
-    "web/evidence/pages.json": "640d00520263f59341c2c7eed7b3528e4a7881821a2b56a3c6c2c937c2d87a37",
-    "tools/site/build_evidence_site.py": "005c062aaa41ad177b790a4ba8cd5a529e61f6b2510dc1ef25c7836816dc8479",
+    "web/evidence/sections.json": "ca560d36da5034c35270fbefab411fdb3d801cd7f429d9a149a9883c0059c9b9",
+    "web/evidence/pages.json": "1ef53baa085d081c5c116e9fc34df2f5a77744f34b93008c6713236c53cc2131",
+    "tools/site/build_evidence_site.py": "cb6268b5657390f8cf86d9cd4a0d609fb99bb9174291c189b791ae98c42f1b21",
     "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
-    "tools/site/cluster-explorer.html": "d2379b8589a4005d85765c8332405b850835b878cf59a380d09a72025701636f",
+    "tools/site/cluster-explorer.html": "af69a0480c525f4be826812cf72d5665923241b4575473267f3161dd5dfd645a",
     "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
     "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
     "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
-    "qmd/site/closure-descriptions.qmd": "12cddd87ce1491c22a45f8792ddcbf6edf9ad134d863e2454b34ae9d46b76c22",
+    "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "09df86aad53ae67f0d624528c7e3fba4e1dd1a0330a0c7e0093e83bfce94c9fa",
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "27282929fe7ab1150b888f1e6f53d39b341df8c483ff21baa77b35d16eecf906",
-    "tools/site/dendrogram-explorer.html": "7545ecfc7429b761da7e9822b4fa2e2712eba46a23710acde4525b5330779ff6",
-    "web/evidence/section-tabs.json": "05cfe0fa46e77b53066dbefcefcff4a62d0614e2099d07031418c07c92cd4cd0",
-    "tools/site/generate_analysis_visuals.R": "4a41a254d82bef63d07988833e6a44cacc2df7ca1041ead5e695e9343303a6f0",
+    "tools/site/dendrogram-explorer.html": "0c288dcaca902b5f6e758ab3e59ac1b024e63880e03082efe2207a3542e24371",
+    "web/evidence/section-tabs.json": "beeffafac2d9859ff81b6b5baf0c86aa2b6f110528d6b6f9c359eab45279bd72",
+    "tools/site/generate_analysis_visuals.R": "f811804a50be49736cd61886c2b5188e8f2e03f2cdd2823f25e377d8b727f3eb",
     "tools/site/analysis-visuals.js": "3f02b11e51094f53351f252d2ee87a420d27d765d68bd4f6ee506ac9e6f63f49",
     "tools/site/regime-map.html": "15b246bef23c8585a14e44dc0b3cc9213207802efa50944fee7f1b0dc873c053",
+    "tools/site/quadrant-grid.html": "71e48542e9b8fd83d83afaa17ca2f1c31f98d2ec5441603f6a5ca591af24e25d",
+    "tools/site/generate_paper_pages.R": "85d7d1eb2cb76567bbc2a6d429924a1b683c6830adaf1aeef593e2ce8cea7c84",
+    "R/figures/plot_revised_paper_figures.R": "bfb237a6646d9597b1aa3910cdd58dee14a979399eedfcda9f9025a644adb77d",
+    "R/scenarios/table3_revised.R": "0dab618b0781eaa011831c91a98160a0aaf79e83772655b0e4bfe4e8ab529238",
+    "R/scenarios/gmm_transmission_grid.R": "24edf46b49528bccd2c4f0de803b687c411e3f204344c4d3a84fe08d31738283",
     "tools/site/heatmap-explorer.html": "ff9dadb77bbc84613854f17fd0c0a8f1edc952acb3ed310715957c05576d983c",
+    "tools/site/channel-grid.html": "13ee1dfe89ce6a62545738b16ae3bbcf3e8942c6c26c7ae08aa410e1b279cc52",
+    "R/scenarios/channel_impact_grids.R": "96091b1b648d1f6043eda3991a4e228cf4b10d22bfc780b48f8ae8c0bc2868ac",
+    "output/calibration/channel_impact_grids_20261007/grids.json": "f5c59163f6fbe2fcebd4a963378b328fe81fd49a8702be454c6a0662fee604c4",
+    "R/scenarios/tree_split_drivers.R": "107f32a2e12d8e17f045aa58eb728e9e3adab5c3865ae59ea43e82ac61433096",
+    "output/calibration/transmission_structure_20261002_xi/tree_splits.json": "0bdc6f72d9321d5795e01577289291957c4dbf4e09802a721d876577acb2632b",
     "R/scenarios/setup_views.R": "68a72138ecece1e54f8e04ffc2c5c5bb08de5fae740b4aa3341cfce4368a4d95",
     "tools/site/audit_report_inventory.py": "a0a45ed926c721e119b4523eabb7f9909d31cf80462da11257f7cb406010227a",
     "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
@@ -629,12 +649,14 @@
     "pages/openflex-clearing.html",
     "pages/documentation.html",
     "pages/synthesis.html",
-    "pages/closure-description.html"
+    "pages/closure-description.html",
+    "pages/paper-figures.html",
+    "pages/paper-tables.html"
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "e9ab4faa4a5405af9e2cdc80d79f3b8a12b4b419b75533ffc2e17db4538ea407",
-    "coverage.json": "f79b4b093f8f0ba1f6f544aa8e90a59caeb84728c5116147989fe47842f0079c",
+    "pages.json": "ffd5557c9482f430577002ed537bfe083f51ff2604ed7b2d9b04b4f37a79f59d",
+    "coverage.json": "791d40b09691cca84c9d4a806c20b03d974c13ab1209562ed998367dd4d73087",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
@@ -668,6 +690,8 @@
     "pages/openflex-clearing.html": "60eddb442006d94b975dab8e41537f10321cc938b7f50686c1929c27de662461",
     "pages/documentation.html": "011c90bf739f505434144fc5007a64e19c03606441f63f53e165cfa83007ccf2",
     "pages/synthesis.html": "3fa7b3c0169d0829f800df447135a323525d809bb227119fe65703f3db628967",
-    "pages/closure-description.html": "6dad7773106bde44b8872597267e70515e51d1f90d5c058bfbe8f96b4d2ef758"
+    "pages/closure-description.html": "6dad7773106bde44b8872597267e70515e51d1f90d5c058bfbe8f96b4d2ef758",
+    "pages/paper-figures.html": "d3090940649ffba1034d6d210738c402cc36352aa328d67d5d09ce29c331a197",
+    "pages/paper-tables.html": "4d9f9cf71242361b6fbd7e1af6ed2e4678d51525f12dd16acfd52939af750189"
   }
 }

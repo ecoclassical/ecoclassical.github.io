@@ -304,5 +304,23 @@
     "description": "One consolidated draft paper section describing all six closure specifications.",
     "artifact": "evidence/output/html/site/closure-descriptions.html",
     "href": "pages/closure-description.html"
+  },
+  {
+    "id": "paper-figures",
+    "section": "Figures",
+    "title": "Paper figures on the revised model",
+    "source": "output/html/site/paper-figures.html",
+    "description": "Every simulation figure of the paper redrawn on the revised grid, by regional setup and closure, coloured by transmission regime.",
+    "artifact": "evidence/output/html/site/paper-figures.html",
+    "href": "pages/paper-figures.html"
+  },
+  {
+    "id": "paper-tables",
+    "section": "Tables",
+    "title": "Paper tables on the revised model",
+    "source": "output/html/site/paper-tables.html",
+    "description": "Scenario summary (revised Table 3), closures, setup and closure differences, and regime summary.",
+    "artifact": "evidence/output/html/site/paper-tables.html",
+    "href": "pages/paper-tables.html"
   }
 ]

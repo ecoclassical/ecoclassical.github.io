@@ -1,0 +1,2265 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paper tables</title><style>body{font:15px/1.5 system-ui;color:#203832;margin:0;background:#f7f6f0}.wrap{padding:16px 24px;max-width:1400px;margin:auto}h2{font:500 24px Georgia;margin:16px 0}h3{font:600 17px system-ui;margin:18px 0 8px}.figure{width:100%;height:auto;background:#fff}#visual-tabs{display:flex;gap:6px;flex-wrap:wrap}#visual-tabs button{padding:8px 12px;background:#edf0e6;border:1px solid #d7ded5;color:#203832;cursor:pointer}#visual-tabs button.on{background:#d5e86b}section[hidden]{display:none}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}th,td{padding:6px 8px;border-bottom:1px solid #d7ded5;text-align:left;vertical-align:top}th{background:#edf0e6}td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.chip{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;white-space:nowrap}.note{font-size:13px;color:#46605a}.controls{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0}select{padding:6px}.changed{outline:2px solid #203832;outline-offset:-2px}</style></head><body><main class="wrap"><nav id="visual-tabs" aria-label="Sections"></nav><section data-visual="tab-scenarios"><h2>Scenario summary</h2><p>The submitted scenario summary (Table 3 of the PDF), recomputed. Numbers are % deviations at period 90 (t + 20) against the arm's own baseline, as in the submission (R/scenarios/table3_revised.R). Two exceptions: the wage share is the % change of the share, as published; the current account is the change in % of baseline value added, because the revised baseline current account is calibrated to zero and a % change of it is meaningless. Z1 = EU or North (intervening), Z2 = RoW or South (partner). The findings text is written for the whole grid; the regime chip is that arm's.</p><p class="note">Checks: the same method applied to the published runs reproduces every number of the submitted table (e.g. Sc1 employment −0.086, Sc13 emissions −1.563, primary material −1.273). Robustness: the signs of the findings hold under fiat and quasi-float in each setup; North/South magnitudes differ but not these signs, except Sc10, where the North expands less and the South loses far more.</p><div class="controls"><label>Setup and closure <select data-swap="t1"><option value="revised">EU/RoW · Gold</option><option value="revised_openfix_fiat">EU/RoW · Fiat</option><option value="revised_quasifloat">EU/RoW · Quasi-float</option><option value="revised_openfixg">EU/RoW · OPENFIXG</option><option value="revised_ns">North/South · Gold</option><option value="revised_ns_openfix_fiat">North/South · Fiat</option><option value="revised_ns_quasifloat">North/South · Quasi-float</option><option value="revised_ns_openfixg">North/South · OPENFIXG</option></select></label></div><div data-group="t1" data-key="revised"><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> -0.386 </td>
+   <td style="text-align:right;"> -0.271 </td>
+   <td style="text-align:right;"> -0.098 </td>
+   <td style="text-align:right;"> 0.759 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.016 </td>
+   <td style="text-align:right;"> 0.019 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.018 </td>
+   <td style="text-align:right;"> 0.012 </td>
+   <td style="text-align:right;"> -0.799 </td>
+   <td style="text-align:right;"> -0.647 </td>
+   <td style="text-align:right;"> 0.101 </td>
+   <td style="text-align:right;"> -0.024 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.026 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> -0.375 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.008 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.138 </td>
+   <td style="text-align:right;"> -2.481 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> 0.019 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.022 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> -0.185 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> -0.028 </td>
+   <td style="text-align:right;"> -0.024 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:right;"> 0.046 </td>
+   <td style="text-align:right;"> 0.036 </td>
+   <td style="text-align:right;"> 0.268 </td>
+   <td style="text-align:right;"> -0.482 </td>
+   <td style="text-align:right;"> 0.039 </td>
+   <td style="text-align:right;"> 0.028 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> -0.111 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.086 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.032 </td>
+   <td style="text-align:right;"> 0.022 </td>
+   <td style="text-align:right;"> -1.522 </td>
+   <td style="text-align:right;"> -1.244 </td>
+   <td style="text-align:right;"> 0.191 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.047 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_openfix_fiat" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> -0.047 </td>
+   <td style="text-align:right;"> -0.386 </td>
+   <td style="text-align:right;"> -0.270 </td>
+   <td style="text-align:right;"> -0.097 </td>
+   <td style="text-align:right;"> 0.759 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> 0.016 </td>
+   <td style="text-align:right;"> 0.019 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.018 </td>
+   <td style="text-align:right;"> 0.012 </td>
+   <td style="text-align:right;"> -0.798 </td>
+   <td style="text-align:right;"> -0.646 </td>
+   <td style="text-align:right;"> 0.101 </td>
+   <td style="text-align:right;"> -0.024 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.026 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> -0.375 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.138 </td>
+   <td style="text-align:right;"> -2.481 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> 0.019 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.022 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> -0.185 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> -0.028 </td>
+   <td style="text-align:right;"> -0.024 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:right;"> 0.046 </td>
+   <td style="text-align:right;"> 0.036 </td>
+   <td style="text-align:right;"> 0.268 </td>
+   <td style="text-align:right;"> -0.483 </td>
+   <td style="text-align:right;"> 0.039 </td>
+   <td style="text-align:right;"> 0.028 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> -0.110 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.086 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.032 </td>
+   <td style="text-align:right;"> 0.022 </td>
+   <td style="text-align:right;"> -1.522 </td>
+   <td style="text-align:right;"> -1.244 </td>
+   <td style="text-align:right;"> 0.191 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.047 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_quasifloat" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.046 </td>
+   <td style="text-align:right;"> -0.384 </td>
+   <td style="text-align:right;"> -0.262 </td>
+   <td style="text-align:right;"> -0.094 </td>
+   <td style="text-align:right;"> 0.764 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> 0.015 </td>
+   <td style="text-align:right;"> 0.018 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.017 </td>
+   <td style="text-align:right;"> 0.012 </td>
+   <td style="text-align:right;"> -0.800 </td>
+   <td style="text-align:right;"> -0.650 </td>
+   <td style="text-align:right;"> 0.100 </td>
+   <td style="text-align:right;"> -0.026 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.026 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.021 </td>
+   <td style="text-align:right;"> -0.376 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> -0.010 </td>
+   <td style="text-align:right;"> -0.008 </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> -0.026 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.008 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.138 </td>
+   <td style="text-align:right;"> -2.480 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> 0.018 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.022 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> -0.185 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> -0.027 </td>
+   <td style="text-align:right;"> -0.024 </td>
+   <td style="text-align:right;"> -0.047 </td>
+   <td style="text-align:right;"> -0.046 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> -0.029 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:right;"> 0.044 </td>
+   <td style="text-align:right;"> 0.035 </td>
+   <td style="text-align:right;"> 0.267 </td>
+   <td style="text-align:right;"> -0.487 </td>
+   <td style="text-align:right;"> 0.037 </td>
+   <td style="text-align:right;"> 0.025 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.011 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> -0.110 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.086 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.049 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.031 </td>
+   <td style="text-align:right;"> 0.021 </td>
+   <td style="text-align:right;"> -1.522 </td>
+   <td style="text-align:right;"> -1.247 </td>
+   <td style="text-align:right;"> 0.190 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.046 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_openfixg" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.095 </td>
+   <td style="text-align:right;"> -0.158 </td>
+   <td style="text-align:right;"> -0.481 </td>
+   <td style="text-align:right;"> -0.357 </td>
+   <td style="text-align:right;"> -0.191 </td>
+   <td style="text-align:right;"> 0.667 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.053 </td>
+   <td style="text-align:right;"> 0.051 </td>
+   <td style="text-align:right;"> -0.766 </td>
+   <td style="text-align:right;"> -0.616 </td>
+   <td style="text-align:right;"> 0.134 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.019 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> -0.373 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.077 </td>
+   <td style="text-align:right;"> -0.081 </td>
+   <td style="text-align:right;"> -0.097 </td>
+   <td style="text-align:right;"> -0.089 </td>
+   <td style="text-align:right;"> -0.063 </td>
+   <td style="text-align:right;"> -0.074 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.009 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.141 </td>
+   <td style="text-align:right;"> -2.484 </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> 0.018 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.025 </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> -0.188 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.080 </td>
+   <td style="text-align:right;"> -0.081 </td>
+   <td style="text-align:right;"> -0.097 </td>
+   <td style="text-align:right;"> -0.094 </td>
+   <td style="text-align:right;"> -0.068 </td>
+   <td style="text-align:right;"> -0.078 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.124 </td>
+   <td style="text-align:right;"> 0.122 </td>
+   <td style="text-align:right;"> 0.341 </td>
+   <td style="text-align:right;"> -0.416 </td>
+   <td style="text-align:right;"> 0.111 </td>
+   <td style="text-align:right;"> 0.098 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.094 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.011 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> -0.081 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> 0.011 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.053 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.083 </td>
+   <td style="text-align:right;"> 0.079 </td>
+   <td style="text-align:right;"> -1.475 </td>
+   <td style="text-align:right;"> -1.201 </td>
+   <td style="text-align:right;"> 0.239 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.036 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_ns" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> -0.560 </td>
+   <td style="text-align:right;"> -0.347 </td>
+   <td style="text-align:right;"> -0.131 </td>
+   <td style="text-align:right;"> 0.941 </td>
+   <td style="text-align:right;"> 0.012 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> 0.061 </td>
+   <td style="text-align:right;"> 0.075 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> -1.829 </td>
+   <td style="text-align:right;"> -0.368 </td>
+   <td style="text-align:right;"> 0.065 </td>
+   <td style="text-align:right;"> -0.042 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> -0.047 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.271 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.065 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.024 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.220 </td>
+   <td style="text-align:right;"> -5.213 </td>
+   <td style="text-align:right;"> -0.113 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.262 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.082 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> 0.037 </td>
+   <td style="text-align:right;"> 0.850 </td>
+   <td style="text-align:right;"> -1.482 </td>
+   <td style="text-align:right;"> 0.051 </td>
+   <td style="text-align:right;"> 0.017 </td>
+   <td style="text-align:right;"> 0.037 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.059 </td>
+   <td style="text-align:right;"> -0.564 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.111 </td>
+   <td style="text-align:right;"> -0.042 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.009 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.086 </td>
+   <td style="text-align:right;"> -0.127 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.016 </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> -3.653 </td>
+   <td style="text-align:right;"> -0.743 </td>
+   <td style="text-align:right;"> 0.138 </td>
+   <td style="text-align:right;"> -0.075 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> -0.077 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_ns_openfix_fiat" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> -0.560 </td>
+   <td style="text-align:right;"> -0.347 </td>
+   <td style="text-align:right;"> -0.131 </td>
+   <td style="text-align:right;"> 0.940 </td>
+   <td style="text-align:right;"> 0.012 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> 0.061 </td>
+   <td style="text-align:right;"> 0.075 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> -1.829 </td>
+   <td style="text-align:right;"> -0.368 </td>
+   <td style="text-align:right;"> 0.065 </td>
+   <td style="text-align:right;"> -0.042 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> -0.047 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.271 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.065 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.024 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.220 </td>
+   <td style="text-align:right;"> -5.213 </td>
+   <td style="text-align:right;"> -0.113 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.262 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.082 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> 0.037 </td>
+   <td style="text-align:right;"> 0.850 </td>
+   <td style="text-align:right;"> -1.483 </td>
+   <td style="text-align:right;"> 0.051 </td>
+   <td style="text-align:right;"> 0.017 </td>
+   <td style="text-align:right;"> 0.037 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> -0.059 </td>
+   <td style="text-align:right;"> -0.563 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.111 </td>
+   <td style="text-align:right;"> -0.042 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.009 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.086 </td>
+   <td style="text-align:right;"> -0.127 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.016 </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> -3.653 </td>
+   <td style="text-align:right;"> -0.743 </td>
+   <td style="text-align:right;"> 0.138 </td>
+   <td style="text-align:right;"> -0.075 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> -0.077 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_ns_quasifloat" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:right;"> 0.015 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> -0.559 </td>
+   <td style="text-align:right;"> -0.342 </td>
+   <td style="text-align:right;"> -0.128 </td>
+   <td style="text-align:right;"> 0.944 </td>
+   <td style="text-align:right;"> 0.011 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> 0.059 </td>
+   <td style="text-align:right;"> 0.072 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> -1.829 </td>
+   <td style="text-align:right;"> -0.369 </td>
+   <td style="text-align:right;"> 0.065 </td>
+   <td style="text-align:right;"> -0.043 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> -0.047 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.271 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.065 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.023 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.220 </td>
+   <td style="text-align:right;"> -5.213 </td>
+   <td style="text-align:right;"> -0.112 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.262 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> -0.082 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> 0.037 </td>
+   <td style="text-align:right;"> 0.849 </td>
+   <td style="text-align:right;"> -1.487 </td>
+   <td style="text-align:right;"> 0.049 </td>
+   <td style="text-align:right;"> 0.015 </td>
+   <td style="text-align:right;"> 0.038 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> -0.057 </td>
+   <td style="text-align:right;"> -0.561 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.111 </td>
+   <td style="text-align:right;"> -0.042 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.009 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.086 </td>
+   <td style="text-align:right;"> -0.127 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.016 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> -3.653 </td>
+   <td style="text-align:right;"> -0.745 </td>
+   <td style="text-align:right;"> 0.137 </td>
+   <td style="text-align:right;"> -0.076 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.016 </td>
+   <td style="text-align:right;"> -0.076 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div><div data-group="t1" data-key="revised_ns_openfixg" hidden><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:right;"> Z1 output </th>
+   <th style="text-align:right;"> Z1 employment </th>
+   <th style="text-align:right;"> Z1 CO2 </th>
+   <th style="text-align:right;"> Z1 primary material </th>
+   <th style="text-align:right;"> Z1 land </th>
+   <th style="text-align:right;"> Z1 water </th>
+   <th style="text-align:right;"> Z1 wage share </th>
+   <th style="text-align:right;"> Z1 current account (% VA) </th>
+   <th style="text-align:right;"> Z2 employment </th>
+   <th style="text-align:right;"> Z2 primary material </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#8c8c8c;color:#fff">Unclassified (both expand)</span> </td>
+   <td style="text-align:right;"> 0.043 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> -0.528 </td>
+   <td style="text-align:right;"> -0.307 </td>
+   <td style="text-align:right;"> -0.099 </td>
+   <td style="text-align:right;"> 0.978 </td>
+   <td style="text-align:right;"> 0.011 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.206 </td>
+   <td style="text-align:right;"> 0.182 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -1.837 </td>
+   <td style="text-align:right;"> -0.377 </td>
+   <td style="text-align:right;"> 0.058 </td>
+   <td style="text-align:right;"> -0.051 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> -0.073 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> -0.271 </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> -0.002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.016 </td>
+   <td style="text-align:right;"> -0.013 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> -0.068 </td>
+   <td style="text-align:right;"> -0.008 </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> 0.036 </td>
+   <td style="text-align:right;"> -0.218 </td>
+   <td style="text-align:right;"> -5.212 </td>
+   <td style="text-align:right;"> -0.111 </td>
+   <td style="text-align:right;"> 0.034 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> -0.263 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> -0.081 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.030 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> 0.821 </td>
+   <td style="text-align:right;"> -1.519 </td>
+   <td style="text-align:right;"> 0.022 </td>
+   <td style="text-align:right;"> -0.017 </td>
+   <td style="text-align:right;"> 0.038 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.191 </td>
+   <td style="text-align:right;"> -0.662 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.110 </td>
+   <td style="text-align:right;"> -0.043 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.000 </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> -0.013 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.085 </td>
+   <td style="text-align:right;"> -0.128 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> -0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -3.664 </td>
+   <td style="text-align:right;"> -0.758 </td>
+   <td style="text-align:right;"> 0.126 </td>
+   <td style="text-align:right;"> -0.089 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> -0.070 </td>
+   <td style="text-align:right;"> -0.116 </td>
+  </tr>
+</tbody>
+</table></div><h3>Findings</h3><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Finding (revised) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#8c8c8c;color:#fff">Unclassified (both expand)</span> </td>
+   <td style="text-align:left;"> Largest final-demand employment loss in the intervening region; emissions and extraction fall, water use rises. The partner gains (leakage) under gold, fiat and quasi-float in both setups. Under OPENFIXG: contained in EU/RoW, both regions expand in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Strong emission and extraction savings with the intervening region expanding and the partner contracting (fossil import collapse) in both setups. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near zero except land use (EU −0.38%, North −0.27%, gold). Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Production leakage in EU/RoW: the partner's output and extraction rise. In North/South both regions contract. Contained under EU/RoW OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Largest land saving of the set (EU −2.5%, North −5.2%, gold) with near-zero emissions. Contained in EU/RoW; dual contraction in North/South except under OPENFIXG. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Small effects; emissions fall. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> As Sc4. The largest output fall among production scenarios in EU/RoW. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Intervening-region employment rises, but emissions rebound (EU +0.27%, North +0.85%, gold). Largest partner extraction and employment loss. Competitive displacement in EU/RoW; dual contraction in North/South, where the South's value-added loss is about ten times the North's. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Small effects; slight emission rebound, intervening-region employment slightly up. Contained in EU/RoW, dual contraction in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Near-zero emission effect; material saving. Contained everywhere. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Largest emission and extraction saving. The intervening region expands under every closure while its wage share falls; the partner loses employment and its debt/GDP rises (except under North/South OPENFIXG, where the South's spending adjusts). </td>
+  </tr>
+</tbody>
+</table></div></section><section data-visual="tab-closures"><h2>Closures</h2><p>Each external closure, what absorbs the imbalance, its baseline and what it changes relative to gold. Label changes count the eleven scenarios whose value-added regime differs from the same setup's gold label. The variation share is the share of block-weighted response variation attributable to terms involving the closure, in the 24 experiments of gold plus that closure in one setup (exact balanced decomposition, R/scenarios/hierarchy_interaction.R; computed with Sc6 included, whose responses are negligible). OPENFLEX and OPENFIXR are excluded from the grid. Full descriptions: Closures → Description.</p><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Closure </th>
+   <th style="text-align:left;"> What absorbs the external imbalance </th>
+   <th style="text-align:left;"> Baseline </th>
+   <th style="text-align:left;"> Labels changed vs gold (EU/RoW · N/S) </th>
+   <th style="text-align:left;"> Share of response variation from the closure (EU/RoW · N/S) </th>
+   <th style="text-align:left;"> What it changes </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> OPENFIX-gold </td>
+   <td style="text-align:left;"> Gold flows between the two central banks. </td>
+   <td style="text-align:left;"> Stationary; the calibrated reference. </td>
+   <td style="text-align:left;"> reference </td>
+   <td style="text-align:left;"> reference </td>
+   <td style="text-align:left;"> — </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OPENFIX-fiat </td>
+   <td style="text-align:left;"> The reserve-holder's central bank takes the residual of the key-currency bill market (EU in EU/RoW, South in North/South). </td>
+   <td style="text-align:left;"> Calibrated to a zero current account (D-25). The reserve stock keeps a root of 1 + r_b, so a shock can compound. </td>
+   <td style="text-align:left;"> 0 · 0 </td>
+   <td style="text-align:left;"> 0.4% · 0.5% </td>
+   <td style="text-align:left;"> Current account and debt/GDP; value added, employment, extraction and emissions within 0.2% of gold. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Quasi-float </td>
+   <td style="text-align:left;"> A crawling exchange rate (par_xr = 0.15, provisional), with gold settlement. </td>
+   <td style="text-align:left;"> Stationary except the EU debt/VA slope, −1.03e-4 over t71–100, reported as a bounded exception (D-32). </td>
+   <td style="text-align:left;"> 0 · 0 </td>
+   <td style="text-align:left;"> 0.8% · 0.1% </td>
+   <td style="text-align:left;"> Value added by about a tenth of the gold response in EU/RoW, less in North/South. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OPENFIXG </td>
+   <td style="text-align:left;"> The reserve-holder's real government spending: g is the residual of its budget constraint, gold and foreign-bill reserves fixed. </td>
+   <td style="text-align:left;"> Stationary; current account tends to zero. </td>
+   <td style="text-align:left;"> 6 · 2 </td>
+   <td style="text-align:left;"> 31.6% · 22.1% </td>
+   <td style="text-align:left;"> The adjusting government's g moves with its gold-closure current account in all 22 cases; that region's own value-added response is amplified and the partner's spillover vanishes in EU/RoW. </td>
+  </tr>
+</tbody>
+</table></section><section data-visual="tab-setup-closure"><h2>Setup and closure</h2><h3>What differs between the two setups</h3><p>Baseline position at period 90, gold arm of each setup (output/calibration/hierarchy_interaction_20261002_xi/baseline_position.csv). Extraction intensity = primary material output per unit of the region's gross output.</p><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Setup </th>
+   <th style="text-align:left;"> Z1 share of gross output </th>
+   <th style="text-align:left;"> Z1 share of primary material output </th>
+   <th style="text-align:left;"> Z2 extraction intensity ÷ Z1's </th>
+   <th style="text-align:left;"> Monetary rank of the intervening region </th>
+   <th style="text-align:left;"> The two hierarchies </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> EU/RoW </td>
+   <td style="text-align:left;"> 21.3% </td>
+   <td style="text-align:left;"> 9.2% </td>
+   <td style="text-align:left;"> 2.68 </td>
+   <td style="text-align:left;"> subordinate: the EU holds RoW bills </td>
+   <td style="text-align:left;"> crossed </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> North/South </td>
+   <td style="text-align:left;"> 62.7% </td>
+   <td style="text-align:left;"> 30.9% </td>
+   <td style="text-align:left;"> 3.77 </td>
+   <td style="text-align:left;"> dominant: the North issues the key currency </td>
+   <td style="text-align:left;"> aligned </td>
+  </tr>
+</tbody>
+</table><p class="note">Measured: in both setups the partner Z2 is the extractive region, and relative to its size the intervening region extracts about the same in each (EU 9.2% of extraction from 21.3% of output; North 30.9% from 62.7%). The intensity contrast is stronger in North/South (3.8×) than in EU/RoW (2.7×). What clearly differs is monetary rank and relative size: the EU is a small, monetarily subordinate economy facing a large resource-rich RoW; the North is a large economy issuing the key currency. An ecological deficit in the footprint sense (material embodied in a region's consumption minus its own extraction) has not been computed.</p><h3>Regime of every scenario under every setup and closure</h3><p>Value-added sign rule (τ = 0.003%). An outlined chip differs from the gold label of the same setup. Hover a chip for the two value-added responses. Codes: PL production leakage, FIC fossil import collapse, CD competitive displacement, SCc dual contraction, SCw contained, UN unclassified (both expand).</p><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Scenario </th>
+   <th style="text-align:left;"> EU/RoW · Gold </th>
+   <th style="text-align:left;"> EU/RoW · Fiat </th>
+   <th style="text-align:left;"> EU/RoW · Quasi-float </th>
+   <th style="text-align:left;"> EU/RoW · OPENFIXG </th>
+   <th style="text-align:left;"> North/South · Gold </th>
+   <th style="text-align:left;"> North/South · Fiat </th>
+   <th style="text-align:left;"> North/South · Quasi-float </th>
+   <th style="text-align:left;"> North/South · OPENFIXG </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sc1 HH-Food </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0321%, Z2 0.0145%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0321%, Z2 0.0145%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0261%, Z2 0.0123%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 -0.1385%, Z2 -0.0012%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0180%, Z2 0.0587%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0180%, Z2 0.0586%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0159%, Z2 0.0542%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 0.0095%, Z2 0.2003%" style="background:#8c8c8c;color:#fff">UN</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc2 HH-Energy </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0436%, Z2 -0.0053%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0436%, Z2 -0.0053%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0415%, Z2 -0.0045%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 0.0811%, Z2 0.0002%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0272%, Z2 -0.0145%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0272%, Z2 -0.0145%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0267%, Z2 -0.0135%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0207%, Z2 -0.0483%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc3 HH-Wood </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0016%, Z2 -0.0003%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0016%, Z2 -0.0003%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0014%, Z2 -0.0003%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0043%, Z2 0.0001%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0006%, Z2 -0.0006%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0006%, Z2 -0.0006%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0005%, Z2 -0.0006%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0002%, Z2 -0.0024%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc4 Gov-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0075%, Z2 0.0096%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0075%, Z2 0.0096%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0034%, Z2 0.0080%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 -0.0769%, Z2 -0.0007%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0127%, Z2 -0.0047%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0127%, Z2 -0.0047%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0128%, Z2 -0.0044%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0145%, Z2 -0.0143%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc7 Int-Wood </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0346%, Z2 -0.0025%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0346%, Z2 -0.0025%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0345%, Z2 -0.0025%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0380%, Z2 -0.0029%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0478%, Z2 -0.0063%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0478%, Z2 -0.0063%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0476%, Z2 -0.0066%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 -0.0463%, Z2 0.0010%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc8 Int-Pulp </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0035%, Z2 -0.0001%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0035%, Z2 -0.0001%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0034%, Z2 -0.0001%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0063%, Z2 -0.0005%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0024%, Z2 -0.0016%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0024%, Z2 -0.0016%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0024%, Z2 -0.0016%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0025%, Z2 -0.0024%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc9 Int-Plastics </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0130%, Z2 0.0098%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0130%, Z2 0.0098%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0106%, Z2 0.0089%" style="background:#2f6ea5;color:#fff">PL</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 -0.0680%, Z2 0.0018%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0148%, Z2 -0.0069%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0148%, Z2 -0.0069%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0147%, Z2 -0.0070%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0145%, Z2 -0.0054%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc10 Int-Metal </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0329%, Z2 -0.0144%" style="background:#b4532a;color:#fff">CD</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0329%, Z2 -0.0144%" style="background:#b4532a;color:#fff">CD</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0293%, Z2 -0.0130%" style="background:#b4532a;color:#fff">CD</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 0.1158%, Z2 -0.0024%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0072%, Z2 -0.0752%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0072%, Z2 -0.0752%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0088%, Z2 -0.0716%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0322%, Z2 -0.2054%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc11 Int-Glass </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0013%, Z2 -0.0016%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0013%, Z2 -0.0016%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0016%, Z2 -0.0015%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0053%, Z2 -0.0006%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0037%, Z2 -0.0035%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0037%, Z2 -0.0035%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0038%, Z2 -0.0034%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0045%, Z2 -0.0077%" style="background:#2c7a6b;color:#fff">SCc</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc12 Int-Cement </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0001%, Z2 0.0006%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0001%, Z2 0.0006%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0000%, Z2 0.0005%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 -0.0039%, Z2 0.0000%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0095%, Z2 0.0011%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0095%, Z2 0.0011%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0094%, Z2 0.0011%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0091%, Z2 -0.0005%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sc13 Int-Energy </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0930%, Z2 -0.0065%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0930%, Z2 -0.0065%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0906%, Z2 -0.0056%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip changed" title="value added Z1 0.1478%, Z2 0.0014%" style="background:#b3d6cc;color:#18372a">SCw</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0878%, Z2 -0.0107%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0878%, Z2 -0.0106%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0871%, Z2 -0.0091%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+   <td style="text-align:left;"> <span class="chip" title="value added Z1 0.0777%, Z2 -0.0629%" style="background:#d98a1f;color:#18372a">FIC</span> </td>
+  </tr>
+</tbody>
+</table></div><p class="note">Reading: gold, fiat and quasi-float never change a label within a setup. Moving from EU/RoW to North/South turns the plastics pair (Sc4, Sc9) from leakage into dual contraction, Sc10 Int-Metal from displacement into dual contraction, and Sc7 and Sc11 from contained into dual contraction. OPENFIXG makes every EU/RoW scenario contained, and changes two North/South labels (Sc1 to UN, Sc7 to contained).</p></section><section data-visual="tab-regimes"><h2>Regimes</h2><p>Each regime, its rule, its members in each setup (gold; fiat and quasi-float give the same members), and the median response of its members over gold, fiat and quasi-float at period 90 (% deviation unless stated; responses.csv). OPENFIXG is summarised in the Closures table. τ = 0.003%.</p><div class="table-wrap"><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Regime </th>
+   <th style="text-align:left;"> Definition </th>
+   <th style="text-align:left;"> Setup </th>
+   <th style="text-align:left;"> Members </th>
+   <th style="text-align:left;"> Z1 VA </th>
+   <th style="text-align:left;"> Z2 VA </th>
+   <th style="text-align:left;"> Z1 employment </th>
+   <th style="text-align:left;"> Z2 employment </th>
+   <th style="text-align:left;"> Z1 primary material </th>
+   <th style="text-align:left;"> Z2 primary material </th>
+   <th style="text-align:left;"> Z1 CO2 </th>
+   <th style="text-align:left;"> Z2 CO2 </th>
+   <th style="text-align:left;"> Z1 wage share (pts × 100) </th>
+   <th style="text-align:left;"> Z2 debt/GDP (pts × 100) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Z1 VA falls, Z2 VA rises by at least τ. </td>
+   <td style="text-align:left;"> EU/RoW </td>
+   <td style="text-align:left;"> Sc1, Sc4, Sc9 </td>
+   <td style="text-align:left;"> -0.0130 </td>
+   <td style="text-align:left;"> 0.0098 </td>
+   <td style="text-align:left;"> -0.0244 </td>
+   <td style="text-align:left;"> 0.0089 </td>
+   <td style="text-align:left;"> -0.0497 </td>
+   <td style="text-align:left;"> 0.0055 </td>
+   <td style="text-align:left;"> -0.0484 </td>
+   <td style="text-align:left;"> 0.0131 </td>
+   <td style="text-align:left;"> -0.0011 </td>
+   <td style="text-align:left;"> -0.0400 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#2f6ea5;color:#fff">Production leakage</span> </td>
+   <td style="text-align:left;"> Z1 VA falls, Z2 VA rises by at least τ. </td>
+   <td style="text-align:left;"> North/South </td>
+   <td style="text-align:left;"> Sc1 </td>
+   <td style="text-align:left;"> -0.0180 </td>
+   <td style="text-align:left;"> 0.0586 </td>
+   <td style="text-align:left;"> -0.0193 </td>
+   <td style="text-align:left;"> 0.0612 </td>
+   <td style="text-align:left;"> -0.3474 </td>
+   <td style="text-align:left;"> 0.0748 </td>
+   <td style="text-align:left;"> -0.5601 </td>
+   <td style="text-align:left;"> 0.0567 </td>
+   <td style="text-align:left;"> 0.0077 </td>
+   <td style="text-align:left;"> -0.2587 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Z1 VA rises, Z2 VA falls by at least τ; an energy intervention. </td>
+   <td style="text-align:left;"> EU/RoW </td>
+   <td style="text-align:left;"> Sc2, Sc13 </td>
+   <td style="text-align:left;"> 0.0671 </td>
+   <td style="text-align:left;"> -0.0055 </td>
+   <td style="text-align:left;"> 0.0168 </td>
+   <td style="text-align:left;"> -0.0061 </td>
+   <td style="text-align:left;"> -0.9471 </td>
+   <td style="text-align:left;"> -0.0361 </td>
+   <td style="text-align:left;"> -1.1609 </td>
+   <td style="text-align:left;"> -0.0158 </td>
+   <td style="text-align:left;"> -0.0077 </td>
+   <td style="text-align:left;"> 0.0271 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#d98a1f;color:#18372a">Fossil import collapse</span> </td>
+   <td style="text-align:left;"> Z1 VA rises, Z2 VA falls by at least τ; an energy intervention. </td>
+   <td style="text-align:left;"> North/South </td>
+   <td style="text-align:left;"> Sc2, Sc13 </td>
+   <td style="text-align:left;"> 0.0572 </td>
+   <td style="text-align:left;"> -0.0121 </td>
+   <td style="text-align:left;"> 0.0079 </td>
+   <td style="text-align:left;"> -0.0148 </td>
+   <td style="text-align:left;"> -0.5559 </td>
+   <td style="text-align:left;"> -0.0615 </td>
+   <td style="text-align:left;"> -2.7411 </td>
+   <td style="text-align:left;"> -0.0375 </td>
+   <td style="text-align:left;"> -0.0117 </td>
+   <td style="text-align:left;"> 0.0921 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#b4532a;color:#fff">Competitive displacement</span> </td>
+   <td style="text-align:left;"> Z1 VA rises, Z2 VA falls by at least τ; a non-energy intervention. </td>
+   <td style="text-align:left;"> EU/RoW </td>
+   <td style="text-align:left;"> Sc10 </td>
+   <td style="text-align:left;"> 0.0329 </td>
+   <td style="text-align:left;"> -0.0144 </td>
+   <td style="text-align:left;"> 0.0362 </td>
+   <td style="text-align:left;"> -0.0127 </td>
+   <td style="text-align:left;"> -0.4826 </td>
+   <td style="text-align:left;"> -0.1105 </td>
+   <td style="text-align:left;"> 0.2679 </td>
+   <td style="text-align:left;"> -0.0190 </td>
+   <td style="text-align:left;"> 0.0031 </td>
+   <td style="text-align:left;"> 0.0383 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#2c7a6b;color:#fff">Dual contraction</span> </td>
+   <td style="text-align:left;"> Both regions' VA fall, Z2 by at least τ. </td>
+   <td style="text-align:left;"> North/South </td>
+   <td style="text-align:left;"> Sc4, Sc7, Sc9, Sc10, Sc11 </td>
+   <td style="text-align:left;"> -0.0127 </td>
+   <td style="text-align:left;"> -0.0063 </td>
+   <td style="text-align:left;"> -0.0013 </td>
+   <td style="text-align:left;"> -0.0038 </td>
+   <td style="text-align:left;"> -0.0818 </td>
+   <td style="text-align:left;"> -0.0236 </td>
+   <td style="text-align:left;"> 0.0342 </td>
+   <td style="text-align:left;"> -0.0034 </td>
+   <td style="text-align:left;"> 0.0082 </td>
+   <td style="text-align:left;"> 0.0042 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Z2's VA response is below τ in absolute value; any Z1 sign. </td>
+   <td style="text-align:left;"> EU/RoW </td>
+   <td style="text-align:left;"> Sc3, Sc7, Sc8, Sc11, Sc12 </td>
+   <td style="text-align:left;"> -0.0013 </td>
+   <td style="text-align:left;"> -0.0003 </td>
+   <td style="text-align:left;"> -0.0033 </td>
+   <td style="text-align:left;"> -0.0005 </td>
+   <td style="text-align:left;"> -0.0496 </td>
+   <td style="text-align:left;"> -0.0002 </td>
+   <td style="text-align:left;"> 0.0039 </td>
+   <td style="text-align:left;"> 0.0003 </td>
+   <td style="text-align:left;"> 0.0007 </td>
+   <td style="text-align:left;"> -0.0015 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <span class="chip" style="background:#b3d6cc;color:#18372a">Contained</span> </td>
+   <td style="text-align:left;"> Z2's VA response is below τ in absolute value; any Z1 sign. </td>
+   <td style="text-align:left;"> North/South </td>
+   <td style="text-align:left;"> Sc3, Sc8, Sc12 </td>
+   <td style="text-align:left;"> 0.0006 </td>
+   <td style="text-align:left;"> -0.0006 </td>
+   <td style="text-align:left;"> 0.0010 </td>
+   <td style="text-align:left;"> -0.0012 </td>
+   <td style="text-align:left;"> -0.0141 </td>
+   <td style="text-align:left;"> -0.0012 </td>
+   <td style="text-align:left;"> 0.0031 </td>
+   <td style="text-align:left;"> -0.0009 </td>
+   <td style="text-align:left;"> 0.0004 </td>
+   <td style="text-align:left;"> 0.0038 </td>
+  </tr>
+</tbody>
+</table></div><p class="note">Descriptive trade-offs, not a law: ecological gains come with intervening-region expansion in fossil import collapse and competitive displacement, but with partner losses; production leakage moves extraction and emissions to the partner; dual contraction lowers activity in both regions; contained scenarios stay inside the intervening region. Clustering (Ward, PCA, Gaussian mixtures; Analysis section) finds structure only within a setup, where mixture components nest inside these regimes.</p></section></main><script>(()=>{const sections=[...document.querySelectorAll("[data-visual]")],tabs=document.querySelector("#visual-tabs");for(const s of sections){const b=document.createElement("button");b.textContent=s.querySelector("h2").textContent;b.dataset.visualTab=s.dataset.visual;b.onclick=()=>show(s.dataset.visual);tabs.append(b);}function show(id){for(const s of sections)s.hidden=s.dataset.visual!==id;for(const b of tabs.children)b.classList.toggle("on",b.dataset.visualTab===id);}show(sections[0].dataset.visual);for(const sel of document.querySelectorAll("select[data-swap]"))sel.addEventListener("change",()=>{for(const e of document.querySelectorAll(`[data-group="${sel.dataset.swap}"]`))e.hidden=e.dataset.key!==sel.value;});})();</script></body></html>

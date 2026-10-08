@@ -87,6 +87,11 @@
       "native": "regimes"
     },
     {
+      "label": "Quadrants",
+      "page": "analysis-visuals",
+      "native": "quadrants"
+    },
+    {
       "label": "Heatmap",
       "page": "analysis-visuals",
       "native": "heatmap"
@@ -107,6 +112,31 @@
       "native": "comparison"
     },
     {
+      "label": "Channel reach",
+      "page": "analysis-visuals",
+      "native": "portfolio"
+    },
+    {
+      "label": "Emission grid",
+      "page": "analysis-visuals",
+      "native": "impact-emis"
+    },
+    {
+      "label": "Material grid",
+      "page": "analysis-visuals",
+      "native": "impact-mat"
+    },
+    {
+      "label": "Land grid",
+      "page": "analysis-visuals",
+      "native": "impact-land"
+    },
+    {
+      "label": "Water grid",
+      "page": "analysis-visuals",
+      "native": "impact-water"
+    },
+    {
       "label": "Report",
       "page": "regime-report"
     },
@@ -123,6 +153,65 @@
     {
       "label": "Submitted discussion",
       "page": "submitted-discussion"
+    }
+  ],
+  "Figures": [
+    {
+      "label": "Channel volumes",
+      "page": "paper-figures",
+      "native": "fig-channel-volumes"
+    },
+    {
+      "label": "Upstream requirements",
+      "page": "paper-figures",
+      "native": "fig-upstream"
+    },
+    {
+      "label": "Channel reach",
+      "page": "paper-figures",
+      "native": "fig-portfolio"
+    },
+    {
+      "label": "Emission impact",
+      "page": "paper-figures",
+      "native": "fig-emis-impact"
+    },
+    {
+      "label": "Cross-border",
+      "page": "paper-figures",
+      "native": "fig-cross-border"
+    },
+    {
+      "label": "Intervening region",
+      "page": "paper-figures",
+      "native": "fig-comparison-eu"
+    },
+    {
+      "label": "Partner region",
+      "page": "paper-figures",
+      "native": "fig-comparison-row"
+    }
+  ],
+  "Tables": [
+    {
+      "label": "Scenario summary",
+      "page": "paper-tables",
+      "native": "tab-scenarios"
+    },
+    {
+      "label": "Closures",
+      "page": "paper-tables",
+      "native": "tab-closures"
+    },
+    {
+      "label": "Setup and closure",
+      "page": "paper-tables",
+      "native": "tab-setup-closure"
+    },
+    {
+      "label": "Regimes",
+      "page": "paper-tables",
+      "native": "tab-regimes"
     }
   ],
   "Documentation": [
