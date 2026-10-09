@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": false,
-  "built_date": "2026-10-08",
-  "commit": "13658b75f46e46b778c146071f04fcf7fecbecae",
+  "working_tree_dirty": true,
+  "built_date": "2026-10-09",
+  "commit": "930e7b223ed98fe79591250ecdd6adb15718833b",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -205,8 +205,8 @@
     },
     "evidence/output/html/site/paper-figures.html": {
       "source": "output/html/site/paper-figures.html",
-      "sha256": "ceed0972e32b0f84134b715e0dc4774f9329ae615edd6a12549d2b370a903c2f",
-      "bytes": 6060408
+      "sha256": "d5b734e72f0079cadf098289baded34106ac3adbc7e628f3aba67ceb6bd723e9",
+      "bytes": 8088171
     },
     "evidence/output/html/site/paper-tables.html": {
       "source": "output/html/site/paper-tables.html",
@@ -590,7 +590,7 @@
     "tools/site/analysis-visuals.js": "3f02b11e51094f53351f252d2ee87a420d27d765d68bd4f6ee506ac9e6f63f49",
     "tools/site/regime-map.html": "15b246bef23c8585a14e44dc0b3cc9213207802efa50944fee7f1b0dc873c053",
     "tools/site/quadrant-grid.html": "71e48542e9b8fd83d83afaa17ca2f1c31f98d2ec5441603f6a5ca591af24e25d",
-    "tools/site/generate_paper_pages.R": "85d7d1eb2cb76567bbc2a6d429924a1b683c6830adaf1aeef593e2ce8cea7c84",
+    "tools/site/generate_paper_pages.R": "754b17aec790e125961bc0119c052d2096a639afe8b8c827d0af9bdc660e7c62",
     "R/figures/plot_revised_paper_figures.R": "bfb237a6646d9597b1aa3910cdd58dee14a979399eedfcda9f9025a644adb77d",
     "R/scenarios/table3_revised.R": "0dab618b0781eaa011831c91a98160a0aaf79e83772655b0e4bfe4e8ab529238",
     "R/scenarios/gmm_transmission_grid.R": "24edf46b49528bccd2c4f0de803b687c411e3f204344c4d3a84fe08d31738283",
@@ -656,7 +656,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "ffd5557c9482f430577002ed537bfe083f51ff2604ed7b2d9b04b4f37a79f59d",
-    "coverage.json": "791d40b09691cca84c9d4a806c20b03d974c13ab1209562ed998367dd4d73087",
+    "coverage.json": "ac4db05728b5da1d434ef78143a5faf0ca108ac13095d29644702200cb25e3a7",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
