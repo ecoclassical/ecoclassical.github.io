@@ -322,5 +322,32 @@
     "description": "Scenario summary (revised Table 3), closures, setup and closure differences, and regime summary.",
     "artifact": "evidence/output/html/site/paper-tables.html",
     "href": "pages/paper-tables.html"
+  },
+  {
+    "id": "hierarchy-2x2",
+    "section": "Analysis",
+    "title": "Monetary rank by workbook: the OPENFIXG 2 \u00d7 2",
+    "source": "output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html",
+    "description": "Each workbook run under both monetary hierarchies (who holds whose bills) under OPENFIXG, separating the ecological from the monetary position.",
+    "artifact": "evidence/output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html",
+    "href": "pages/hierarchy-2x2.html"
+  },
+  {
+    "id": "capital-matrix-K",
+    "section": "Documentation",
+    "title": "The capital coefficient matrix K",
+    "source": "output/html/reports/2026-10-09-capital-coefficient-matrix-K.html",
+    "description": "How K was built, and why replacement demand moved from CFC/x to K\u00b7x.",
+    "artifact": "evidence/output/html/reports/2026-10-09-capital-coefficient-matrix-K.html",
+    "href": "pages/capital-matrix-K.html"
+  },
+  {
+    "id": "advances-banks-firms",
+    "section": "Documentation",
+    "title": "Negative advances, bank profits and firm borrowing",
+    "source": "output/html/reports/2026-10-09-negative-advances-bank-profits-firm-borrowing.html",
+    "description": "Negative demand for advances is the banks' reserve deposit; reserves earn nothing so bank profit is about \u22122 % of VA; firms barely borrow; five fixes.",
+    "artifact": "evidence/output/html/reports/2026-10-09-negative-advances-bank-profits-firm-borrowing.html",
+    "href": "pages/advances-banks-firms.html"
   }
 ]

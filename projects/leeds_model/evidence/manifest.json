@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-09",
-  "commit": "930e7b223ed98fe79591250ecdd6adb15718833b",
+  "commit": "a6e16051e569b392f3896e43e39052f70bea1215",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -212,6 +212,21 @@
       "source": "output/html/site/paper-tables.html",
       "sha256": "25953ec97c16cc6945f3d5b25bb1a8a11171f1781fd9987fd5d97beebfc471e4",
       "bytes": 132282
+    },
+    "evidence/output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html": {
+      "source": "output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html",
+      "sha256": "1e0354df5ce10770c12616d21b67c4eb73bf0afc06929ff3fc2f980aa88453d9",
+      "bytes": 1925409
+    },
+    "evidence/output/html/reports/2026-10-09-capital-coefficient-matrix-K.html": {
+      "source": "output/html/reports/2026-10-09-capital-coefficient-matrix-K.html",
+      "sha256": "058b6aa52f7197ddf92ca35118ade7bd873dcc1dcdb197fd664097ddf35e85f6",
+      "bytes": 2019430
+    },
+    "evidence/output/html/reports/2026-10-09-negative-advances-bank-profits-firm-borrowing.html": {
+      "source": "output/html/reports/2026-10-09-negative-advances-bank-profits-firm-borrowing.html",
+      "sha256": "cfaa5865b3093b48f647f6fdfc785300ee5ff74e6f9e65abdc25f54c577d4d97",
+      "bytes": 2020524
     },
     "evidence/output/html/reports/2026-09-29-revised-real-scale-leave-one-out.html": {
       "source": "output/html/reports/2026-09-29-revised-real-scale-leave-one-out.html",
@@ -571,7 +586,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "ca560d36da5034c35270fbefab411fdb3d801cd7f429d9a149a9883c0059c9b9",
-    "web/evidence/pages.json": "1ef53baa085d081c5c116e9fc34df2f5a77744f34b93008c6713236c53cc2131",
+    "web/evidence/pages.json": "ba7e46b4db719c4eb08f7dada99ae4bf0429964711617c9907ea67ec7fe1180c",
     "tools/site/build_evidence_site.py": "cb6268b5657390f8cf86d9cd4a0d609fb99bb9174291c189b791ae98c42f1b21",
     "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
     "tools/site/cluster-explorer.html": "af69a0480c525f4be826812cf72d5665923241b4575473267f3161dd5dfd645a",
@@ -605,9 +620,9 @@
     "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
     "output/calibration/report_inventory_20261003.json": "07f3abc314e5455d937688c9954c160df5f8dbae126c8b1eef27b61ef228636c",
     "qmd/reports/2026-10-05-scenario-classification-closure-and-setup.qmd": "a4a837ac8262bc1d87eba32cda546387806dba2facb3ed943a4b0e447fa832bf",
-    "qmd/reports/2026-10-07-transmission-families-setups-and-hierarchies.qmd": "645cb792ad9f416f4765b5d9bdf00a31eb7ba8746f8ed45a5536796331e1904b",
+    "qmd/reports/2026-10-07-transmission-families-setups-and-hierarchies.qmd": "8387f2f3864e65634c1d21313d3f2e4ba9a9c2a68f50ecc189ac4d0bb39618e6",
     "qmd/reports/2026-10-03-evidence-synthesis.qmd": "7d08b808d1aee3ad823a016d35f94dba2393d744c31c24ffc233ef06d8a6a074",
-    "tools/site/publication-scope.json": "7744e6e1d31105003dcd487515e830bfc42ef3236cb63ceb67aa894b0ba38998",
+    "tools/site/publication-scope.json": "36cb3d7625a31d18e0598fb91579958d7a8133b19c23af7b8301d1a8bd9a046b",
     "tools/site/generate_paper_pages.py": "9e7c1f71829b952a5bc8240b6f23eaf2eaeabfc5b85b53dc389a80f26a714829",
     "output/calibration/website_paper_excerpt_provenance.json": "1316b27b655e4628bfa20796e26ec56e867e2b3ec3295f6635eb7d025b73f2b0",
     "data/current_results.json": "65f282eb5008f098a583e40cf396ee40a5ea5e9ae98e4b8e36f6b38f4c2348da"
@@ -651,12 +666,15 @@
     "pages/synthesis.html",
     "pages/closure-description.html",
     "pages/paper-figures.html",
-    "pages/paper-tables.html"
+    "pages/paper-tables.html",
+    "pages/hierarchy-2x2.html",
+    "pages/capital-matrix-K.html",
+    "pages/advances-banks-firms.html"
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "ffd5557c9482f430577002ed537bfe083f51ff2604ed7b2d9b04b4f37a79f59d",
-    "coverage.json": "ac4db05728b5da1d434ef78143a5faf0ca108ac13095d29644702200cb25e3a7",
+    "pages.json": "d94ca05f3e2ba852abc5530868622df4e8f9cd058a68a2241a0c89d823b37305",
+    "coverage.json": "b37feff3c74ee34fc0b090f697dbab73e9631f6fea1cb219df9dec6cf9a498dd",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
@@ -692,6 +710,9 @@
     "pages/synthesis.html": "3fa7b3c0169d0829f800df447135a323525d809bb227119fe65703f3db628967",
     "pages/closure-description.html": "6dad7773106bde44b8872597267e70515e51d1f90d5c058bfbe8f96b4d2ef758",
     "pages/paper-figures.html": "d3090940649ffba1034d6d210738c402cc36352aa328d67d5d09ce29c331a197",
-    "pages/paper-tables.html": "4d9f9cf71242361b6fbd7e1af6ed2e4678d51525f12dd16acfd52939af750189"
+    "pages/paper-tables.html": "4d9f9cf71242361b6fbd7e1af6ed2e4678d51525f12dd16acfd52939af750189",
+    "pages/hierarchy-2x2.html": "ed6caca7eadf41f7adedefa05195fb0633bb9b804d4b0357fcfeda5f2786bf9b",
+    "pages/capital-matrix-K.html": "c5fbe411dcabae396e2d5c008bc5c829336afd04d16aa0043115d4f92f2d73f3",
+    "pages/advances-banks-firms.html": "edd925cc2fa4fd654b9fc40994894d40cf33edc2fdb7897b636ed3f17fb81e86"
   }
 }
