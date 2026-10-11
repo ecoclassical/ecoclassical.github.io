@@ -7,7 +7,7 @@ The research-line order and display names live in
 script, and the publications page picks it up.
 
 Column contract (written to _data/publications.csv):
-    research_line  machine key   (e.g. "growth_distribution")
+    research_line  machine key   (e.g. "classical_eco")
     label          display name  (e.g. "Growth and Distribution")
     year, type, status, authors, title, venue, volume, issue, pages, url, pdf, notes
     show           "true"/"false" — whether the publication appears on the site
@@ -34,10 +34,10 @@ def load_line_order():
     return order, pos
 
 
-# Explicit within-line order for Growth & Distribution (author's sequence).
+# Explicit within-line order for the classical-political-economy pillar (author's sequence).
 # Everything else sorts by year descending.
 GND_ORDER = {
-    "Environmentalism without class struggle is just gardening: An Ecological Interpretation of the Ricardian Model": 0,
+    "The Heat Death of Accumulation: the Ricardian dynamics of the metabolic rift": 0,
     "The Sraffian Economy as an Autocatalytic Set": 1,
     'Review of "Marx\'s Theory of Value at the Frontiers" by Güney Işikara and Patrick Mokre': 2,
     "A conflict theory of pricing": 3,
@@ -78,7 +78,7 @@ def main() -> None:
         title = r.get("title", "").strip()
         year = r.get("year", "").strip()
         line_pos = LINE_POS.get(key, len(LINE_ORDER))
-        if key == "growth_distribution" and title in GND_ORDER:
+        if key == "classical_eco" and title in GND_ORDER:
             within = GND_ORDER[title]
         else:
             within = -int(year) if year.isdigit() else 0
