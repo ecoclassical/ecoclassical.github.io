@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
-  "built_date": "2026-10-09",
-  "commit": "a6e16051e569b392f3896e43e39052f70bea1215",
+  "built_date": "2026-10-12",
+  "commit": "7cf3c14ca4d95bcd8e451a8885778112ae6b3f39",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -40,8 +40,8 @@
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
-      "sha256": "82749fae1131f3e25bd1fb832a6a1322cf8e49890c4e0429e41d8126889be264",
-      "bytes": 4867227
+      "sha256": "522a5dc10f5c5d6df5ed33936c0529314299aa7b7acf4eeda14651f55129abca",
+      "bytes": 7195901
     },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.html": {
       "source": "output/html/appendices/2026-09-30-model-description-revised.html",
@@ -55,8 +55,8 @@
     },
     "evidence/model/equations/model-equations-closures.html": {
       "source": "model/equations/model-equations-closures.html",
-      "sha256": "e1b56d29ff74d4d22008c1923e998ad13e225cd931588fc122b0be4f23e99ce0",
-      "bytes": 1252570
+      "sha256": "56737813487ce99ecc311014f9d314196efd2d0263f8ffa14fcf8a1fbcd2fa1e",
+      "bytes": 1253018
     },
     "evidence/output/html/reports/closures/view-closures.html": {
       "source": "output/html/reports/closures/view-closures.html",
@@ -80,8 +80,13 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "79582dc9c0a253f86de3b39bf1fdb21350367a73e9db17cf0deda69b719d10a7",
-      "bytes": 6376716
+      "sha256": "7588759d86e8ddc821938cca79173585aa20b04112891dc7df5b4e26c3688cf1",
+      "bytes": 6742769
+    },
+    "evidence/output/html/site/highfinance-cross-border.html": {
+      "source": "output/html/site/highfinance-cross-border.html",
+      "sha256": "dda300621dec6c60f335c16be9b956010da2a2a25a074d007991a13c103888c6",
+      "bytes": 1933761
     },
     "evidence/output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html": {
       "source": "output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
@@ -586,43 +591,44 @@
   },
   "inputs": {
     "web/evidence/sections.json": "ca560d36da5034c35270fbefab411fdb3d801cd7f429d9a149a9883c0059c9b9",
-    "web/evidence/pages.json": "ba7e46b4db719c4eb08f7dada99ae4bf0429964711617c9907ea67ec7fe1180c",
+    "web/evidence/pages.json": "3b543ffb381366d5965bd16228f9dd9f68ccfff77a63e962da873e4b64f3d666",
     "tools/site/build_evidence_site.py": "cb6268b5657390f8cf86d9cd4a0d609fb99bb9174291c189b791ae98c42f1b21",
-    "tools/site/comparison-viewer.html": "cf404948fa80a2494f8b554aab032725d1edce0debbe569342a9544573991fbc",
-    "tools/site/cluster-explorer.html": "af69a0480c525f4be826812cf72d5665923241b4575473267f3161dd5dfd645a",
-    "tools/site/export_comparison_data.R": "58fed1a419e163c2709cc62cf0801ef75d1858937825619729a80be10b8bc5d0",
-    "data/scenario_labels.csv": "60f6018d9dfd1caa40be3724c34a681f35a4a355f6e7e6c2bc6fff00a7d0f4fc",
+    "tools/site/comparison-viewer.html": "fa25ac9b445749e3fa9cd49a6bc92d3a0923dfc288ca80525b92a242d02f1ac5",
+    "tools/site/cluster-explorer.html": "3c5e9753493339eff99487405fdce79d7c022e687586dc3d1f9afde18258ffa7",
+    "tools/site/export_comparison_data.R": "7f51e3433941e3972b93d8139c34463c0181053be231aebc9080feaeb8dbca0b",
+    "data/scenario_labels.csv": "c91d40cae712f48baef13b7f9fc799935914100917d31d01c7ce6d0a1407ecf3",
     "output/calibration/scenario_grid_20261002_xi_status.csv": "49d0a0e0d321017fb2088eb9390e4af6d270ad05b7adc32a8c6c4add0ff2e5bc",
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "09df86aad53ae67f0d624528c7e3fba4e1dd1a0330a0c7e0093e83bfce94c9fa",
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
+    "qmd/site/highfinance-cross-border.qmd": "a4fff36d249d7e9ca4dc29f1c8f90a430a21aa776382d6c3b4ae1707d2fd7694",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
-    "R/scenarios/export_transmission_labels.R": "27282929fe7ab1150b888f1e6f53d39b341df8c483ff21baa77b35d16eecf906",
-    "tools/site/dendrogram-explorer.html": "0c288dcaca902b5f6e758ab3e59ac1b024e63880e03082efe2207a3542e24371",
+    "R/scenarios/export_transmission_labels.R": "7910500256769a69128820645f515dbf3bdf898e1cbf2cf474ddc456e3f74236",
+    "tools/site/dendrogram-explorer.html": "96a4cfa7f34ce53435ecf81b766bf401acfcf2da5d9baed480e1b7e28821f73d",
     "web/evidence/section-tabs.json": "beeffafac2d9859ff81b6b5baf0c86aa2b6f110528d6b6f9c359eab45279bd72",
-    "tools/site/generate_analysis_visuals.R": "f811804a50be49736cd61886c2b5188e8f2e03f2cdd2823f25e377d8b727f3eb",
+    "tools/site/generate_analysis_visuals.R": "34fa1c8031c907f519c78edf7cacc07bff982fe8dd9b5b431965366fbcb1f4aa",
     "tools/site/analysis-visuals.js": "3f02b11e51094f53351f252d2ee87a420d27d765d68bd4f6ee506ac9e6f63f49",
-    "tools/site/regime-map.html": "15b246bef23c8585a14e44dc0b3cc9213207802efa50944fee7f1b0dc873c053",
-    "tools/site/quadrant-grid.html": "71e48542e9b8fd83d83afaa17ca2f1c31f98d2ec5441603f6a5ca591af24e25d",
-    "tools/site/generate_paper_pages.R": "754b17aec790e125961bc0119c052d2096a639afe8b8c827d0af9bdc660e7c62",
-    "R/figures/plot_revised_paper_figures.R": "bfb237a6646d9597b1aa3910cdd58dee14a979399eedfcda9f9025a644adb77d",
-    "R/scenarios/table3_revised.R": "0dab618b0781eaa011831c91a98160a0aaf79e83772655b0e4bfe4e8ab529238",
-    "R/scenarios/gmm_transmission_grid.R": "24edf46b49528bccd2c4f0de803b687c411e3f204344c4d3a84fe08d31738283",
-    "tools/site/heatmap-explorer.html": "ff9dadb77bbc84613854f17fd0c0a8f1edc952acb3ed310715957c05576d983c",
+    "tools/site/regime-map.html": "3156788330d703a6207944dfa168867e72c723682042e1b4f91d44a8f630dba2",
+    "tools/site/quadrant-grid.html": "d420ed04064378201b7d647dd5d3b52a9f9463049e0e4bd1bee84328f8c6bc2d",
+    "tools/site/generate_paper_pages.R": "da15ca4a896b40ba06f64f8eed2fc2192a91a8b5a1aea385a8a1ea965b598349",
+    "R/figures/plot_revised_paper_figures.R": "99bc518a0e9b4886bcfcdafa1b5e2b19a13483b96ab52c56f75d9053f4543442",
+    "R/scenarios/table3_revised.R": "585b5436b34d7916cacc2be693e4d60fae2720c2e9bd4284441dba0e9bbfdc59",
+    "R/scenarios/gmm_transmission_grid.R": "630889d47c26f1917f0d8b74c525df64be728358797906860928f475c1893e0d",
+    "tools/site/heatmap-explorer.html": "e136e108b2c3d831c74b13c3b64b1129ffa76ba8a3ab4181029003ace51a1922",
     "tools/site/channel-grid.html": "13ee1dfe89ce6a62545738b16ae3bbcf3e8942c6c26c7ae08aa410e1b279cc52",
     "R/scenarios/channel_impact_grids.R": "96091b1b648d1f6043eda3991a4e228cf4b10d22bfc780b48f8ae8c0bc2868ac",
     "output/calibration/channel_impact_grids_20261007/grids.json": "f5c59163f6fbe2fcebd4a963378b328fe81fd49a8702be454c6a0662fee604c4",
-    "R/scenarios/tree_split_drivers.R": "107f32a2e12d8e17f045aa58eb728e9e3adab5c3865ae59ea43e82ac61433096",
+    "R/scenarios/tree_split_drivers.R": "a9e1fe35eaf5ba26a5b07b7a38fc42a50a78686a9e49e77d395bb851382ecea5",
     "output/calibration/transmission_structure_20261002_xi/tree_splits.json": "0bdc6f72d9321d5795e01577289291957c4dbf4e09802a721d876577acb2632b",
-    "R/scenarios/setup_views.R": "68a72138ecece1e54f8e04ffc2c5c5bb08de5fae740b4aa3341cfce4368a4d95",
+    "R/scenarios/setup_views.R": "4f3a22a4f7bbfbcaa227d8e3e3285b1613d5609d8874fd24747793393be84cff",
     "tools/site/audit_report_inventory.py": "a0a45ed926c721e119b4523eabb7f9909d31cf80462da11257f7cb406010227a",
     "tools/site/documentation-viewer.html": "35a87dcf2e80e74741b282cf0063fa69f0837d61aa056cb7a3cc691cb359f4c3",
     "output/calibration/report_inventory_20261003.json": "07f3abc314e5455d937688c9954c160df5f8dbae126c8b1eef27b61ef228636c",
     "qmd/reports/2026-10-05-scenario-classification-closure-and-setup.qmd": "a4a837ac8262bc1d87eba32cda546387806dba2facb3ed943a4b0e447fa832bf",
     "qmd/reports/2026-10-07-transmission-families-setups-and-hierarchies.qmd": "8387f2f3864e65634c1d21313d3f2e4ba9a9c2a68f50ecc189ac4d0bb39618e6",
     "qmd/reports/2026-10-03-evidence-synthesis.qmd": "7d08b808d1aee3ad823a016d35f94dba2393d744c31c24ffc233ef06d8a6a074",
-    "tools/site/publication-scope.json": "36cb3d7625a31d18e0598fb91579958d7a8133b19c23af7b8301d1a8bd9a046b",
+    "tools/site/publication-scope.json": "60ad4171677ad8863e5ad9ebe9ffdc92c16f3f411fd711ee14fe866529d859ae",
     "tools/site/generate_paper_pages.py": "9e7c1f71829b952a5bc8240b6f23eaf2eaeabfc5b85b53dc389a80f26a714829",
     "output/calibration/website_paper_excerpt_provenance.json": "1316b27b655e4628bfa20796e26ec56e867e2b3ec3295f6635eb7d025b73f2b0",
     "data/current_results.json": "65f282eb5008f098a583e40cf396ee40a5ea5e9ae98e4b8e36f6b38f4c2348da"
@@ -641,6 +647,7 @@
     "pages/scenario-definitions.html",
     "pages/view-scenarios.html",
     "pages/analysis-visuals.html",
+    "pages/highfinance-cross-border.html",
     "pages/regime-report.html",
     "pages/hierarchy-report.html",
     "pages/anova-current.html",
@@ -673,8 +680,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "d94ca05f3e2ba852abc5530868622df4e8f9cd058a68a2241a0c89d823b37305",
-    "coverage.json": "b37feff3c74ee34fc0b090f697dbab73e9631f6fea1cb219df9dec6cf9a498dd",
+    "pages.json": "1f7720169aba21ba9cc405bfd70fc807b9875adbc4d824d1c15f4878d79eb90b",
+    "coverage.json": "17fcda5cdaa6209cfcce5d005bec5c7157940aa7b7843256ba04ef5c13bd9ab5",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
@@ -685,6 +692,7 @@
     "pages/scenario-definitions.html": "3055c45f1ab8d08a2840794995de87da7a3d55cff57bbed463c9e5ccb83b2dde",
     "pages/view-scenarios.html": "b63bc4ca049e285b194358af61dde907d838c143e56cc8ebb2d3d90298565f43",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
+    "pages/highfinance-cross-border.html": "e7ee556a3e9bbc48fca80dcb85c61287573e237db364e4f15051e4cc2e68fe04",
     "pages/regime-report.html": "115e693fdf3bbab1aa7955f8e82c0e6b07d78aa1793836d548282e5d8f9ab558",
     "pages/hierarchy-report.html": "5856c1cd47edad36d970af30477afd3bde4a7344e73cdad066a2d6cd5a858b2f",
     "pages/anova-current.html": "b302f0a9f9b9583081611159cb350b7209f8ed04e2b0976c373027990122e422",
