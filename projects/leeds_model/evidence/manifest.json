@@ -85,8 +85,8 @@
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
-      "sha256": "1107a3866b41f5a5615933fef2e231112e47f244d855d1402de2ba46e507e2ed",
-      "bytes": 1933936
+      "sha256": "f09e4acd1fc6d9f029cf6428fd81c80a3b4906a0fb8c37a40a92b277b517f30a",
+      "bytes": 2176187
     },
     "evidence/output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html": {
       "source": "output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
@@ -602,7 +602,7 @@
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "09df86aad53ae67f0d624528c7e3fba4e1dd1a0330a0c7e0093e83bfce94c9fa",
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
-    "qmd/site/highfinance-cross-border.qmd": "08b635d8a6e2b41c19ad4181ce32b435172ba094c0f65b3aba5352124540c6ae",
+    "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "7910500256769a69128820645f515dbf3bdf898e1cbf2cf474ddc456e3f74236",
     "tools/site/dendrogram-explorer.html": "96a4cfa7f34ce53435ecf81b766bf401acfcf2da5d9baed480e1b7e28821f73d",
@@ -681,7 +681,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "1f7720169aba21ba9cc405bfd70fc807b9875adbc4d824d1c15f4878d79eb90b",
-    "coverage.json": "ea39f18f761b1e054edef3f30de3319c3b66421318d84355e49d9f2ce89b224b",
+    "coverage.json": "31356d083facd64aaac43a45b961a585a1ecfc70e950852af1561fbcfda0cc1b",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
