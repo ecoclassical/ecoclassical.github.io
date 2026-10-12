@@ -72,12 +72,16 @@
   ],
   "Analysis": [
     {
-      "label": "Dendrograms",
+      "label": "High-finance results (96 cells)",
+      "page": "highfinance-cross-border"
+    },
+    {
+      "label": "Earlier-grid dendrograms",
       "page": "analysis-visuals",
       "native": "hierarchy"
     },
     {
-      "label": "PCA",
+      "label": "Earlier-grid PCA",
       "page": "analysis-visuals",
       "native": "pca"
     },
