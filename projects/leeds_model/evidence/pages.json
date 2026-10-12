@@ -85,13 +85,13 @@
     "section": "Analysis",
     "title": "Cross-border response analysis",
     "source": "output/html/site/analysis-visuals.html",
-    "description": "Dendrograms, PCA, closure regime map, ANOVA and signed responses.",
+    "description": "Dendrograms, PCA, ANOVA, response quadrants and heatmap of the 96 high-finance credit runs (12 scenarios \u00d7 2 setups \u00d7 4 closures).",
     "artifact": "evidence/output/html/site/analysis-visuals.html",
     "href": "pages/analysis-visuals.html"
   },
   {
     "id": "highfinance-cross-border",
-    "section": "Analysis",
+    "section": "Documentation",
     "title": "High-finance cross-border results \u2014 twelve presentation scenarios",
     "source": "output/html/site/highfinance-cross-border.html",
     "description": "Complete 12-scenario \u00d7 2-setup \u00d7 4-closure high-finance grid: value-added asymmetries, balanced three-factor ANOVA, clustering and matched gold credit effects.",
@@ -100,7 +100,7 @@
   },
   {
     "id": "regime-report",
-    "section": "Analysis",
+    "section": "Documentation",
     "title": "Scenario classification, closure and regional setup",
     "source": "output/html/reports/2026-10-05-scenario-classification-closure-and-setup.html",
     "description": "Three transmission families from the response hierarchy; what the monetary and fiscal closures and the regional setup do to them.",
@@ -109,7 +109,7 @@
   },
   {
     "id": "hierarchy-report",
-    "section": "Analysis",
+    "section": "Documentation",
     "title": "Families by outcome block, setup, and monetary \u00d7 ecological hierarchy",
     "source": "output/html/reports/2026-10-07-transmission-families-setups-and-hierarchies.html",
     "description": "What each family does to every outcome block in each setup; North/South structure; crossed versus aligned monetary and ecological hierarchies under the closures.",
@@ -119,7 +119,7 @@
   {
     "id": "anova-current",
     "section": "Documentation",
-    "title": "Cross-border ANOVA \u2014 current revised grid",
+    "title": "Cross-border ANOVA \u2014 2026-10-02 revised grid (before high finance)",
     "source": "output/html/site/cross-border-anova.html",
     "description": "Current-tag scenario/setup/closure decomposition, clustering sensitivity and signed labels.",
     "artifact": "evidence/output/html/site/cross-border-anova.html",
@@ -319,7 +319,7 @@
     "section": "Figures",
     "title": "Paper figures on the revised model",
     "source": "output/html/site/paper-figures.html",
-    "description": "Every simulation figure of the paper redrawn on the revised grid, by regional setup and closure, coloured by transmission regime.",
+    "description": "The paper\u2019s figures and the channel/impact grids, redrawn on the high-finance credit arms.",
     "artifact": "evidence/output/html/site/paper-figures.html",
     "href": "pages/paper-figures.html"
   },
@@ -334,7 +334,7 @@
   },
   {
     "id": "hierarchy-2x2",
-    "section": "Analysis",
+    "section": "Documentation",
     "title": "Monetary rank by workbook: the OPENFIXG 2 \u00d7 2",
     "source": "output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html",
     "description": "Each workbook run under both monetary hierarchies (who holds whose bills) under OPENFIXG, separating the ecological from the monetary position.",

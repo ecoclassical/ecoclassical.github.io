@@ -72,23 +72,19 @@
   ],
   "Analysis": [
     {
-      "label": "High-finance results (96 cells)",
-      "page": "highfinance-cross-border"
-    },
-    {
-      "label": "Earlier-grid dendrograms",
+      "label": "Dendrograms",
       "page": "analysis-visuals",
       "native": "hierarchy"
     },
     {
-      "label": "Earlier-grid PCA",
+      "label": "PCA",
       "page": "analysis-visuals",
       "native": "pca"
     },
     {
-      "label": "Regime map",
+      "label": "ANOVA",
       "page": "analysis-visuals",
-      "native": "regimes"
+      "native": "anova"
     },
     {
       "label": "Quadrants",
@@ -99,54 +95,6 @@
       "label": "Heatmap",
       "page": "analysis-visuals",
       "native": "heatmap"
-    },
-    {
-      "label": "ANOVA",
-      "page": "analysis-visuals",
-      "native": "anova"
-    },
-    {
-      "label": "Signed responses",
-      "page": "analysis-visuals",
-      "native": "signs"
-    },
-    {
-      "label": "Submitted comparison",
-      "page": "analysis-visuals",
-      "native": "comparison"
-    },
-    {
-      "label": "Channel reach",
-      "page": "analysis-visuals",
-      "native": "portfolio"
-    },
-    {
-      "label": "Emission grid",
-      "page": "analysis-visuals",
-      "native": "impact-emis"
-    },
-    {
-      "label": "Material grid",
-      "page": "analysis-visuals",
-      "native": "impact-mat"
-    },
-    {
-      "label": "Land grid",
-      "page": "analysis-visuals",
-      "native": "impact-land"
-    },
-    {
-      "label": "Water grid",
-      "page": "analysis-visuals",
-      "native": "impact-water"
-    },
-    {
-      "label": "Report",
-      "page": "regime-report"
-    },
-    {
-      "label": "Hierarchies report",
-      "page": "hierarchy-report"
     }
   ],
   "Discussion": [
@@ -166,7 +114,12 @@
       "native": "fig-channel-volumes"
     },
     {
-      "label": "Upstream requirements",
+      "label": "Imports",
+      "page": "paper-figures",
+      "native": "fig-import-decomp"
+    },
+    {
+      "label": "Upstream",
       "page": "paper-figures",
       "native": "fig-upstream"
     },
@@ -176,9 +129,24 @@
       "native": "fig-portfolio"
     },
     {
-      "label": "Emission impact",
+      "label": "Emission grid",
       "page": "paper-figures",
       "native": "fig-emis-impact"
+    },
+    {
+      "label": "Material grid",
+      "page": "paper-figures",
+      "native": "fig-mat-impact"
+    },
+    {
+      "label": "Land grid",
+      "page": "paper-figures",
+      "native": "fig-land-impact"
+    },
+    {
+      "label": "Water grid",
+      "page": "paper-figures",
+      "native": "fig-water-impact"
     },
     {
       "label": "Cross-border",
@@ -186,12 +154,12 @@
       "native": "fig-cross-border"
     },
     {
-      "label": "Intervening region",
+      "label": "Z1 effects",
       "page": "paper-figures",
       "native": "fig-comparison-eu"
     },
     {
-      "label": "Partner region",
+      "label": "Z2 effects",
       "page": "paper-figures",
       "native": "fig-comparison-row"
     }
@@ -222,6 +190,22 @@
     {
       "label": "Reports by topic",
       "page": "documentation"
+    },
+    {
+      "label": "High-finance results (96 cells)",
+      "page": "highfinance-cross-border"
+    },
+    {
+      "label": "Scenario classification report",
+      "page": "regime-report"
+    },
+    {
+      "label": "Families and hierarchies report",
+      "page": "hierarchy-report"
+    },
+    {
+      "label": "Monetary rank 2×2",
+      "page": "hierarchy-2x2"
     }
   ]
 }
