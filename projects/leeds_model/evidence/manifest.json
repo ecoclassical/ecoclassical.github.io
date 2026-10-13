@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-13",
-  "commit": "8e8a54e1d7d0d42faeac5fdd81c99164ea1e5bb0",
+  "commit": "c0715cbf82b693ee1cb102e81628f88b0da42b17",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -15,8 +15,8 @@
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "f1656f2bd54a135b877c4e4daf86ed7bee9da1739727311f21482ef2fd1c02af",
-      "bytes": 7010
+      "sha256": "397b45b26a8906824e7e2dfa02c8dc0a8c2189b3ff3993f82fc2a179d755d8bc",
+      "bytes": 7024
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "3a28ace94666a63129ab13bf9f62378fed7390e753ddce3fa7ca57ea840f6e5f",
-      "bytes": 4421
+      "sha256": "8fc855cb0405ba1d73c8f6538d8256df3b5381d61c7a32834815bc82dae75f09",
+      "bytes": 4530
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -100,8 +100,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "195e9d31443afdfa87a1f8ddc26a706036195d1cde71b218feed819187cdbca8",
-      "bytes": 6859390
+      "sha256": "914293adca12036a6aa2fa75a482a69320164d0e7b726348ee4be063eb8bbb12",
+      "bytes": 6868605
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -626,9 +626,9 @@
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "4a86cc4e7d7a6ea7ec2312adc8f0235762b70baf9c2084b036a9098ec2fd2ce7",
-    "web/evidence/section-tabs.json": "3a28ace94666a63129ab13bf9f62378fed7390e753ddce3fa7ca57ea840f6e5f",
-    "tools/site/generate_analysis_visuals.R": "f5846f150e3dffcda39f8b9b71f9b9068caf9346e57b7a49078cbf1bd03a0912",
-    "tools/site/analysis-visuals.js": "e9ac5cdc0082208233dd939ef4f4c7bc67e7a8d1005417f7f2246327dc897e9a",
+    "web/evidence/section-tabs.json": "8fc855cb0405ba1d73c8f6538d8256df3b5381d61c7a32834815bc82dae75f09",
+    "tools/site/generate_analysis_visuals.R": "f0e733b7fb0f977b235453458503fc0fb369212642979ac43f697324cf519013",
+    "tools/site/analysis-visuals.js": "241850596266f5e66bf667849ba45814a01ec88108e5116b14d53033e3a5ded9",
     "tools/site/regime-map.html": "3156788330d703a6207944dfa168867e72c723682042e1b4f91d44a8f630dba2",
     "tools/site/quadrant-grid.html": "57fba6463e36cba3d32e010c044f45565d4801e2bd9fccd878c0560be4c5e104",
     "tools/site/generate_paper_pages.R": "69cbd3c7e32506284db8a3784aa166af624da421269ac134e7e930d64e412738",
@@ -705,7 +705,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "435877bee4743ff910a537b9c0c4fe3787c4ea9750be6406e0d2a86b1b6d5368",
-    "coverage.json": "c084fe710f9d4f55212aee8bf104ed89bc8d89652dbae7c4ec257f581df55585",
+    "coverage.json": "87600959a45b05481c1e9b4a270700ec5a0f85c07bb3ca467e9d76d8bf45c36f",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",

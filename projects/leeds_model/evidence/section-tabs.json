@@ -86,6 +86,11 @@
   ],
   "Analysis": [
     {
+      "label": "Regime table",
+      "page": "analysis-visuals",
+      "native": "regime-table"
+    },
+    {
       "label": "Dendrograms",
       "page": "analysis-visuals",
       "native": "hierarchy"
