@@ -7,10 +7,6 @@
   ],
   "Model Equations": [
     {
-      "label": "Arm viewer",
-      "page": "arms"
-    },
-    {
       "label": "All equations",
       "page": "equations",
       "native": "all-equations"
@@ -21,23 +17,33 @@
       "native": "changed-equations"
     },
     {
-      "label": "Description",
+      "label": "Model description",
       "page": "description"
     },
     {
       "label": "Changelog",
       "page": "equations",
       "native": "change-log"
+    }
+  ],
+  "Baseline": [
+    {
+      "label": "Arm viewer",
+      "page": "arms"
+    },
+    {
+      "label": "Arm descriptions",
+      "page": "arm-descriptions"
+    },
+    {
+      "label": "Switches",
+      "page": "registry",
+      "native": "arms"
     },
     {
       "label": "Edits",
-      "page": "equations",
+      "page": "registry",
       "native": "edits"
-    },
-    {
-      "label": "Arms",
-      "page": "equations",
-      "native": "arms"
     }
   ],
   "Closures": [

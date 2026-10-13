@@ -13,7 +13,7 @@
     "section": "Model Equations",
     "title": "Submitted \u2192 revised equations",
     "source": "model/equations/model-equations-submitted-to-revised.html",
-    "description": "Inspect equation changes, model blocks and arm-specific expressions.",
+    "description": "All equations and the changed equations, by arm (choose the arms shown), and the change log.",
     "artifact": "evidence/model/equations/model-equations-submitted-to-revised.html",
     "href": "pages/equations.html"
   },
@@ -28,12 +28,30 @@
   },
   {
     "id": "arms",
-    "section": "Model Equations",
-    "title": "Compare model arms",
+    "section": "Baseline",
+    "title": "Compare arm baselines",
     "source": "model/equations/view-arms.html",
     "description": "Overlay the cached baselines of every arm, from submitted to the high-finance stress arms, with per-cache provenance.",
     "artifact": "evidence/model/equations/view-arms.html",
     "href": "pages/arms.html"
+  },
+  {
+    "id": "arm-descriptions",
+    "section": "Baseline",
+    "title": "What each arm is",
+    "source": "output/html/tables/arm-descriptions.html",
+    "description": "One paragraph per arm of the registry, with its role, setup, closure, workbook and cached runs.",
+    "artifact": "evidence/output/html/tables/arm-descriptions.html",
+    "href": "pages/arm-descriptions.html"
+  },
+  {
+    "id": "registry",
+    "section": "Baseline",
+    "title": "Arm switches and edits",
+    "source": "model/equations/model-registry.html",
+    "description": "The switch values of every arm (data/arms.csv) and the edits arms are built from (data/edits.csv).",
+    "artifact": "evidence/model/equations/model-registry.html",
+    "href": "pages/registry.html"
   },
   {
     "id": "closure-equations",
