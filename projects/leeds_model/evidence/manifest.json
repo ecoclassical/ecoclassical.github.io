@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-13",
-  "commit": "b95cb89fb6a88dfea174226a5ac15a4c71ddf9c2",
+  "commit": "a22211ae24b83e0166ae2ddb8cebe7d684deae1b",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -40,8 +40,8 @@
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
-      "sha256": "1ac20982e1ab1a3bf9eca66dd9668b71aa4a1fbfea167f07d056892ded952e4d",
-      "bytes": 5423236
+      "sha256": "708f8bd0a883a63e67edd415cd5f4225e27d945d30b8917cd64f1cca8f53c73e",
+      "bytes": 5423263
     },
     "evidence/output/html/appendices/2026-09-30-model-description-revised.html": {
       "source": "output/html/appendices/2026-09-30-model-description-revised.html",
@@ -50,22 +50,22 @@
     },
     "evidence/model/equations/view-arms.html": {
       "source": "model/equations/view-arms.html",
-      "sha256": "4831fedd8f10230fc8b95eb1b2a319935ecad97fbf3048702244450fa3582710",
-      "bytes": 19209285
+      "sha256": "037a8a5b23be7fbd9911df939dcf0a38101612a3eba633c6638d0cfd72400ac7",
+      "bytes": 19209312
     },
     "evidence/output/html/tables/arm-descriptions.html": {
       "source": "output/html/tables/arm-descriptions.html",
-      "sha256": "8541a955a7fb1b28cbfe441c50e75948bbecf6a36f99058a5e2149aab7ea5a64",
-      "bytes": 123814
+      "sha256": "3f3c23fd990a4974cd2f17ceaa6c4fee8018a116434012b4bc2c1175819e3910",
+      "bytes": 124183
     },
     "evidence/model/equations/model-registry.html": {
       "source": "model/equations/model-registry.html",
-      "sha256": "a7234cab5f53d50cbc80a8da4b8b6323bff1efc54ca3ef4d73cef8f9b8bcbbe2",
-      "bytes": 3760347
+      "sha256": "5d4b8743cb853f296eadffa3b8172ac860cf4a9b1e17a1105578dae074be5570",
+      "bytes": 3772914
     },
     "evidence/model/equations/model-equations-closures.html": {
       "source": "model/equations/model-equations-closures.html",
-      "sha256": "c90b649dec57deda641903ddd68c4d5a0b2b51d430692dc238e4ef48793c95fc",
+      "sha256": "14691f847cc9812e9a43bbe2553e0813985a11f1ab19f189f6efa21190ab74da",
       "bytes": 1253790
     },
     "evidence/output/html/reports/closures/view-closures.html": {
@@ -435,8 +435,8 @@
     },
     "evidence/output/html/reports/arms/view-arms.html": {
       "source": "output/html/reports/arms/view-arms.html",
-      "sha256": "4831fedd8f10230fc8b95eb1b2a319935ecad97fbf3048702244450fa3582710",
-      "bytes": 19209285
+      "sha256": "037a8a5b23be7fbd9911df939dcf0a38101612a3eba633c6638d0cfd72400ac7",
+      "bytes": 19209312
     },
     "evidence/output/html/reports/2026-09-28-shp-vs-profit-share-revised.html": {
       "source": "output/html/reports/2026-09-28-shp-vs-profit-share-revised.html",
@@ -699,7 +699,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "6024005eae1d4b14676b56381780408645b241c515c4727cb21d1833f62e6a2f",
-    "coverage.json": "67e61a9d444d0d63ea9dc548b3e4051e52ece0e2c699d784dd90663780adfec9",
+    "coverage.json": "34a0156ac4435d847c9c18b36ce4e0d0e67f540d6f6637be1af52d6db2835da3",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
