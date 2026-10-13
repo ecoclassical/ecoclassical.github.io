@@ -2225,7 +2225,8 @@ window.Quarto = {
     <h2 id="toc-title">Blocks</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-model-at-a-glance-its-stylised-features" id="toc-the-model-at-a-glance-its-stylised-features" class="nav-link active" data-scroll-target="#the-model-at-a-glance-its-stylised-features">The model at a glance: its stylised features</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#block-0.-initial-state" id="toc-block-0.-initial-state" class="nav-link" data-scroll-target="#block-0.-initial-state">Block 0. Initial State</a></li>
   <li><a href="#block-1.-households" id="toc-block-1.-households" class="nav-link" data-scroll-target="#block-1.-households">Block 1. Households</a></li>
   <li><a href="#block-2.-production-firms-current-account" id="toc-block-2.-production-firms-current-account" class="nav-link" data-scroll-target="#block-2.-production-firms-current-account">Block 2. Production Firms (Current Account)</a></li>
@@ -2304,6 +2305,70 @@ Note
 <p>The previous version of this page (30 September) described arm <code>revised</code>. Everything that page said still holds for that arm; this page adds what the capital, finance and credit blocks changed.</p>
 </div>
 </div>
+<section id="the-model-at-a-glance-its-stylised-features" class="level1">
+<h1>The model at a glance: its stylised features</h1>
+<p>What the model is, feature by feature, with the block where each is specified. The next section says how it differs from the submitted model.</p>
+<p><strong>Structure</strong></p>
+<ul>
+<li><strong>Two regions, 54 industries each.</strong> The A matrix is 108 × 108, built from EXIOBASE 3.8.2 (industry by industry, 2011). The regional split is not hard-wired: the workbook pipeline (<code>tools/exiobase/exio_mrio_aggregate.py</code>) aggregates the raw EXIOBASE files onto the 54 industries under any two-region concordance given as a CSV. That is how both setups of the Results were built, EU/RoW and North/South. The 54-industry aggregation itself is fixed by <code>data/exiobase/exiobase_sector_concordance.csv</code>.</li>
+<li><strong>Stock-flow consistent.</strong> Every flow is a change in some sector’s balance sheet.</li>
+<li><strong>Annual periods.</strong> Before t = 1 the model runs 60 unshocked spin-up periods. Interventions start at t = 70, and the Results read period 90 against the same arm’s unshocked baseline.</li>
+</ul>
+<p><strong>Prices and distribution</strong> (Block 8)</p>
+<ul>
+<li><strong>Sraffian prices of production.</strong> One uniform rate of profit applies to the circulating and fixed capital advanced: p = (1 + r) p Ξ(A + K) + w l. Ξ values imported inputs at the exchange rate and the duty they bear.</li>
+<li><strong>The Sraffa–Pivetti closure.</strong> The rate of profit is the money rate of interest plus a normal profit of enterprise, r = r_b + e. Distribution is therefore set by the monetary authority, not by the mark-ups of 108 industries. e = 0.2222 is derived, not fitted: it is the value at which the prices of production reproduce the observed 2011 price level.</li>
+<li><strong>A money wage anchored at its 2011 regional mean.</strong> The price level is therefore determinate.</li>
+<li><strong>A standard commodity.</strong> R_max and the standard commodity are computed every period, and the standard commodity serves as the measure of prices.</li>
+</ul>
+<p><strong>Households and labour</strong> (Blocks 1, 6)</p>
+<ul>
+<li><strong>Two classes.</strong> Workers and capitalists receive separate disposable incomes. Consumption has separate propensities out of wage income, out of capital income and out of net wealth.</li>
+<li><strong>Employment from labour coefficients.</strong> Female employment is tracked alongside total employment.</li>
+</ul>
+<p><strong>Production and capital</strong> (Blocks 2, 3, 13)</p>
+<ul>
+<li><strong>Leontief quantities.</strong> Output is the Leontief inverse applied to final demand.</li>
+<li><strong>Replacement from data.</strong> An empirical capital-flow matrix K (EXIOBASE 2011) gives what each industry’s depreciation consists of, by product and by origin.</li>
+<li><strong>Capital stocks from data.</strong> The target capital–output ratio is κ_j = d_j/δ_j, with depreciation rates δ_j from Eurostat.</li>
+<li><strong>A flexible accelerator.</strong> Investment closes the gap to the capital target at speed γ = 0.15, plus replacement. Public investment follows its own accelerator towards a target public capital stock.</li>
+<li><strong>Circular-economy interventions as technical change.</strong> A scenario changes either the technical coefficients a_ij (the technology) or the composition of final demand. The speed of innovation rises with government spending.</li>
+</ul>
+<p><strong>Finance</strong> (Blocks 3, 4, 7)</p>
+<ul>
+<li><strong>Firms have zero net worth.</strong> Firm loans and equity together finance the capital stock, L_F + e_s = p_I k. Loans are the residual, so leverage is set by households’ portfolio choice.</li>
+<li><strong>A Tobin portfolio block.</strong> Households hold domestic and foreign bills, domestic and foreign equity, and deposits. The shares respond to relative expected returns through a substitution matrix whose rows and columns sum to zero, so the shares always add to one. Expected returns are adaptive, with scale σ = 4. Foreign assets carry the realised currency gain.</li>
+<li><strong>Investment depends on finance.</strong> The capital target responds to the margin of the profit rate over the loan rate, and to leverage. Retained profit finances part of net investment. The region whose central bank holds reserves pays a premium on the foreign liabilities a scenario creates.</li>
+<li><strong>Credit rationing.</strong> Banks refuse a share of the <em>additional</em> loans a scenario makes firms ask for, and the refused part is investment that does not happen. The refused share rises with leverage above the unshocked path.</li>
+<li><strong>Endogenous money.</strong> Banks supply loans and deposits on demand, hold government bills as a share of deposits, and settle with the central bank.</li>
+</ul>
+<p>These finance and credit terms are all measured against the arm’s own unshocked path. They are therefore zero in the baseline and act only on what an intervention changes.</p>
+<p><strong>Government, taxes and trade</strong> (Blocks 5, 9)</p>
+<ul>
+<li><strong>VAT on household consumption</strong>, charged by the consuming region at its own rates on domestic and imported goods alike.</li>
+<li><strong>Tariffs on the customs value of imports.</strong> A share φ = 0.5 of the duty passes through into the buyer’s (CIF) price.</li>
+<li><strong>Income taxes at net rates</strong>, scaled from the observed rates because the model has no transfers.</li>
+<li><strong>Armington origin choice.</strong> The split of each purchase between domestic and foreign suppliers responds to relative buyer prices. The elasticities are 0.626 for final demand and 1.0 for intermediate inputs; both are set by the maintainer, with no empirical estimate.</li>
+<li><strong>Imports from the input–output structure.</strong> Imports follow the input–output structure, not an estimated import function.</li>
+</ul>
+<p><strong>The monetary hierarchy and the external closure</strong> (Blocks 5, 10)</p>
+<ul>
+<li><strong>Central banks as residual holders.</strong> Each central bank is the residual holder of its own government’s bills.</li>
+<li><strong>An asymmetric reserve arrangement.</strong> The EU central bank holds RoW bills; the reverse does not happen.</li>
+<li><strong>Default closure: Godley and Lavoie’s OPENFIX with gold.</strong> The balance of payments settles in gold.</li>
+<li><strong>Three alternative closures run in the Results.</strong> Fiat key-currency reserves; OPENFIXG, in which EU government spending adjusts; and a crawling (quasi-float) exchange rate.</li>
+</ul>
+<p><strong>Ecology</strong> (Blocks 11, 12)</p>
+<ul>
+<li><strong>Material and energy accounts.</strong> Matter extraction, energy use, and recycling are tracked. Recycling counts the material content of the eight secondary-material industries.</li>
+<li><strong>Waste.</strong> Waste accumulates net of what the five waste-treatment industries absorb.</li>
+<li><strong>Climate, land and water.</strong> CO₂ emissions, cumulative emissions and temperature, land use and water use are tracked.</li>
+</ul>
+<p><strong>Dynamics</strong></p>
+<ul>
+<li><strong>A damped cycle in the baseline.</strong> The unshocked baseline converges to its stationary state through a damped cycle, not monotonically. Turning points are about 11 periods apart (a period of about 22 years), and each swing is about 0.6 of the one before. This is a multiplier–accelerator cycle: it appeared with the capital stock from data (arm <code>revised_capital</code>), whose firm capital–output ratio is about 2.8 times that of <code>revised</code> (k/VA 1.74 against 0.62 for the EU). The finance, credit and high-finance additions do not change it.</li>
+</ul>
+</section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>The model consists of difference equations describing the dynamics of the economic variables over a finite time horizon, both at the industry level and at the aggregate level. Each period corresponds to one year. Variables are expressed at time <span class="math inline">t</span>, unless a “−1” subscript denotes a lagged value. We use the superscript <span class="math inline">z</span> for each area and <span class="math inline">f</span> for the other area. The two areas are the European Union (Z1) and the Rest of the World (Z2), each with the 54 industries of the EXIOBASE 3.8.2 aggregation for 2011. Exchange rates are quoted indirectly: <span class="math inline">xr^z</span> is the price of one unit of domestic currency in foreign currency. <span class="math inline">\odot</span> and <span class="math inline">\oslash</span> are element-wise multiplication and division.</p>

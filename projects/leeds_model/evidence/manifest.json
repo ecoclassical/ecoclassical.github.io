@@ -5,13 +5,13 @@
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
-      "sha256": "623bdd9b7f4161bb135e5fade5fead8d937ed3772349e0b58cdddc527531ba28",
-      "bytes": 1226
+      "sha256": "76a12ae737149a9b865e57951ea3117604d5f11bcb4c7ff17b2521b50d588466",
+      "bytes": 991
     },
     "style.css": {
       "source": "web/evidence/style.css",
-      "sha256": "25f9f427d0a3195696692e71dc930ec1f0a5b64a3ab997b4f2751270cfb92b44",
-      "bytes": 5162
+      "sha256": "f7745eeab10af6d0e43dd36c4695dd82bc358f9ed55740ee3d3622fc60013724",
+      "bytes": 5023
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
@@ -45,8 +45,8 @@
     },
     "evidence/output/html/appendices/2026-10-13-model-description-current-revised.html": {
       "source": "output/html/appendices/2026-10-13-model-description-current-revised.html",
-      "sha256": "ec5348724b85724862325fc542178dc09c3fb6a32987fa83556736c47d2bf24f",
-      "bytes": 1968639
+      "sha256": "2af3c290f8aad4b75af580443b2eb08cfb7c003f39bdba898a35aebe1594b173",
+      "bytes": 1976716
     },
     "evidence/output/html/reports/2026-10-13-equation-changes-submitted-to-current.html": {
       "source": "output/html/reports/2026-10-13-equation-changes-submitted-to-current.html",
@@ -605,8 +605,8 @@
     },
     "evidence/output/html/appendices/2026-10-13-model-description-current-revised.docx": {
       "source": "output/docx/revised/2026-10-13-model-description-current-revised.docx",
-      "sha256": "0d66fc5078027611f794c728450e3aec1bdc0710387dca40393e0c249724c4ca",
-      "bytes": 47835
+      "sha256": "da0923650ae84689f38548d38735aa3e2931b792a01d3b9c2dcfe8c621be9c80",
+      "bytes": 50684
     }
   },
   "inputs": {
@@ -705,7 +705,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "435877bee4743ff910a537b9c0c4fe3787c4ea9750be6406e0d2a86b1b6d5368",
-    "coverage.json": "87600959a45b05481c1e9b4a270700ec5a0f85c07bb3ca467e9d76d8bf45c36f",
+    "coverage.json": "33d03282e43c5fd2a99bfb81c421ae264bffcd452676aaec4f6c0f240424a9f1",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
