@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-13",
-  "commit": "c0715cbf82b693ee1cb102e81628f88b0da42b17",
+  "commit": "36afe4ee3c81d3cf962ae027758fd4c1b4d5515c",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -100,8 +100,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "914293adca12036a6aa2fa75a482a69320164d0e7b726348ee4be063eb8bbb12",
-      "bytes": 6868605
+      "sha256": "daddc1a2a87a8a30cfab8cdf086071779c024a82b065461a067eb65f12d97b57",
+      "bytes": 6869485
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -705,7 +705,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "435877bee4743ff910a537b9c0c4fe3787c4ea9750be6406e0d2a86b1b6d5368",
-    "coverage.json": "33d03282e43c5fd2a99bfb81c421ae264bffcd452676aaec4f6c0f240424a9f1",
+    "coverage.json": "3a39cce2ac39de220a4375d88031996f9be171b748b13eadc88e0c1484259474",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
