@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
-  "built_date": "2026-10-12",
-  "commit": "ddee6d7f2b55a8b08220318ab6d35d7289d2b854",
+  "built_date": "2026-10-13",
+  "commit": "11eefe455007ff55ac9b65ef31b67da349953342",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -80,8 +80,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "8e3890b310ad483c1fb3d6b49746af665377d2592bb44e32bb847c49b89213b7",
-      "bytes": 6893392
+      "sha256": "12b23abb5ed1e06aa1a7e33c61dd4cc518474a0584339a42bd3c8f0b67322320",
+      "bytes": 6895696
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -607,7 +607,7 @@
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "91893b7357cfcbcb0c5f76ee6bfea1d2da0769d3c896515184d1b826d0f11bcd",
     "web/evidence/section-tabs.json": "f0d1edfa3766fe5180321ca8b08e604c5130d92f315c2d38bf4e5704fb2cb762",
-    "tools/site/generate_analysis_visuals.R": "8c501bd419eb661df4f66959bf6404ed5325cf6826e9e2d1679879dd6508bfac",
+    "tools/site/generate_analysis_visuals.R": "936597f95a4b6139d4778cc492e4ab44babd953aa82340a80e4d0ba8d26ec611",
     "tools/site/analysis-visuals.js": "e9ac5cdc0082208233dd939ef4f4c7bc67e7a8d1005417f7f2246327dc897e9a",
     "tools/site/regime-map.html": "3156788330d703a6207944dfa168867e72c723682042e1b4f91d44a8f630dba2",
     "tools/site/quadrant-grid.html": "d420ed04064378201b7d647dd5d3b52a9f9463049e0e4bd1bee84328f8c6bc2d",
@@ -681,7 +681,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "8bc9fe6c291bb8dd4c5fc72add05bf8a527f74d928a7be32641a6dbeb71e2744",
-    "coverage.json": "59acbf93886f3a05b4d802be6b86ada46e41486c09d8f0c7a204e6debd9bc0bb",
+    "coverage.json": "a177821dbfe7e1ff5331364f6f494168c3007e53aa911ffc040fc726f6d4cf0f",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
