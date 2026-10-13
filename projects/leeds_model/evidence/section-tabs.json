@@ -21,6 +21,10 @@
       "page": "description"
     },
     {
+      "label": "Changes",
+      "page": "changes"
+    },
+    {
       "label": "Changelog",
       "page": "equations",
       "native": "change-log"

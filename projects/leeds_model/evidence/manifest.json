@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-13",
-  "commit": "a22211ae24b83e0166ae2ddb8cebe7d684deae1b",
+  "commit": "8e8a54e1d7d0d42faeac5fdd81c99164ea1e5bb0",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "5ce4c40aad7b17a0a20dbc428d578104624bfd04a2471bb1ac82390c1a54858a",
-      "bytes": 4358
+      "sha256": "3a28ace94666a63129ab13bf9f62378fed7390e753ddce3fa7ca57ea840f6e5f",
+      "bytes": 4421
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -43,10 +43,15 @@
       "sha256": "708f8bd0a883a63e67edd415cd5f4225e27d945d30b8917cd64f1cca8f53c73e",
       "bytes": 5423263
     },
-    "evidence/output/html/appendices/2026-09-30-model-description-revised.html": {
-      "source": "output/html/appendices/2026-09-30-model-description-revised.html",
-      "sha256": "4875e351d8be94e8fe1980f2d45244f06f2f9efc5f15852fdee2736faf4f8657",
-      "bytes": 1958303
+    "evidence/output/html/appendices/2026-10-13-model-description-current-revised.html": {
+      "source": "output/html/appendices/2026-10-13-model-description-current-revised.html",
+      "sha256": "ec5348724b85724862325fc542178dc09c3fb6a32987fa83556736c47d2bf24f",
+      "bytes": 1968639
+    },
+    "evidence/output/html/reports/2026-10-13-equation-changes-submitted-to-current.html": {
+      "source": "output/html/reports/2026-10-13-equation-changes-submitted-to-current.html",
+      "sha256": "fb9ebd88ea72885bda17bb3b1bdbfa10edd84654254da0f341a68ad98784f83c",
+      "bytes": 1978873
     },
     "evidence/model/equations/view-arms.html": {
       "source": "model/equations/view-arms.html",
@@ -55,8 +60,8 @@
     },
     "evidence/output/html/tables/arm-descriptions.html": {
       "source": "output/html/tables/arm-descriptions.html",
-      "sha256": "3f3c23fd990a4974cd2f17ceaa6c4fee8018a116434012b4bc2c1175819e3910",
-      "bytes": 124183
+      "sha256": "f4835b1e12624eaf00449908f7c06d24bea839a36c8a315726c008dba639da0d",
+      "bytes": 77397
     },
     "evidence/model/equations/model-registry.html": {
       "source": "model/equations/model-registry.html",
@@ -598,16 +603,16 @@
       "sha256": "ce1348a799c68caf6f548e7533df675b14fd1ad192fa1cb5ccf512bc8ddd68e9",
       "bytes": 479720
     },
-    "evidence/output/html/appendices/2026-09-30-model-description-revised.docx": {
-      "source": "output/docx/revised/2026-09-30-model-description-revised.docx",
-      "sha256": "0726655b0f4f38bfc4991a6c0f4cc4d4bed06780de7b098e9452f577a8e4cf9c",
-      "bytes": 41392
+    "evidence/output/html/appendices/2026-10-13-model-description-current-revised.docx": {
+      "source": "output/docx/revised/2026-10-13-model-description-current-revised.docx",
+      "sha256": "0d66fc5078027611f794c728450e3aec1bdc0710387dca40393e0c249724c4ca",
+      "bytes": 47835
     }
   },
   "inputs": {
     "web/evidence/sections.json": "7a0e820b584ae889b03c9dd0dc49cdd6926052a09845ffa0e26be8254b137385",
-    "web/evidence/pages.json": "07dd48fa2a166670bc4f3d4d7d4c568c00a116d9d7230c507eba35b1be1f4560",
-    "tools/site/build_evidence_site.py": "31c2e70af9e369df7e30c0081dc6a6c30c07f8a4fa275cd2476a7d3f214ca4a5",
+    "web/evidence/pages.json": "1905c69ea74a7da62b2f3c836eadf641ff3098781509461712b7001efc7980da",
+    "tools/site/build_evidence_site.py": "1b54ce81a0e69bcb0d8a08d784a3cf7d896fabfe9c8e785b9546fb56c5af0af7",
     "tools/site/comparison-viewer.html": "e5ec8e70efd7537102944329b230bb18f5080c078417edfcfbb867a20c7426e1",
     "tools/site/cluster-explorer.html": "9979aa5dac940e2571add78f0e5e7289fab8da193015af982e1fdba5a28a5c65",
     "tools/site/export_comparison_data.R": "7f600ed541e8e8f0c9e19ea2950c28b07a228a403876d2d2fd9c9a049ec4073a",
@@ -621,7 +626,7 @@
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "4a86cc4e7d7a6ea7ec2312adc8f0235762b70baf9c2084b036a9098ec2fd2ce7",
-    "web/evidence/section-tabs.json": "5ce4c40aad7b17a0a20dbc428d578104624bfd04a2471bb1ac82390c1a54858a",
+    "web/evidence/section-tabs.json": "3a28ace94666a63129ab13bf9f62378fed7390e753ddce3fa7ca57ea840f6e5f",
     "tools/site/generate_analysis_visuals.R": "f5846f150e3dffcda39f8b9b71f9b9068caf9346e57b7a49078cbf1bd03a0912",
     "tools/site/analysis-visuals.js": "e9ac5cdc0082208233dd939ef4f4c7bc67e7a8d1005417f7f2246327dc897e9a",
     "tools/site/regime-map.html": "3156788330d703a6207944dfa168867e72c723682042e1b4f91d44a8f630dba2",
@@ -655,6 +660,7 @@
     "pages/background.html",
     "pages/equations.html",
     "pages/description.html",
+    "pages/changes.html",
     "pages/arms.html",
     "pages/arm-descriptions.html",
     "pages/registry.html",
@@ -698,11 +704,12 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "6024005eae1d4b14676b56381780408645b241c515c4727cb21d1833f62e6a2f",
-    "coverage.json": "34a0156ac4435d847c9c18b36ce4e0d0e67f540d6f6637be1af52d6db2835da3",
+    "pages.json": "435877bee4743ff910a537b9c0c4fe3787c4ea9750be6406e0d2a86b1b6d5368",
+    "coverage.json": "c084fe710f9d4f55212aee8bf104ed89bc8d89652dbae7c4ec257f581df55585",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
-    "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",
+    "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
+    "pages/changes.html": "4565361f6bd4684d940033d73ecd8ed83b86865ae4c7bf3d90ff86e5af7ddf2f",
     "pages/arms.html": "7b651d3863428df9fc1d7f686b5b1869f568c9fc3db89b613de78b897fe76ec8",
     "pages/arm-descriptions.html": "88222bad59b14c976a5d10ab0ba0427db909a80de95cac70cae6414d94db4070",
     "pages/registry.html": "bd31574f2e93f86a8b988d4ec684770c3d6633ea18051066dc48fb2537fe6b7b",

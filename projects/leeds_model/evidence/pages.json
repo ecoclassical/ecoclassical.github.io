@@ -20,11 +20,20 @@
   {
     "id": "description",
     "section": "Model Equations",
-    "title": "Canonical model description",
-    "source": "output/html/appendices/2026-09-30-model-description-revised.html",
-    "description": "The written description of the canonical revised model and its closures.",
-    "artifact": "evidence/output/html/appendices/2026-09-30-model-description-revised.html",
+    "title": "Current model description",
+    "source": "output/html/appendices/2026-10-13-model-description-current-revised.html",
+    "description": "The written description of the model the Results run on (revised_capital_highfinance_credit, where current_revised points), block by block, with its four closures and its three-layer calibration.",
+    "artifact": "evidence/output/html/appendices/2026-10-13-model-description-current-revised.html",
     "href": "pages/description.html"
+  },
+  {
+    "id": "changes",
+    "section": "Model Equations",
+    "title": "Changes from the submitted model",
+    "source": "output/html/reports/2026-10-13-equation-changes-submitted-to-current.html",
+    "description": "Every equation change from the submitted description to current_revised, step by step, with the reason for each and a computed table of which equations moved where.",
+    "artifact": "evidence/output/html/reports/2026-10-13-equation-changes-submitted-to-current.html",
+    "href": "pages/changes.html"
   },
   {
     "id": "arms",
