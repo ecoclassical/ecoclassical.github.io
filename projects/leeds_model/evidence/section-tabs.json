@@ -68,6 +68,10 @@
     {
       "label": "Scenario definitions",
       "page": "scenario-definitions"
+    },
+    {
+      "label": "Scenario highlights",
+      "page": "scenario-highlights"
     }
   ],
   "Analysis": [
@@ -95,11 +99,6 @@
       "label": "Heatmap",
       "page": "analysis-visuals",
       "native": "heatmap"
-    },
-    {
-      "label": "Scenario highlights",
-      "page": "analysis-visuals",
-      "native": "highlights"
     }
   ],
   "Discussion": [

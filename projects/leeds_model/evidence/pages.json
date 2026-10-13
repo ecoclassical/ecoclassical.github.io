@@ -31,7 +31,7 @@
     "section": "Model Equations",
     "title": "Compare model arms",
     "source": "model/equations/view-arms.html",
-    "description": "Read the existing arm comparison with its own dated coverage.",
+    "description": "Overlay the cached baselines of every arm, from submitted to the high-finance stress arms, with per-cache provenance.",
     "artifact": "evidence/model/equations/view-arms.html",
     "href": "pages/arms.html"
   },
@@ -49,7 +49,7 @@
     "section": "Closures",
     "title": "Compare closure baselines",
     "source": "output/html/reports/closures/view-closures.html",
-    "description": "Four settlement rules within a fixed regional setup, with cache provenance.",
+    "description": "Four settlement rules within a fixed regional setup, on the eight high-finance credit baselines, with cache provenance.",
     "artifact": "evidence/output/html/reports/closures/view-closures.html",
     "href": "pages/view-closures.html"
   },
@@ -67,16 +67,25 @@
     "section": "Scenarios",
     "title": "Circular-economy scenario definitions",
     "source": "output/html/tables/scenarios.html",
-    "description": "The fourteen submitted interventions; the current grid includes 1\u20134 and 6\u201313.",
+    "description": "All sixteen registry interventions; the twelve named sc1\u2013sc12 (registry 1\u20134, 7\u201313, 16) form the high-finance Results grid.",
     "artifact": "evidence/output/html/tables/scenarios.html",
     "href": "pages/scenario-definitions.html"
+  },
+  {
+    "id": "scenario-highlights",
+    "section": "Scenarios",
+    "title": "Scenario highlights",
+    "source": "output/html/site/scenario-highlights.html",
+    "description": "One row per scenario: real, financial, ecological and distributional responses, and their regime under each closure, on the 96 high-finance credit runs.",
+    "artifact": "evidence/output/html/site/scenario-highlights.html",
+    "href": "pages/scenario-highlights.html"
   },
   {
     "id": "view-scenarios",
     "section": "Scenarios",
     "title": "Explore scenario responses",
     "source": "output/html/reports/scenarios/view-scenarios.html",
-    "description": "Signed responses against each arm\u2019s matching baseline, across 96 accepted experiments.",
+    "description": "Signed responses against each arm\u2019s matching baseline, across the 96 high-finance credit experiments (12 scenarios \u00d7 2 setups \u00d7 4 closures).",
     "artifact": "evidence/output/html/reports/scenarios/view-scenarios.html",
     "href": "pages/view-scenarios.html"
   },

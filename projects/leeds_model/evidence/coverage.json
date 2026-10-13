@@ -1,8 +1,8 @@
 {
-  "measured_at": "2026-10-13T15:30:58+00:00",
+  "measured_at": "2026-10-13T16:02:44+00:00",
   "cells": [
     {
-      "arm": "revised",
+      "arm": "revised_capital_highfinance_credit",
       "closure": "OPENFIX-gold",
       "region": "EU/RoW",
       "accepted": 12,
@@ -10,7 +10,31 @@
       "expected": 12
     },
     {
-      "arm": "revised_ns",
+      "arm": "revised_capital_highfinance_openfix_fiat_credit",
+      "closure": "OPENFIX-fiat",
+      "region": "EU/RoW",
+      "accepted": 12,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_capital_highfinance_quasifloat_credit",
+      "closure": "QUASIFLOAT",
+      "region": "EU/RoW",
+      "accepted": 12,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_capital_highfinance_openfixg_credit",
+      "closure": "OPENFIXG",
+      "region": "EU/RoW",
+      "accepted": 12,
+      "failed": 0,
+      "expected": 12
+    },
+    {
+      "arm": "revised_ns_capital_highfinance_credit",
       "closure": "OPENFIX-gold",
       "region": "North/South",
       "accepted": 12,
@@ -18,31 +42,15 @@
       "expected": 12
     },
     {
-      "arm": "revised_openfixg",
-      "closure": "OPENFIXG",
-      "region": "EU/RoW",
-      "accepted": 12,
-      "failed": 0,
-      "expected": 12
-    },
-    {
-      "arm": "revised_ns_openfixg",
-      "closure": "OPENFIXG",
+      "arm": "revised_ns_capital_highfinance_openfix_fiat_credit",
+      "closure": "OPENFIX-fiat",
       "region": "North/South",
       "accepted": 12,
       "failed": 0,
       "expected": 12
     },
     {
-      "arm": "revised_quasifloat",
-      "closure": "QUASIFLOAT",
-      "region": "EU/RoW",
-      "accepted": 12,
-      "failed": 0,
-      "expected": 12
-    },
-    {
-      "arm": "revised_ns_quasifloat",
+      "arm": "revised_ns_capital_highfinance_quasifloat_credit",
       "closure": "QUASIFLOAT",
       "region": "North/South",
       "accepted": 12,
@@ -50,21 +58,13 @@
       "expected": 12
     },
     {
-      "arm": "revised_openfix_fiat",
-      "closure": "OPENFIX-fiat",
-      "region": "EU/RoW",
-      "accepted": 12,
-      "failed": 0,
-      "expected": 12
-    },
-    {
-      "arm": "revised_ns_openfix_fiat",
-      "closure": "OPENFIX-fiat",
+      "arm": "revised_ns_capital_highfinance_openfixg_credit",
+      "closure": "OPENFIXG",
       "region": "North/South",
       "accepted": 12,
       "failed": 0,
       "expected": 12
     }
   ],
-  "basis": "Source: output/calibration/scenario_grid_20261002_xi_status.csv. Included scenarios 1\u20134 and 6\u201313; accepted means cache validation passed. Counts are zero where validation has not yet been recorded."
+  "basis": "Source: output/calibration/scenario_grid_20261012_hf_status.csv. Included scenarios: 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16 (registry numbers); accepted means cache validation passed. Counts are zero where validation has not yet been recorded."
 }
