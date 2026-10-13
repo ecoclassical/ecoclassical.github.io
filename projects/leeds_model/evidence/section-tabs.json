@@ -28,6 +28,16 @@
       "label": "Changelog",
       "page": "equations",
       "native": "change-log"
+    },
+    {
+      "label": "Closure equations",
+      "page": "closure-equations",
+      "native": "all-equations"
+    },
+    {
+      "label": "Closure differences",
+      "page": "closure-equations",
+      "native": "changed-equations"
     }
   ],
   "Baseline": [
@@ -36,8 +46,16 @@
       "page": "arms"
     },
     {
+      "label": "Closure viewer",
+      "page": "view-closures"
+    },
+    {
       "label": "Arm descriptions",
       "page": "arm-descriptions"
+    },
+    {
+      "label": "Closure description",
+      "page": "closure-description"
     },
     {
       "label": "Switches",
@@ -50,26 +68,6 @@
       "native": "edits"
     }
   ],
-  "Closures": [
-    {
-      "label": "All equations",
-      "page": "closure-equations",
-      "native": "all-equations"
-    },
-    {
-      "label": "Changed equations",
-      "page": "closure-equations",
-      "native": "changed-equations"
-    },
-    {
-      "label": "Description",
-      "page": "closure-description"
-    },
-    {
-      "label": "Plot viewer",
-      "page": "view-closures"
-    }
-  ],
   "Scenarios": [
     {
       "label": "Plot viewer",
@@ -80,16 +78,15 @@
       "page": "scenario-definitions"
     },
     {
-      "label": "Scenario highlights",
+      "label": "Main Results",
       "page": "scenario-highlights"
+    },
+    {
+      "label": "Results table",
+      "page": "regime-table"
     }
   ],
   "Analysis": [
-    {
-      "label": "Regime table",
-      "page": "analysis-visuals",
-      "native": "regime-table"
-    },
     {
       "label": "Dendrograms",
       "page": "analysis-visuals",

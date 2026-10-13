@@ -64,7 +64,7 @@
   },
   {
     "id": "closure-equations",
-    "section": "Closures",
+    "section": "Model Equations",
     "title": "Compare external-closure equations",
     "source": "model/equations/model-equations-closures.html",
     "description": "Equation changes from canonical gold settlement to the alternative external closures.",
@@ -73,7 +73,7 @@
   },
   {
     "id": "view-closures",
-    "section": "Closures",
+    "section": "Baseline",
     "title": "Compare closure baselines",
     "source": "output/html/reports/closures/view-closures.html",
     "description": "Four settlement rules within a fixed regional setup, on the eight high-finance credit baselines, with cache provenance.",
@@ -82,7 +82,7 @@
   },
   {
     "id": "closures",
-    "section": "Closures",
+    "section": "Baseline",
     "title": "Closure \u00d7 region grid \u2014 2026-10-01 snapshot",
     "source": "output/html/tables/closure_region_grid.html",
     "description": "Historical pre-\u039e snapshot. Current qualification and completion are in the closure \u00d7 region \u00d7 scenario page and current viewers.",
@@ -101,11 +101,20 @@
   {
     "id": "scenario-highlights",
     "section": "Scenarios",
-    "title": "Scenario highlights",
+    "title": "Main Results",
     "source": "output/html/site/scenario-highlights.html",
     "description": "One row per scenario: real, financial, ecological and distributional responses, and their regime under each closure, on the 96 high-finance credit runs.",
     "artifact": "evidence/output/html/site/scenario-highlights.html",
     "href": "pages/scenario-highlights.html"
+  },
+  {
+    "id": "regime-table",
+    "section": "Scenarios",
+    "title": "Results table",
+    "source": "output/html/site/regime-table.html",
+    "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: period-90 responses per scenario and region as a heatmap, with the regime under each closure.",
+    "artifact": "evidence/output/html/site/regime-table.html",
+    "href": "pages/regime-table.html"
   },
   {
     "id": "view-scenarios",
@@ -343,7 +352,7 @@
   },
   {
     "id": "closure-description",
-    "section": "Closures",
+    "section": "Baseline",
     "title": "Closure motivation, baseline and adjustment",
     "source": "output/html/site/closure-descriptions.html",
     "description": "One consolidated draft paper section describing all six closure specifications.",

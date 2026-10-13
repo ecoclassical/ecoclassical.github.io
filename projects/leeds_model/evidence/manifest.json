@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-13",
-  "commit": "36afe4ee3c81d3cf962ae027758fd4c1b4d5515c",
+  "commit": "d5d71a27c6754af060c691b23fc71574e69606f7",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -15,18 +15,18 @@
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "397b45b26a8906824e7e2dfa02c8dc0a8c2189b3ff3993f82fc2a179d755d8bc",
-      "bytes": 7024
+      "sha256": "05f22e2e51a87c01768e4343fe59d467a802258ac9a4e608babc6477d3c8d6c1",
+      "bytes": 7182
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
-      "sha256": "7a0e820b584ae889b03c9dd0dc49cdd6926052a09845ffa0e26be8254b137385",
-      "bytes": 157
+      "sha256": "55ed32c5c95c1d4264a45381d1eb80f46455426047cd3d35acc669fa630c4b53",
+      "bytes": 143
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "8fc855cb0405ba1d73c8f6538d8256df3b5381d61c7a32834815bc82dae75f09",
-      "bytes": 4530
+      "sha256": "a74139691566ee65c653bae0dfb5ae9f001ba479707271c4f9624c8b6e1490cf",
+      "bytes": 4485
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -90,8 +90,13 @@
     },
     "evidence/output/html/site/scenario-highlights.html": {
       "source": "output/html/site/scenario-highlights.html",
-      "sha256": "6eda3e5c97bcaf101e2f025dd8936e4aa551f12d42d58bff473347cdf322a07a",
-      "bytes": 36073
+      "sha256": "057a2a6414a86b6475b82e527f702cefc5e1ed045a4fe14f9d1414b05baaabce",
+      "bytes": 36059
+    },
+    "evidence/output/html/site/regime-table.html": {
+      "source": "output/html/site/regime-table.html",
+      "sha256": "90205e529964d0e118afccbdaedd43fe50bc596bf07ac12b7c9682d26c97a4e5",
+      "bytes": 5298178
     },
     "evidence/output/html/reports/scenarios/view-scenarios.html": {
       "source": "output/html/reports/scenarios/view-scenarios.html",
@@ -100,8 +105,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "daddc1a2a87a8a30cfab8cdf086071779c024a82b065461a067eb65f12d97b57",
-      "bytes": 6869485
+      "sha256": "af4d5227440c205301159f22848d9e68e25fedfaf12dc2fd66ac2976e075829d",
+      "bytes": 6859405
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -610,9 +615,9 @@
     }
   },
   "inputs": {
-    "web/evidence/sections.json": "7a0e820b584ae889b03c9dd0dc49cdd6926052a09845ffa0e26be8254b137385",
-    "web/evidence/pages.json": "1905c69ea74a7da62b2f3c836eadf641ff3098781509461712b7001efc7980da",
-    "tools/site/build_evidence_site.py": "1b54ce81a0e69bcb0d8a08d784a3cf7d896fabfe9c8e785b9546fb56c5af0af7",
+    "web/evidence/sections.json": "55ed32c5c95c1d4264a45381d1eb80f46455426047cd3d35acc669fa630c4b53",
+    "web/evidence/pages.json": "21a208481d7732f9ad9888c913916ea9cba10c611221b27c3f043b384c02b6b8",
+    "tools/site/build_evidence_site.py": "a044e92d161fefa292f458f457170487fa671c12465ce3800ceebef29ac9704f",
     "tools/site/comparison-viewer.html": "e5ec8e70efd7537102944329b230bb18f5080c078417edfcfbb867a20c7426e1",
     "tools/site/cluster-explorer.html": "9979aa5dac940e2571add78f0e5e7289fab8da193015af982e1fdba5a28a5c65",
     "tools/site/export_comparison_data.R": "7f600ed541e8e8f0c9e19ea2950c28b07a228a403876d2d2fd9c9a049ec4073a",
@@ -626,9 +631,10 @@
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "4a86cc4e7d7a6ea7ec2312adc8f0235762b70baf9c2084b036a9098ec2fd2ce7",
-    "web/evidence/section-tabs.json": "8fc855cb0405ba1d73c8f6538d8256df3b5381d61c7a32834815bc82dae75f09",
-    "tools/site/generate_analysis_visuals.R": "f0e733b7fb0f977b235453458503fc0fb369212642979ac43f697324cf519013",
-    "tools/site/analysis-visuals.js": "241850596266f5e66bf667849ba45814a01ec88108e5116b14d53033e3a5ded9",
+    "web/evidence/section-tabs.json": "a74139691566ee65c653bae0dfb5ae9f001ba479707271c4f9624c8b6e1490cf",
+    "tools/site/generate_analysis_visuals.R": "906c58b88ca2240dc9bff907c819aa22c939bb724f0a4d0a87565f17571dad9a",
+    "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
+    "tools/site/regime-table.html": "7b30cc24bc7fd578ea233a264fefbf4bc3d773f9fe00d547b73ec972980d9ab3",
     "tools/site/regime-map.html": "3156788330d703a6207944dfa168867e72c723682042e1b4f91d44a8f630dba2",
     "tools/site/quadrant-grid.html": "57fba6463e36cba3d32e010c044f45565d4801e2bd9fccd878c0560be4c5e104",
     "tools/site/generate_paper_pages.R": "69cbd3c7e32506284db8a3784aa166af624da421269ac134e7e930d64e412738",
@@ -669,6 +675,7 @@
     "pages/closures.html",
     "pages/scenario-definitions.html",
     "pages/scenario-highlights.html",
+    "pages/regime-table.html",
     "pages/view-scenarios.html",
     "pages/analysis-visuals.html",
     "pages/highfinance-cross-border.html",
@@ -704,8 +711,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "435877bee4743ff910a537b9c0c4fe3787c4ea9750be6406e0d2a86b1b6d5368",
-    "coverage.json": "3a39cce2ac39de220a4375d88031996f9be171b748b13eadc88e0c1484259474",
+    "pages.json": "3e428f2c9e7d33fef1d59af0c7c05940005a62f19b5b5569552b8d0d8bc2ad48",
+    "coverage.json": "16b4cbb26db8b0d5b1863f93c461cdea8685623bc00bd2f37c4ffa709de61e44",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
@@ -717,7 +724,8 @@
     "pages/view-closures.html": "0503339ab1978b9a13a857f40c039401eae0e90769b0b089e3e40ec85d3b5793",
     "pages/closures.html": "cdf1d522dc1fff75777b1ef0a32756c96713e114b96440b41605851213be1185",
     "pages/scenario-definitions.html": "3055c45f1ab8d08a2840794995de87da7a3d55cff57bbed463c9e5ccb83b2dde",
-    "pages/scenario-highlights.html": "9969d80db4efee0f25b703e6dbc6b52131eec7c5e47d1ad32cf05ab56c3ee823",
+    "pages/scenario-highlights.html": "9ce55405ce1e531a0ea43d55538789c271dea4a0e259eedc9c21fc97bf3c74a2",
+    "pages/regime-table.html": "85253643cb0f74e596d25c86ce6ea69d26c2fd21e6959acf881958c6e23aac25",
     "pages/view-scenarios.html": "b63bc4ca049e285b194358af61dde907d838c143e56cc8ebb2d3d90298565f43",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
     "pages/highfinance-cross-border.html": "e7ee556a3e9bbc48fca80dcb85c61287573e237db364e4f15051e4cc2e68fe04",
