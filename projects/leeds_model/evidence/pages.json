@@ -36,17 +36,17 @@
     "href": "pages/changes.html"
   },
   {
-    "id": "arms",
-    "section": "Baseline",
-    "title": "Compare arm baselines",
-    "source": "model/equations/view-arms.html",
-    "description": "Overlay the cached baselines of every arm, from submitted to the high-finance stress arms, with per-cache provenance.",
-    "artifact": "evidence/model/equations/view-arms.html",
-    "href": "pages/arms.html"
+    "id": "view-baselines",
+    "section": "Baselines",
+    "title": "Plot viewer: unshocked baselines",
+    "source": "output/html/reports/baselines/view-baselines.html",
+    "description": "Every cached baseline, chosen by arm, regional setup and closure: the submission-era arms at the gold closure, and the closure x setup variants of revised and the two high-finance arms, with per-cache provenance.",
+    "artifact": "evidence/output/html/reports/baselines/view-baselines.html",
+    "href": "pages/view-baselines.html"
   },
   {
     "id": "arm-descriptions",
-    "section": "Baseline",
+    "section": "Baselines",
     "title": "What each arm is",
     "source": "output/html/tables/arm-descriptions.html",
     "description": "One paragraph per arm of the registry, with its role, setup, closure, workbook and cached runs.",
@@ -55,7 +55,7 @@
   },
   {
     "id": "registry",
-    "section": "Baseline",
+    "section": "Baselines",
     "title": "Arm switches and edits",
     "source": "model/equations/model-registry.html",
     "description": "The switch values of every arm (data/arms.csv) and the edits arms are built from (data/edits.csv).",
@@ -63,26 +63,8 @@
     "href": "pages/registry.html"
   },
   {
-    "id": "closure-equations",
-    "section": "Model Equations",
-    "title": "Compare external-closure equations",
-    "source": "model/equations/model-equations-closures.html",
-    "description": "Equation changes from canonical gold settlement to the alternative external closures.",
-    "artifact": "evidence/model/equations/model-equations-closures.html",
-    "href": "pages/closure-equations.html"
-  },
-  {
-    "id": "view-closures",
-    "section": "Baseline",
-    "title": "Compare closure baselines",
-    "source": "output/html/reports/closures/view-closures.html",
-    "description": "Four settlement rules within a fixed regional setup, on the eight high-finance credit baselines, with cache provenance.",
-    "artifact": "evidence/output/html/reports/closures/view-closures.html",
-    "href": "pages/view-closures.html"
-  },
-  {
     "id": "closures",
-    "section": "Baseline",
+    "section": "Baselines",
     "title": "Closure \u00d7 region grid \u2014 2026-10-01 snapshot",
     "source": "output/html/tables/closure_region_grid.html",
     "description": "Historical pre-\u039e snapshot. Current qualification and completion are in the closure \u00d7 region \u00d7 scenario page and current viewers.",
@@ -352,8 +334,8 @@
   },
   {
     "id": "closure-description",
-    "section": "Baseline",
-    "title": "Closure motivation, baseline and adjustment",
+    "section": "Baselines",
+    "title": "Closure descriptions",
     "source": "output/html/site/closure-descriptions.html",
     "description": "One consolidated draft paper section describing all six closure specifications.",
     "artifact": "evidence/output/html/site/closure-descriptions.html",

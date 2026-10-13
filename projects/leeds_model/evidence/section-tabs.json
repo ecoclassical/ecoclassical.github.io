@@ -28,33 +28,19 @@
       "label": "Changelog",
       "page": "equations",
       "native": "change-log"
-    },
-    {
-      "label": "Closure equations",
-      "page": "closure-equations",
-      "native": "all-equations"
-    },
-    {
-      "label": "Closure differences",
-      "page": "closure-equations",
-      "native": "changed-equations"
     }
   ],
-  "Baseline": [
+  "Baselines": [
     {
-      "label": "Arm viewer",
-      "page": "arms"
-    },
-    {
-      "label": "Closure viewer",
-      "page": "view-closures"
+      "label": "Plot viewer",
+      "page": "view-baselines"
     },
     {
       "label": "Arm descriptions",
       "page": "arm-descriptions"
     },
     {
-      "label": "Closure description",
+      "label": "Closure descriptions",
       "page": "closure-description"
     },
     {
@@ -91,6 +77,11 @@
       "label": "Dendrograms",
       "page": "analysis-visuals",
       "native": "hierarchy"
+    },
+    {
+      "label": "Groups",
+      "page": "analysis-visuals",
+      "native": "groups"
     },
     {
       "label": "PCA",
