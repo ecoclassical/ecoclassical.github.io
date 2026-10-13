@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "3225bd5f4a089a799baffe9fabe9f492c30d557506b771773794873c32962c47",
-      "bytes": 4162
+      "sha256": "f0d1edfa3766fe5180321ca8b08e604c5130d92f315c2d38bf4e5704fb2cb762",
+      "bytes": 4276
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261002_xi.json",
@@ -80,8 +80,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "ed3a75db1bd872b8c49e998db64d47da641e376ee7a10d01ab463056f449f29a",
-      "bytes": 6861249
+      "sha256": "8e3890b310ad483c1fb3d6b49746af665377d2592bb44e32bb847c49b89213b7",
+      "bytes": 6893392
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -606,8 +606,8 @@
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "91893b7357cfcbcb0c5f76ee6bfea1d2da0769d3c896515184d1b826d0f11bcd",
-    "web/evidence/section-tabs.json": "3225bd5f4a089a799baffe9fabe9f492c30d557506b771773794873c32962c47",
-    "tools/site/generate_analysis_visuals.R": "47cce1b839c644f9d00acb7a68a413462dfbb319d2399b0007b90cc8fb1793de",
+    "web/evidence/section-tabs.json": "f0d1edfa3766fe5180321ca8b08e604c5130d92f315c2d38bf4e5704fb2cb762",
+    "tools/site/generate_analysis_visuals.R": "8c501bd419eb661df4f66959bf6404ed5325cf6826e9e2d1679879dd6508bfac",
     "tools/site/analysis-visuals.js": "e9ac5cdc0082208233dd939ef4f4c7bc67e7a8d1005417f7f2246327dc897e9a",
     "tools/site/regime-map.html": "3156788330d703a6207944dfa168867e72c723682042e1b4f91d44a8f630dba2",
     "tools/site/quadrant-grid.html": "d420ed04064378201b7d647dd5d3b52a9f9463049e0e4bd1bee84328f8c6bc2d",
@@ -681,7 +681,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "8bc9fe6c291bb8dd4c5fc72add05bf8a527f74d928a7be32641a6dbeb71e2744",
-    "coverage.json": "b39658f45d1e47d317bc6ab6562abf33a3848eb8f405f85880ab0296d93c5e27",
+    "coverage.json": "59acbf93886f3a05b4d802be6b86ada46e41486c09d8f0c7a204e6debd9bc0bb",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "e31ed4b18da39ebb4d40d3f377f13c1541beb598cdfdc51e56bcce2001033fd3",

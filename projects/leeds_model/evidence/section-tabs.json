@@ -95,6 +95,11 @@
       "label": "Heatmap",
       "page": "analysis-visuals",
       "native": "heatmap"
+    },
+    {
+      "label": "Scenario highlights",
+      "page": "analysis-visuals",
+      "native": "highlights"
     }
   ],
   "Discussion": [
