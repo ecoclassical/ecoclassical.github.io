@@ -2,9 +2,9 @@
   {
     "id": "background",
     "section": "Background",
-    "title": "Introduction and model overview \u2014 submitted paper",
+    "title": "Abstract, introduction and model overview",
     "source": "output/html/site/background.html",
-    "description": "The submitted Introduction, literature background, model blocks and calibration, with references.",
+    "description": "The submitted abstract, Introduction and Model Overview, with archival references.",
     "artifact": "evidence/output/html/site/background.html",
     "href": "pages/background.html"
   },
@@ -146,7 +146,7 @@
   {
     "id": "anova-current",
     "section": "Documentation",
-    "title": "Cross-border ANOVA \u2014 2026-10-02 revised grid (before high finance)",
+    "title": "Cross-border ANOVA \u2014 current high-finance grid (20261012_c79)",
     "source": "output/html/site/cross-border-anova.html",
     "description": "Current-tag scenario/setup/closure decomposition, clustering sensitivity and signed labels.",
     "artifact": "evidence/output/html/site/cross-border-anova.html",
@@ -412,5 +412,41 @@
     "description": "Negative demand for advances is the banks' reserve deposit; reserves earn nothing so bank profit is about \u22122 % of VA; firms barely borrow; five fixes.",
     "artifact": "evidence/output/html/reports/2026-10-09-negative-advances-bank-profits-firm-borrowing.html",
     "href": "pages/advances-banks-firms.html"
+  },
+  {
+    "id": "io-structure",
+    "section": "Simulations",
+    "title": "IO structure \u2014 demand channels and cross-border trade",
+    "source": "output/html/site/io-structure.html",
+    "description": "Submitted Descriptive Statistics beside measured high-finance demand channels and import structure.",
+    "artifact": "evidence/output/html/site/io-structure.html",
+    "href": "pages/io-structure.html"
+  },
+  {
+    "id": "scenario-design",
+    "section": "Simulations",
+    "title": "Scenario design \u2014 circular substitution operators",
+    "source": "output/html/site/scenario-design.html",
+    "description": "The revised final- and intermediate-demand operators, measured Leontief signs and frozen submitted text.",
+    "artifact": "evidence/output/html/site/scenario-design.html",
+    "href": "pages/scenario-design.html"
+  },
+  {
+    "id": "findings",
+    "section": "Discussion",
+    "title": "Structural findings \u2014 submitted claims tested",
+    "source": "output/html/site/findings.html",
+    "description": "Four submitted structural claims tested on the 96 high-finance, windowed runs.",
+    "artifact": "evidence/output/html/site/findings.html",
+    "href": "pages/findings.html"
+  },
+  {
+    "id": "anova-20261002",
+    "section": "Documentation",
+    "title": "Cross-border ANOVA \u2014 2026-10-02 snapshot",
+    "source": "output/html/site/cross-border-anova-20261002.html",
+    "description": "Dated pre-high-finance analysis preserved as an archival snapshot.",
+    "artifact": "evidence/output/html/site/cross-border-anova-20261002.html",
+    "href": "pages/anova-20261002.html"
   }
 ]

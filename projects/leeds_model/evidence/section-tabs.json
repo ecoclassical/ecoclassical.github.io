@@ -50,16 +50,24 @@
   ],
   "Simulations": [
     {
+      "label": "IO structure",
+      "page": "io-structure"
+    },
+    {
+      "label": "Scenario design",
+      "page": "scenario-design"
+    },
+    {
+      "label": "Scenario definitions",
+      "page": "scenario-definitions"
+    },
+    {
       "label": "Baseline plots",
       "page": "view-baselines"
     },
     {
       "label": "Scenario plots",
       "page": "view-scenarios"
-    },
-    {
-      "label": "Scenario definitions",
-      "page": "scenario-definitions"
     },
     {
       "label": "Scenario Highlights",
@@ -108,6 +116,10 @@
     }
   ],
   "Discussion": [
+    {
+      "label": "Structural findings",
+      "page": "findings"
+    },
     {
       "label": "Revised discussion",
       "page": "discussion"
@@ -228,6 +240,14 @@
     {
       "label": "Monetary rank 2×2",
       "page": "hierarchy-2x2"
+    },
+    {
+      "label": "Current ANOVA",
+      "page": "anova-current"
+    },
+    {
+      "label": "ANOVA 2026-10-02",
+      "page": "anova-20261002"
     }
   ]
 }
