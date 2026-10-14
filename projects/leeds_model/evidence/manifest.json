@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-14",
-  "commit": "5374ef7a1f22a85539bc72b3616db36e30fcf262",
+  "commit": "62a27cede7e573623964afc78bf50a724e038c91",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -155,8 +155,8 @@
     },
     "evidence/output/html/site/discussion.html": {
       "source": "output/html/site/discussion.html",
-      "sha256": "e7b445535e14cc964bf3b05fbc48537a2c6bfec98148ce535181cc0357b1ea16",
-      "bytes": 1917236
+      "sha256": "b505e9c01e020cbde05000826a28c4c7f8848b6b77d50b0a8dd4ead24c32c56c",
+      "bytes": 1917815
     },
     "evidence/output/html/site/submitted-discussion.html": {
       "source": "output/html/site/submitted-discussion.html",
@@ -626,7 +626,7 @@
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "ddd89db8e1a952a9224126d9c684eebc9f37a2fe6498b19c1f2ccd6a8542e5e2",
-    "qmd/site/discussion.qmd": "9169b36956d38cb7b151c82e0fc30307496ec7496d163d3d0d330ab14ffe7583",
+    "qmd/site/discussion.qmd": "691619339a4e86b22c474ab68fb791f3397c1515b544c0d9cd6d150d18c20f3c",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "qmd/site/version-comparison.qmd": "0a7c2a09a3bf3cd71ba6f8938cc3455e76de4bad6987c0433e9e6cb796ff14d5",
@@ -715,7 +715,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "dc4f07fa7a3f3ea81b15d45d0094161da4afc15d40b4353a0e12acf5e95cbe54",
-    "coverage.json": "3d7b1b73bce02540206b5f31be768f135f4b8b51236f9ab8b5430d04fceed3d5",
+    "coverage.json": "01a52929e1334a4b8fd03657bd28f66868dea13353e10dc33fdc9b629472cff1",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",

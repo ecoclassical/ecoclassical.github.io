@@ -2298,7 +2298,7 @@ Warning
 <li>a second regional setup.</li>
 </ul>
 <p>A claim that “does not hold” below fails on this model, and that is not a finding that the submitted runs were miscomputed.</p>
-<p><strong>What the 79..100 window cannot settle.</strong> Under gold, fiat and the quasi-float the current account has no closing instrument, and after t = 100 the responses drift (D-62). The cause of that drift is being tested now by re-running the 24 gold runs with the finance premium φ = 0. Until that test reports, the labels here are medium-run responses, not long-run ones. OPENFIXG is the closure with a stationary state.</p>
+<p><strong>What the 79..100 window cannot settle.</strong> Under gold, fiat and the quasi-float the current account has no closing instrument, and after t = 100 the responses drift (D-62). The 24 gold runs were re-made to t = 200 with the finance premium φ set to 0, nothing else changed. The drift is mainly the premium: the median ratio of the 179..200 mean to the 79..100 mean falls from 2.26 (EU or North) and 8.66 (RoW or South) to 1.09 and 1.37, and the label survives to 179..200 in 18 of 24 runs instead of 3. The current account stays open at φ = 0; it is the stock the premium reads, not by itself the source of the growing response. The 79..100 labels used on this page are the same under both values of φ in 22 of 24 runs. Fiat and the quasi-float were not re-run, so for them this is inferred. The labels remain medium-run responses; OPENFIXG is the closure with a stationary state.</p>
 </div>
 </div>
 <div class="cell">
@@ -2745,7 +2745,7 @@ Warning
 </ul></li>
 </ul></li>
 <li><strong>Limitation: the 2011 calibration and electricity decarbonisation.</strong> Unchanged.</li>
-<li><strong>New limitation: the external position drifts after t = 100 under three of the four closures.</strong> The cause is the open test in the box above. Until it reports, the regime labels are medium-run responses.</li>
+<li><strong>New limitation: the responses drift after t = 100 under three of the four closures.</strong> The cause is mainly the finance premium of design (d), measured on the 24 gold runs (box above). The 79..100 labels hardly depend on it (22 of 24 unchanged at φ = 0), but they remain medium-run responses, not long-run regimes.</li>
 </ul>
 </section>
 
