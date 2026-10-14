@@ -123,30 +123,22 @@
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-      grid-template-areas:
-        "id  label"
-        "bio list";
       column-gap: clamp(3rem, 6vw, 6rem);
-      row-gap: 2.4rem;
       align-content: start;
       /* Start the introduction near the nav, including on tall screens. */
       min-height: calc(100vh - 53px);
       padding: 2.5rem 0;
     }
-    /* Flatten the two columns into the grid so the first line of the About
-       text and the first research question share a row and a baseline. */
-    .hero-left, .hero-right { display: contents; }
-    .hero-id { grid-area: id; }
-    .hero .bio { grid-area: bio; align-self: start; }
-    .hero-right .section-label { grid-area: label; align-self: start; margin-bottom: 0; color: var(--green); font-size: 10px; line-height: 1.7; }
-    .hero-right .q-groups { grid-area: list; align-self: start; }
+    .hero-left, .hero-right { display: flex; flex-direction: column; align-items: stretch; }
+    .hero-left { gap: 2.4rem; }
+    .hero-right { gap: 1.5rem; }
+    .hero-right .section-label { margin-bottom: 0; color: var(--green); font-size: 10px; line-height: 1.7; }
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
-        grid-template-areas: "id" "bio" "label" "list";
         row-gap: 2rem; min-height: 0; padding: 2.5rem 0 3rem;
       }
-      .hero-right .section-label { margin-top: 1rem; }
+      .hero-left { gap: 2rem; }
     }
     .hero-id {
       display: flex; align-items: flex-start; gap: 1.8rem;
