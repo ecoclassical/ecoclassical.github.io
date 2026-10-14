@@ -62,11 +62,11 @@
       "page": "scenario-definitions"
     },
     {
-      "label": "Main Results",
+      "label": "Scenario Highlights",
       "page": "scenario-highlights"
     },
     {
-      "label": "Results table",
+      "label": "Scenario Results",
       "page": "regime-table"
     }
   ],
@@ -170,6 +170,14 @@
     }
   ],
   "Tables": [
+    {
+      "label": "Scenario Highlights",
+      "page": "tables-scenario-highlights"
+    },
+    {
+      "label": "Scenario Results",
+      "page": "tables-regime-table"
+    },
     {
       "label": "Scenario summary",
       "page": "paper-tables",

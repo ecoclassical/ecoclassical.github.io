@@ -83,7 +83,7 @@
   {
     "id": "scenario-highlights",
     "section": "Simulations",
-    "title": "Main Results",
+    "title": "Scenario Highlights",
     "source": "output/html/site/scenario-highlights.html",
     "description": "One row per scenario: real, financial, ecological and distributional responses, and their regime under each closure, on the 96 high-finance credit runs.",
     "artifact": "evidence/output/html/site/scenario-highlights.html",
@@ -92,7 +92,7 @@
   {
     "id": "regime-table",
     "section": "Simulations",
-    "title": "Results table",
+    "title": "Scenario Results",
     "source": "output/html/site/regime-table.html",
     "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: period-90 responses per scenario and region as a heatmap, with the regime under each closure.",
     "artifact": "evidence/output/html/site/regime-table.html",
@@ -349,6 +349,24 @@
     "description": "The paper\u2019s figures and the channel/impact grids, redrawn on the high-finance credit arms.",
     "artifact": "evidence/output/html/site/paper-figures.html",
     "href": "pages/paper-figures.html"
+  },
+  {
+    "id": "tables-scenario-highlights",
+    "section": "Tables",
+    "title": "Scenario Highlights",
+    "source": "output/html/site/scenario-highlights.html",
+    "description": "One row per scenario: real, financial, ecological and distributional responses, and their regime under each closure, on the 96 high-finance credit runs.",
+    "artifact": "evidence/output/html/site/scenario-highlights.html",
+    "href": "pages/tables-scenario-highlights.html"
+  },
+  {
+    "id": "tables-regime-table",
+    "section": "Tables",
+    "title": "Scenario Results",
+    "source": "output/html/site/regime-table.html",
+    "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: period-90 responses per scenario and region as a heatmap, with the regime under each closure.",
+    "artifact": "evidence/output/html/site/regime-table.html",
+    "href": "pages/tables-regime-table.html"
   },
   {
     "id": "paper-tables",
