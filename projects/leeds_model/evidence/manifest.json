@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": true,
+  "working_tree_dirty": false,
   "built_date": "2026-10-14",
-  "commit": "30d6a1e5e70d79bc3a48e2130a2ef11991fa4997",
+  "commit": "476ee49acc1d0ba322a87d27268c05f12670a0cb",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -95,8 +95,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "a238eee3465cf3ebfd85e01de748ba5f11074f24ffc5f9601cfaeb1b7f530dc0",
-      "bytes": 7098266
+      "sha256": "720729b14907c89380a6067538529ffe6014e364ee54da7de5447851e1b6f607",
+      "bytes": 7108764
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -620,17 +620,17 @@
     "output/calibration/scenario_grid_20261012_hf_status.csv": "5757b38addb60b21101371f0505588fa49d475e03e7024b84c4903982a738ede",
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
-    "qmd/site/cross-border-anova.qmd": "67ecf78306ea280044d87fa31f296fea06a6acba578ce60f90ce1e3d6d6ec16f",
+    "qmd/site/cross-border-anova.qmd": "7e80b5b0877f42f811775cb4e333576e9b3c34da1964f86fe009fc23101fc0cd",
     "qmd/site/discussion.qmd": "dfee88c3f692c0c8c3e47489f725ebb388587d14270ee4a38e30a10085114e96",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "8222020a2c64ae179bd85f60479e233f897e0f6f54ad0d2b3395260e4c059c30",
     "web/evidence/section-tabs.json": "8c675ad994e610058cd0f561375b060954267e4299a74373a21cd8413184dbe2",
-    "tools/site/generate_analysis_visuals.R": "3dcefd269642da63c3aed70b3ca992d7fd008799c25c555028af0c14e7402b8d",
+    "tools/site/generate_analysis_visuals.R": "550a0cc4c3dc09450586b80323711c7c2afe357daaec46f921d4f4bd534275b7",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "b79fc049c6b3f8e9b2af70a6e8086f93d23acb7ec2d6a1de9184bf829b512252",
-    "tools/site/group-table.html": "09d8ffc9048f78ece1334825506751c5ad385c58903d676bd7d26d5dfbad7cc5",
+    "tools/site/group-table.html": "4d79d70638fab8abf4bf27a902870a4d629f112ecb2ca6c1b4695ac95375cb6c",
     "tools/site/regime-map.html": "e40e474a67e0b4c961ce7ca8c7d094cb877457c78110012f60534d68368908af",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
     "tools/site/generate_paper_pages.R": "00ffda62a21b025a187a70cc0d31f26860332f217011aaaccbc2c335c3ea0d35",
@@ -706,7 +706,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "07931d7efa5733f05cef93f003fda7a8d9b19348785217789472a4880e562d1c",
-    "coverage.json": "b394ad88bc5f01d7e2e0b31bc6ff0788420f1156d870e5a566410911e660582f",
+    "coverage.json": "68f07b4163c38a509b1f78bf581b71bfa8ac26f0d7a694a68e5ad85793454d4e",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
