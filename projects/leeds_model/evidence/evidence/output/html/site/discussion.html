@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Discussion — current evidence and open decisions</title>
+<title>Discussion — revised: the submitted claims on the high-finance grid</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2143,11 +2143,15 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#reading-the-current-evidence" id="toc-reading-the-current-evidence" class="nav-link active" data-scroll-target="#reading-the-current-evidence">Reading the current evidence</a></li>
-  <li><a href="#interventions-depend-on-regional-structure-and-closure" id="toc-interventions-depend-on-regional-structure-and-closure" class="nav-link" data-scroll-target="#interventions-depend-on-regional-structure-and-closure">Interventions depend on regional structure and closure</a></li>
-  <li><a href="#calibration-attraction-and-admissible-holdings" id="toc-calibration-attraction-and-admissible-holdings" class="nav-link" data-scroll-target="#calibration-attraction-and-admissible-holdings">Calibration, attraction and admissible holdings</a></li>
-  <li><a href="#three-author-decisions-remain" id="toc-three-author-decisions-remain" class="nav-link" data-scroll-target="#three-author-decisions-remain">Three author decisions remain</a></li>
-  <li><a href="#manuscript-implications" id="toc-manuscript-implications" class="nav-link" data-scroll-target="#manuscript-implications">Manuscript implications</a></li>
+  <li><a href="#summary-of-verdicts" id="toc-summary-of-verdicts" class="nav-link active" data-scroll-target="#summary-of-verdicts">Summary of verdicts</a></li>
+  <li><a href="#the-evidence-this-page-reads" id="toc-the-evidence-this-page-reads" class="nav-link" data-scroll-target="#the-evidence-this-page-reads">The evidence this page reads</a></li>
+  <li><a href="#scenario-discussion" id="toc-scenario-discussion" class="nav-link" data-scroll-target="#scenario-discussion">Scenario Discussion</a>
+  <ul class="collapse">
+  <li><a href="#the-demand-scale-principle" id="toc-the-demand-scale-principle" class="nav-link" data-scroll-target="#the-demand-scale-principle">The Demand Scale Principle</a></li>
+  <li><a href="#two-demand-transition-regimes" id="toc-two-demand-transition-regimes" class="nav-link" data-scroll-target="#two-demand-transition-regimes">Two Demand Transition Regimes</a></li>
+  <li><a href="#the-circular-economy-trilemma" id="toc-the-circular-economy-trilemma" class="nav-link" data-scroll-target="#the-circular-economy-trilemma">The Circular Economy Trilemma</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
 </div>
@@ -2157,7 +2161,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Discussion — current evidence and open decisions</h1>
+<h1 class="title">Discussion — revised: the submitted claims on the high-finance grid</h1>
 </div>
 
 
@@ -2174,33 +2178,677 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="reading-the-current-evidence" class="level2">
-<h2 class="anchored" data-anchor-id="reading-the-current-evidence">Reading the current evidence</h2>
-<p>The current grid uses tag <strong>20261002_xi</strong>: twelve interventions, two regional setups and four external closures, with each intervention compared against its own baseline. All 96 runs are accepted; all 48 North/South scenario caches were retained byte-for-byte when the EU/RoW premium was recalibrated. Acceptance records completion and numerical checks, with the explicit quasi-float drift exception.</p>
-<p>All 96 signed transmission labels are unchanged by the premium and target-restoring instrument changes. The largest period-90 value-added response change is 0.00072949 percentage points. This supports continuity of the descriptive classification across this recalibration; it does not identify a premium-only effect or guarantee robustness to other specifications.</p>
+<blockquote class="blockquote">
+<p><strong>What this page is.</strong> The <a href="submitted-discussion.html">submitted discussion</a> is the April 2026 manuscript’s own text and stays unchanged. This page follows it section by section. For each claim it states whether the claim <strong>holds</strong>, <strong>holds in part</strong>, <strong>does not hold</strong> or is <strong>not tested</strong> on the revised model, and on what numbers.</p>
+</blockquote>
+<section id="summary-of-verdicts" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-verdicts">Summary of verdicts</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Each submitted claim on the high-finance grid (tag 20261012_c79). EU = Z1 and RoW = Z2 in either regional setup; medians over the 8 runs of a scenario, mean over t = 79..100. The sections below give the full reasoning.</caption>
+<colgroup>
+<col style="width: 2%">
+<col style="width: 15%">
+<col style="width: 28%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;">Submitted claim</th>
+<th style="text-align: left;">Verdict</th>
+<th style="text-align: left;">Basis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Demand scale</td>
+<td style="text-align: left;">Channel scale predicts outcome rank</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#a86b00;white-space:nowrap">Holds in part</span></td>
+<td style="text-align: left;">Spearman ρ between the volume a scenario moves and the size of its median response, 11 scenarios: 0.81 EU employment, 0.67 EU value added, 0.67 EU extraction, 0.72 EU water, 0.58 EU emissions, -0.25 EU land. Volumes from the channel screen on the older revised baselines.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Demand scale</td>
+<td style="text-align: left;">Sc1 food gives the largest final-demand contraction</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#1f7a4d;white-space:nowrap">Holds</span></td>
+<td style="text-align: left;">sc1 EU employment -0.057%; the only positive run is North/South under OPENFIXG.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Demand scale</td>
+<td style="text-align: left;">Sc2 household energy gives outsized emission cuts</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#1f7a4d;white-space:nowrap">Holds</span></td>
+<td style="text-align: left;">EU emissions -1.304%, the second-largest cut, from the 8th-largest of the 11 volumes.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Demand scale</td>
+<td style="text-align: left;">Sc4 government plastics has outsized leverage</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#b23a3a;white-space:nowrap">Does not hold</span></td>
+<td style="text-align: left;">Same scale as sc7 Int-Plastics (2.38 against 2.08 moved) and the same effects (EU extraction -0.085% against -0.098%).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Two regimes</td>
+<td style="text-align: left;">Final demand and intermediate production are two regimes</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#b23a3a;white-space:nowrap">Does not hold</span></td>
+<td style="text-align: left;">The regime follows the material: food is production leakage through both channels (sc1 6 of 8, sc12 7 of 8), energy is competitive displacement or contained (sc2 CD 7 of 8, sc11 CD 4 of 8).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Two regimes</td>
+<td style="text-align: left;">Intermediate scenarios contract, with metals the exception</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#b23a3a;white-space:nowrap">Does not hold</span></td>
+<td style="text-align: left;">4 of the 8 have a positive median EU employment response; sc11 Int-Energy is the largest EU expansion (value added +0.117%).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trilemma</td>
+<td style="text-align: left;">No scenario achieves ecological, macroeconomic and distributional gains at once</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#a86b00;white-space:nowrap">Holds, in a new form</span></td>
+<td style="text-align: left;">Runs meeting all three conditions: 1 of 96. In 16 of the 17 runs that pair an ecological gain with EU expansion, the EU wage share falls.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Trilemma</td>
+<td style="text-align: left;">Sc13 energy: current account +1.81%, largest RoW burden</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#b23a3a;white-space:nowrap">Does not hold</span></td>
+<td style="text-align: left;">EU current account +0.000% of EU value added; RoW value added -0.004%, smaller than the RoW contraction under sc8 (-0.033%) or sc2 (-0.011%).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trilemma</td>
+<td style="text-align: left;">Sc13 energy: distributionally regressive, raises land use</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#1f7a4d;white-space:nowrap">Holds</span></td>
+<td style="text-align: left;">EU wage share -0.020 pp, falling in all 8 runs; EU land +0.200%.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Trilemma</td>
+<td style="text-align: left;">Metals rebound; wood is a land intervention; food raises water use</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#1f7a4d;white-space:nowrap">Holds</span></td>
+<td style="text-align: left;">sc8 EU emissions +0.578%; sc5 EU land -3.78%; sc1 EU water +0.836%.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Conclusions</td>
+<td style="text-align: left;">Intermediate scenarios cut wage shares and raise profit shares</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#b23a3a;white-space:nowrap">Does not hold</span></td>
+<td style="text-align: left;">The EU wage share follows the regime: +0.0139 pp under production leakage, -0.0043 pp under competitive displacement (medians).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Conclusions</td>
+<td style="text-align: left;">Fossil-import collapse and symmetric contraction are the most regressive</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#a86b00;white-space:nowrap">Holds in part</span></td>
+<td style="text-align: left;">Fossil-import collapse is now part of CD, where the EU wage share falls; symmetric contraction (now DC and CC) leaves it almost unchanged.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Several</td>
+<td style="text-align: left;">Construction claims (Sc5, Sc14)</td>
+<td style="text-align: left;"><span style="display:inline-block;padding:1px 8px;border-radius:9px;color:#fff;background:#6b716c;white-space:nowrap">Not tested</span></td>
+<td style="text-align: left;">Both scenarios are outside the presentation set.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-<section id="interventions-depend-on-regional-structure-and-closure" class="level2">
-<h2 class="anchored" data-anchor-id="interventions-depend-on-regional-structure-and-closure">Interventions depend on regional structure and closure</h2>
-<p>The current ANOVA decomposition places substantial response variation in scenario × regional-setup and scenario × closure interactions. The effect of a closure or regional aggregation therefore cannot be represented by one common shift across all interventions. The decomposition describes this finite deterministic grid; cluster groups and transmission labels do not, by themselves, identify causal mechanisms.</p>
-<p>The submitted Discussion page preserves the paper’s original demand-scale, transition-regime and trilemma interpretation. Those passages refer to submitted experiments, including construction. They should be read alongside the current twelve-intervention analysis, rather than taken as a rewritten discussion of the revised grid.</p>
-</section>
-<section id="calibration-attraction-and-admissible-holdings" class="level2">
-<h2 class="anchored" data-anchor-id="calibration-attraction-and-admissible-holdings">Calibration, attraction and admissible holdings</h2>
-<p>The EU/RoW enterprise premium now uses the Ξ currency conversion in production prices: e=0.219545, with unchanged calibration targets and accompanying instrument changes. Quasi-float’s EU debt/VA slope is −1.029379e-04 per period over t71–100, 2.94% beyond the strict 1e-4 gate. The maintainer chose to document this bounded exception after probes found that debt endowments move the level without correcting the slope, while λ/tax adjustments were knife-edge.</p>
-<p>OPENFLEX remains a separate diagnostic. Both old and new calibration trajectories clear accurately but diverge, and eventually contain negative holdings. New-cache temporary spending pulses amplify after expenditure returns to baseline. Amplification also survives a diagnostic branch where Ξ follows the reference quote path. These observations narrow the feedback question; complete financial constraint reduction and the minimal causal loop remain open.</p>
-</section>
-<section id="three-author-decisions-remain" class="level2">
-<h2 class="anchored" data-anchor-id="three-author-decisions-remain">Three author decisions remain</h2>
+<section id="the-evidence-this-page-reads" class="level2">
+<h2 class="anchored" data-anchor-id="the-evidence-this-page-reads">The evidence this page reads</h2>
+<p><strong>The grid.</strong> It contains 96 runs: the twelve presentation scenarios (D-51) × two regional setups (EU/RoW and North/South) × four external closures (OPENFIX gold, OPENFIX fiat, the quasi-float and OPENFIXG). Every run is on the high-finance arms with credit rationing on (D-58, D-60). The analysis tag is 20261012_c79.</p>
+<p><strong>The read-out (D-65).</strong> Each response is the mean over t = 79..100 of the run’s deviation from its own arm’s unshocked baseline. That window is one full cycle of the baseline accelerator, which has a period of about 22. The bases are:</p>
 <ul>
-<li><strong>Scenario 6:</strong> decide whether policy should affect net investment, which is nearly zero in the stationary baseline, or replacement-capital demand. A replacement-capital redesign changes the intervention.</li>
-<li><strong>Quasi-float crawl speed:</strong> justify the provisional <code>par_xr=0.15</code>; baseline calibration does not identify this adjustment speed.</li>
-<li><strong>South fiat reserves:</strong> interpret or redesign the South central bank’s short position of approximately −11.5 in North bills. A numerically quiet baseline does not settle its institutional admissibility.</li>
+<li>value added, employment, emissions, extraction, land, water and the other levels: % of the region’s own baseline;</li>
+<li>the wage share and debt/GDP: percentage points;</li>
+<li>the current account and the government deficit: % of the region’s own baseline value added.</li>
 </ul>
-<p>The premium adoption and bounded quasi-float drift exception are settled decisions, recorded as D-31/D-32 in the project decision log.</p>
+<p><strong>Medians and ranges.</strong> “Median [min, max]” below is taken over the 8 runs of one scenario (2 setups × 4 closures).</p>
+<p><strong>Regimes.</strong> These follow the submitted value-added sign rule at τ = 0.003%, under the D-61 names:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Name</th>
+<th>Z1 value added</th>
+<th>Z2 value added</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PL</td>
+<td>production leakage</td>
+<td>contracts</td>
+<td>expands</td>
+</tr>
+<tr class="even">
+<td>CD</td>
+<td>competitive displacement</td>
+<td>expands</td>
+<td>contracts</td>
+</tr>
+<tr class="odd">
+<td>DC</td>
+<td>dual contraction</td>
+<td>contracts</td>
+<td>contracts, with |response| ≥ τ</td>
+</tr>
+<tr class="even">
+<td>CC</td>
+<td>contained contraction</td>
+<td>contracts</td>
+<td>|response| &lt; τ</td>
+</tr>
+<tr class="odd">
+<td>DE</td>
+<td>dual expansion</td>
+<td>expands</td>
+<td>expands</td>
+</tr>
+</tbody>
+</table>
+<p>Regime counts over the 96 runs: CC 42, PL 27, CD 19, DC 6, DE 2.</p>
+<p><strong>Scenario names.</strong> The submitted text numbers scenarios by registry ID; this page uses the D-51 names. The scenarios the claims below refer to:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Submitted</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sc1</td>
+<td>sc1 HH-Food</td>
+</tr>
+<tr class="even">
+<td>Sc2</td>
+<td>sc2 HH-Energy</td>
+</tr>
+<tr class="odd">
+<td>Sc4</td>
+<td>sc4 Gov-Plastics</td>
+</tr>
+<tr class="even">
+<td>Sc7</td>
+<td>sc5 Int-Wood</td>
+</tr>
+<tr class="odd">
+<td>Sc9</td>
+<td>sc7 Int-Plastics</td>
+</tr>
+<tr class="even">
+<td>Sc10</td>
+<td>sc8 Int-Metal</td>
+</tr>
+<tr class="odd">
+<td>Sc13</td>
+<td>sc11 Int-Energy</td>
+</tr>
+</tbody>
+</table>
+<p>The construction scenarios, Sc5 and Sc14, are not in the presentation set. sc12 Int-Food (registry 16) is new.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>A change of model, not only of numbers.</strong> The submitted claims were read on the submitted specification, at three horizons after a shock at t = 70. The revised model differs in several ways:</p>
+<ul>
+<li>prices of production;</li>
+<li>Armington substitution on intermediates;</li>
+<li>the Tobin portfolio block;</li>
+<li>the sectoral capital stock;</li>
+<li>firm finance and credit rationing;</li>
+<li>four external closures;</li>
+<li>a second regional setup.</li>
+</ul>
+<p>A claim that “does not hold” below fails on this model, and that is not a finding that the submitted runs were miscomputed.</p>
+<p><strong>What the 79..100 window cannot settle.</strong> Under gold, fiat and the quasi-float the current account has no closing instrument, and after t = 100 the responses drift (D-62). The cause of that drift is being tested now by re-running the 24 gold runs with the finance premium φ = 0. Until that test reports, the labels here are medium-run responses, not long-run ones. OPENFIXG is the closure with a stationary state.</p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Median response over the 8 runs of each scenario, mean over t = 79..100 (tag 20261012_c79). EU = Z1 (EU or North), RoW = Z2 (RoW or South). Levels in % of own baseline; the wage share in percentage points. Regimes: count of the 8 runs in each.</caption>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 14%">
+<col style="width: 7%">
+<col style="width: 12%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: right;">EU VA</th>
+<th style="text-align: right;">RoW VA</th>
+<th style="text-align: right;">EU empl.</th>
+<th style="text-align: right;">EU wage sh. (pp)</th>
+<th style="text-align: right;">EU emis.</th>
+<th style="text-align: right;">EU extraction</th>
+<th style="text-align: right;">EU land</th>
+<th style="text-align: right;">EU water</th>
+<th style="text-align: left;">Regimes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sc1 - HH-Food</td>
+<td style="text-align: right;">-0.056</td>
+<td style="text-align: right;">+0.032</td>
+<td style="text-align: right;">-0.057</td>
+<td style="text-align: right;">+0.002</td>
+<td style="text-align: right;">-0.499</td>
+<td style="text-align: right;">-0.334</td>
+<td style="text-align: right;">-0.141</td>
+<td style="text-align: right;">+0.836</td>
+<td style="text-align: left;">CC 1, DE 1, PL 6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sc2 - HH-Energy</td>
+<td style="text-align: right;">+0.050</td>
+<td style="text-align: right;">-0.011</td>
+<td style="text-align: right;">+0.020</td>
+<td style="text-align: right;">-0.005</td>
+<td style="text-align: right;">-1.304</td>
+<td style="text-align: right;">-0.491</td>
+<td style="text-align: right;">+0.098</td>
+<td style="text-align: right;">-0.020</td>
+<td style="text-align: left;">CC 1, CD 7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sc3 - HH-Wood</td>
+<td style="text-align: right;">+0.002</td>
+<td style="text-align: right;">-0.000</td>
+<td style="text-align: right;">+0.002</td>
+<td style="text-align: right;">+0.000</td>
+<td style="text-align: right;">+0.004</td>
+<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">-0.323</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: left;">CC 8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sc4 - Gov-Plastics</td>
+<td style="text-align: right;">-0.011</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">-0.017</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">-0.032</td>
+<td style="text-align: right;">-0.085</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">-0.018</td>
+<td style="text-align: left;">CC 1, DC 4, PL 3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sc5 - Int-Wood</td>
+<td style="text-align: right;">-0.027</td>
+<td style="text-align: right;">+0.011</td>
+<td style="text-align: right;">+0.006</td>
+<td style="text-align: right;">+0.018</td>
+<td style="text-align: right;">+0.034</td>
+<td style="text-align: right;">-0.160</td>
+<td style="text-align: right;">-3.781</td>
+<td style="text-align: right;">-0.054</td>
+<td style="text-align: left;">CC 1, PL 7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sc6 - Int-Pulp</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">-0.000</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">+0.001</td>
+<td style="text-align: right;">-0.014</td>
+<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">-0.220</td>
+<td style="text-align: right;">-0.003</td>
+<td style="text-align: left;">CC 8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sc7 - Int-Plastics</td>
+<td style="text-align: right;">-0.017</td>
+<td style="text-align: right;">+0.002</td>
+<td style="text-align: right;">-0.017</td>
+<td style="text-align: right;">-0.000</td>
+<td style="text-align: right;">-0.031</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">-0.019</td>
+<td style="text-align: left;">CC 4, PL 4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sc8 - Int-Metal</td>
+<td style="text-align: right;">+0.050</td>
+<td style="text-align: right;">-0.033</td>
+<td style="text-align: right;">+0.062</td>
+<td style="text-align: right;">+0.010</td>
+<td style="text-align: right;">+0.578</td>
+<td style="text-align: right;">-0.963</td>
+<td style="text-align: right;">+0.075</td>
+<td style="text-align: right;">+0.043</td>
+<td style="text-align: left;">CD 7, DC 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sc9 - Int-Glass</td>
+<td style="text-align: right;">+0.000</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">+0.006</td>
+<td style="text-align: right;">+0.004</td>
+<td style="text-align: right;">+0.062</td>
+<td style="text-align: right;">-0.101</td>
+<td style="text-align: right;">+0.006</td>
+<td style="text-align: right;">+0.005</td>
+<td style="text-align: left;">CC 7, DC 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sc10 - Int-Cement</td>
+<td style="text-align: right;">+0.002</td>
+<td style="text-align: right;">-0.000</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">+0.042</td>
+<td style="text-align: right;">-0.210</td>
+<td style="text-align: right;">-0.003</td>
+<td style="text-align: right;">-0.003</td>
+<td style="text-align: left;">CC 7, CD 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sc11 - Int-Energy</td>
+<td style="text-align: right;">+0.117</td>
+<td style="text-align: right;">-0.004</td>
+<td style="text-align: right;">+0.047</td>
+<td style="text-align: right;">-0.020</td>
+<td style="text-align: right;">-2.520</td>
+<td style="text-align: right;">-0.935</td>
+<td style="text-align: right;">+0.200</td>
+<td style="text-align: right;">-0.031</td>
+<td style="text-align: left;">CC 3, CD 4, DE 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sc12 - Int-Food</td>
+<td style="text-align: right;">-0.048</td>
+<td style="text-align: right;">+0.015</td>
+<td style="text-align: right;">-0.034</td>
+<td style="text-align: right;">+0.010</td>
+<td style="text-align: right;">-0.236</td>
+<td style="text-align: right;">-0.155</td>
+<td style="text-align: right;">-0.070</td>
+<td style="text-align: right;">+0.372</td>
+<td style="text-align: left;">CC 1, PL 7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-<section id="manuscript-implications" class="level2">
-<h2 class="anchored" data-anchor-id="manuscript-implications">Manuscript implications</h2>
-<p>The manuscript and referee response still need to incorporate the signed current-grid results and their qualifications. Preserve the distinction between descriptive classification, accounting identities, finite-window disturbance evidence and identified causal mechanisms. Documentation holds the numerical audits and experiment receipts supporting that work.</p>
+<section id="scenario-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-discussion">Scenario Discussion</h2>
+<section id="the-demand-scale-principle" class="level3">
+<h3 class="anchored" data-anchor-id="the-demand-scale-principle">The Demand Scale Principle</h3>
+<p><strong>The submitted claim.</strong> The rank order of outcomes is predicted by the absolute scale of the targeted demand channel, times the intensity differential between the primary and secondary sectors.</p>
+<p><strong>Verdict: holds in part.</strong> The scale of the channel predicts the size of most responses moderately well, and EU employment best. It predicts EU emissions and RoW value added less well, and EU land not at all.</p>
+<p><strong>The test.</strong> I compared two things for each of the 11 presentation scenarios that the channel screen covers (sc12 Int-Food is not in the screen):</p>
+<ul>
+<li>the volume the intervention moves, ρ × the channel’s scale, from <code>channel_material_opportunities_20261011/ranking.csv</code>;</li>
+<li>the absolute median response on the grid.</li>
+</ul>
+<p><strong>One caveat on the screen.</strong> It was computed on the older <code>revised</code> baselines, not on the high-finance arms (D-52). So it measures channel scale, and it is not evidence from the high-finance runs.</p>
+<p>The Spearman rank correlations between the moved volume and the size of the response:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Response</th>
+<th>Spearman ρ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EU value added</td>
+<td>0.67</td>
+</tr>
+<tr class="even">
+<td>EU employment</td>
+<td>0.81</td>
+</tr>
+<tr class="odd">
+<td>RoW value added</td>
+<td>0.55</td>
+</tr>
+<tr class="even">
+<td>EU extraction</td>
+<td>0.67</td>
+</tr>
+<tr class="odd">
+<td>EU water</td>
+<td>0.72</td>
+</tr>
+<tr class="even">
+<td>EU emissions</td>
+<td>0.58</td>
+</tr>
+<tr class="odd">
+<td>EU land</td>
+<td>-0.25</td>
+</tr>
+</tbody>
+</table>
+<p>The exceptions are the ones the submitted text already names: material intensity matters as much as channel scale.</p>
+<ul>
+<li><strong>sc2 HH-Energy</strong> moves the 8th-largest of the 11 volumes (1.43), but it gives the second-largest EU emission cut, -1.304 [-1.830, -0.769]%.</li>
+<li><strong>sc5 Int-Wood</strong> moves a mid-sized volume, but it gives by far the largest land response.</li>
+</ul>
+<p>The individual claims:</p>
+<ul>
+<li><strong>Sc1 food gives the largest final-demand employment contraction. It holds.</strong> sc1 HH-Food’s EU employment is -0.057 [-0.131, +0.004]%, the largest contraction among the four final-demand scenarios. Its EU value added, -0.056%, is the largest contraction of all twelve. One of the 8 runs is positive: North/South under OPENFIXG, the grid’s DE run.</li>
+<li><strong>Sc2 household energy gives emission and material savings out of proportion to its channel size. It holds.</strong> sc2’s EU emissions are -1.304 [-1.830, -0.769]% and its EU extraction is -0.491 [-0.636, -0.356]%.</li>
+<li><strong>Sc4 government plastics has leverage out of proportion among the final-demand scenarios. It does not hold.</strong>
+<ul>
+<li>Its channel does rival the intermediate one: it moves 2.38 against 2.08 for sc7 Int-Plastics.</li>
+<li>Its responses are no larger than sc7’s: EU extraction -0.085% against -0.098%, and EU emissions -0.032% against -0.031%.</li>
+<li>Among the final-demand scenarios its effects are much smaller than sc1’s and sc2’s.</li>
+</ul></li>
+<li><strong>Sc13 energy production dominates the production scenarios. It holds.</strong> sc11 Int-Energy has the largest EU emission cut in the set, -2.520 [-3.616, -1.420]%, and the largest EU value-added response, +0.117 [+0.107, +0.145]%. That response is an expansion, which the submitted text did not report (see the trilemma below).</li>
+<li><strong>Sc10 metals gives the largest total material savings. It holds in part; the answer depends on the regional setup.</strong>
+<ul>
+<li>Over all 8 runs, sc8 Int-Metal’s EU extraction (-0.963%) and sc11 Int-Energy’s (-0.935%) are within 0.03 points of each other.</li>
+<li>In EU/RoW, sc11 saves more: -1.154% against -0.453%.</li>
+<li>In North/South, sc8 saves more: -1.478% against -0.712%.</li>
+</ul></li>
+</ul>
+</section>
+<section id="two-demand-transition-regimes" class="level3">
+<h3 class="anchored" data-anchor-id="two-demand-transition-regimes">Two Demand Transition Regimes</h3>
+<p><strong>The submitted claim.</strong> Final-demand reallocation (Sc1–6) and intermediate restructuring (Sc7–14) are two regimes. The intermediate channel generally gives the larger ecological gains, with employment modestly negative except in metals and construction.</p>
+<p><strong>Verdict: does not hold as a split by channel.</strong> On the grid, the regime follows the <strong>material</strong> more than the <strong>channel</strong>:</p>
+<ul>
+<li><strong>Food</strong> gives production leakage through both channels: sc1 HH-Food is PL in 6 of 8 runs, and sc12 Int-Food in 7 of 8.</li>
+<li><strong>Energy</strong> gives competitive displacement or a contained response through both channels: sc2 HH-Energy is CD in 7 of 8, and sc11 Int-Energy in 4 of 8.</li>
+<li><strong>Wood and plastics</strong> give different regimes in their two channels:
+<ul>
+<li>sc3 HH-Wood is CC in all 8 runs, while sc5 Int-Wood is PL in 7;</li>
+<li>sc4 Gov-Plastics is DC in 4 and PL in 3, while sc7 Int-Plastics is CC in 4 and PL in 4.</li>
+</ul></li>
+</ul>
+<p>The parts of the claim:</p>
+<ul>
+<li><strong>The final-demand scenarios span the full range of outcomes. It holds.</strong> They run from sc3 HH-Wood, whose EU value added and employment move by less than 0.005%, to the largest EU value-added contraction (sc1) and the second-largest emission cut (sc2).</li>
+<li><strong>The intermediate channel gives the larger ecological gains. It does not hold.</strong>
+<ul>
+<li>The three largest EU emission cuts are sc11 Int-Energy, sc2 HH-Energy and sc1 HH-Food, so two of the three are final-demand scenarios.</li>
+<li>Five of the eight intermediate scenarios change EU emissions by less than 0.07%: sc5, sc6, sc7, sc9 and sc10.</li>
+<li>sc8 Int-Metal raises EU emissions.</li>
+</ul></li>
+<li><strong>Intermediate employment is modestly negative except for metals. It does not hold.</strong>
+<ul>
+<li>Of the eight intermediate scenarios, four have a negative median EU employment response: sc6, sc7, sc10 and sc12.</li>
+<li>The other four have a positive median: sc5, sc8, sc9 and sc11.</li>
+<li>The largest EU expansion in the whole set is sc11 Int-Energy, at +0.047% employment and +0.117% value added. The submitted text did not count Sc13 among the expansionary exceptions.</li>
+</ul></li>
+<li><strong>Construction is the expansionary exception. It is not tested.</strong> Sc5 and Sc14 are outside the presentation set.</li>
+<li><strong>Sc13 compresses the EU wage share. It holds.</strong> sc11’s EU wage share changes by -0.020 [-0.026, -0.012] pp, falling in all 8 runs, and that is the largest fall in the set.</li>
+<li><strong>Sc13 worsens the fiscal position of the fossil-exporting RoW. It does not hold.</strong> sc11’s RoW government deficit changes by +0.000 [-0.000, +0.001]% of RoW value added. Its RoW debt/GDP changes by -0.035 [-0.095, +0.035] pp.</li>
+</ul>
+</section>
+<section id="the-circular-economy-trilemma" class="level3">
+<h3 class="anchored" data-anchor-id="the-circular-economy-trilemma">The Circular Economy Trilemma</h3>
+<p><strong>The submitted claim.</strong> No scenario achieves ecological improvement, macroeconomic stability and distributional equity at once. In the intermediate scenarios, ecological improvement trades off against the other two.</p>
+<p><strong>Verdict: holds, in a different form.</strong> I tested it run by run with three conditions:</p>
+<ul>
+<li><strong>ecological:</strong> EU emissions and EU extraction both fall;</li>
+<li><strong>macroeconomic:</strong> value added does not fall in either region;</li>
+<li><strong>distributional:</strong> the EU wage share does not fall.</li>
+</ul>
+<p>Counts over the 96 runs:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Condition met</th>
+<th>Runs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ecological</td>
+<td>55</td>
+</tr>
+<tr class="even">
+<td>Macroeconomic</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>Distributional</td>
+<td>57</td>
+</tr>
+<tr class="even">
+<td>All three</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The one run that meets all three is sc1 - HH-Food under North/South / openfixg. It is one of the grid’s two dual-expansion runs. In its other seven runs sc1 contracts the EU.</p>
+<p>The form of the trade-off has changed. In the submitted text, ecological gains came with contraction. On the grid:</p>
+<ul>
+<li><strong>Ecological gain with EU expansion.</strong> 17 runs combine an ecological gain with EU expansion: sc1 - HH-Food (1), sc11 - Int-Energy (8), sc2 - HH-Energy (8). In 16 of those 17 the EU wage share falls. The expansion is profit-led. For sc11 Int-Energy, the South contracts under all four North/South closures.</li>
+<li><strong>The contracting regime.</strong> Production leakage contracts the EU and raises its wage share.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Median response by regime over the 96 runs (mean over t = 79..100). Wage share in percentage points; the rest in % of own baseline.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Regime</th>
+<th style="text-align: right;">Runs</th>
+<th style="text-align: right;">EU wage share (pp)</th>
+<th style="text-align: right;">EU VA</th>
+<th style="text-align: right;">RoW VA</th>
+<th style="text-align: right;">EU emissions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PL</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">+0.0139</td>
+<td style="text-align: right;">-0.033</td>
+<td style="text-align: right;">+0.015</td>
+<td style="text-align: right;">-0.087</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CD</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">-0.0043</td>
+<td style="text-align: right;">+0.051</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">-0.784</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DC</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">+0.0006</td>
+<td style="text-align: right;">-0.010</td>
+<td style="text-align: right;">-0.005</td>
+<td style="text-align: right;">-0.015</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CC</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">+0.0004</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">-0.000</td>
+<td style="text-align: right;">+0.002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.0095</td>
+<td style="text-align: right;">+0.073</td>
+<td style="text-align: right;">+0.095</td>
+<td style="text-align: right;">-0.979</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The individual claims:</p>
+<ul>
+<li><strong>Sc4 against Sc9: public procurement partly bypasses the trilemma. It does not hold.</strong> sc4 Gov-Plastics contracts the EU (value added -0.011 [-0.064, -0.009]%) by as much as sc7 Int-Plastics does (-0.017 [-0.054, -0.008]%), with no larger ecological gain. That the two channels are comparable in scale still holds, so the case for using both instruments stands. The case for procurement as a way round the trilemma does not.</li>
+<li><strong>Sc10 metals is expansionary with an emission rebound. It holds, but metals is no longer the only expansionary production scenario.</strong> sc8 Int-Metal’s EU value added is +0.050 [-0.012, +0.094]%, and its EU emissions rise in all 8 runs, +0.578 [+0.283, +0.878]%, the largest rise in the set. The RoW contracts in every run (CD in 7, DC in 1). The grid does not test the submitted mechanism, the electricity intensity of secondary steel; it measures only the outcome.</li>
+<li><strong>Sc13 energy has maximum leverage and maximum asymmetry. It holds in part.</strong>
+<ul>
+<li>Maximum ecological leverage holds: the largest emission cut, as above.</li>
+<li>The distributional regression holds: the largest fall in the wage share.</li>
+<li>The +1.81% current-account improvement does not hold. sc11’s EU current account changes by +0.000 [-0.001, +0.001]% of EU value added. The submitted figure was a percentage change on a different basis. On this basis there is no improvement to speak of.</li>
+<li>The largest cross-border burden does not hold. sc11’s RoW value added is -0.004 [-0.015, +0.003]%, smaller than the RoW contraction under sc8 Int-Metal (-0.033%) or sc2 HH-Energy (-0.011%). Its sign depends on the setup: it contracts in North/South under all four closures, and in EU/RoW it is below τ, so CC or DE (D-65).</li>
+<li>The EU land increase holds: +0.200 [+0.162, +0.238]%, the largest land increase in the set.</li>
+</ul></li>
+<li><strong>Construction: material against atmosphere. It is not tested,</strong> for the reason given above: Sc5 and Sc14 are not in the presentation set.</li>
+<li><strong>No single ecological indicator suffices. It holds</strong>, and all three examples hold on the grid:
+<ul>
+<li>sc5 Int-Wood (the submitted Sc7) is a land intervention: EU land -3.781 [-5.180, -2.382]%, the largest land saving by an order of magnitude, with EU emissions of +0.034 [+0.007, +0.059]%, small but positive in every run.</li>
+<li>sc11 Int-Energy is a climate intervention.</li>
+<li>sc1 HH-Food raises EU water use, +0.836 [+0.690, +0.977]%, while cutting extraction (-0.334%) and emissions (-0.499%). The new sc12 Int-Food does the same through the intermediate channel: water +0.372%.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<ul>
+<li><strong>The intermediate scenarios consistently contract aggregate demand modestly, reduce wage shares and expand profit shares. It does not hold.</strong>
+<ul>
+<li>EU value added falls in four of the eight intermediate scenarios (sc5, sc6, sc7, sc12). It rises clearly in sc8 and sc11; in sc9 and sc10 the median is within 0.003%.</li>
+<li>The median EU wage share rises in five of the eight (sc5, sc6, sc8, sc9, sc12) and falls clearly only in sc11.</li>
+<li>Distribution follows the regime, not the channel. Production leakage raises the EU wage share by a median +0.0139 pp, and competitive displacement lowers it by -0.0043 pp.</li>
+</ul></li>
+<li><strong>Fossil-import collapse and symmetric contraction are the most regressive regimes. It holds in part.</strong>
+<ul>
+<li>Fossil-import collapse is now part of CD (D-61), and CD is the regime in which the EU wage share falls.</li>
+<li>Symmetric contraction is now split into DC and CC. Neither moves the EU wage share by more than 0.0006 pp in median, so it is not regressive on this measure.</li>
+<li>The peripheral fiscal squeeze is not visible: the largest RoW government-deficit response in any of the 96 runs is 0.029% of RoW value added.</li>
+</ul></li>
+<li><strong>Effects on the periphery must be a first-order policy concern. It holds, and is strengthened.</strong> Under CD (19 runs), EU gains come with RoW contraction. The second regional setup adds to this:
+<ul>
+<li>scenario × regional setup accounts for 18.1% of the weighted response variation, against 1.5% for the setup alone, so how the world is aggregated changes which scenario has which cross-border effect;</li>
+<li>sc1 HH-Food and sc8 Int-Metal carry 67.8% of that interaction.</li>
+</ul></li>
+<li><strong>Limitation: the RoW is one undifferentiated aggregate. Partly addressed.</strong> The North/South setup is a second aggregation of the same world table. The model is still two regions.</li>
+<li><strong>Limitation: the regimes rest on qualitative inspection. Addressed.</strong>
+<ul>
+<li><strong>The ANOVA.</strong> It is descriptive, with one deterministic run per cell and no residual. Its shares of the weighted response variation are: scenario 60.5%; scenario × setup 18.1%; scenario × setup × closure 11.0%; scenario × closure 7.9%; setup 1.5%; closure 0.4%.</li>
+<li><strong>OPENFIXG</strong> carries 74.5% of the three-way term and 73.7% of scenario × closure. OPENFIXG is the closure in which EU government spending adjusts to close its budget constraint, and the only one with a stationary state. It is where the scenarios behave least like the other three closures.</li>
+<li><strong>The Ward hierarchy at k = 12</strong> sorts the runs mostly by scenario.
+<ul>
+<li>9 of the 12 groups each contain runs of one scenario only. Between them they hold 40 runs, all from six scenarios with large responses: sc1, sc2, sc5, sc8, sc11 and sc12. The remaining runs of sc1 and sc12 sit in two mixed groups with the plastics scenarios.</li>
+<li>One group of 40 holds the six scenarios with small responses (sc3 HH-Wood, sc4 Gov-Plastics, sc6 Int-Pulp, sc7 Int-Plastics, sc9 Int-Glass, sc10 Int-Cement), and is CD 1, DC 5, CC 34.</li>
+<li>The groups are described on the Analysis › Groups tab.</li>
+</ul></li>
+</ul></li>
+<li><strong>Limitation: the 2011 calibration and electricity decarbonisation.</strong> Unchanged.</li>
+<li><strong>New limitation: the external position drifts after t = 100 under three of the four closures.</strong> The cause is the open test in the box above. Until it reports, the regime labels are medium-run responses.</li>
+</ul>
 </section>
 
 </main>

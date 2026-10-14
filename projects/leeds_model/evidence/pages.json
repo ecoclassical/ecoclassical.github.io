@@ -218,9 +218,9 @@
   {
     "id": "discussion",
     "section": "Discussion",
-    "title": "Current interpretation, limitations and open decisions",
+    "title": "Revised discussion \u2014 the submitted claims on the high-finance grid",
     "source": "output/html/site/discussion.html",
-    "description": "What current findings support, the quasi-float exception and three remaining author choices.",
+    "description": "Each claim of the submitted discussion and conclusions, tested on the 96 high-finance runs at the 79..100 cycle mean: holds, holds in part, does not hold, or not tested.",
     "artifact": "evidence/output/html/site/discussion.html",
     "href": "pages/discussion.html"
   },

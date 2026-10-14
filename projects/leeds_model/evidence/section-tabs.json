@@ -92,19 +92,24 @@
       "native": "anova"
     },
     {
-      "label": "Quadrants",
-      "page": "analysis-visuals",
-      "native": "quadrants"
-    },
-    {
-      "label": "Heatmap",
-      "page": "analysis-visuals",
-      "native": "heatmap"
+      "label": "Other Plots",
+      "children": [
+        {
+          "label": "Quadrants",
+          "page": "analysis-visuals",
+          "native": "quadrants"
+        },
+        {
+          "label": "Heatmap",
+          "page": "analysis-visuals",
+          "native": "heatmap"
+        }
+      ]
     }
   ],
   "Discussion": [
     {
-      "label": "Current discussion",
+      "label": "Revised discussion",
       "page": "discussion"
     },
     {
