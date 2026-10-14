@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": true,
-  "built_date": "2026-10-13",
-  "commit": "c4a81687b2cf7845526533d3e360bac940b389c6",
+  "working_tree_dirty": false,
+  "built_date": "2026-10-14",
+  "commit": "e1be338cdec95aa91456e0876548211c1fa21e8a",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -40,8 +40,8 @@
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
-      "sha256": "94097291d04dec9decd588e99284760ce0e72cfed66dec7d1cdbc76c251d12ea",
-      "bytes": 7674599
+      "sha256": "772fd941bf3f2d285af4821554866afccaf6d7c327f5ea25e82837cbfbafefd8",
+      "bytes": 7732902
     },
     "evidence/output/html/appendices/2026-10-13-model-description-current-revised.html": {
       "source": "output/html/appendices/2026-10-13-model-description-current-revised.html",
@@ -65,7 +65,7 @@
     },
     "evidence/model/equations/model-registry.html": {
       "source": "model/equations/model-registry.html",
-      "sha256": "21ad6d5993862952eee46081cef2e59e0590db29c9a84a4b51ed9da91abf088c",
+      "sha256": "3d34116f4db8bae6ece8f36ee02b7e90eb2d1aad9cfdd91209b9e4d24b26b63b",
       "bytes": 3772914
     },
     "evidence/output/html/tables/closure_region_grid.html": {
@@ -650,7 +650,7 @@
     "qmd/reports/2026-10-05-scenario-classification-closure-and-setup.qmd": "a4a837ac8262bc1d87eba32cda546387806dba2facb3ed943a4b0e447fa832bf",
     "qmd/reports/2026-10-07-transmission-families-setups-and-hierarchies.qmd": "8387f2f3864e65634c1d21313d3f2e4ba9a9c2a68f50ecc189ac4d0bb39618e6",
     "qmd/reports/2026-10-03-evidence-synthesis.qmd": "7d08b808d1aee3ad823a016d35f94dba2393d744c31c24ffc233ef06d8a6a074",
-    "tools/site/publication-scope.json": "51e7096a01806b4b09ceb2de9fa798d0c07c47ec06daccceef10a767920c0a99",
+    "tools/site/publication-scope.json": "5f107d6ef3f1eb226f2e940e8673f180b235bc7ebd7089681092fc576b2904b9",
     "tools/site/generate_paper_pages.py": "9e7c1f71829b952a5bc8240b6f23eaf2eaeabfc5b85b53dc389a80f26a714829",
     "output/calibration/website_paper_excerpt_provenance.json": "1316b27b655e4628bfa20796e26ec56e867e2b3ec3295f6635eb7d025b73f2b0",
     "data/current_results.json": "a1aa89871e23bf0d3904e0f023a8b3bd0fc198d55b2817f32a0fe9728150957c"
@@ -706,7 +706,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "07931d7efa5733f05cef93f003fda7a8d9b19348785217789472a4880e562d1c",
-    "coverage.json": "bb5669493b738162145a4c6f83e58be7a13042f986bf1b495492d6a45951897b",
+    "coverage.json": "1d0d0d825e4167f0cc54bfe71394bfb547b5435e3a359d127720a2cb6e4727dd",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
