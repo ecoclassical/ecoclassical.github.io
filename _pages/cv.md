@@ -45,16 +45,18 @@ redirect_from:
   * New School for Social Research (New York, NY, US)
 
 
-## Interests
+## Research Fields
 ---
 
-- Ecological macroeconomics  
-- Multi-sector growth, structural change, and development  
-- Econometrics  
-- Classical political economy  
-- History of economic thought  
-- Data science  
-- Complexity science
+| JEL group | JEL codes |
+|---|---|
+| (O) Economic Development, Innovation, Technological Change, and Growth | O25 Industrial Policy · O41 Multisector Growth Models · O44 Environment and Growth |
+| (Q) Environmental and Ecological Economics | Q56 Environment and Development · Q57 Industrial Ecology · Q32 Exhaustible Resources and Economic Development |
+| (F) International Economics | F02 International Economic Order and Integration · F4 Macroeconomic Aspects of International Trade and Finance |
+| (C) Mathematical and Quantitative Methods; Econometrics | C55 Large Data Sets · C61 Dynamic Analysis · C63 Simulation Modeling · C67 Input–Output Models · D85 Network Analysis |
+| (B) History of Economic Thought | Classical political economy |
+
+**Teaching.** Macroeconomics · Ecological and Environmental Economics · Development and International Economics · History of Economic Thought and Political Economy · Econometrics and Data Science
 
 
 <div><strong>Languages</strong>: Catalan (native) · Spanish (native) · English (near-native) · Italian (fluent) · German (basic) · Arabic (basic)</div>

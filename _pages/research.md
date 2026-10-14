@@ -5,20 +5,27 @@ layout: dark
 author_profile: false
 ---
 
-## Lines of Research
+## Three Tracks of Research
+
+My research runs in three tracks, each defined by its object, and each worked with three families of method: stock-flow-consistent and multi-regional input–output models; classical and Keynesian dynamical models; and input–output, network and statistical empirics, including machine learning.
+
+1. [**Ecological Macroeconomics**](#ecological-macroeconomics) — how open, multi-sector economies stabilise or destabilise under the ecological transition, and who bears its costs.
+2. [**Uneven Development and the Global Structure of Production**](#uneven-development-and-the-global-structure-of-production) — the hierarchical structure of world production, and the flows of labour, value and natural resources from periphery to core.
+3. [**An Ecological Approach to Classical Political Economy**](#an-ecological-approach-to-classical-political-economy) — the laws of motion of capitalist accumulation, stated formally enough to be tested, and their ecological limits.
+
+---
+
+## Ecological Macroeconomics
+
+Can states steer a multi-sector economy towards sustainability while keeping employment and prices stable? And how are the costs of decarbonisation in the core transmitted to the periphery?
 
 ### Net Zero Industrial Policy
 
-My applied policy research programme at the [Net Zero Industrial Policy Lab](https://www.netzeropolicylab.com/) at Johns Hopkins University. The central question: what does the industrial base of the new energy economy look like, and what policy instruments can accelerate its development while managing distributional consequences across regions and income groups?
+My applied policy research programme at the [Net Zero Industrial Policy Lab](https://www.netzeropolicylab.com/) at Johns Hopkins University. The central question: what does the industrial base of the new energy economy look like, and what policy instruments can accelerate its development while managing distributional consequences across regions and income groups? For a policy-maker, it comes down to a choice: for which technology, production stage and production role is it better to build domestic capacity, and for which to import?
 
-Using multi-region input-output analysis, supply chain mapping, and sectoral network methods applied to global trade and production data, I study:
-
-- The structure and geography of green value chains — batteries, solar, wind, and electrolysis — and their upstream industrial dependencies
-- How industrial policy instruments (subsidies, domestic content requirements, green public procurement) reshape comparative advantage and value capture across the North-South divide
-- The macroeconomic implications of rapid sectoral reallocation: which sectors are keystone nodes in the production network, and what happens when they are disrupted by the low-carbon transition?
-- The intersection of climate policy and global inequality: how decarbonisation strategies in the Global North transmit through trade and value chains to shape development trajectories in the Global South
-
-**Current output**: [Atlas of the Global Clean Industrial Base](https://nzipl-cvce.pages.dev/) — a trade-based intelligence platform mapping the global value chains of ten clean technologies (batteries, biofuel, electrolyzers, geothermal, heat pumps, magnets, nuclear, solar, transmission and wind, with electric vehicles in draft), built for policy audiences. Bilateral trade analytics on BACI at HS 6-digit, 1995–2024, with machine-learned competitiveness scores and firm-level location data across seven focal country case studies.
+- **The [Clean Value Chain Explorer](https://nzipl-cvce.pages.dev/)** — a trade-based intelligence platform mapping the global value chains of ten clean technologies (batteries, biofuel, electrolyzers, geothermal, heat pumps, magnets, nuclear, solar, transmission and wind, with electric vehicles in draft), built for policy audiences. Bilateral trade analytics on BACI at HS 6-digit, 1995–2024, with machine-learned competitiveness scores and firm-level location data across seven focal country case studies.
+- **A multi-regional ecological macroeconomic model** — extending the two-region model below to several regions, to study carbon taxes and border tariffs in more complex geopolitical arrangements, with explicit roles for China and the United States alongside trade among the countries of the South.
+- **How industrial policy instruments** (subsidies, domestic content requirements, green public procurement) reshape comparative advantage and value capture across the North–South divide, and how decarbonisation strategies in the Global North transmit through trade and value chains to development trajectories in the Global South.
 
 ---
 
@@ -31,42 +38,28 @@ A two-region ecological macroeconomic model that integrates multi-regional input
 
 **Model and results:** [the research evidence site](/projects/leeds_model/evidence/) — inspect the submitted-to-revised equations, the canonical model description, closure comparisons, circular-economy scenario responses and dynamical analysis. The reports retain their source bases and numerical qualifications. The [earlier browser-engine interface](/projects/leeds_model/) remains available as a historical port; it is not the canonical revised solver.
 
+**Applied models:** the Leeds input–output stock-flow-consistent model developed for the Philippines, for De La Salle University in Manila; and, for the Agence Française de Développement, the financial data of the GEMMES Mexico model — stocks of debt and interest flows from Banxico, the CNBV and Hacienda, reconciled with INEGI's national accounts and input–output tables into annual transaction-flow matrices for 2003–2024.
+
 ---
 
 ### Data-Driven Models of Multi-Sector Growth under Structural Change
 
-My applied and empirical programme. Capitalist economies are structured through complex networks of intermediate production whose topology shapes how shocks propagate, how policies transmit, and whether decarbonisation is feasible without contraction. I develop multi-sector macroeconomic models — integrating Walrasian price dynamics, classical quantity dynamics, and Keynesian demand features — and calibrate them on large input-output databases (EORA, EU KLEMS, WIOD) to study:
+Capitalist economies are structured through complex networks of intermediate production whose topology shapes how shocks propagate, how policies transmit, and whether decarbonisation is feasible without contraction. I develop multi-sector macroeconomic models in the Bielefeld disequilibrium tradition — combining Walrasian price dynamics, classical quantity dynamics and Keynesian demand, as in the Keynes–Metzler–Goodwin family — calibrate them on large input–output databases (EORA, EU KLEMS, WIOD), and estimate them with statistical and machine-learning methods, to study:
 
 - The stabilisation of economic volatility under sectoral price and profit caps
-- The macroeconomic implications of circular economy transitions
 - The time scales of low-carbon structural change across industries
+- Public buffer stocks of critical raw materials: can a state act as a supplier of last resort, as a central bank is a lender of last resort, and stabilise prices where price caps fail?
 
-**Current papers:**
-- [Stabilizing Economic Fluctuations (JEBO 2023)](/files/publications/valles-codina-2023-jebo.pdf)
-- Vallès Codina & Semmler (2024). Time Scales of the Low-Carbon Transition. *Journal of Economics and Statistics*
-
----
-
-### Classical Economic Thermodynamics
-
-The central programme of my theoretical work. The classical political economy tradition — Smith, Ricardo, Marx, Sraffa — provides the correct thermodynamic analogue to energy conservation in physics: both a **first law** (the MELT conservation identity: value is conserved in exchange for any price system) and a **second law** (labour as irreversible thermodynamic work, abstract labour as metabolic irreversibility). The Hamiltonian formalism of Goodwin and Flaschel–Semmler describes the conservative redistribution dynamics under simple reproduction; Foley's circuit of capital provides the explicit connection between monetary flows and labour-time accounting. The neoclassical conservation programme fails because its only invariant — the Hicksian expenditure function — exists in unobservable compensated demand space.
-
-**Current papers:**
-- [Classical Economic Thermodynamics: The Fundamental Laws of Motion of Value and Social Reproduction](/projects/classical_economic_thermodynamics/)
-- [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/)
-- [The Conservation of Value (working paper)](/projects/conservation_of_value/)
+**Papers:**
+- [Business cycles, sectoral price stabilization, and climate change mitigation (JEBO 2023)](/files/publications/valles-codina-2023-jebo.pdf)
+- Vallès Codina & Semmler (2024). Time Scales of the Low-Carbon Transition: A Data-Driven Dynamic Multi-Sector Growth Model. *Jahrbücher für Nationalökonomie und Statistik*
+- *Supplier of Last Resort: Public Buffer Stocks and Price Stabilization in a Multi-Sector Economy with Exhaustible Resources* (in preparation, for *Structural Change and Economic Dynamics*)
 
 ---
 
-### Production Networks, Complexity, and Crisis
+## Uneven Development and the Global Structure of Production
 
-The structure of intermediate production networks determines both the normal dynamics of capitalist economies and the character of their crises. I combine input-output analysis, network theory, and dynamical systems to study:
-
-- **Autocatalytic sets and crisis**: Sraffa's basic commodities as the dominant ACS; keystone sector disruptions as phase transitions (discontinuous ACS collapse) rather than smooth departures from equilibrium
-- **Multi-sector eigenvalue dynamics**: how the spectral structure of the input-output matrix (dominant eigenvalue, subdominant eigenvalues, imaginary components) shapes the frequency and amplitude of sectoral oscillations
-- **Network centrality and systemic risk**: which sectors are "too central to fail" in the sense that their disruption severs catalytic closure across the network
-
----
+Where in the world economy is value produced, and where is it appropriated? This track belongs to development economics in the structuralist tradition, which treats underdevelopment as a position in a hierarchical world economy rather than a stage on a common path.
 
 ### The Network Structure of Ecological Unequal Exchange
 
@@ -79,6 +72,58 @@ There is a precise reason the network is the right object rather than a borrowed
 Built on the **GLORIA** multi-regional supply-use tables (release 060, 164 regions × 120 sectors, 2012–2026), parsed in Julia with the Leontief inverse never materialised — every question is a backsolve against a stored factorization, which is what keeps the analysis tractable on ordinary hardware.
 
 **Current output**: [The Network Structure of Ecological Unequal Exchange](/projects/ecological_unequal_exchange/) — 2019 cross-section complete; network analysis and temporal extension in progress.
+
+---
+
+### Health and the Production Network
+
+*Is Health at Odds with the Economy?* — an input–output and network analysis of whether investment in health and assistive technology pays for itself through the production network of middle-income economies: a purely economic case, before any welfare argument, for investing in health for all (in preparation, for *Economic Systems Research*).
+
+---
+
+### Structure, Convergence and Migration
+
+- **Prototypes of national industrial structure** — do national economies fall into a few prototypes of industrial structure, and do they move between them as they develop?
+- **Cycles of migration in coupled Goodwin models** (with N. Rodousakis) — does labour migration between a core and a periphery synchronise, damp or amplify their distributive cycles?
+- **Regional income convergence in Europe, 1900–2015** — have Europe's regional incomes converged over the long twentieth century?
+
+---
+
+## An Ecological Approach to Classical Political Economy
+
+This track returns to the questions the nineteenth-century classical economists raised and left unresolved — whether the limits to growth are set by scarce natural resources or by social inequality, and how growth, distribution and the environment shape one another — and asks them of an economy now facing climate and geopolitical risk.
+
+### Classical Economic Thermodynamics
+
+Does the labour theory of value give a conservation law? The classical tradition — Smith, Ricardo, Marx, Sraffa — supplies both a **first law**, the MELT identity (value is conserved in exchange, for any price system), and a **second law**, stated in value-form terms: the Fundamental Marxian Theorem, which runs one way only once there is rent, together with the irreversibility of accumulation. The Hamiltonian formalism of Goodwin and Flaschel–Semmler describes the conservative redistribution dynamics under simple reproduction; Foley's circuit of capital provides the explicit connection between monetary flows and labour-time accounting. The neoclassical conservation programme fails because its only invariant — the Hicksian expenditure function — exists in unobservable compensated demand space.
+
+**Papers:**
+- [Classical Economic Thermodynamics: The Fundamental Laws of Motion of Value and Social Reproduction](/projects/classical_economic_thermodynamics/)
+- [The Conservation of Value (working paper)](/projects/conservation_of_value/), for the *Review of Political Economy*
+
+---
+
+### The Ricardian Dynamics of the Metabolic Rift
+
+*Environmentalism without class struggle is just gardening* — a Ricardian model in which rising rent, not the exhaustion of energy, sets the limit to accumulation. The stationary state appears as the heat death of accumulation: profit is the free part of the surplus and rent the bound part, and rent's irreversible rise is the analogue of the second law. Whether the economy reaches that state smoothly or through chaos depends on how the surplus is divided between rent, profit and the restoration of the soil (in revision, for *Ecological Economics*).
+
+---
+
+### Production Networks, Complexity, and Crisis
+
+The structure of intermediate production networks determines both the normal dynamics of capitalist economies and the character of their crises. I combine input-output analysis, network theory, and dynamical systems to study:
+
+- **Autocatalytic sets and crisis**: Sraffa's basic commodities as the dominant ACS; keystone sector disruptions as phase transitions (discontinuous ACS collapse) rather than smooth departures from equilibrium
+- **Multi-sector eigenvalue dynamics**: how the spectral structure of the input-output matrix (dominant eigenvalue, subdominant eigenvalues, imaginary components) shapes the frequency and amplitude of sectoral oscillations
+- **Network centrality and systemic risk**: which sectors are "too central to fail" in the sense that their disruption severs catalytic closure across the network
+
+**Paper:** [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/), for *Physical Review E*
+
+---
+
+### A Conflict Theory of Pricing
+
+How do competitive firms set prices under distributive conflict, and why is the profitability of US firms tent-shaped (Laplace-distributed)? Building on *Classical-Evolutionary Dynamics of Price Formation* (New School for Social Research working paper, 2020); in preparation, for *Industrial and Corporate Change*.
 
 ---
 
