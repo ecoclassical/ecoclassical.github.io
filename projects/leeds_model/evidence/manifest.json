@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-13",
-  "commit": "9a401775e03712de82b2c1316a575838c7b3221e",
+  "commit": "a2ff9fe65c0411d3055b4dc4a82062d335e2e647",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -15,18 +15,18 @@
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "23cf2b3754648747756fc48b91b037dc110eb8a8556b1bab18cddf4938fa0609",
-      "bytes": 7081
+      "sha256": "6606928b1c8922d1ab51ae113f01aea4a251a46ea9f016f806344d781983ac53",
+      "bytes": 7021
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
-      "sha256": "c9cd48780b7e302676ac365422079355742ba9e29d4fa258982df1358d933de0",
-      "bytes": 144
+      "sha256": "3a20d666f7588673a6780b1b5ffe7125aa864ad029f6c26d68afbf19c901a7bf",
+      "bytes": 121
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "6d16eaf25d16403f9c39f3214bdb8ca60c761f1a2e09beec46532994f161e148",
-      "bytes": 4281
+      "sha256": "8c675ad994e610058cd0f561375b060954267e4299a74373a21cd8413184dbe2",
+      "bytes": 4262
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -610,8 +610,8 @@
     }
   },
   "inputs": {
-    "web/evidence/sections.json": "c9cd48780b7e302676ac365422079355742ba9e29d4fa258982df1358d933de0",
-    "web/evidence/pages.json": "5612d32da08ec5f284bee84743d70bd6defabf6b97593f67a0790030e73896fa",
+    "web/evidence/sections.json": "3a20d666f7588673a6780b1b5ffe7125aa864ad029f6c26d68afbf19c901a7bf",
+    "web/evidence/pages.json": "cd7852f30ab691c758b0f358dcfa766fb0cd79b431aad10b1a3a2b9176e632da",
     "tools/site/build_evidence_site.py": "26bc375fc009d5cae17dc2002ded59c620b6a5de3bc0756481161e26e6212404",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "ff8a03c712f8a56b5cb9b5b779572da80a209fc78c0d321f5341c7dbc9af3ce5",
@@ -626,7 +626,7 @@
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "8222020a2c64ae179bd85f60479e233f897e0f6f54ad0d2b3395260e4c059c30",
-    "web/evidence/section-tabs.json": "6d16eaf25d16403f9c39f3214bdb8ca60c761f1a2e09beec46532994f161e148",
+    "web/evidence/section-tabs.json": "8c675ad994e610058cd0f561375b060954267e4299a74373a21cd8413184dbe2",
     "tools/site/generate_analysis_visuals.R": "ec3b01444d7d59a7895d86adc014bc949a46b941662217409f4b55d98574354d",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "b79fc049c6b3f8e9b2af70a6e8086f93d23acb7ec2d6a1de9184bf829b512252",
@@ -705,20 +705,20 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "f4aaab837ab21a30a8201fea9aa0b5cf32de02c99eca950861036eee9ad0de43",
-    "coverage.json": "04a0d109b7e1cbe03a5648a7f8787b8e5d0c2ad69c166b6c3f8114bde0da14a4",
+    "pages.json": "07931d7efa5733f05cef93f003fda7a8d9b19348785217789472a4880e562d1c",
+    "coverage.json": "809f6c5562586fd2ae33a0d6533dd6bd0656256ef5d4dcf6adef508029c55ad6",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
-    "pages/changes.html": "4565361f6bd4684d940033d73ecd8ed83b86865ae4c7bf3d90ff86e5af7ddf2f",
-    "pages/view-baselines.html": "16daf4551c1025c692f8472b63788f0787ca7f5dd03eed3a4995a3ebd150b112",
+    "pages/changes.html": "4660e79611b778810b4e2216770347342ccc229502e6dd88ecc72a9df71edb3e",
+    "pages/view-baselines.html": "c2fcccf816fb046f9b2167f2c916ad7c9a7a4cb53110c0edbf37560516796788",
     "pages/arm-descriptions.html": "88222bad59b14c976a5d10ab0ba0427db909a80de95cac70cae6414d94db4070",
     "pages/registry.html": "bd31574f2e93f86a8b988d4ec684770c3d6633ea18051066dc48fb2537fe6b7b",
     "pages/closures.html": "cdf1d522dc1fff75777b1ef0a32756c96713e114b96440b41605851213be1185",
     "pages/scenario-definitions.html": "3055c45f1ab8d08a2840794995de87da7a3d55cff57bbed463c9e5ccb83b2dde",
     "pages/scenario-highlights.html": "9ce55405ce1e531a0ea43d55538789c271dea4a0e259eedc9c21fc97bf3c74a2",
     "pages/regime-table.html": "85253643cb0f74e596d25c86ce6ea69d26c2fd21e6959acf881958c6e23aac25",
-    "pages/view-scenarios.html": "b63bc4ca049e285b194358af61dde907d838c143e56cc8ebb2d3d90298565f43",
+    "pages/view-scenarios.html": "c4202bcce5f306a1644d8af13ff1eb4c42a6f7473361fe610cd372768bf77fe6",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
     "pages/highfinance-cross-border.html": "e7ee556a3e9bbc48fca80dcb85c61287573e237db364e4f15051e4cc2e68fe04",
     "pages/regime-report.html": "115e693fdf3bbab1aa7955f8e82c0e6b07d78aa1793836d548282e5d8f9ab558",

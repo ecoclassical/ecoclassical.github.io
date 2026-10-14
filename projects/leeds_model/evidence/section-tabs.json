@@ -5,7 +5,7 @@
       "page": "background"
     }
   ],
-  "Model Equations": [
+  "Model": [
     {
       "label": "All equations",
       "page": "equations",
@@ -21,27 +21,21 @@
       "page": "description"
     },
     {
-      "label": "Changes",
-      "page": "changes"
-    },
-    {
-      "label": "Changelog",
-      "page": "equations",
-      "native": "change-log"
-    }
-  ],
-  "Baselines": [
-    {
-      "label": "Plot viewer",
-      "page": "view-baselines"
+      "label": "Closure descriptions",
+      "page": "closure-description"
     },
     {
       "label": "Arm descriptions",
       "page": "arm-descriptions"
     },
     {
-      "label": "Closure descriptions",
-      "page": "closure-description"
+      "label": "Arm changes",
+      "page": "changes"
+    },
+    {
+      "label": "Changelog",
+      "page": "equations",
+      "native": "change-log"
     },
     {
       "label": "Switches",
@@ -54,9 +48,13 @@
       "native": "edits"
     }
   ],
-  "Scenarios": [
+  "Simulations": [
     {
-      "label": "Plot viewer",
+      "label": "Baseline plots",
+      "page": "view-baselines"
+    },
+    {
+      "label": "Scenario plots",
       "page": "view-scenarios"
     },
     {
