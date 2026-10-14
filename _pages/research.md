@@ -13,11 +13,89 @@ My research runs in three tracks, each defined by its object, and each worked wi
 2. [**Uneven Development and the Global Structure of Production**](#uneven-development-and-the-global-structure-of-production) — the hierarchical structure of world production, and the flows of labour, value and natural resources from periphery to core.
 3. [**An Ecological Approach to Classical Political Economy**](#an-ecological-approach-to-classical-political-economy) — the laws of motion of capitalist accumulation, stated formally enough to be tested, and their ecological limits.
 
+<style>
+.rgrid-wrap { overflow-x: auto; margin: 1.6rem 0 0.4rem; }
+.rgrid { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 6px; font-size: 0.86rem; line-height: 1.45; }
+.rgrid th, .rgrid td { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.8rem; vertical-align: top; text-align: left; }
+.rgrid thead th { font-weight: 600; color: var(--text); }
+.rgrid thead th.corner { background: transparent; border: none; }
+.rgrid tbody th { width: 22%; font-weight: 600; }
+.rgrid .jel { display: block; margin-top: 0.35rem; font-weight: 400; font-size: 0.76rem; color: var(--muted); letter-spacing: 0.02em; }
+.rgrid ul { margin: 0; padding-left: 1rem; }
+.rgrid li { margin: 0 0 0.3rem; }
+.rgrid a { color: var(--text); text-decoration: underline; text-decoration-color: rgba(56,217,169,0.5); text-underline-offset: 2px; }
+.rgrid a:hover { color: var(--green); }
+.rgrid .venue { color: var(--muted); }
+.rgrid-note { font-size: 0.78rem; color: var(--muted); }
+</style>
+
+<div class="rgrid-wrap">
+<table class="rgrid">
+<thead>
+<tr>
+<th class="corner"></th>
+<th>Stock-flow-consistent and multi-regional input–output models<span class="jel">C67 · C63</span></th>
+<th>Classical and Keynesian dynamical models<span class="jel">C61 · O41</span></th>
+<th>Input–output, network and statistical empirics<span class="jel">C67 · D85 · C55</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1. Ecological Macroeconomics<span class="jel">E3 · O44 · O25 · Q57 · Q32</span></th>
+<td><ul>
+<li><a href="#the-macroeconomic-consequences-of-ecological-unequal-exchange">The macroeconomic consequences of ecological unequal exchange</a> <span class="venue">— job market paper, <em>Ecological Economics</em> R&amp;R</span></li>
+<li>Macroeconomic models for assessing the circular economy <span class="venue">— <em>Ecological Economics</em> 2025</span></li>
+<li>Leeds IO-SFC model for the Philippines <span class="venue">— De La Salle University</span></li>
+</ul></td>
+<td><ul>
+<li><a href="#data-driven-models-of-multi-sector-growth-under-structural-change">Business cycles and sectoral price stabilization</a> <span class="venue">— <em>JEBO</em> 2023</span></li>
+<li><a href="#data-driven-models-of-multi-sector-growth-under-structural-change">Time scales of the low-carbon transition</a>, with W. Semmler <span class="venue">— <em>Jahrbücher</em> 2024</span></li>
+<li><a href="#data-driven-models-of-multi-sector-growth-under-structural-change">Supplier of last resort: public buffer stocks</a> <span class="venue">— for <em>SCED</em></span></li>
+</ul></td>
+<td><ul>
+<li><a href="#net-zero-industrial-policy">Clean Value Chain Explorer</a> <span class="venue">— Net Zero Industrial Policy Lab</span></li>
+<li><a href="#the-macroeconomic-consequences-of-ecological-unequal-exchange">GEMMES Mexico financial data</a> <span class="venue">— Agence Française de Développement</span></li>
+</ul></td>
+</tr>
+<tr>
+<th>2. Uneven Development and the Global Structure of Production<span class="jel">F02 · F4 · Q56</span></th>
+<td><ul>
+<li><a href="#the-macroeconomic-consequences-of-ecological-unequal-exchange">Ecological unequal exchange</a>: how the core's decarbonisation is transmitted to the periphery</li>
+<li><a href="#net-zero-industrial-policy">A multi-regional model</a>: China, the United States and South–South trade</li>
+</ul></td>
+<td><ul>
+<li><a href="#structure-convergence-and-migration">Coupled Goodwin models</a>: migration and capital mobility, with N. Rodousakis</li>
+</ul></td>
+<td><ul>
+<li><a href="#the-network-structure-of-ecological-unequal-exchange">Core–periphery structure of global production</a> <span class="venue">— GLORIA</span></li>
+<li><a href="#health-and-the-production-network">Is health at odds with the economy?</a> <span class="venue">— for <em>ESR</em></span></li>
+<li><a href="#structure-convergence-and-migration">Prototypes of national industrial structure; regional convergence in Europe</a></li>
+</ul></td>
+</tr>
+<tr>
+<th>3. An Ecological Approach to Classical Political Economy<span class="jel">B (classical political economy) · E3</span></th>
+<td><ul>
+<li><a href="#classical-economic-thermodynamics">The conservation of value</a> <span class="venue">— for <em>ROPE</em></span></li>
+</ul></td>
+<td><ul>
+<li><a href="#the-ricardian-dynamics-of-the-metabolic-rift">The Ricardian dynamics of the metabolic rift</a> <span class="venue">— <em>Ecological Economics</em> R&amp;R</span></li>
+<li><a href="#the-sraffian-economy-as-an-autocatalytic-set-production-networks-complexity-and-crisis">The Sraffian economy as an autocatalytic set</a> <span class="venue">— for <em>PRE</em></span></li>
+<li><a href="#a-conflict-theory-of-pricing">A conflict theory of pricing</a> <span class="venue">— for <em>ICC</em></span></li>
+</ul></td>
+<td><ul>
+<li>Re-testing the labour theory of value on EXIOBASE: a review of Işıkara and Mokre <span class="venue">— for <em>ROPE</em></span></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rgrid-note">Rows are research tracks, columns are families of method; the small codes are JEL classifications. The questions below state what each track investigates.</p>
+
 ---
 
 ## Ecological Macroeconomics
 
-Can states steer a multi-sector economy towards sustainability while keeping employment and prices stable? And how are the costs of decarbonisation in the core transmitted to the periphery?
+Can states steer a multi-sector economy towards decarbonisation while keeping prices and employment stable? When the ecological core reduces its demand for resources, who bears the macroeconomic costs? These questions connect sectoral stabilisation with ecological unequal exchange.
 
 ### Net Zero Industrial Policy
 
@@ -59,7 +137,7 @@ Capitalist economies are structured through complex networks of intermediate pro
 
 ## Uneven Development and the Global Structure of Production
 
-Where in the world economy is value produced, and where is it appropriated? This track belongs to development economics in the structuralist tradition, which treats underdevelopment as a position in a hierarchical world economy rather than a stage on a common path.
+Where in the world economy is value produced, and where is it appropriated? How do labour, value and natural resources flow between core and periphery, and do migration and capital flows narrow or entrench their income gap? This track belongs to development economics in the structuralist tradition, which treats underdevelopment as a position in a hierarchical world economy rather than a stage on a common path.
 
 ### The Network Structure of Ecological Unequal Exchange
 
@@ -91,7 +169,9 @@ Built on the **GLORIA** multi-regional supply-use tables (release 060, 164 regio
 
 ## An Ecological Approach to Classical Political Economy
 
-This track returns to the questions the nineteenth-century classical economists raised and left unresolved — whether the limits to growth are set by scarce natural resources or by social inequality, and how growth, distribution and the environment shape one another — and asks them of an economy now facing climate and geopolitical risk.
+Are the limits to growth set by nature, or by the social relations through which nature is used? Does the labour theory of value give a conservation law, and does labour explain relative prices better than energy, land and materials? These questions link formal models of accumulation to empirical tests.
+
+It uses models of accumulation and price formation, together with input–output evidence, to test the laws of motion proposed by classical political economy under climate and resource constraints.
 
 ### Classical Economic Thermodynamics
 
@@ -109,7 +189,7 @@ Does the labour theory of value give a conservation law? The classical tradition
 
 ---
 
-### Production Networks, Complexity, and Crisis
+### The Sraffian Economy as an Autocatalytic Set: Production Networks, Complexity, and Crisis
 
 The structure of intermediate production networks determines both the normal dynamics of capitalist economies and the character of their crises. I combine input-output analysis, network theory, and dynamical systems to study:
 
@@ -117,7 +197,7 @@ The structure of intermediate production networks determines both the normal dyn
 - **Multi-sector eigenvalue dynamics**: how the spectral structure of the input-output matrix (dominant eigenvalue, subdominant eigenvalues, imaginary components) shapes the frequency and amplitude of sectoral oscillations
 - **Network centrality and systemic risk**: which sectors are "too central to fail" in the sense that their disruption severs catalytic closure across the network
 
-**Paper:** [The Sraffian Economy as an Autocatalytic Set](/projects/sraffa_acs/), for *Physical Review E*
+**Paper:** [The Sraffian Economy as an Autocatalytic Set: Production Networks, Complexity, and Crisis](/projects/sraffa_acs/), for *Physical Review E*
 
 ---
 

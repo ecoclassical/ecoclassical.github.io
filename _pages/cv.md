@@ -50,6 +50,7 @@ redirect_from:
 
 | JEL group | JEL codes |
 |---|---|
+| (E) Macroeconomics and Monetary Economics | E3 Prices, Business Fluctuations, and Cycles |
 | (O) Economic Development, Innovation, Technological Change, and Growth | O25 Industrial Policy · O41 Multisector Growth Models · O44 Environment and Growth |
 | (Q) Environmental and Ecological Economics | Q56 Environment and Development · Q57 Industrial Ecology · Q32 Exhaustible Resources and Economic Development |
 | (F) International Economics | F02 International Economic Order and Integration · F4 Macroeconomic Aspects of International Trade and Finance |

@@ -171,6 +171,7 @@ exclude:
   - .github
   - .jekyll-assets-cache
   - .sass-cache
+  - _pages/about_1.md  # archived alternate bio; shares the landing-page permalink
   - assets/js/_main.js
   - assets/js/plugins
   - assets/js/vendor
