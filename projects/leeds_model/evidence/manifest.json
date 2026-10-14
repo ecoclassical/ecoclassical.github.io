@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-14",
-  "commit": "28ec58cf188c662bf332400de150e71c2c457d5a",
+  "commit": "37eaf38f86d45a9ccc1ab591f3c7af132b86931a",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -95,8 +95,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "92a3cf0c066b8799de560af198f841b1fc12e599ee01c4b8c5778e18c3fa618d",
-      "bytes": 7184945
+      "sha256": "ab2addcbd36e5b19bb09e8a1b47d8c8c08bc24f4d09b960d56d2c44c22442409",
+      "bytes": 7187077
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -115,8 +115,8 @@
     },
     "evidence/output/html/site/cross-border-anova.html": {
       "source": "output/html/site/cross-border-anova.html",
-      "sha256": "8fa18b7f290934db9911d6aba884aff0a4bee01b265ee7ef765774d6ca0fb517",
-      "bytes": 3270409
+      "sha256": "9080e679167226e063495c2544479e5eff73af5c41a47c8c33776d08bf36fdd2",
+      "bytes": 3273005
     },
     "evidence/output/html/reports/cross_border_analysis.html": {
       "source": "output/html/reports/cross_border_analysis.html",
@@ -639,7 +639,7 @@
     "web/evidence/pages.json": "c2fdec08fcf46ea07882423b2c0dd2cdbb2f62f647aa14bcc28558eda654a856",
     "tools/site/build_evidence_site.py": "26bc375fc009d5cae17dc2002ded59c620b6a5de3bc0756481161e26e6212404",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
-    "tools/site/cluster-explorer.html": "53c5e18069004210dfff6facf2bc772fc22e71066388d5f899a355efa33f8000",
+    "tools/site/cluster-explorer.html": "73417618fc68eb973fd49e67c92de5f5d387ac056e2166768e1c722a9a90f336",
     "tools/site/export_comparison_data.R": "c97e22a1c5e711f469aa9ba9fbd27d904b05140574a15208a132e806d218bbcf",
     "data/scenario_labels.csv": "c91d40cae712f48baef13b7f9fc799935914100917d31d01c7ce6d0a1407ecf3",
     "output/calibration/scenario_grid_20261012_hf_status.csv": "5757b38addb60b21101371f0505588fa49d475e03e7024b84c4903982a738ede",
@@ -742,7 +742,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "76797629752ec521a0b20fa125c0530d2f5c4d7ed000028fe40058c5ef8621ec",
-    "coverage.json": "761f539bc049de6cfa285ab5ca9ab2634cf975c373384a5c51011ec99d6ef042",
+    "coverage.json": "820530e0ab989230e2e4b2a7ada3979e2546f2a910182abe8fd82e0d888383a7",
     "pages/background.html": "042163bc15c2601de610890e928c85ef74debf914239b93d69ddae08ded2bda6",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
