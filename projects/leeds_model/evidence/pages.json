@@ -234,6 +234,15 @@
     "href": "pages/submitted-discussion.html"
   },
   {
+    "id": "version-comparison",
+    "section": "Discussion",
+    "title": "Version comparison \u2014 the submitted claims, verdict by verdict",
+    "source": "output/html/site/version-comparison.html",
+    "description": "One row per claim of the submitted discussion and conclusions: holds, holds in part, does not hold or not tested on the 96 high-finance runs, with the number it rests on.",
+    "artifact": "evidence/output/html/site/version-comparison.html",
+    "href": "pages/version-comparison.html"
+  },
+  {
     "id": "xi-premium",
     "section": "Documentation",
     "title": "\u039e premium recalibration \u2014 before and after",

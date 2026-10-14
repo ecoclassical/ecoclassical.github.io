@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-14",
-  "commit": "e3937be6d855a857ecae7a69b96c06e2473764fa",
+  "commit": "5374ef7a1f22a85539bc72b3616db36e30fcf262",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "5ab0700498945a311ecf6cf9e3bdb20ecbbca6f6b1a784539e3c3e53a4e4cf4b",
-      "bytes": 4560
+      "sha256": "f7f0ca62256d6bffbb706edd7a3f280f152454a3607c3d4d25cc0a3b1a639137",
+      "bytes": 4645
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -155,13 +155,18 @@
     },
     "evidence/output/html/site/discussion.html": {
       "source": "output/html/site/discussion.html",
-      "sha256": "fe5d26768877fb5a6014adc8a6051ad479e8bb06aad16067c1081318b0a6bac5",
-      "bytes": 1924468
+      "sha256": "e7b445535e14cc964bf3b05fbc48537a2c6bfec98148ce535181cc0357b1ea16",
+      "bytes": 1917236
     },
     "evidence/output/html/site/submitted-discussion.html": {
       "source": "output/html/site/submitted-discussion.html",
       "sha256": "366613ec25d183127182f6c3cb3a00ba63954d5e587ee33598662e0fb063d81e",
       "bytes": 3220066
+    },
+    "evidence/output/html/site/version-comparison.html": {
+      "source": "output/html/site/version-comparison.html",
+      "sha256": "903a68ab0cb19cb1ae48ccbf9fbd864e2d517935c8a49f9fbdd00fb5ea86cadd",
+      "bytes": 1894092
     },
     "evidence/output/html/reports/2026-10-02-xi-premium-recalibration.html": {
       "source": "output/html/reports/2026-10-02-xi-premium-recalibration.html",
@@ -611,7 +616,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "3a20d666f7588673a6780b1b5ffe7125aa864ad029f6c26d68afbf19c901a7bf",
-    "web/evidence/pages.json": "8f16ebda04de96e313a5fc3d4a1745dd3d7aeff7687c7f3ebb5a1b778e6491a5",
+    "web/evidence/pages.json": "419aa6ff654c87ff6e29df7c1e0421d980878e658980855035b2f342627773a2",
     "tools/site/build_evidence_site.py": "26bc375fc009d5cae17dc2002ded59c620b6a5de3bc0756481161e26e6212404",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "94f5b0b9265e1ef3b093d912577ccd6ef774a2a175d118cee4e7ccf0e110bf9d",
@@ -621,12 +626,13 @@
     "qmd/site/background.qmd": "7d67fe9f5f33c2102175ce872c689a27ea7563a2121096e0c7373ce9aef4ce21",
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "ddd89db8e1a952a9224126d9c684eebc9f37a2fe6498b19c1f2ccd6a8542e5e2",
-    "qmd/site/discussion.qmd": "47d6f2d9bd76dfc6846ff153098ed305c29f545f8bc9fc6607b9093c06eedd7c",
+    "qmd/site/discussion.qmd": "9169b36956d38cb7b151c82e0fc30307496ec7496d163d3d0d330ab14ffe7583",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/submitted-discussion.qmd": "d26342bd7da8ea9dd76aae07709da946c89ea609c555b87b5a41b37b399017c8",
+    "qmd/site/version-comparison.qmd": "0a7c2a09a3bf3cd71ba6f8938cc3455e76de4bad6987c0433e9e6cb796ff14d5",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "8222020a2c64ae179bd85f60479e233f897e0f6f54ad0d2b3395260e4c059c30",
-    "web/evidence/section-tabs.json": "5ab0700498945a311ecf6cf9e3bdb20ecbbca6f6b1a784539e3c3e53a4e4cf4b",
+    "web/evidence/section-tabs.json": "f7f0ca62256d6bffbb706edd7a3f280f152454a3607c3d4d25cc0a3b1a639137",
     "tools/site/generate_analysis_visuals.R": "edfad53f9b0dd55382b9149c58022105a7ec96dce7a7c21ced6b0be9ae99efe2",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
@@ -685,6 +691,7 @@
     "pages/dynamics.html",
     "pages/discussion.html",
     "pages/submitted-discussion.html",
+    "pages/version-comparison.html",
     "pages/xi-premium.html",
     "pages/openflex-xi.html",
     "pages/cif-audit.html",
@@ -707,8 +714,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "9c0eb9ba08de2a6f18798947a388eb13bc42668053124778ce7b7ae5a3d90802",
-    "coverage.json": "efdf04130d1b569bbf8e623cff2c954d7ef7ed8907f48b5af3ebf2ae9ff41b5a",
+    "pages.json": "dc4f07fa7a3f3ea81b15d45d0094161da4afc15d40b4353a0e12acf5e95cbe54",
+    "coverage.json": "3d7b1b73bce02540206b5f31be768f135f4b8b51236f9ab8b5430d04fceed3d5",
     "pages/background.html": "2691f0fb8ffc8bdb3282dd4f7ecc53a72f520a63d2636524cedb5caece2d4e71",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
@@ -735,6 +742,7 @@
     "pages/dynamics.html": "d273950adb786e38b31807efbe6bfc63b4dc3f4c9236b0410a9afa31a0d1fd9d",
     "pages/discussion.html": "1bfcb0e8cccbcee77faf4d0e1e6ba2b2e479adf914e408b51e7c189c511d4c67",
     "pages/submitted-discussion.html": "6daba5c6a5e07c10df6ec53db50fe0de530bae3d21aa6af917656dda25142658",
+    "pages/version-comparison.html": "15f81146e6ce246d9e1a48579b8d08df92d315188dbfa04e68df57c22cf71efd",
     "pages/xi-premium.html": "5cee1fab5eb026436b85852f04cb806f8f9d50bfa3e0d353a610bd0277ef38c3",
     "pages/openflex-xi.html": "00f2a9e18d9fb92b3d7a435b90267bfc5fa7dfe8e580c241cff4c812092cf9d6",
     "pages/cif-audit.html": "b00fc22eaedaadea746ea56e1fadfa1faa408895bea61394ef73c1e87bbb401f",

@@ -115,6 +115,10 @@
     {
       "label": "Submitted discussion",
       "page": "submitted-discussion"
+    },
+    {
+      "label": "Version comparison",
+      "page": "version-comparison"
     }
   ],
   "Figures": [
