@@ -180,9 +180,9 @@
     .q-group { border-top: 1px solid var(--bhi); padding-top: 0.85rem; }
     .q-group h2 { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.8rem; color: var(--muted); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
     .q-group .q-dot { margin-top: 0; }
-    .q-group ol { list-style: none; counter-reset: research-question; display: grid; gap: 0.65rem; }
-    .q-group li { display: grid; grid-template-columns: 1.15rem 1fr; gap: 0.55rem; font-size: var(--hero-fs); line-height: 1.5; }
-    .q-group li::before { counter-increment: research-question; content: counter(research-question) "."; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .q-group ul { list-style: disc; padding-left: 1.4rem; display: grid; gap: 0.65rem; }
+    .q-group li { padding-left: 0.15rem; font-size: var(--hero-fs); line-height: 1.5; }
+    .q-group li::marker { color: var(--muted); }
 
     .bio a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(56,217,169,0.35); }
     .bio a:hover { border-bottom-color: var(--green); }

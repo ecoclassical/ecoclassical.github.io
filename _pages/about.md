@@ -28,27 +28,27 @@ layout: home
     <div class="q-groups">
       <section class="q-group">
         <h2><span class="q-dot green"></span>Ecological macroeconomics</h2>
-        <ol>
+        <ul>
           <li>Can ecological gains in the Global North reproduce, under a green label, the asymmetries of ecologically unequal exchange?</li>
           <li>Can industrial policy steer a multi-sector economy towards decarbonization while keeping prices and employment stable?</li>
           <li>How fast can the low-carbon transition proceed, given the different speeds at which prices, quantities and technologies adjust?</li>
           <li>Can public buffer stocks of critical natural resources stabilize prices where price caps and tax-subsidy schemes fail?</li>
-        </ol>
+        </ul>
       </section>
       <section class="q-group">
         <h2><span class="q-dot orange"></span>Uneven development and global production</h2>
-        <ol>
+        <ul>
           <li>Is world production organized as a core and a periphery, and how do labour, value and natural resources flow between them?</li>
           <li>Do national economies fall into a few prototypes of industrial structure, and do they move between them as they develop?</li>
           <li>Do open borders hurt or benefit workers in the core?</li>
-        </ol>
+        </ul>
       </section>
       <section class="q-group">
         <h2><span class="q-dot purple"></span>Ecological classical political economy</h2>
-        <ol>
+        <ul>
           <li>Are the limits to economic growth set by nature or by inequality?</li>
           <li>Is value conserved in exchange but created only in production? Which theory of value, utility or labor, offers a coherent analogy to the first and second laws of thermodynamics?</li>
-        </ol>
+        </ul>
       </section>
     </div>
   </div>
