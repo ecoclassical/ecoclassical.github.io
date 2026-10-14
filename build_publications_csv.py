@@ -2,17 +2,19 @@
 """Regenerate _data/publications.csv from the single source of truth,
 ~/Documents/R/personal/agenda/deliverables.csv.
 
-The research-line order and display names live in
-~/Documents/R/personal/agenda/research_lines.csv — edit that file, re-run this
+The research-track order and display names live in
+~/Documents/R/personal/agenda/tracks.csv — edit that file, re-run this
 script, and the publications page picks it up.
 
 Column contract (written to _data/publications.csv):
-    research_line  machine key   (e.g. "classical_eco")
+    research_line  machine key   (e.g. "classical_eco"); read from the `track` column of
+                   deliverables.csv (renamed from `research_line` on 2026-10-14). The output name
+                   is kept so the site's templates need no change.
     label          display name  (e.g. "Growth and Distribution")
     year, type, status, authors, title, venue, volume, issue, pages, url, pdf, notes
     show           "true"/"false" — whether the publication appears on the site
 
-The publications page groups by research_line (in research_lines.csv sequence) and
+The publications page groups by research_line (in tracks.csv sequence) and
 only renders rows where show == "true".
 """
 from __future__ import annotations
@@ -21,12 +23,12 @@ import csv
 from pathlib import Path
 
 DELIVERABLES = Path.home() / "Documents" / "R" / "personal" / "agenda" / "deliverables.csv"
-RESEARCH_LINES = Path.home() / "Documents" / "R" / "personal" / "agenda" / "research_lines.csv"
+RESEARCH_LINES = Path.home() / "Documents" / "R" / "personal" / "agenda" / "tracks.csv"
 OUT = Path(__file__).resolve().parent / "_data" / "publications.csv"
 
 
 def load_line_order():
-    """Read (order, key, label) from research_lines.csv; return (order, pos)."""
+    """Read (order, key, label) from tracks.csv; return (order, pos)."""
     with open(RESEARCH_LINES, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
     order = [(r["key"], r["label"]) for r in rows]
@@ -34,10 +36,10 @@ def load_line_order():
     return order, pos
 
 
-# Explicit within-line order for the classical-political-economy pillar (author's sequence).
+# Explicit within-line order for the classical-political-economy track (author's sequence).
 # Everything else sorts by year descending.
 GND_ORDER = {
-    "The Heat Death of Accumulation: the Ricardian dynamics of the metabolic rift": 0,
+    "Environmentalism without class struggle is just gardening: the Ricardian dynamics of the metabolic rift": 0,
     "The Sraffian Economy as an Autocatalytic Set": 1,
     'Review of "Marx\'s Theory of Value at the Frontiers" by Güney Işikara and Patrick Mokre': 2,
     "A conflict theory of pricing": 3,
@@ -74,7 +76,7 @@ def main() -> None:
 
     out_rows = []
     for r in rows:
-        key = r.get("research_line", "").strip()
+        key = r.get("track", "").strip()
         title = r.get("title", "").strip()
         year = r.get("year", "").strip()
         line_pos = LINE_POS.get(key, len(LINE_ORDER))
