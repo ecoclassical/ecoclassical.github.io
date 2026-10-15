@@ -1,0 +1,35 @@
+# Captions for the homepage figure slideshow.
+#
+# Every image in images/featured/ is shown, in filename order (prefix 01-, 02-, … to set it).
+# An image with no entry here still appears, captioned with its filename.
+# colour: green | blue | orange | purple — matches the research-question dots.
+
+01-eu-row-network.jpg:
+  strand: Job market paper
+  colour: green
+  caption: EU–Rest of World production network (EXIOBASE), the multi-regional structure through which circular-economy policies in the core reach the periphery.
+
+02-multisector-dynamics.jpg:
+  strand: Multi-sector dynamics
+  colour: blue
+  caption: Conservative multi-sector dynamics under constant technology — classical price–quantity oscillations.
+
+03-cvce-battery-dendrite.jpg:
+  strand: Clean Value Chain Explorer
+  colour: blue
+  caption: The battery value chain, from ores (upstream) through cathode and cell production (midstream) to assembly (downstream).
+
+04-mexico-io-network.jpg:
+  strand: Production networks
+  colour: orange
+  caption: Input–output network of Mexico (800+ sectors) — a star-shaped hierarchy with few core industrial hubs.
+
+05-ricardian-model.jpg:
+  strand: Classical foundations
+  colour: purple
+  caption: The Ricardian one-sector model — as cultivation extends onto less fertile land, rent squeezes profit towards the stationary state.
+
+06-industry-cycles.jpg:
+  strand: Conflict theory of pricing
+  colour: purple
+  caption: Industry cycles in the phase plane — an agent-based model of 500 firms in 5 industries.
