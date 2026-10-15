@@ -10,7 +10,7 @@ redirect_from:
 
 <div style="margin-bottom:1rem;">
   <a href="mailto:oriolvallescodina@gmail.com">oriolvallescodina@gmail.com</a> ·
-  <a href="mailto:ovalles1@jhu.edu">ovalles1@jhu.edu</a>
+  <a href="mailto:ovalles1@jh.edu">ovalles1@jh.edu</a>
 </div>
 
 [Download Full CV (PDF)](../assets/files/CV_Oriol_Valles_Codina.pdf)
