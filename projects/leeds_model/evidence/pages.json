@@ -82,7 +82,7 @@
   },
   {
     "id": "scenario-highlights",
-    "section": "Simulations",
+    "section": "Analysis",
     "title": "Scenario Highlights",
     "source": "output/html/site/scenario-highlights.html",
     "description": "One row per scenario: real, financial, ecological and distributional responses, and their regime under each closure, on the 96 high-finance credit runs.",
@@ -91,10 +91,10 @@
   },
   {
     "id": "regime-table",
-    "section": "Simulations",
+    "section": "Analysis",
     "title": "Scenario Results",
     "source": "output/html/site/regime-table.html",
-    "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: period-90 responses per scenario and region as a heatmap, with the regime under each closure.",
+    "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: responses averaged over t = 79..100 per scenario and region as a heatmap, with the regime under each closure.",
     "artifact": "evidence/output/html/site/regime-table.html",
     "href": "pages/regime-table.html"
   },
@@ -373,7 +373,7 @@
     "section": "Tables",
     "title": "Scenario Results",
     "source": "output/html/site/regime-table.html",
-    "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: period-90 responses per scenario and region as a heatmap, with the regime under each closure.",
+    "description": "The submitted Table 4 rebuilt from the 96 high-finance credit runs: responses averaged over t = 79..100 per scenario and region as a heatmap, with the regime under each closure.",
     "artifact": "evidence/output/html/site/regime-table.html",
     "href": "pages/tables-regime-table.html"
   },

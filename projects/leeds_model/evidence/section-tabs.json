@@ -68,22 +68,19 @@
     {
       "label": "Scenario plots",
       "page": "view-scenarios"
-    },
-    {
-      "label": "Scenario Highlights",
-      "page": "scenario-highlights"
-    },
-    {
-      "label": "Scenario Results",
-      "page": "regime-table"
     }
   ],
   "Analysis": [
+    {"label": "Main Highlights", "page": "analysis-visuals", "native": "main-highlights"},
+    {"label": "Scenario Highlights", "page": "scenario-highlights"},
+    {"label": "Scenario Results", "page": "regime-table"},
+    {"label": "ANOVA", "page": "analysis-visuals", "native": "anova"},
     {
       "label": "Dendrograms",
       "page": "analysis-visuals",
       "native": "hierarchy"
     },
+    {"label": "Silhouette", "page": "analysis-visuals", "native": "silhouette"},
     {
       "label": "Groups",
       "page": "analysis-visuals",
@@ -93,11 +90,6 @@
       "label": "PCA",
       "page": "analysis-visuals",
       "native": "pca"
-    },
-    {
-      "label": "ANOVA",
-      "page": "analysis-visuals",
-      "native": "anova"
     },
     {
       "label": "Other Plots",

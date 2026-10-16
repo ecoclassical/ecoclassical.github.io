@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": true,
-  "built_date": "2026-10-14",
-  "commit": "37eaf38f86d45a9ccc1ab591f3c7af132b86931a",
+  "working_tree_dirty": false,
+  "built_date": "2026-10-16",
+  "commit": "0a6a523ba89ebd053862eb946f2f632f1eaebace",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -15,8 +15,8 @@
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "5c782b49ac494a152b98d52c97fbbfa34e9313b03091f803fac59615e7dfe83b",
-      "bytes": 8014
+      "sha256": "d8994643178069dcf6d97d36b2c65637d4f4115135ccf83592f53cd81e259654",
+      "bytes": 8022
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "dbb53668a99b0d08c51c60edb446a7da73219869a6243a3b29e808f91a2fed28",
-      "bytes": 5027
+      "sha256": "64da2315db9127350969965b6ba4848f08fc64849bd84353fb3f04db67f378b5",
+      "bytes": 5139
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -80,13 +80,13 @@
     },
     "evidence/output/html/site/scenario-highlights.html": {
       "source": "output/html/site/scenario-highlights.html",
-      "sha256": "ea6cdabc78496240164d802006e472e82020084149b3870eb3acfa0b1f038e1a",
-      "bytes": 36800
+      "sha256": "b6f31007e51d5749179fe75eee0f5c3a64d86b134e75ad1ab8b63c6eca0c5c90",
+      "bytes": 36909
     },
     "evidence/output/html/site/regime-table.html": {
       "source": "output/html/site/regime-table.html",
-      "sha256": "4875d97db0b15f0a43ec7440332113143d0b74c8b9b2363f5e15609fb95f16f5",
-      "bytes": 5522550
+      "sha256": "dff243e07a22089c8348d23c079d5de57b923903a5800cd8e17de2dfc3edf977",
+      "bytes": 5524468
     },
     "evidence/output/html/reports/scenarios/view-scenarios.html": {
       "source": "output/html/reports/scenarios/view-scenarios.html",
@@ -95,8 +95,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "ab2addcbd36e5b19bb09e8a1b47d8c8c08bc24f4d09b960d56d2c44c22442409",
-      "bytes": 7187077
+      "sha256": "e940d5394d5b5cf4d0dfea41cc621c632056483fddfc1aecbd125356eca8557d",
+      "bytes": 7198014
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -636,8 +636,8 @@
   },
   "inputs": {
     "web/evidence/sections.json": "3a20d666f7588673a6780b1b5ffe7125aa864ad029f6c26d68afbf19c901a7bf",
-    "web/evidence/pages.json": "c2fdec08fcf46ea07882423b2c0dd2cdbb2f62f647aa14bcc28558eda654a856",
-    "tools/site/build_evidence_site.py": "26bc375fc009d5cae17dc2002ded59c620b6a5de3bc0756481161e26e6212404",
+    "web/evidence/pages.json": "064d3a10f9260fb8311e00a2d5fffc78c5a5af86c6a67abc9b53a69f84810535",
+    "tools/site/build_evidence_site.py": "5fdfebc5426bb3e1af9e213b0b95b8b1976d592d7d1cd8a6149238942f0f6abc",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "73417618fc68eb973fd49e67c92de5f5d387ac056e2166768e1c722a9a90f336",
     "tools/site/export_comparison_data.R": "c97e22a1c5e711f469aa9ba9fbd27d904b05140574a15208a132e806d218bbcf",
@@ -654,9 +654,10 @@
     "qmd/site/submitted-discussion.qmd": "ef4af0c887d6c7474fa21fb72b8fb6e6b4f69b900b5982326257295034f7d336",
     "qmd/site/version-comparison.qmd": "4b65246935c566c5716b0d2722db2a40c53913b7482e69fcc2170e0dffb2b0bd",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
-    "tools/site/dendrogram-explorer.html": "8222020a2c64ae179bd85f60479e233f897e0f6f54ad0d2b3395260e4c059c30",
-    "web/evidence/section-tabs.json": "dbb53668a99b0d08c51c60edb446a7da73219869a6243a3b29e808f91a2fed28",
-    "tools/site/generate_analysis_visuals.R": "edfad53f9b0dd55382b9149c58022105a7ec96dce7a7c21ced6b0be9ae99efe2",
+    "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
+    "tools/site/silhouette-grid.html": "f0b92c5a21b585db58d9cf8fed888223e118ce2ac42923f22002d1316374445a",
+    "web/evidence/section-tabs.json": "64da2315db9127350969965b6ba4848f08fc64849bd84353fb3f04db67f378b5",
+    "tools/site/generate_analysis_visuals.R": "56d24b6de25c58575ef60924d164caabc07505679c1bc11b38c58a72882c1afa",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
     "tools/site/group-table.html": "7614d7ae4ffa44fbf5ca540db2a90a37abe003638babc6ed33684210a8e10f4c",
@@ -741,7 +742,7 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "76797629752ec521a0b20fa125c0530d2f5c4d7ed000028fe40058c5ef8621ec",
+    "pages.json": "531c18f8e33942751dd262a9e4f3206e9a8d8af2753c5a60abb03b0efec5d4f4",
     "coverage.json": "820530e0ab989230e2e4b2a7ada3979e2546f2a910182abe8fd82e0d888383a7",
     "pages/background.html": "042163bc15c2601de610890e928c85ef74debf914239b93d69ddae08ded2bda6",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
