@@ -45,19 +45,15 @@ redirect_from:
   * New School for Social Research (New York, NY, US)
 
 
-## Research Fields
+## Research and Teaching Interests
 ---
 
-| JEL group | JEL codes |
-|---|---|
-| (E) Macroeconomics and Monetary Economics | E3 Prices, Business Fluctuations, and Cycles |
-| (O) Economic Development, Innovation, Technological Change, and Growth | O25 Industrial Policy · O41 Multisector Growth Models · O44 Environment and Growth |
-| (Q) Environmental and Ecological Economics | Q56 Environment and Development · Q57 Industrial Ecology · Q32 Exhaustible Resources and Economic Development |
-| (F) International Economics | F02 International Economic Order and Integration · F4 Macroeconomic Aspects of International Trade and Finance |
-| (C) Mathematical and Quantitative Methods; Econometrics | C55 Large Data Sets · C61 Dynamic Analysis · C63 Simulation Modeling · C67 Input–Output Models · D85 Network Analysis |
-| (B) History of Economic Thought | Classical political economy |
-
-**Teaching.** Macroeconomics · Ecological and Environmental Economics · Development and International Economics · History of Economic Thought and Political Economy · Econometrics and Data Science
+* Macroeconomics (E3)
+* Economic Development, Innovation, Technological Change, and Growth (O25, O41, O44)
+* Environmental and Ecological Economics (Q56, Q57, Q32)
+* International Economics (F02, F4)
+* Mathematical and Quantitative Methods, Econometrics (C55, C61, C63, C67, D85)
+* History of Economic Thought: Classical Political Economy (B12, B51)
 
 
 <div><strong>Languages</strong>: Catalan (native) · Spanish (native) · English (near-native) · Italian (fluent) · German (basic) · Arabic (basic)</div>
