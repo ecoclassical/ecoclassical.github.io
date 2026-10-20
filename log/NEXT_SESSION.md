@@ -1,20 +1,20 @@
-# Next Session — written 2026-10-16 at the close of `session_20261016.md`
+# Next Session — written 2026-10-20 at the close of `session_20261020.md`
 
-Repo state at hand-off: `ecoclassical.github.io` `master` fast-forwarded to `9a19510c` before this save. Untracked `_pages/about_1.md` belongs to another workstream; preserve it. The public Leeds evidence URL and its principal pages returned HTTP 200 on 2026-10-16.
+Repo state at hand-off: `master` @ `126c93fb`, deployed. The Research-page rewrite requested on 2026-10-16 is done. Untracked `_pages/about_1.md` belongs to another workstream; preserve it.
 
 ---
 
-## 1. Streamline the Research page
+## 1. Check the two facts removed from the Research page
 
-**Goal.** The public Research page presents the three research tracks clearly in substantially less text while retaining accurate project descriptions and working links.
+**Goal.** Decide whether two pieces of detail removed as unverified on 2026-10-20 go back on `_pages/research.md`:
+- the GLORIA coverage "2012–2026";
+- the list of input–output databases (EORA, EU KLEMS, WIOD) behind the multi-sector growth models.
 
-**Why this is next.** The maintainer reports that the current page is overlong and needs clearer organization.
+**Why this is next.** Both were on the old page, but neither was checked against its source.
 
 **Prompt to open with:**
-> Review `_pages/research.md` from a reader's perspective. Identify duplicated framing and paragraphs that can be cut or moved, then edit the page into a scannable overview of the three research tracks and their current work. Preserve the claims that are backed by project pages, check the Leeds evidence link plus other outgoing project links, and preview the rendered page. Do not stage or edit unrelated `_pages/about_1.md`.
+> Check the GLORIA release 060 year coverage in `eco-eco-network/` (or the GLORIA documentation), separating observed years from nowcasts. Check which input–output databases the JEBO 2023 and Jahrbücher 2024 papers actually use (PDFs in `files/publications/`). Propose one sentence for each for `_pages/research.md`, and edit only after I approve.
 
-**Files in play:** `_pages/research.md` (source) · `projects/leeds_model/evidence/` (linked evidence pages) · `_data/navigation.yml` (navigation reference)
+**Files in play:** `_pages/research.md` · `files/publications/valles-codina-2023-jebo.pdf` · `files/publications/valles-codina-semmler-2024-jes.pdf`
 
-**Done when:** the rendered Research page is shorter, keeps the three-track structure, and its project links work; only intended files are committed.
-
-**Watch out:** the current Research page links to the Leeds evidence site from two places. The base URL and model, closure, Analysis and Discussion pages returned HTTP 200 on 2026-10-16; this is an availability check, not a full browser test.
+**Done when:** each fact is either restored with a stated source or confirmed as left out, and any edit is committed and deployed.
