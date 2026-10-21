@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": false,
-  "built_date": "2026-10-20",
-  "commit": "4794a90826011ec2523694a1dd3d87a75ae2f91d",
+  "working_tree_dirty": true,
+  "built_date": "2026-10-21",
+  "commit": "0b3ad93b7c278730926a5356de409c835a06950f",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "64da2315db9127350969965b6ba4848f08fc64849bd84353fb3f04db67f378b5",
-      "bytes": 5139
+      "sha256": "f077fb3176a576f9f42243c97d788b123a9dba0050ae705f4696010b34b87b92",
+      "bytes": 5226
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -40,8 +40,8 @@
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
-      "sha256": "772fd941bf3f2d285af4821554866afccaf6d7c327f5ea25e82837cbfbafefd8",
-      "bytes": 7732902
+      "sha256": "01bb2ccf3446cd29541b2ee3c7c2e7d03a2f49295b122615fce7b7675a4d6e13",
+      "bytes": 8088084
     },
     "evidence/output/html/appendices/2026-10-13-model-description-current-revised.html": {
       "source": "output/html/appendices/2026-10-13-model-description-current-revised.html",
@@ -65,7 +65,7 @@
     },
     "evidence/model/equations/model-registry.html": {
       "source": "model/equations/model-registry.html",
-      "sha256": "3d34116f4db8bae6ece8f36ee02b7e90eb2d1aad9cfdd91209b9e4d24b26b63b",
+      "sha256": "412fb2814fd9ffb192e49a1e2d72755e1e32c97c426f4539471d5253a2a82b0c",
       "bytes": 3772914
     },
     "evidence/output/html/tables/closure_region_grid.html": {
@@ -95,8 +95,8 @@
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
-      "sha256": "1c1b2e1d1225ffab312cec5186c47b6c89e0577bb872150c6bec92df7efcbd47",
-      "bytes": 7211933
+      "sha256": "908f6711ff0729e576695458a0a71801f7001c37fdd067d3aac32cc16f58211d",
+      "bytes": 7239612
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -639,7 +639,7 @@
     "web/evidence/pages.json": "064d3a10f9260fb8311e00a2d5fffc78c5a5af86c6a67abc9b53a69f84810535",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
-    "tools/site/cluster-explorer.html": "73417618fc68eb973fd49e67c92de5f5d387ac056e2166768e1c722a9a90f336",
+    "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
     "tools/site/export_comparison_data.R": "c97e22a1c5e711f469aa9ba9fbd27d904b05140574a15208a132e806d218bbcf",
     "data/scenario_labels.csv": "c91d40cae712f48baef13b7f9fc799935914100917d31d01c7ce6d0a1407ecf3",
     "output/calibration/scenario_grid_20261012_hf_status.csv": "5757b38addb60b21101371f0505588fa49d475e03e7024b84c4903982a738ede",
@@ -657,11 +657,11 @@
     "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "64da2315db9127350969965b6ba4848f08fc64849bd84353fb3f04db67f378b5",
-    "tools/site/generate_analysis_visuals.R": "84a8b0a9e40fd8073f6863330b3a85dad44a2ea50b4cbedc813c6caa2d61fe88",
+    "web/evidence/section-tabs.json": "f077fb3176a576f9f42243c97d788b123a9dba0050ae705f4696010b34b87b92",
+    "tools/site/generate_analysis_visuals.R": "3a037dfeb8b5c2ef1f9ded972ec1d451bdf213a3a6a5fd68a7ceec925f565b1f",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
-    "tools/site/group-table.html": "7614d7ae4ffa44fbf5ca540db2a90a37abe003638babc6ed33684210a8e10f4c",
+    "tools/site/group-table.html": "0cda4ceb99f762638ceb76bdee9662b28497e5cae9c03231839fbc88d3fb3a20",
     "tools/site/regime-map.html": "e40e474a67e0b4c961ce7ca8c7d094cb877457c78110012f60534d68368908af",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
     "tools/site/generate_paper_pages.R": "00ffda62a21b025a187a70cc0d31f26860332f217011aaaccbc2c335c3ea0d35",
@@ -744,7 +744,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "531c18f8e33942751dd262a9e4f3206e9a8d8af2753c5a60abb03b0efec5d4f4",
-    "coverage.json": "820530e0ab989230e2e4b2a7ada3979e2546f2a910182abe8fd82e0d888383a7",
+    "coverage.json": "fab66692e096411be1a08112b875c5ccd395079d5ef80acbc15873bdd1de146e",
     "pages/background.html": "042163bc15c2601de610890e928c85ef74debf914239b93d69ddae08ded2bda6",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",

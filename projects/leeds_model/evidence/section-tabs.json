@@ -71,6 +71,7 @@
     }
   ],
   "Analysis": [
+    {"label": "Section Draft", "page": "analysis-visuals", "native": "section-draft"},
     {"label": "Main Highlights", "page": "analysis-visuals", "native": "main-highlights"},
     {"label": "Scenario Highlights", "page": "scenario-highlights"},
     {"label": "Scenario Results", "page": "regime-table"},
