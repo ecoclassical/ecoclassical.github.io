@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
-  "built_date": "2026-10-21",
-  "commit": "0b3ad93b7c278730926a5356de409c835a06950f",
+  "built_date": "2026-10-22",
+  "commit": "47e4155719591e03c9b69dde8abb13cc4d782941",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -15,18 +15,18 @@
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "d8994643178069dcf6d97d36b2c65637d4f4115135ccf83592f53cd81e259654",
-      "bytes": 8022
+      "sha256": "fa4857142954241ae4b450467ad20ff9dc4d8fe0ae95867d82929fd84d0bbe83",
+      "bytes": 8169
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
-      "sha256": "3a20d666f7588673a6780b1b5ffe7125aa864ad029f6c26d68afbf19c901a7bf",
-      "bytes": 121
+      "sha256": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
+      "bytes": 136
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "f077fb3176a576f9f42243c97d788b123a9dba0050ae705f4696010b34b87b92",
-      "bytes": 5226
+      "sha256": "855923d188d269ab8485745e5b2df9574c6d4f8f80976d9412aaa7df7595091d",
+      "bytes": 5349
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -35,8 +35,18 @@
     },
     "evidence/output/html/site/background.html": {
       "source": "output/html/site/background.html",
-      "sha256": "66e641b268d6881ba4d1903b7bd0131404dd2f6888251951b4d5f66f310ced28",
-      "bytes": 2010824
+      "sha256": "4e9b1c2870a007f6f252962987874aa2f0104dc96d7c6f440618fa3fd044ab17",
+      "bytes": 1997514
+    },
+    "evidence/output/html/site/model-section-draft.html": {
+      "source": "output/html/site/model-section-draft.html",
+      "sha256": "c17c022b2682c6aeeb55cc5629e2f1a3db2008f081461cf3509a7dbe28ade0e8",
+      "bytes": 2875923
+    },
+    "evidence/output/html/site/model-overview-submitted.html": {
+      "source": "output/html/site/model-overview-submitted.html",
+      "sha256": "56312587362e29025d20f173eed27007e4d4e0dc1c4eef18c2b202e72849b11a",
+      "bytes": 1909462
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
@@ -52,6 +62,11 @@
       "source": "output/html/reports/2026-10-13-equation-changes-submitted-to-current.html",
       "sha256": "fb9ebd88ea72885bda17bb3b1bdbfa10edd84654254da0f341a68ad98784f83c",
       "bytes": 1978873
+    },
+    "evidence/output/html/site/calibration-section-draft.html": {
+      "source": "output/html/site/calibration-section-draft.html",
+      "sha256": "f8c41b28de6fcd1803d770b77c5d9b5857684d2ccf6e8d534c42343bbd088241",
+      "bytes": 2391071
     },
     "evidence/output/html/reports/baselines/view-baselines.html": {
       "source": "output/html/reports/baselines/view-baselines.html",
@@ -635,21 +650,24 @@
     }
   },
   "inputs": {
-    "web/evidence/sections.json": "3a20d666f7588673a6780b1b5ffe7125aa864ad029f6c26d68afbf19c901a7bf",
-    "web/evidence/pages.json": "064d3a10f9260fb8311e00a2d5fffc78c5a5af86c6a67abc9b53a69f84810535",
+    "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
+    "web/evidence/pages.json": "e9ffab1cfe1cad3d52053f3f6c91f601dbf67237caf27add3552c05fd8651f15",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
     "tools/site/export_comparison_data.R": "c97e22a1c5e711f469aa9ba9fbd27d904b05140574a15208a132e806d218bbcf",
     "data/scenario_labels.csv": "c91d40cae712f48baef13b7f9fc799935914100917d31d01c7ce6d0a1407ecf3",
     "output/calibration/scenario_grid_20261012_hf_status.csv": "5757b38addb60b21101371f0505588fa49d475e03e7024b84c4903982a738ede",
-    "qmd/site/background.qmd": "865720355a20fc3978141056b30dc3d4679cfc5f9d6f6ce9128eba847a1a7376",
+    "qmd/site/background.qmd": "43fd4c2f8fb5a1ac89008c2cb19467d0992672dad176d5a3cc42a1eebb00fb69",
+    "qmd/site/calibration-section-draft.qmd": "394f3199275395a62b46df500d7e941ccfa7fb07b5ff16ae1d80868db07ad4c8",
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "bbe4e6a3d00a4b520be4243842295e25235c51ca547b3a0206f71a5d776c2429",
     "qmd/site/discussion.qmd": "691619339a4e86b22c474ab68fb791f3397c1515b544c0d9cd6d150d18c20f3c",
     "qmd/site/findings.qmd": "b111c9896d338a377fb3470c3b4092ac21d9ebf2352a1dce15f812f7131a4742",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/io-structure.qmd": "ff27859920d1e14b5fe58eae1bc30d2f78224db052c163635c7d8f207a6ec14a",
+    "qmd/site/model-overview-submitted.qmd": "5e9b3def86285177dcb1d71b03c104be30c992d4b40ded551a701491fbf19d21",
+    "qmd/site/model-section-draft.qmd": "3661b20bfe6b73b541e95404ec1242e518dec9350c2f7d5cae950d2149993550",
     "qmd/site/scenario-design.qmd": "647061291a5c8db7d0f2548d99ced3d64fa25d40da33556c0dc10634399090f5",
     "qmd/site/submitted-discussion.qmd": "ef4af0c887d6c7474fa21fb72b8fb6e6b4f69b900b5982326257295034f7d336",
     "qmd/site/version-comparison.qmd": "4b65246935c566c5716b0d2722db2a40c53913b7482e69fcc2170e0dffb2b0bd",
@@ -657,8 +675,8 @@
     "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "f077fb3176a576f9f42243c97d788b123a9dba0050ae705f4696010b34b87b92",
-    "tools/site/generate_analysis_visuals.R": "3a037dfeb8b5c2ef1f9ded972ec1d451bdf213a3a6a5fd68a7ceec925f565b1f",
+    "web/evidence/section-tabs.json": "855923d188d269ab8485745e5b2df9574c6d4f8f80976d9412aaa7df7595091d",
+    "tools/site/generate_analysis_visuals.R": "00fd1030f7a22b6ef257a0dc6752edad5d26c376a43aa322fbf6e6367416f2bc",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
     "tools/site/group-table.html": "0cda4ceb99f762638ceb76bdee9662b28497e5cae9c03231839fbc88d3fb3a20",
@@ -691,9 +709,12 @@
     "coverage.json",
     "manifest.json",
     "pages/background.html",
+    "pages/model-section-draft.html",
+    "pages/model-overview-submitted.html",
     "pages/equations.html",
     "pages/description.html",
     "pages/changes.html",
+    "pages/calibration-section-draft.html",
     "pages/view-baselines.html",
     "pages/arm-descriptions.html",
     "pages/registry.html",
@@ -743,12 +764,15 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "531c18f8e33942751dd262a9e4f3206e9a8d8af2753c5a60abb03b0efec5d4f4",
-    "coverage.json": "fab66692e096411be1a08112b875c5ccd395079d5ef80acbc15873bdd1de146e",
-    "pages/background.html": "042163bc15c2601de610890e928c85ef74debf914239b93d69ddae08ded2bda6",
+    "pages.json": "9d8e35678d43ff914986adc131d7e98599dcad16fc6936a5bcc89c27129ce856",
+    "coverage.json": "40feb4648815d977eb465de97d09d353e93fb84325ecb062e3c6a40f41f3d7a7",
+    "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
+    "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
+    "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
     "pages/equations.html": "0a850f4975752115f3680cd910d28fd71a4d19771bee538f9643890c2d36c6cb",
     "pages/description.html": "1dea1ec83566d1fa36a77462819a43f99b61b05d9c44ea282b7568309cd9a106",
     "pages/changes.html": "4660e79611b778810b4e2216770347342ccc229502e6dd88ecc72a9df71edb3e",
+    "pages/calibration-section-draft.html": "f99202f01e21a3c3258d0478c7c3cd0a26a549fc2c793bc3938a983dee72d49d",
     "pages/view-baselines.html": "c2fcccf816fb046f9b2167f2c916ad7c9a7a4cb53110c0edbf37560516796788",
     "pages/arm-descriptions.html": "88222bad59b14c976a5d10ab0ba0427db909a80de95cac70cae6414d94db4070",
     "pages/registry.html": "bd31574f2e93f86a8b988d4ec684770c3d6633ea18051066dc48fb2537fe6b7b",

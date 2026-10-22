@@ -6,6 +6,8 @@
     }
   ],
   "Model": [
+    {"label": "Section Draft", "page": "model-section-draft"},
+    {"label": "Model Overview (submitted)", "page": "model-overview-submitted"},
     {
       "label": "All equations",
       "page": "equations",
@@ -48,27 +50,15 @@
       "native": "edits"
     }
   ],
-  "Simulations": [
-    {
-      "label": "IO structure",
-      "page": "io-structure"
-    },
-    {
-      "label": "Scenario design",
-      "page": "scenario-design"
-    },
-    {
-      "label": "Scenario definitions",
-      "page": "scenario-definitions"
-    },
-    {
-      "label": "Baseline plots",
-      "page": "view-baselines"
-    },
-    {
-      "label": "Scenario plots",
-      "page": "view-scenarios"
-    }
+  "Calibration": [
+    {"label": "Section Draft", "page": "calibration-section-draft"},
+    {"label": "Baseline plots", "page": "view-baselines"}
+  ],
+  "Scenarios": [
+    {"label": "Design", "page": "scenario-design"},
+    {"label": "Definitions", "page": "scenario-definitions"},
+    {"label": "Plots", "page": "view-scenarios"},
+    {"label": "Channels and trade", "page": "io-structure"}
   ],
   "Analysis": [
     {"label": "Section Draft", "page": "analysis-visuals", "native": "section-draft"},

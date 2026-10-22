@@ -2,11 +2,29 @@
   {
     "id": "background",
     "section": "Background",
-    "title": "Abstract, introduction and model overview",
+    "title": "Abstract and introduction",
     "source": "output/html/site/background.html",
-    "description": "The submitted abstract, Introduction and Model Overview, with archival references.",
+    "description": "The revised and submitted abstracts and the submitted Introduction, with archival references.",
     "artifact": "evidence/output/html/site/background.html",
     "href": "pages/background.html"
+  },
+  {
+    "id": "model-section-draft",
+    "section": "Model",
+    "title": "Section Draft \u2014 the model",
+    "source": "output/html/site/model-section-draft.html",
+    "description": "Draft of the paper's model section: the MRIO structure opening the production block, selected equations per block (full listing in the Supplementary Material), targeted materials and their direct and total intensities, and the dynamical analysis (dependency core and local spectrum).",
+    "artifact": "evidence/output/html/site/model-section-draft.html",
+    "href": "pages/model-section-draft.html"
+  },
+  {
+    "id": "model-overview-submitted",
+    "section": "Model",
+    "title": "Model Overview \u2014 submitted manuscript",
+    "source": "output/html/site/model-overview-submitted.html",
+    "description": "Section 2 of the manuscript submitted on April 3, 2026, preserved as submitted.",
+    "artifact": "evidence/output/html/site/model-overview-submitted.html",
+    "href": "pages/model-overview-submitted.html"
   },
   {
     "id": "equations",
@@ -36,8 +54,17 @@
     "href": "pages/changes.html"
   },
   {
+    "id": "calibration-section-draft",
+    "section": "Calibration",
+    "title": "Section Draft \u2014 calibration",
+    "source": "output/html/site/calibration-section-draft.html",
+    "description": "Draft of the paper's calibration section: the dataset and concordances, the spin-up, the staged instrument search and its targets, the high-finance stress setting, and the eight baselines of the Results grid.",
+    "artifact": "evidence/output/html/site/calibration-section-draft.html",
+    "href": "pages/calibration-section-draft.html"
+  },
+  {
     "id": "view-baselines",
-    "section": "Simulations",
+    "section": "Calibration",
     "title": "Baseline plots",
     "source": "output/html/reports/baselines/view-baselines.html",
     "description": "Every cached baseline, chosen by arm, regional setup and closure: the submission-era arms at the gold closure, and the closure x setup variants of revised and the two high-finance arms, with per-cache provenance.",
@@ -73,7 +100,7 @@
   },
   {
     "id": "scenario-definitions",
-    "section": "Simulations",
+    "section": "Scenarios",
     "title": "Circular-economy scenario definitions",
     "source": "output/html/tables/scenarios.html",
     "description": "All sixteen registry interventions; the twelve named sc1\u2013sc12 (registry 1\u20134, 7\u201313, 16) form the high-finance Results grid.",
@@ -100,7 +127,7 @@
   },
   {
     "id": "view-scenarios",
-    "section": "Simulations",
+    "section": "Scenarios",
     "title": "Scenario plots",
     "source": "output/html/reports/scenarios/view-scenarios.html",
     "description": "Signed responses against each arm\u2019s matching baseline, across the 96 high-finance credit experiments (12 scenarios \u00d7 2 setups \u00d7 4 closures).",
@@ -415,7 +442,7 @@
   },
   {
     "id": "io-structure",
-    "section": "Simulations",
+    "section": "Scenarios",
     "title": "IO structure \u2014 demand channels and cross-border trade",
     "source": "output/html/site/io-structure.html",
     "description": "Submitted Descriptive Statistics beside measured high-finance demand channels and import structure.",
@@ -424,7 +451,7 @@
   },
   {
     "id": "scenario-design",
-    "section": "Simulations",
+    "section": "Scenarios",
     "title": "Scenario design \u2014 circular substitution operators",
     "source": "output/html/site/scenario-design.html",
     "description": "The revised final- and intermediate-demand operators, measured Leontief signs and frozen submitted text.",
