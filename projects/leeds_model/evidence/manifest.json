@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-10-22",
-  "commit": "47e4155719591e03c9b69dde8abb13cc4d782941",
+  "commit": "43875f489cc7dbc2dbe74ef3fab5345cf60c5b37",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "855923d188d269ab8485745e5b2df9574c6d4f8f80976d9412aaa7df7595091d",
-      "bytes": 5349
+      "sha256": "c545a6f34e570f7ac5cb7f741088fd837633a4ee72e2107f9473203631d5d4c2",
+      "bytes": 5427
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -112,6 +112,11 @@
       "source": "output/html/site/analysis-visuals.html",
       "sha256": "908f6711ff0729e576695458a0a71801f7001c37fdd067d3aac32cc16f58211d",
       "bytes": 7239612
+    },
+    "evidence/output/html/reports/scenarios/2026-10-22-rho-linearity.html": {
+      "source": "output/html/reports/scenarios/2026-10-22-rho-linearity.html",
+      "sha256": "7eb6bc3f9f3dc6242e1f3dd76d7a2e67858a791f56613828c07edc2f5e0a4858",
+      "bytes": 2468523
     },
     "evidence/output/html/site/highfinance-cross-border.html": {
       "source": "output/html/site/highfinance-cross-border.html",
@@ -651,7 +656,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-    "web/evidence/pages.json": "e9ffab1cfe1cad3d52053f3f6c91f601dbf67237caf27add3552c05fd8651f15",
+    "web/evidence/pages.json": "cff8985436411412addb21b13b191b38a13b9ea42d37af822535fd8788fd2342",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
@@ -667,7 +672,7 @@
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/io-structure.qmd": "ff27859920d1e14b5fe58eae1bc30d2f78224db052c163635c7d8f207a6ec14a",
     "qmd/site/model-overview-submitted.qmd": "5e9b3def86285177dcb1d71b03c104be30c992d4b40ded551a701491fbf19d21",
-    "qmd/site/model-section-draft.qmd": "3661b20bfe6b73b541e95404ec1242e518dec9350c2f7d5cae950d2149993550",
+    "qmd/site/model-section-draft.qmd": "a3e0f4f0a5f5643730029350e84d41309a2384e4a6d6ffc5f74d5746ff0e43d3",
     "qmd/site/scenario-design.qmd": "647061291a5c8db7d0f2548d99ced3d64fa25d40da33556c0dc10634399090f5",
     "qmd/site/submitted-discussion.qmd": "ef4af0c887d6c7474fa21fb72b8fb6e6b4f69b900b5982326257295034f7d336",
     "qmd/site/version-comparison.qmd": "4b65246935c566c5716b0d2722db2a40c53913b7482e69fcc2170e0dffb2b0bd",
@@ -675,7 +680,7 @@
     "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "855923d188d269ab8485745e5b2df9574c6d4f8f80976d9412aaa7df7595091d",
+    "web/evidence/section-tabs.json": "c545a6f34e570f7ac5cb7f741088fd837633a4ee72e2107f9473203631d5d4c2",
     "tools/site/generate_analysis_visuals.R": "00fd1030f7a22b6ef257a0dc6752edad5d26c376a43aa322fbf6e6367416f2bc",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
@@ -724,6 +729,7 @@
     "pages/regime-table.html",
     "pages/view-scenarios.html",
     "pages/analysis-visuals.html",
+    "pages/rho-sensitivity.html",
     "pages/highfinance-cross-border.html",
     "pages/regime-report.html",
     "pages/hierarchy-report.html",
@@ -764,8 +770,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "9d8e35678d43ff914986adc131d7e98599dcad16fc6936a5bcc89c27129ce856",
-    "coverage.json": "40feb4648815d977eb465de97d09d353e93fb84325ecb062e3c6a40f41f3d7a7",
+    "pages.json": "efeb268abbc37b800671bc80a9419ebbdbfcfcfe73c63bfa433f3444fa8b4f0a",
+    "coverage.json": "82bbfac8aabef896250209afe2e7dd0d0a2731dc6206b752d0ef4d60ab823ce4",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
@@ -782,6 +788,7 @@
     "pages/regime-table.html": "9284812ac76d9024ba00a071897d47737a75cf81a578e5efa547ea7e0b653186",
     "pages/view-scenarios.html": "c4202bcce5f306a1644d8af13ff1eb4c42a6f7473361fe610cd372768bf77fe6",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
+    "pages/rho-sensitivity.html": "f0d8e1e87564cb81c6cdaca1b688aaa4b3662323ad97550d66db6ab4d49b4830",
     "pages/highfinance-cross-border.html": "e7ee556a3e9bbc48fca80dcb85c61287573e237db364e4f15051e4cc2e68fe04",
     "pages/regime-report.html": "115e693fdf3bbab1aa7955f8e82c0e6b07d78aa1793836d548282e5d8f9ab558",
     "pages/hierarchy-report.html": "5856c1cd47edad36d970af30477afd3bde4a7344e73cdad066a2d6cd5a858b2f",

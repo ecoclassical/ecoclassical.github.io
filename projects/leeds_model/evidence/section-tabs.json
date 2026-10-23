@@ -83,6 +83,10 @@
       "native": "pca"
     },
     {
+      "label": "ρ sensitivity",
+      "page": "rho-sensitivity"
+    },
+    {
       "label": "Other Plots",
       "children": [
         {

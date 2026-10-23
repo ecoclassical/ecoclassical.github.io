@@ -144,6 +144,15 @@
     "href": "pages/analysis-visuals.html"
   },
   {
+    "id": "rho-sensitivity",
+    "section": "Analysis",
+    "title": "Sensitivity to the substitution share \u03c1",
+    "source": "output/html/reports/scenarios/2026-10-22-rho-linearity.html",
+    "description": "The 24 gold-closure high-finance runs re-made at \u03c1 = 0.1, 0.4, 0.7 and 0.9/1.0: responses are proportional to \u03c1; sign-pattern regimes are unchanged, and contained contraction is a threshold that most runs cross as \u03c1 rises.",
+    "artifact": "evidence/output/html/reports/scenarios/2026-10-22-rho-linearity.html",
+    "href": "pages/rho-sensitivity.html"
+  },
+  {
     "id": "highfinance-cross-border",
     "section": "Documentation",
     "title": "High-finance cross-border results \u2014 twelve presentation scenarios",
