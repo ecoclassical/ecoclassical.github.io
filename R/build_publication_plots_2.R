@@ -13,7 +13,7 @@ library(scales)
 pubs <- tribble(
   ~year , ~type           , ~title                                                                                                                                                      ,
    2026 , "Working paper" , "The sustainable transition is not sustainable: social, financial, and macroeconomic implications of unequal ecological exchange"                           ,
-   2025 , "Article"       , "Macroeconomic Models for Assessing the Transition towards a Circular Economy: A Review"                                                                    ,
+   2025 , "Article"       , "Macroeconomic Models for Assessing the Transition towards a Circular Economy: A Systematic Review"                                                                    ,
    2024 , "Article"       , "Time Scales of the Low-Carbon Transition: A Data-Driven Dynamic Multi-Sector Growth Model"                                                                 ,
    2023 , "Article"       , "Business cycles, sectoral price stabilization, and climate change mitigation"                                                                              ,
    2015 , "Article"       , "SeDuS: segmental duplication simulator"                                                                                                                    ,
