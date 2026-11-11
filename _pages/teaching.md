@@ -7,6 +7,8 @@ author_profile: false
 
 - **Data Science for Social Scientists** (proposed) [syllabus](../assets/files/Data_Science_Syllabus.html)
 
+- **Ecological Political Economy: Climate, Unequal Exchange and Environmental Justice** (proposed, graduate) [course outline](../assets/files/Ecological_Political_Economy_Syllabus.html)
+
 - **Social Networks** (2023) [syllabus](../assets/files/DACSS753 Networks Syllabus Spring 2023.pdf) \\
   *University of Massachusetts Amherst*, Amherst, MA, US  
   Corresponding Instructor
