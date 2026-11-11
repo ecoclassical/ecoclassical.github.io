@@ -63,7 +63,10 @@ def site_status(row: dict) -> str:
     if status == "published":
         return "Published"
     if stage == "revising":
-        return "Revise and resubmit"
+        # "revising" covers two cases: an R&R of a submitted article (form "article", e.g. the EUE
+        # paper) and the author's own revision of a draft not yet submitted (form "draft").
+        # Only the first is under review (maintainer, 2026-11-11).
+        return "Revise and resubmit" if row.get("form", "").strip() != "draft" else "In preparation"
     return "In progress"
 
 
