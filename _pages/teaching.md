@@ -9,6 +9,8 @@ author_profile: false
 
 - **Ecological Political Economy: Climate, Unequal Exchange and Environmental Justice** (proposed, graduate) [course outline](../assets/files/Ecological_Political_Economy_Syllabus.html)
 
+- **Anatomy of a Crisis: Macroeconomics, Political Economy, History**; **Macroeconomics in the Face of Climate Change**; **Simulating Macroeconomic Models** (proposed, undergraduate) [course descriptions](../assets/files/Proposed_Course_Descriptions.pdf)
+
 - **Social Networks** (2023) [syllabus](../assets/files/DACSS753 Networks Syllabus Spring 2023.pdf) \\
   *University of Massachusetts Amherst*, Amherst, MA, US  
   Corresponding Instructor
