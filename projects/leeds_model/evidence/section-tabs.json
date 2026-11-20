@@ -6,8 +6,14 @@
     }
   ],
   "Model": [
-    {"label": "Section Draft", "page": "model-section-draft"},
-    {"label": "Model Overview (submitted)", "page": "model-overview-submitted"},
+    {
+      "label": "Section Draft",
+      "page": "model-section-draft"
+    },
+    {
+      "label": "Model Overview (submitted)",
+      "page": "model-overview-submitted"
+    },
     {
       "label": "All equations",
       "page": "equations",
@@ -51,57 +57,144 @@
     }
   ],
   "Calibration": [
-    {"label": "Section Draft", "page": "calibration-section-draft"},
-    {"label": "Baseline plots", "page": "view-baselines"}
-  ],
-  "Scenarios": [
-    {"label": "Design", "page": "scenario-design"},
-    {"label": "Definitions", "page": "scenario-definitions"},
-    {"label": "Plots", "page": "view-scenarios"},
-    {"label": "Channels and trade", "page": "io-structure"}
-  ],
-  "Analysis": [
-    {"label": "Section Draft", "page": "analysis-visuals", "native": "section-draft"},
-    {"label": "Main Highlights", "page": "analysis-visuals", "native": "main-highlights"},
-    {"label": "Scenario Highlights", "page": "scenario-highlights"},
-    {"label": "Scenario Results", "page": "regime-table"},
-    {"label": "ANOVA", "page": "analysis-visuals", "native": "anova"},
     {
-      "label": "Dendrograms",
-      "page": "analysis-visuals",
-      "native": "hierarchy"
-    },
-    {"label": "Silhouette", "page": "analysis-visuals", "native": "silhouette"},
-    {
-      "label": "Groups",
-      "page": "analysis-visuals",
-      "native": "groups"
+      "label": "Section Draft",
+      "page": "calibration-section-draft"
     },
     {
-      "label": "PCA",
-      "page": "analysis-visuals",
-      "native": "pca"
-    },
-    {
-      "label": "ρ sensitivity",
-      "page": "rho-sensitivity"
-    },
-    {
-      "label": "Other Plots",
-      "children": [
-        {
-          "label": "Quadrants",
-          "page": "analysis-visuals",
-          "native": "quadrants"
-        },
-        {
-          "label": "Heatmap",
-          "page": "analysis-visuals",
-          "native": "heatmap"
-        }
-      ]
+      "label": "Baseline plots",
+      "page": "view-baselines"
     }
   ],
+  "Scenarios": [
+    {
+      "label": "Design",
+      "page": "scenario-design"
+    },
+    {
+      "label": "Definitions",
+      "page": "scenario-definitions"
+    },
+    {
+      "label": "Plots",
+      "page": "view-scenarios"
+    },
+    {
+      "label": "Channels and trade",
+      "page": "io-structure"
+    }
+  ],
+  "Analysis": {
+    "variants": [
+      {
+        "label": "New: who adjusts (fiat, North/South)",
+        "tabs": [
+          {
+            "label": "Design",
+            "page": "analysis-adjustment",
+            "native": "design"
+          },
+          {
+            "label": "ANOVA",
+            "page": "analysis-adjustment",
+            "native": "anova"
+          },
+          {
+            "label": "Dendrograms",
+            "page": "analysis-adjustment",
+            "native": "hierarchy"
+          },
+          {
+            "label": "Silhouette",
+            "page": "analysis-adjustment",
+            "native": "silhouette"
+          },
+          {
+            "label": "Groups",
+            "page": "analysis-adjustment",
+            "native": "groups"
+          },
+          {
+            "label": "PCA",
+            "page": "analysis-adjustment",
+            "native": "pca"
+          },
+          {
+            "label": "Who adjusts",
+            "page": "analysis-adjustment",
+            "native": "adjustment"
+          }
+        ]
+      },
+      {
+        "label": "Old: EU/RoW and North/South × 4 closures",
+        "tabs": [
+          {
+            "label": "Section Draft",
+            "page": "analysis-visuals",
+            "native": "section-draft"
+          },
+          {
+            "label": "Main Highlights",
+            "page": "analysis-visuals",
+            "native": "main-highlights"
+          },
+          {
+            "label": "Scenario Highlights",
+            "page": "scenario-highlights"
+          },
+          {
+            "label": "Scenario Results",
+            "page": "regime-table"
+          },
+          {
+            "label": "ANOVA",
+            "page": "analysis-visuals",
+            "native": "anova"
+          },
+          {
+            "label": "Dendrograms",
+            "page": "analysis-visuals",
+            "native": "hierarchy"
+          },
+          {
+            "label": "Silhouette",
+            "page": "analysis-visuals",
+            "native": "silhouette"
+          },
+          {
+            "label": "Groups",
+            "page": "analysis-visuals",
+            "native": "groups"
+          },
+          {
+            "label": "PCA",
+            "page": "analysis-visuals",
+            "native": "pca"
+          },
+          {
+            "label": "ρ sensitivity",
+            "page": "rho-sensitivity"
+          },
+          {
+            "label": "Other Plots",
+            "children": [
+              {
+                "label": "Quadrants",
+                "page": "analysis-visuals",
+                "native": "quadrants"
+              },
+              {
+                "label": "Heatmap",
+                "page": "analysis-visuals",
+                "native": "heatmap"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "Discussion": [
     {
       "label": "Structural findings",

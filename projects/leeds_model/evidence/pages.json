@@ -135,6 +135,15 @@
     "href": "pages/view-scenarios.html"
   },
   {
+    "id": "analysis-adjustment",
+    "section": "Analysis",
+    "title": "Who adjusts: the fiat adjustment grid",
+    "source": "output/html/site/analysis-adjustment.html",
+    "description": "The new analysis (2026-11-20): twelve interventions in North/South under fiat settlement, with no fiscal rule or a rule under which the South, the North or both adjust, under either hierarchy. ANOVA, dendrograms, silhouettes, groups, PCA and the adjustment axis.",
+    "artifact": "evidence/output/html/site/analysis-adjustment.html",
+    "href": "pages/analysis-adjustment.html"
+  },
+  {
     "id": "analysis-visuals",
     "section": "Analysis",
     "title": "Cross-border response analysis",

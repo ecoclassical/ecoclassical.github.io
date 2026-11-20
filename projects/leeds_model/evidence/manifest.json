@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
-  "built_date": "2026-10-22",
-  "commit": "43875f489cc7dbc2dbe74ef3fab5345cf60c5b37",
+  "built_date": "2026-11-20",
+  "commit": "826eb5096a83d0c97721a0bb4235fca282095ad2",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -10,13 +10,13 @@
     },
     "style.css": {
       "source": "web/evidence/style.css",
-      "sha256": "92fb34be950d427db5880eed0313f4775b1be59b8bc85a7b2b532b2b5e492fad",
-      "bytes": 5757
+      "sha256": "ba1746677edf92f75cf239b13e1ed9c629e5fa804b0cb9844bc4730add5100de",
+      "bytes": 6201
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "fa4857142954241ae4b450467ad20ff9dc4d8fe0ae95867d82929fd84d0bbe83",
-      "bytes": 8169
+      "sha256": "2c61565cb714c1b734da9a07f59e610760f21a9aafd9e5a3e691b317e46b33cc",
+      "bytes": 8973
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "c545a6f34e570f7ac5cb7f741088fd837633a4ee72e2107f9473203631d5d4c2",
-      "bytes": 5427
+      "sha256": "3428c601c1bee6bdc57bdbbd32f4f54ee65490367738a850286c89fabc97bb1b",
+      "bytes": 7233
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -50,8 +50,8 @@
     },
     "evidence/model/equations/model-equations-submitted-to-revised.html": {
       "source": "model/equations/model-equations-submitted-to-revised.html",
-      "sha256": "01bb2ccf3446cd29541b2ee3c7c2e7d03a2f49295b122615fce7b7675a4d6e13",
-      "bytes": 8088084
+      "sha256": "41fce86ba6a36cfad5b93d893f5ee2e6d836e4ebd3b475ad00fa5884b0f538dd",
+      "bytes": 8087854
     },
     "evidence/output/html/appendices/2026-10-13-model-description-current-revised.html": {
       "source": "output/html/appendices/2026-10-13-model-description-current-revised.html",
@@ -80,7 +80,7 @@
     },
     "evidence/model/equations/model-registry.html": {
       "source": "model/equations/model-registry.html",
-      "sha256": "412fb2814fd9ffb192e49a1e2d72755e1e32c97c426f4539471d5253a2a82b0c",
+      "sha256": "1db37cb4f6b96ca7ca44c01bf21e0d24fdec8a3a644d954014a26679ac8c294d",
       "bytes": 3772914
     },
     "evidence/output/html/tables/closure_region_grid.html": {
@@ -107,6 +107,11 @@
       "source": "output/html/reports/scenarios/view-scenarios.html",
       "sha256": "ccf18cd99844111dc1ca32923dda117355cb800754aec394a80bdc0bdaa95c5f",
       "bytes": 19657250
+    },
+    "evidence/output/html/site/analysis-adjustment.html": {
+      "source": "output/html/site/analysis-adjustment.html",
+      "sha256": "41dabb9ad39d3aaa496fe4f5683a6298836c82c416bb4d7894617369ed11725d",
+      "bytes": 930013
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -656,7 +661,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-    "web/evidence/pages.json": "cff8985436411412addb21b13b191b38a13b9ea42d37af822535fd8788fd2342",
+    "web/evidence/pages.json": "4cb0a636c549219b9f013500c124079b0c66810f56ba92d572b3302cd9be60c8",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
@@ -680,7 +685,7 @@
     "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "c545a6f34e570f7ac5cb7f741088fd837633a4ee72e2107f9473203631d5d4c2",
+    "web/evidence/section-tabs.json": "3428c601c1bee6bdc57bdbbd32f4f54ee65490367738a850286c89fabc97bb1b",
     "tools/site/generate_analysis_visuals.R": "00fd1030f7a22b6ef257a0dc6752edad5d26c376a43aa322fbf6e6367416f2bc",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
@@ -728,6 +733,7 @@
     "pages/scenario-highlights.html",
     "pages/regime-table.html",
     "pages/view-scenarios.html",
+    "pages/analysis-adjustment.html",
     "pages/analysis-visuals.html",
     "pages/rho-sensitivity.html",
     "pages/highfinance-cross-border.html",
@@ -770,8 +776,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "efeb268abbc37b800671bc80a9419ebbdbfcfcfe73c63bfa433f3444fa8b4f0a",
-    "coverage.json": "82bbfac8aabef896250209afe2e7dd0d0a2731dc6206b752d0ef4d60ab823ce4",
+    "pages.json": "ce8268c250cf1d689fbfeb983d46ec7c86e64ca01fd9c840ff4e26b27acfbd3b",
+    "coverage.json": "eb99506bf08ec67c1fb4c160503a8a86fa3b4ec0e8aafd3a4f759d0a22ce4a52",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
@@ -787,6 +793,7 @@
     "pages/scenario-highlights.html": "7ae4b9e72b7bcf6e7f7f3da41007e115f235ccafe131e806385535fe5e41aace",
     "pages/regime-table.html": "9284812ac76d9024ba00a071897d47737a75cf81a578e5efa547ea7e0b653186",
     "pages/view-scenarios.html": "c4202bcce5f306a1644d8af13ff1eb4c42a6f7473361fe610cd372768bf77fe6",
+    "pages/analysis-adjustment.html": "8d772522d3d1cce6fe64dd817d7c5d5c26afb4c4eedb23be854b416b607cf976",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
     "pages/rho-sensitivity.html": "f0d8e1e87564cb81c6cdaca1b688aaa4b3662323ad97550d66db6ab4d49b4830",
     "pages/highfinance-cross-border.html": "e7ee556a3e9bbc48fca80dcb85c61287573e237db364e4f15051e4cc2e68fe04",
