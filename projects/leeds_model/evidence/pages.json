@@ -108,6 +108,15 @@
     "href": "pages/scenario-definitions.html"
   },
   {
+    "id": "scenario-adjustment",
+    "section": "Scenarios",
+    "title": "Adjustment \u2014 who intervenes, whose money, who adjusts",
+    "source": "output/html/site/scenario-adjustment.html",
+    "description": "The 180-run design: twelve interventions \u00d7 North, South or both intervening \u00d7 five settings of monetary hierarchy and fiscal rule; the symmetric reserve-based fiscal rule, its strength, and how results are read by role.",
+    "artifact": "evidence/output/html/site/scenario-adjustment.html",
+    "href": "pages/scenario-adjustment.html"
+  },
+  {
     "id": "scenario-highlights",
     "section": "Analysis",
     "title": "Scenario Highlights",
@@ -133,6 +142,33 @@
     "description": "Signed responses against each arm\u2019s matching baseline, across the 96 high-finance credit experiments (12 scenarios \u00d7 2 setups \u00d7 4 closures).",
     "artifact": "evidence/output/html/reports/scenarios/view-scenarios.html",
     "href": "pages/view-scenarios.html"
+  },
+  {
+    "id": "main-findings",
+    "section": "Analysis",
+    "title": "Main findings of the 180-run design",
+    "source": "output/html/site/main-findings.html",
+    "description": "Ten findings of the 180-run design (twelve interventions \u00d7 who intervenes \u00d7 five settings), one section each, with a left-hand list.",
+    "artifact": "evidence/output/html/site/main-findings.html",
+    "href": "pages/main-findings.html"
+  },
+  {
+    "id": "scenario-highlights-180",
+    "section": "Analysis",
+    "title": "Scenario Highlights \u2014 180 runs",
+    "source": "output/html/site/scenario-highlights-180.html",
+    "description": "One row per intervention: regime by intervening region and setting (by role), and computed highlights for each intervening region.",
+    "artifact": "evidence/output/html/site/scenario-highlights-180.html",
+    "href": "pages/scenario-highlights-180.html"
+  },
+  {
+    "id": "scenario-results-180",
+    "section": "Analysis",
+    "title": "Scenario Results \u2014 180 runs",
+    "source": "output/html/site/scenario-results-180.html",
+    "description": "The submitted Table 4 rebuilt from the 180 runs: responses by region for a chosen intervening region and setting, with fifteen regime chips per intervention.",
+    "artifact": "evidence/output/html/site/scenario-results-180.html",
+    "href": "pages/scenario-results-180.html"
   },
   {
     "id": "analysis-adjustment",

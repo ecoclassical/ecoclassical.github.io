@@ -68,12 +68,16 @@
   ],
   "Scenarios": [
     {
-      "label": "Design",
+      "label": "Intervention Design",
       "page": "scenario-design"
     },
     {
-      "label": "Definitions",
+      "label": "Interventions",
       "page": "scenario-definitions"
+    },
+    {
+      "label": "Adjustment",
+      "page": "scenario-adjustment"
     },
     {
       "label": "Plots",
@@ -87,17 +91,24 @@
   "Analysis": {
     "variants": [
       {
-        "label": "New: who adjusts (fiat, North/South)",
+        "label": "New: who intervenes × who adjusts (180 runs)",
         "tabs": [
           {
-            "label": "Design",
-            "page": "analysis-adjustment",
-            "native": "design"
+            "label": "Main Findings",
+            "page": "main-findings"
           },
           {
             "label": "ANOVA",
             "page": "analysis-adjustment",
             "native": "anova"
+          },
+          {
+            "label": "Scenario Highlights",
+            "page": "scenario-highlights-180"
+          },
+          {
+            "label": "Scenario Results",
+            "page": "scenario-results-180"
           },
           {
             "label": "Dendrograms",

@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
-  "built_date": "2026-11-20",
-  "commit": "826eb5096a83d0c97721a0bb4235fca282095ad2",
+  "built_date": "2026-11-21",
+  "commit": "ee403d832e1410a6ae81140e676acd91507ed8e6",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "3428c601c1bee6bdc57bdbbd32f4f54ee65490367738a850286c89fabc97bb1b",
-      "bytes": 7233
+      "sha256": "30c8ec78caeb4351bc93182d04464c315995af99e8414fb1951754925261110f",
+      "bytes": 7528
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -93,6 +93,11 @@
       "sha256": "40b8c7b86ca6d953db265af2eedd2dc63ddbfdb39599d15f04f5138b03ac777f",
       "bytes": 62544
     },
+    "evidence/output/html/site/scenario-adjustment.html": {
+      "source": "output/html/site/scenario-adjustment.html",
+      "sha256": "a8db1f048ce4c48ddfeb5edf9d0ae4a1fe292785641e6b66100143e87cde9a35",
+      "bytes": 1983778
+    },
     "evidence/output/html/site/scenario-highlights.html": {
       "source": "output/html/site/scenario-highlights.html",
       "sha256": "b6f31007e51d5749179fe75eee0f5c3a64d86b134e75ad1ab8b63c6eca0c5c90",
@@ -108,10 +113,25 @@
       "sha256": "ccf18cd99844111dc1ca32923dda117355cb800754aec394a80bdc0bdaa95c5f",
       "bytes": 19657250
     },
+    "evidence/output/html/site/main-findings.html": {
+      "source": "output/html/site/main-findings.html",
+      "sha256": "7370d36fa1741dfd6e5550041754acf88095e9c823d65b3a8bd58a7ef31e9b2e",
+      "bytes": 1909630
+    },
+    "evidence/output/html/site/scenario-highlights-180.html": {
+      "source": "output/html/site/scenario-highlights-180.html",
+      "sha256": "79295d4df98b6215e63c8d3aa41f6a4a680a8ee0bb4df482161c0c5405358619",
+      "bytes": 36613
+    },
+    "evidence/output/html/site/scenario-results-180.html": {
+      "source": "output/html/site/scenario-results-180.html",
+      "sha256": "935d34f47a7aae24d2a59e2a84434a3d9eaecd6dd3fcc2cb443a9edd537f77f4",
+      "bytes": 1858552
+    },
     "evidence/output/html/site/analysis-adjustment.html": {
       "source": "output/html/site/analysis-adjustment.html",
-      "sha256": "41dabb9ad39d3aaa496fe4f5683a6298836c82c416bb4d7894617369ed11725d",
-      "bytes": 930013
+      "sha256": "57fcf38b7739ccdf7478c7b2beea0f865274b92b326e9ad1578ec5e475b433a7",
+      "bytes": 1500318
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -285,8 +305,8 @@
     },
     "evidence/output/html/site/scenario-design.html": {
       "source": "output/html/site/scenario-design.html",
-      "sha256": "023216ff5b825a6bc745d6d1d50e1f0010e7de7057ad9ec6266a57b9468285a6",
-      "bytes": 1985339
+      "sha256": "3d44a0b6ee4a5bd66411a86242ee43a9300361e48d768a711d60f9df2aa665d7",
+      "bytes": 1986162
     },
     "evidence/output/html/site/findings.html": {
       "source": "output/html/site/findings.html",
@@ -661,7 +681,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-    "web/evidence/pages.json": "4cb0a636c549219b9f013500c124079b0c66810f56ba92d572b3302cd9be60c8",
+    "web/evidence/pages.json": "3cd27455abebcc24e5afff3c62e399cd76e11395deaf7f0c69bda09d105d6092",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
@@ -676,16 +696,18 @@
     "qmd/site/findings.qmd": "b111c9896d338a377fb3470c3b4092ac21d9ebf2352a1dce15f812f7131a4742",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/io-structure.qmd": "ff27859920d1e14b5fe58eae1bc30d2f78224db052c163635c7d8f207a6ec14a",
+    "qmd/site/main-findings.qmd": "1e1d90a6bf6a61e45358b78e305d5c31394b602d3ec7c4aa825662ca0919d06c",
     "qmd/site/model-overview-submitted.qmd": "5e9b3def86285177dcb1d71b03c104be30c992d4b40ded551a701491fbf19d21",
     "qmd/site/model-section-draft.qmd": "a3e0f4f0a5f5643730029350e84d41309a2384e4a6d6ffc5f74d5746ff0e43d3",
-    "qmd/site/scenario-design.qmd": "647061291a5c8db7d0f2548d99ced3d64fa25d40da33556c0dc10634399090f5",
+    "qmd/site/scenario-adjustment.qmd": "92f67b0405107a9938ad10fc0e4b3f9abc3fe560885d95ba96a4b32f5cba1a9a",
+    "qmd/site/scenario-design.qmd": "498d33f2c81a05c5948aa420a62a68cbcf741a32b6e12fd45fd09450aacd4805",
     "qmd/site/submitted-discussion.qmd": "ef4af0c887d6c7474fa21fb72b8fb6e6b4f69b900b5982326257295034f7d336",
     "qmd/site/version-comparison.qmd": "4b65246935c566c5716b0d2722db2a40c53913b7482e69fcc2170e0dffb2b0bd",
     "R/scenarios/export_transmission_labels.R": "16ff7585d82781b7d3368166f59e415bd88e5ad69b74af92c43cff47ee19a9df",
     "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "3428c601c1bee6bdc57bdbbd32f4f54ee65490367738a850286c89fabc97bb1b",
+    "web/evidence/section-tabs.json": "30c8ec78caeb4351bc93182d04464c315995af99e8414fb1951754925261110f",
     "tools/site/generate_analysis_visuals.R": "00fd1030f7a22b6ef257a0dc6752edad5d26c376a43aa322fbf6e6367416f2bc",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
@@ -730,9 +752,13 @@
     "pages/registry.html",
     "pages/closures.html",
     "pages/scenario-definitions.html",
+    "pages/scenario-adjustment.html",
     "pages/scenario-highlights.html",
     "pages/regime-table.html",
     "pages/view-scenarios.html",
+    "pages/main-findings.html",
+    "pages/scenario-highlights-180.html",
+    "pages/scenario-results-180.html",
     "pages/analysis-adjustment.html",
     "pages/analysis-visuals.html",
     "pages/rho-sensitivity.html",
@@ -776,8 +802,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "ce8268c250cf1d689fbfeb983d46ec7c86e64ca01fd9c840ff4e26b27acfbd3b",
-    "coverage.json": "eb99506bf08ec67c1fb4c160503a8a86fa3b4ec0e8aafd3a4f759d0a22ce4a52",
+    "pages.json": "4b6c156f17ea8f3ed2258a12c1e14a2b04bcf1b6567272b88f7443cb75d50c47",
+    "coverage.json": "c0747acb58f65952ff152a0d2dc76c69669c6c9cc67045ffaac2bc7b22b2a9a9",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
@@ -790,9 +816,13 @@
     "pages/registry.html": "bd31574f2e93f86a8b988d4ec684770c3d6633ea18051066dc48fb2537fe6b7b",
     "pages/closures.html": "cdf1d522dc1fff75777b1ef0a32756c96713e114b96440b41605851213be1185",
     "pages/scenario-definitions.html": "3055c45f1ab8d08a2840794995de87da7a3d55cff57bbed463c9e5ccb83b2dde",
+    "pages/scenario-adjustment.html": "522cf69ca6cd5aac646023aff8df0de03fcfd271c2c1f34c0c45bc3843322cb6",
     "pages/scenario-highlights.html": "7ae4b9e72b7bcf6e7f7f3da41007e115f235ccafe131e806385535fe5e41aace",
     "pages/regime-table.html": "9284812ac76d9024ba00a071897d47737a75cf81a578e5efa547ea7e0b653186",
     "pages/view-scenarios.html": "c4202bcce5f306a1644d8af13ff1eb4c42a6f7473361fe610cd372768bf77fe6",
+    "pages/main-findings.html": "59611b70c1c3187707a64282eb1c2d352ba1910a1ab501d34e5acfbf117cb7da",
+    "pages/scenario-highlights-180.html": "1fe02b751664a37eff47df8b74f104a214e19d3a079d757976ce897bc6c3d5e4",
+    "pages/scenario-results-180.html": "2e820610929e288fce64b1060f6f029e455348cb775e74b7689dfb4575ce1f28",
     "pages/analysis-adjustment.html": "8d772522d3d1cce6fe64dd817d7c5d5c26afb4c4eedb23be854b416b607cf976",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
     "pages/rho-sensitivity.html": "f0d8e1e87564cb81c6cdaca1b688aaa4b3662323ad97550d66db6ab4d49b4830",
