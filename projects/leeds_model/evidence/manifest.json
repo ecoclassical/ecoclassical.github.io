@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-22",
-  "commit": "7a9fb68c64fad51ed37330521500fcf5abc1b317",
+  "commit": "dd47f2a0ca8576eb9f4dc5552a6d63cc5479ac75",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -135,8 +135,8 @@
     },
     "evidence/output/html/site/analysis-adjustment.html": {
       "source": "output/html/site/analysis-adjustment.html",
-      "sha256": "f3d9e66a990251769619c45838aed427e4bf1639b00800a455e70aa01146d568",
-      "bytes": 1887358
+      "sha256": "b5d02e5c3d1966e4b45529ebf6eabb71bc3d66688fd892bb4ca1326b3193366f",
+      "bytes": 1887714
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "8a63b065de7af90e02bd783074043d619303b24afbcb6445e3555d600c1ca3a6",
-    "coverage.json": "8f5519fafc76740e387c77eaa5e947daf063196ccb3717dde7dfee097b74d9ea",
+    "coverage.json": "ca0cca7223febd0bb06ad1c8a50e871ca7959ff7ccf6d69bc90646767621c2a1",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
