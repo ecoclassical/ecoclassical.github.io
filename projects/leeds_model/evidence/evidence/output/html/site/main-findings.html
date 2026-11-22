@@ -2169,6 +2169,7 @@ main .table th { font-weight: 600; }
   <li><a href="#clustering-finds-magnitudes-not-design-categories" id="toc-clustering-finds-magnitudes-not-design-categories" class="nav-link" data-scroll-target="#clustering-finds-magnitudes-not-design-categories">8. Clustering finds magnitudes, not design categories</a></li>
   <li><a href="#three-principal-axes-north-activity-south-activity-and-the-fiscalexternal-balance" id="toc-three-principal-axes-north-activity-south-activity-and-the-fiscalexternal-balance" class="nav-link" data-scroll-target="#three-principal-axes-north-activity-south-activity-and-the-fiscalexternal-balance">9. Three principal axes: North activity, South activity, and the fiscal–external balance</a></li>
   <li><a href="#ecology-and-the-trilemma-materials-fall-emissions-and-growth-do-not-follow" id="toc-ecology-and-the-trilemma-materials-fall-emissions-and-growth-do-not-follow" class="nav-link" data-scroll-target="#ecology-and-the-trilemma-materials-fall-emissions-and-growth-do-not-follow">10. Ecology and the trilemma: materials fall, emissions and growth do not follow</a></li>
+  <li><a href="#whose-money-is-the-reserve-changes-incomes-not-the-physical-transition" id="toc-whose-money-is-the-reserve-changes-incomes-not-the-physical-transition" class="nav-link" data-scroll-target="#whose-money-is-the-reserve-changes-incomes-not-the-physical-transition">11. Whose money is the reserve changes incomes, not the physical transition</a></li>
   </ul>
 </nav>
 </div>
@@ -2256,6 +2257,103 @@ main .table th { font-weight: 600; }
 <p>The interventions do what they are meant to do on materials: world primary-material use falls in 158 of the 180 runs, whoever intervenes. But the trilemma of the submitted paper survives the new design. Counting a run as a success when world primary material falls, world value added does not fall, and the worker share of value added does not fall in either region, only 6 of 180 runs pass all three, four of them sc8 Int-Metal with the North involved. The fiscal rule couples output and materials: its effect on world material use moves with its effect on world value added (correlation 0.97), up by 0.032 points on average when the surplus region adjusts and down by 0.027 when the deficit region does. The adjustment that protects output gives back part of the material saving; the one that deepens the saving does it through contraction.</p>
 <p>Emissions are a separate matter. The South’s near-empty re-processing sectors carried emission intensities 7–358 times their primary sector’s, which made South emissions rise by up to 34% when the South intervened. They are corrected (D-77) by giving each the South primary intensity times the North’s secondary ÷ primary ratio. After the correction, South emissions rise by 0.16% in sc10 Int-Cement (not 34%) and by 1.4% in sc8 Int-Metal, a real effect because metal re-processing is 2.7 times as emission-intensive per unit as primary metal. Even so, world emissions fall in only 88 of the 180 runs (35 of 60 North-intervening, 23 of 60 South-intervening, 30 of 60 both), against 158 for primary material. <em>Interpretation:</em> substituting secondary for primary material decouples material throughput far more reliably than it decouples emissions.</p>
 <p><strong>Basis.</strong> Trilemma and coupling from <code>eda_console.txt</code>; emissions from <code>output/calibration/intervener_20261121_ce79/south_emissions_corrected.csv</code> (<code>R/scenarios/correct_south_emissions.R</code>, D-77).</p>
+</section>
+<section id="whose-money-is-the-reserve-changes-incomes-not-the-physical-transition" class="level2">
+<h2 class="anchored" data-anchor-id="whose-money-is-the-reserve-changes-incomes-not-the-physical-transition">11. Whose money is the reserve changes incomes, not the physical transition</h2>
+<p>The design holds one counterfactual on the monetary hierarchy: the no-rule runs under <strong>South money</strong>, where the North’s central bank holds South bills, against the same runs under <strong>North money</strong>, the paper’s setting, where the South’s central bank holds North bills. There are 36 pairs, one for each intervention and intervening region, and each run is measured against its own baseline. So the comparison isolates what the hierarchy does to the response to the intervention.</p>
+<p><strong>What does not change.</strong> The physical side of the transition, and who ends up in external deficit, are the same under either money:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>response</th>
+<th>same sign in the 36 pairs</th>
+<th>correlation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>World CO₂ emissions (South corrected, D-77)</td>
+<td>36</td>
+<td>1.000</td>
+</tr>
+<tr class="even">
+<td>World material extraction</td>
+<td>36</td>
+<td>1.000</td>
+</tr>
+<tr class="odd">
+<td>North employment</td>
+<td>36</td>
+<td>0.984</td>
+</tr>
+<tr class="even">
+<td>South employment</td>
+<td>36</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>North current account, % of VA</td>
+<td>35</td>
+<td>0.998</td>
+</tr>
+<tr class="even">
+<td>North public debt/GDP</td>
+<td>35</td>
+<td>0.993</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What changes.</strong> Value added does, although employment does not. Value added here is nominal, at the prices actually received and paid, so the hierarchy acts on incomes and valuation rather than on output volumes. The wage-share response keeps its sign in only 16 of the 36 pairs in each region. On average, South money lowers the world value-added response by 0.021 percentage points, against a mean absolute response of 0.039% under North money. So the flip is about half the size of a typical intervention’s effect. The loss depends on who intervenes:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>who intervenes</th>
+<th>world VA, North money</th>
+<th>world VA, South money</th>
+<th>change in North VA</th>
+<th>change in South VA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>North</td>
+<td>+0.0004%</td>
+<td>+0.0052%</td>
+<td>+0.005 pp</td>
+<td>+0.004 pp</td>
+</tr>
+<tr class="even">
+<td>South</td>
+<td>+0.020%</td>
+<td>−0.016%</td>
+<td>−0.037 pp</td>
+<td>−0.034 pp</td>
+</tr>
+<tr class="odd">
+<td>both</td>
+<td>+0.021%</td>
+<td>−0.011%</td>
+<td>−0.033 pp</td>
+<td>−0.030 pp</td>
+</tr>
+</tbody>
+</table>
+<p>When the North intervenes the hierarchy hardly matters. When the South takes part, South money turns a small world expansion into a small contraction, and both regions lose. The value-added regime changes in 17 of the 36 pairs, nearly always towards contraction:</p>
+<ul>
+<li>dual expansion falls from 6 runs to 3;</li>
+<li>three of the six competitive displacements become dual contractions;</li>
+<li>sc11 Int-Energy with the South intervening goes from dual expansion to competitive displacement, as world value added falls from +0.26% to +0.05%;</li>
+<li>sc8 Int-Metal with the North intervening goes from competitive displacement to dual contraction.</li>
+</ul>
+<p><em>Interpretation.</em> The monetary hierarchy decides who pays to hold the world’s reserves; it does not decide what a circular-economy intervention does to emissions, materials, jobs or the direction of the external imbalance. A plausible channel, <strong>not yet decomposed</strong>, is reserve interest. Under South money the South pays interest on the reserve bills. When the South intervenes the North’s current account improves, and its reserve gains are held in South bills, so income flows from South to North as interest. That would lower South incomes, and through demand North incomes, without changing physical output. The test is the interest paid on reserves in the two hierarchies; it has not been run.</p>
+<p><strong>Basis.</strong> <code>R/scenarios/money_hierarchy_counterfactual.R</code> → <code>output/calibration/intervener_20261121_ce79/money_hierarchy_pairs.csv</code> and <code>money_hierarchy_summary.csv</code>; regimes by role, as in Finding 2.</p>
 </section>
 
 </main>
