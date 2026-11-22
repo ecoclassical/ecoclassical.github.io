@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": false,
+  "working_tree_dirty": true,
   "built_date": "2026-11-22",
-  "commit": "571f2259d56397c887fe5819568cb701c5149148",
+  "commit": "7a9fb68c64fad51ed37330521500fcf5abc1b317",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -120,23 +120,23 @@
     },
     "evidence/output/html/site/scenario-highlights-180.html": {
       "source": "output/html/site/scenario-highlights-180.html",
-      "sha256": "8316b6b154e91c9e22d4b96f2b1ad83e7a86cfb2f5ad4528ef9057cd9cd1993a",
-      "bytes": 103508
+      "sha256": "04564ae8bc623411516a2b063d33f88cceabf57501a67986c7208fe64e7396da",
+      "bytes": 103684
     },
     "evidence/output/html/site/scenario-regimes-180.html": {
       "source": "output/html/site/scenario-regimes-180.html",
-      "sha256": "0db7ee27e0179b2790db4906acae5f3d49721f885260522d596359670cfa885c",
-      "bytes": 1057968
+      "sha256": "0b964738b640f75bb04c6d675bc45bbc35273f8a73a916b9f803a281a725b994",
+      "bytes": 1044528
     },
     "evidence/output/html/site/scenario-results-180.html": {
       "source": "output/html/site/scenario-results-180.html",
-      "sha256": "cda3c094fd1f962bb17211e0c6f9bc60aedd2d740592025601ea01ecdb5868d3",
-      "bytes": 1860567
+      "sha256": "1cf5f9334b8b14a340e671ef283dbfc62882c4f5859518debc3c34849b173766",
+      "bytes": 1860743
     },
     "evidence/output/html/site/analysis-adjustment.html": {
       "source": "output/html/site/analysis-adjustment.html",
-      "sha256": "a30e3b5ea9c4dfd9f7313bdb7a632b3fcb95cbaffc5d70d72ba8c97df5da4951",
-      "bytes": 1614929
+      "sha256": "f3d9e66a990251769619c45838aed427e4bf1639b00800a455e70aa01146d568",
+      "bytes": 1887358
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "8a63b065de7af90e02bd783074043d619303b24afbcb6445e3555d600c1ca3a6",
-    "coverage.json": "9fa6683103947628cf5e13135ff8dff06cc96dc8bafe8183cb47c0db0a0ec78b",
+    "coverage.json": "8f5519fafc76740e387c77eaa5e947daf063196ccb3717dde7dfee097b74d9ea",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
