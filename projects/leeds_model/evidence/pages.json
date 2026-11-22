@@ -148,25 +148,34 @@
     "section": "Analysis",
     "title": "Main findings of the 180-run design",
     "source": "output/html/site/main-findings.html",
-    "description": "Ten findings of the 180-run design (twelve interventions \u00d7 who intervenes \u00d7 five settings), one section each, with a left-hand list.",
+    "description": "Ten findings of the 180-run design (twelve interventions \u00d7 who intervenes \u00d7 five policies), one section each, with a left-hand list.",
     "artifact": "evidence/output/html/site/main-findings.html",
     "href": "pages/main-findings.html"
   },
   {
     "id": "scenario-highlights-180",
     "section": "Analysis",
-    "title": "Scenario Highlights \u2014 180 runs",
+    "title": "Highlights by axis \u2014 180 runs",
     "source": "output/html/site/scenario-highlights-180.html",
-    "description": "One row per intervention: regime by intervening region and setting (by role), and computed highlights for each intervening region.",
+    "description": "One row per intervention, one column per axis (economic, social, ecological, external, policy): the response on which the intervention stands out most, computed from the 180 runs.",
     "artifact": "evidence/output/html/site/scenario-highlights-180.html",
     "href": "pages/scenario-highlights-180.html"
   },
   {
+    "id": "scenario-regimes-180",
+    "section": "Analysis",
+    "title": "Regimes \u2014 180 runs",
+    "source": "output/html/site/scenario-regimes-180.html",
+    "description": "The value-added regime of each of the 180 runs (12 interventions \u00d7 who intervenes \u00d7 five policies), in scenario order, with regime counts by policy and by intervention.",
+    "artifact": "evidence/output/html/site/scenario-regimes-180.html",
+    "href": "pages/scenario-regimes-180.html"
+  },
+  {
     "id": "scenario-results-180",
     "section": "Analysis",
-    "title": "Scenario Results \u2014 180 runs",
+    "title": "Results \u2014 180 runs",
     "source": "output/html/site/scenario-results-180.html",
-    "description": "The submitted Table 4 rebuilt from the 180 runs: responses by region for a chosen intervening region and setting, with fifteen regime chips per intervention.",
+    "description": "The submitted Table 4 rebuilt from the 180 runs: responses by region for a chosen intervening region and policy.",
     "artifact": "evidence/output/html/site/scenario-results-180.html",
     "href": "pages/scenario-results-180.html"
   },

@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-21",
-  "commit": "ee403d832e1410a6ae81140e676acd91507ed8e6",
+  "commit": "77c7cf3ab1e023d74b32ab3af0da41211b8ad7d8",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "30c8ec78caeb4351bc93182d04464c315995af99e8414fb1951754925261110f",
-      "bytes": 7528
+      "sha256": "a91ba652818cbde19b1c065a10363ee73f778d2ff2d241d44ff018ae78597cac",
+      "bytes": 7618
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -120,18 +120,23 @@
     },
     "evidence/output/html/site/scenario-highlights-180.html": {
       "source": "output/html/site/scenario-highlights-180.html",
-      "sha256": "79295d4df98b6215e63c8d3aa41f6a4a680a8ee0bb4df482161c0c5405358619",
-      "bytes": 36613
+      "sha256": "8b57a78b7695032a4ee125a8cea25612d831b7c3cb1a075bab3e4b112d6ab22f",
+      "bytes": 20057
+    },
+    "evidence/output/html/site/scenario-regimes-180.html": {
+      "source": "output/html/site/scenario-regimes-180.html",
+      "sha256": "84d4363c35f6e4efc2167fdf75ee678580f1f19744a049282ee15cbaceeb6b38",
+      "bytes": 262317
     },
     "evidence/output/html/site/scenario-results-180.html": {
       "source": "output/html/site/scenario-results-180.html",
-      "sha256": "935d34f47a7aae24d2a59e2a84434a3d9eaecd6dd3fcc2cb443a9edd537f77f4",
-      "bytes": 1858552
+      "sha256": "2639532da8f95a23c98eb19811c740258c57f3af840bf78877028b3fea1c6d39",
+      "bytes": 1858130
     },
     "evidence/output/html/site/analysis-adjustment.html": {
       "source": "output/html/site/analysis-adjustment.html",
-      "sha256": "57fcf38b7739ccdf7478c7b2beea0f865274b92b326e9ad1578ec5e475b433a7",
-      "bytes": 1500318
+      "sha256": "79206c3d3ed132ec836fb93a268dffb3751550e8daa944326e9e4b204dea2e6a",
+      "bytes": 1505378
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -681,7 +686,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-    "web/evidence/pages.json": "3cd27455abebcc24e5afff3c62e399cd76e11395deaf7f0c69bda09d105d6092",
+    "web/evidence/pages.json": "bb17fbf9da93374dde39dcde691057aded9fe1bc6ac45679458bffdf0078e0aa",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
@@ -707,7 +712,7 @@
     "tools/site/dendrogram-explorer.html": "abb66886f7ddb726b2d2a7a9895ba7408e48f5a94ca4ebde9f68f78dee1706d3",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "30c8ec78caeb4351bc93182d04464c315995af99e8414fb1951754925261110f",
+    "web/evidence/section-tabs.json": "a91ba652818cbde19b1c065a10363ee73f778d2ff2d241d44ff018ae78597cac",
     "tools/site/generate_analysis_visuals.R": "00fd1030f7a22b6ef257a0dc6752edad5d26c376a43aa322fbf6e6367416f2bc",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "a7bf5e30e8c0c6519fc67be744a322f1f78c0d9d9b6d8bbc8bc0e62d8d5d9108",
@@ -758,6 +763,7 @@
     "pages/view-scenarios.html",
     "pages/main-findings.html",
     "pages/scenario-highlights-180.html",
+    "pages/scenario-regimes-180.html",
     "pages/scenario-results-180.html",
     "pages/analysis-adjustment.html",
     "pages/analysis-visuals.html",
@@ -802,8 +808,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "4b6c156f17ea8f3ed2258a12c1e14a2b04bcf1b6567272b88f7443cb75d50c47",
-    "coverage.json": "c0747acb58f65952ff152a0d2dc76c69669c6c9cc67045ffaac2bc7b22b2a9a9",
+    "pages.json": "8a63b065de7af90e02bd783074043d619303b24afbcb6445e3555d600c1ca3a6",
+    "coverage.json": "4ffcd47891c90a42d48a5ce482176d10d1a4e2997269e3bbc8dbd57275e17416",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
@@ -821,8 +827,9 @@
     "pages/regime-table.html": "9284812ac76d9024ba00a071897d47737a75cf81a578e5efa547ea7e0b653186",
     "pages/view-scenarios.html": "c4202bcce5f306a1644d8af13ff1eb4c42a6f7473361fe610cd372768bf77fe6",
     "pages/main-findings.html": "59611b70c1c3187707a64282eb1c2d352ba1910a1ab501d34e5acfbf117cb7da",
-    "pages/scenario-highlights-180.html": "1fe02b751664a37eff47df8b74f104a214e19d3a079d757976ce897bc6c3d5e4",
-    "pages/scenario-results-180.html": "2e820610929e288fce64b1060f6f029e455348cb775e74b7689dfb4575ce1f28",
+    "pages/scenario-highlights-180.html": "b983493ede5debacfb9c2ba7c6c218e6d29f82f29604dec21687a38b36faa0d1",
+    "pages/scenario-regimes-180.html": "a721f8fb8e36005cc25204928a9d530fd2131cda9f841a287b4d5ab51c68d4c2",
+    "pages/scenario-results-180.html": "471c17452fd1883419cf2cb0d5ea0a59ae6ee97d996380ec43cc7a9ae7cede84",
     "pages/analysis-adjustment.html": "8d772522d3d1cce6fe64dd817d7c5d5c26afb4c4eedb23be854b416b607cf976",
     "pages/analysis-visuals.html": "e9250def6477b2ac68e87a4a98012558390156250664cfd0465025d9931c30ec",
     "pages/rho-sensitivity.html": "f0d8e1e87564cb81c6cdaca1b688aaa4b3662323ad97550d66db6ab4d49b4830",

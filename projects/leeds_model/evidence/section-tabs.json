@@ -103,12 +103,16 @@
             "native": "anova"
           },
           {
-            "label": "Scenario Highlights",
-            "page": "scenario-highlights-180"
+            "label": "Regimes",
+            "page": "scenario-regimes-180"
           },
           {
-            "label": "Scenario Results",
+            "label": "Results",
             "page": "scenario-results-180"
+          },
+          {
+            "label": "Highlights by axis",
+            "page": "scenario-highlights-180"
           },
           {
             "label": "Dendrograms",
