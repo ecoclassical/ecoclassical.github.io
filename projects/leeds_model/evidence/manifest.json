@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-22",
-  "commit": "dd47f2a0ca8576eb9f4dc5552a6d63cc5479ac75",
+  "commit": "0a1fa228ce880b39234bd7bed6f16191ff8afb03",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -125,8 +125,8 @@
     },
     "evidence/output/html/site/scenario-regimes-180.html": {
       "source": "output/html/site/scenario-regimes-180.html",
-      "sha256": "0b964738b640f75bb04c6d675bc45bbc35273f8a73a916b9f803a281a725b994",
-      "bytes": 1044528
+      "sha256": "c4417f6150a0bc01d431b5a2bf5a42359c224fbfb45e253c2963cfaf5761b3df",
+      "bytes": 1435322
     },
     "evidence/output/html/site/scenario-results-180.html": {
       "source": "output/html/site/scenario-results-180.html",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "8a63b065de7af90e02bd783074043d619303b24afbcb6445e3555d600c1ca3a6",
-    "coverage.json": "ca0cca7223febd0bb06ad1c8a50e871ca7959ff7ccf6d69bc90646767621c2a1",
+    "coverage.json": "496ee896c61b477811551f6f66cb3b0f1fc451e461c647d25f43d858c9e82594",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
