@@ -29,7 +29,7 @@
  const lessBetter=new Set(['emis','mat','water','land','debt_gdp']);
  const unit=v=>/point/.test(names[v].basis)?'pp':/VA/.test(names[v].basis)?'% VA':'%';
  const regimes=[['CD','Competitive displacement: the intervener expands, its partner contracts'],['PL','Production leakage: the intervener contracts, its partner expands'],['DC','Dual contraction: both regions contract'],['CC','Contained: the partner moves by less than 0.003%'],['DE','Dual expansion: both regions expand']];
- const rc={PL:'#2f6ea5',CD:'#b4532a',DC:'#2c7a6b',CC:'#b3d6cc',DE:'#8c8c8c'},ri={CC:'#18372a'};
+ const rc={PL:'#2f6ea5',CD:'#e07b22',DC:'#c0392b',CC:'#f2c94c',DE:'#2e8b57'},ri={CC:'#2b2a1f',CD:'#2b2a1f'};
  const closures=['nr_N','nr_S','adj_S','adj_N','adj_B'],setups=['North','South','both'],cl={nr_N:'none N$',nr_S:'none S$',adj_S:'S adj.',adj_N:'N adj.',adj_B:'both adj.'},sl={North:'North intervenes',South:'South intervenes',both:'both intervene'};
  const val={};for(const r of p.rows)val[`${r.sample}|${r.zone}|${r.variable}`]=r.value;
  const SETS=JSON.parse(document.getElementById('run-sets').textContent);let SET=null;
