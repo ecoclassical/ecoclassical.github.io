@@ -146,9 +146,9 @@
   {
     "id": "main-findings",
     "section": "Analysis",
-    "title": "Main findings of the 180-run design",
+    "title": "Main findings",
     "source": "output/html/site/main-findings.html",
-    "description": "Ten findings of the 180-run design (twelve interventions \u00d7 who intervenes \u00d7 five policies), one section each, with a left-hand list.",
+    "description": "Ten findings of the 48-run design (twelve North interventions \u00d7 four fiscal rules, North money), with a Runs selector for the eleven findings of the 180-run design.",
     "artifact": "evidence/output/html/site/main-findings.html",
     "href": "pages/main-findings.html"
   },

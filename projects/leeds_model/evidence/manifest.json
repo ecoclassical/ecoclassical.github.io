@@ -1,7 +1,7 @@
 {
-  "working_tree_dirty": false,
+  "working_tree_dirty": true,
   "built_date": "2026-11-23",
-  "commit": "0f0e1e5f14620b4fccae2745fb062819e90372fb",
+  "commit": "630e64848833e1aa6955ef09c73aa7d6722d35dc",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -115,8 +115,8 @@
     },
     "evidence/output/html/site/main-findings.html": {
       "source": "output/html/site/main-findings.html",
-      "sha256": "2904dad5763a8650d74b8cf9589e63e8dd5b1a19e3ddbf7b3e2ca1bb75f2b2af",
-      "bytes": 1914629
+      "sha256": "5538de53ae544a675c7b8e22ba8a2ba9b3033f591f0492ec4106730c299cedc9",
+      "bytes": 2017202
     },
     "evidence/output/html/site/scenario-highlights-180.html": {
       "source": "output/html/site/scenario-highlights-180.html",
@@ -135,8 +135,8 @@
     },
     "evidence/output/html/site/analysis-adjustment.html": {
       "source": "output/html/site/analysis-adjustment.html",
-      "sha256": "76ba1396b65bd7f217839c8c28f480899c436ab7c1d2b302093992936e5a49df",
-      "bytes": 1896291
+      "sha256": "080c7acff29d802a22b29b07a320a9a179beed212fafe1f7d13ef92b4c6d8e06",
+      "bytes": 1956775
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -686,7 +686,7 @@
   },
   "inputs": {
     "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-    "web/evidence/pages.json": "bb17fbf9da93374dde39dcde691057aded9fe1bc6ac45679458bffdf0078e0aa",
+    "web/evidence/pages.json": "957183f1f12246d6311335b78e2dd680e4c93c077a079e1060a9bd6c6bd9dd06",
     "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
@@ -701,7 +701,7 @@
     "qmd/site/findings.qmd": "b111c9896d338a377fb3470c3b4092ac21d9ebf2352a1dce15f812f7131a4742",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/io-structure.qmd": "ff27859920d1e14b5fe58eae1bc30d2f78224db052c163635c7d8f207a6ec14a",
-    "qmd/site/main-findings.qmd": "2ceee074d657110e41153344224c9829e08bcf8eddbfa7c84572ab5e40038a36",
+    "qmd/site/main-findings.qmd": "a88d0b05709343eb26c41c26e7a422576d4e88dd1e757645de125018a88c070d",
     "qmd/site/model-overview-submitted.qmd": "5e9b3def86285177dcb1d71b03c104be30c992d4b40ded551a701491fbf19d21",
     "qmd/site/model-section-draft.qmd": "a3e0f4f0a5f5643730029350e84d41309a2384e4a6d6ffc5f74d5746ff0e43d3",
     "qmd/site/scenario-adjustment.qmd": "92f67b0405107a9938ad10fc0e4b3f9abc3fe560885d95ba96a4b32f5cba1a9a",
@@ -808,8 +808,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "8a63b065de7af90e02bd783074043d619303b24afbcb6445e3555d600c1ca3a6",
-    "coverage.json": "873d5b6ea3c456d5d18deb044425305d55803867a750439dee96bb1bae280f83",
+    "pages.json": "a1356f52e94e99e5b7b87ba6fc4231b7fc760a22898ad587f4ac8ebbfa28f218",
+    "coverage.json": "a17a1e993ee92aa69a5241626a8e55037da053b891be2ecc52c5f704ee62dccd",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
@@ -826,7 +826,7 @@
     "pages/scenario-highlights.html": "7ae4b9e72b7bcf6e7f7f3da41007e115f235ccafe131e806385535fe5e41aace",
     "pages/regime-table.html": "9284812ac76d9024ba00a071897d47737a75cf81a578e5efa547ea7e0b653186",
     "pages/view-scenarios.html": "c4202bcce5f306a1644d8af13ff1eb4c42a6f7473361fe610cd372768bf77fe6",
-    "pages/main-findings.html": "59611b70c1c3187707a64282eb1c2d352ba1910a1ab501d34e5acfbf117cb7da",
+    "pages/main-findings.html": "b31da794774a898c65d5ee1462cc866a0af443f8d5b408b914a3676c74131b6e",
     "pages/scenario-highlights-180.html": "b983493ede5debacfb9c2ba7c6c218e6d29f82f29604dec21687a38b36faa0d1",
     "pages/scenario-regimes-180.html": "a721f8fb8e36005cc25204928a9d530fd2131cda9f841a287b4d5ab51c68d4c2",
     "pages/scenario-results-180.html": "471c17452fd1883419cf2cb0d5ea0a59ae6ee97d996380ec43cc7a9ae7cede84",
