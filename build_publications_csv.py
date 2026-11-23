@@ -39,7 +39,7 @@ def load_line_order():
 # Explicit within-line order for the classical-political-economy track (author's sequence).
 # Everything else sorts by year descending.
 GND_ORDER = {
-    "Environmentalism without class struggle is just gardening: the Ricardian dynamics of the metabolic rift": 0,
+    "The climate crisis is a problem of distribution: the complex Ricardian dynamics of the metabolic rift": 0,
     "The Sraffian Economy as an Autocatalytic Set": 1,
     'Review of "Marx\'s Theory of Value at the Frontiers" by Güney Işikara and Patrick Mokre': 2,
     "A conflict theory of pricing": 3,

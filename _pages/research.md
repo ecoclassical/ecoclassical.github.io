@@ -58,7 +58,7 @@ High-income economies appropriate materials, energy, land and labour from lower-
 
 Are the limits to growth carved in the stone of biophysical nature, or set by distribution? Ecological economics holds that indefinite growth is impossible on a finite planet, but it has never said which economic mechanism brings growth to a halt. The mechanism is distributive. As accumulation extends production onto ever poorer natural resources, differential rent, the income of those who own the resources, rises and squeezes profit, the fund from which accumulation is financed, until growth undoes itself. Technology sets how far the economy can grow; who controls the surplus, and above all who owns natural resources, decides how it gets there: a smooth landing when little surplus is extracted, or chaotic, ungovernable fluctuations when much is.
 
-- Vallès Codina. *Ecology without class struggle is just gardening: the complex Ricardian dynamics of the metabolic rift*. In preparation, for *Ecological Economics*.
+- Vallès Codina. *The climate crisis is a problem of distribution: the complex Ricardian dynamics of the metabolic rift*. In preparation, for *Ecological Economics*.
 
 ### The Empirical Strength of the Labor Theory of Value
 
