@@ -230,129 +230,149 @@
   ],
   "Figures": [
     {
-      "label": "Results ◇",
-      "page": "paper-figures",
-      "native": "fig-results-48"
+      "label": "In the Paper",
+      "children": [
+        {
+          "label": "Pair intensities",
+          "page": "paper-figures",
+          "native": "fig-pair-intensities"
+        },
+        {
+          "label": "Channel volumes",
+          "page": "paper-figures",
+          "native": "fig-demand-structure-paper"
+        },
+        {
+          "label": "Imports",
+          "page": "paper-figures",
+          "native": "fig-import-decomp-paper"
+        },
+        {
+          "label": "Upstream",
+          "page": "paper-figures",
+          "native": "fig-leontief-paper"
+        },
+        {
+          "label": "Embodied balance",
+          "page": "paper-figures",
+          "native": "fig-embodied-48"
+        },
+        {
+          "label": "Families",
+          "page": "paper-figures",
+          "native": "fig-ward-48"
+        },
+        {
+          "label": "South content",
+          "page": "paper-figures",
+          "native": "fig-south-content-48"
+        },
+        {
+          "label": "Response profile",
+          "page": "paper-figures",
+          "native": "fig-response-profile-48"
+        },
+        {
+          "label": "Extraction vs CO2",
+          "page": "paper-figures",
+          "native": "fig-extraction-co2-48"
+        },
+        {
+          "label": "Who adjusts",
+          "page": "paper-figures",
+          "native": "fig-adjuster-law-48"
+        }
+      ]
     },
     {
-      "label": "Pair intensities ⚑",
-      "page": "paper-figures",
-      "native": "fig-pair-intensities"
+      "label": "Candidates",
+      "children": [
+        {
+          "label": "Intervention effects",
+          "page": "paper-figures",
+          "native": "fig-results-48"
+        },
+        {
+          "label": "Families, annotated",
+          "page": "paper-figures",
+          "native": "fig-ward-groups-48"
+        },
+        {
+          "label": "Embodied networks",
+          "page": "paper-figures",
+          "native": "fig-networks"
+        },
+        {
+          "label": "Industry network",
+          "page": "paper-figures",
+          "native": "fig-industry-network"
+        },
+        {
+          "label": "Regime counts",
+          "page": "paper-figures",
+          "native": "fig-regime-counts-48"
+        }
+      ]
     },
     {
-      "label": "Channel volumes ⚑",
-      "page": "paper-figures",
-      "native": "fig-demand-structure-paper"
-    },
-    {
-      "label": "Imports ⚑",
-      "page": "paper-figures",
-      "native": "fig-import-decomp-paper"
-    },
-    {
-      "label": "Upstream ⚑",
-      "page": "paper-figures",
-      "native": "fig-leontief-paper"
-    },
-    {
-      "label": "Embodied balance",
-      "page": "paper-figures",
-      "native": "fig-embodied-48"
-    },
-    {
-      "label": "Families",
-      "page": "paper-figures",
-      "native": "fig-ward-48"
-    },
-    {
-      "label": "South content",
-      "page": "paper-figures",
-      "native": "fig-south-content-48"
-    },
-    {
-      "label": "Response profile",
-      "page": "paper-figures",
-      "native": "fig-response-profile-48"
-    },
-    {
-      "label": "Extraction vs CO2",
-      "page": "paper-figures",
-      "native": "fig-extraction-co2-48"
-    },
-    {
-      "label": "Who adjusts",
-      "page": "paper-figures",
-      "native": "fig-adjuster-law-48"
-    },
-    {
-      "label": "Embodied networks ◇",
-      "page": "paper-figures",
-      "native": "fig-networks"
-    },
-    {
-      "label": "Industry network ◇",
-      "page": "paper-figures",
-      "native": "fig-industry-network"
-    },
-    {
-      "label": "Regime counts ◇",
-      "page": "paper-figures",
-      "native": "fig-regime-counts-48"
-    },
-    {
-      "label": "Channel volumes (old)",
-      "page": "paper-figures",
-      "native": "fig-channel-volumes"
-    },
-    {
-      "label": "Imports (old)",
-      "page": "paper-figures",
-      "native": "fig-import-decomp"
-    },
-    {
-      "label": "Upstream (old)",
-      "page": "paper-figures",
-      "native": "fig-upstream"
-    },
-    {
-      "label": "Channel reach (old)",
-      "page": "paper-figures",
-      "native": "fig-portfolio"
-    },
-    {
-      "label": "Emission grid (old)",
-      "page": "paper-figures",
-      "native": "fig-emis-impact"
-    },
-    {
-      "label": "Material grid (old)",
-      "page": "paper-figures",
-      "native": "fig-mat-impact"
-    },
-    {
-      "label": "Land grid (old)",
-      "page": "paper-figures",
-      "native": "fig-land-impact"
-    },
-    {
-      "label": "Water grid (old)",
-      "page": "paper-figures",
-      "native": "fig-water-impact"
-    },
-    {
-      "label": "Cross-border (old)",
-      "page": "paper-figures",
-      "native": "fig-cross-border"
-    },
-    {
-      "label": "Z1 effects (old)",
-      "page": "paper-figures",
-      "native": "fig-comparison-eu"
-    },
-    {
-      "label": "Z2 effects (old)",
-      "page": "paper-figures",
-      "native": "fig-comparison-row"
+      "label": "Not in the Paper",
+      "children": [
+        {
+          "label": "Channel volumes",
+          "page": "paper-figures",
+          "native": "fig-channel-volumes"
+        },
+        {
+          "label": "Imports",
+          "page": "paper-figures",
+          "native": "fig-import-decomp"
+        },
+        {
+          "label": "Upstream",
+          "page": "paper-figures",
+          "native": "fig-upstream"
+        },
+        {
+          "label": "Channel reach",
+          "page": "paper-figures",
+          "native": "fig-portfolio"
+        },
+        {
+          "label": "Emission grid",
+          "page": "paper-figures",
+          "native": "fig-emis-impact"
+        },
+        {
+          "label": "Material grid",
+          "page": "paper-figures",
+          "native": "fig-mat-impact"
+        },
+        {
+          "label": "Land grid",
+          "page": "paper-figures",
+          "native": "fig-land-impact"
+        },
+        {
+          "label": "Water grid",
+          "page": "paper-figures",
+          "native": "fig-water-impact"
+        },
+        {
+          "label": "Cross-border",
+          "page": "paper-figures",
+          "native": "fig-cross-border"
+        },
+        {
+          "label": "Z1 effects",
+          "page": "paper-figures",
+          "native": "fig-comparison-eu"
+        },
+        {
+          "label": "Z2 effects",
+          "page": "paper-figures",
+          "native": "fig-comparison-row"
+        }
+      ]
     }
   ],
   "Tables": [
