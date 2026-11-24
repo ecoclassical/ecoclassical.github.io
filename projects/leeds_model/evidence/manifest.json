@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-23",
-  "commit": "59e887e436a4c3b6a3b45e69ce45c2b6460c0462",
+  "commit": "3293234e18182f32fb76df4a49b8baff42e5efd4",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -280,8 +280,8 @@
     },
     "evidence/output/html/site/paper-figures.html": {
       "source": "output/html/site/paper-figures.html",
-      "sha256": "95df7d120ffaec2dbaa96d92e6cc91750fe7b1617650e84ea63e6f39f6ffbbe8",
-      "bytes": 11361116
+      "sha256": "44220c4c8ce1b8ec1bb3770f1b290f83cb86f87b968049787712977a9da1387a",
+      "bytes": 11252012
     },
     "evidence/output/html/site/paper-tables.html": {
       "source": "output/html/site/paper-tables.html",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "a1356f52e94e99e5b7b87ba6fc4231b7fc760a22898ad587f4ac8ebbfa28f218",
-    "coverage.json": "f47fcf4d501a24d5263e67e20536898212c07aa0d112784dd629560616b2acc7",
+    "coverage.json": "bc057876e53a34b96846fbf9eb1aa6f392e9e79f594311a30fd2fbead7e2a886",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
