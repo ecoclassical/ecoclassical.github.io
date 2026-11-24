@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-23",
-  "commit": "74a978c217ad3dac95fa315d0c701f49585626ae",
+  "commit": "1fba9b0a8a23e1f13ea1dd2146215f0a1685ecd4",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -10,13 +10,13 @@
     },
     "style.css": {
       "source": "web/evidence/style.css",
-      "sha256": "ba1746677edf92f75cf239b13e1ed9c629e5fa804b0cb9844bc4730add5100de",
-      "bytes": 6201
+      "sha256": "b02c09c760471ee43ed5e005ea3b2841580362f2cf61c2ab58e7b38256d9ee99",
+      "bytes": 6499
     },
     "main.mjs": {
       "source": "web/evidence/main.mjs",
-      "sha256": "2c61565cb714c1b734da9a07f59e610760f21a9aafd9e5a3e691b317e46b33cc",
-      "bytes": 8973
+      "sha256": "9428b7d0b9140c01ce9b4d71f5a6ebed188dff3f07987238c59ced2f27983710",
+      "bytes": 9052
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "a1356f52e94e99e5b7b87ba6fc4231b7fc760a22898ad587f4ac8ebbfa28f218",
-    "coverage.json": "9d39febed2ae59f79f3e8f2ba313fd2560e5e5e868a2d7aca4b3b3382286b39f",
+    "coverage.json": "1aba86b5dc65c2f42126e02f3beccd3b0f2e6467bc69756adbd935a5526a7bb0",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
