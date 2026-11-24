@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-23",
-  "commit": "630e64848833e1aa6955ef09c73aa7d6722d35dc",
+  "commit": "59e887e436a4c3b6a3b45e69ce45c2b6460c0462",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -25,8 +25,8 @@
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "a91ba652818cbde19b1c065a10363ee73f778d2ff2d241d44ff018ae78597cac",
-      "bytes": 7618
+      "sha256": "ebbb7271572715e3274c941fb75964274bb679d4fb5c90937efee1b3de8d366e",
+      "bytes": 9306
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -280,13 +280,13 @@
     },
     "evidence/output/html/site/paper-figures.html": {
       "source": "output/html/site/paper-figures.html",
-      "sha256": "66384aa878df96399f40cd3caf61f2e1dacf152773817c2b7d4901af34ccda46",
-      "bytes": 7076842
+      "sha256": "95df7d120ffaec2dbaa96d92e6cc91750fe7b1617650e84ea63e6f39f6ffbbe8",
+      "bytes": 11361116
     },
     "evidence/output/html/site/paper-tables.html": {
       "source": "output/html/site/paper-tables.html",
-      "sha256": "ed44454de4138ec692b5c4ed1458aa056368e6bfe815933ba528ad7a5f8376e8",
-      "bytes": 133653
+      "sha256": "6be888abe31110e88beea609443ebc8fcf42048e5bd20072b18541f7e67200da",
+      "bytes": 134115
     },
     "evidence/output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html": {
       "source": "output/html/reports/2026-10-08-monetary-rank-by-workbook-2x2-openfixg.html",
@@ -712,14 +712,14 @@
     "tools/site/dendrogram-explorer.html": "a503f1a4e9ec188c9ddb825a26e8c42665916bcc3e69757610c103234aabea98",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "a91ba652818cbde19b1c065a10363ee73f778d2ff2d241d44ff018ae78597cac",
+    "web/evidence/section-tabs.json": "ebbb7271572715e3274c941fb75964274bb679d4fb5c90937efee1b3de8d366e",
     "tools/site/generate_analysis_visuals.R": "833d1bc925296a3d42ac3e2ba73591a5528df641b4a02aa51cdb59850cfe61f6",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "546540ff015f64dfe3161eee8f6ec7627e7b5ed9ba3c7fc7dbc06c39e5265d4b",
     "tools/site/group-table.html": "2cefa19447ef72bd5f1585cab6f370a39c810784b7831d8a7f31ecbb5033604c",
     "tools/site/regime-map.html": "90da69218dd66544037eecd8a35d956fc356999e8eb91b9c0ff4099885cbce75",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
-    "tools/site/generate_paper_pages.R": "5ee798f41723202c91c859042c21933a6357acdf6ddb82e9d46b399ea157448a",
+    "tools/site/generate_paper_pages.R": "8630c3389f0d957b0a2fb3a56fac0910a1382d92bf100512d1877f34514e7df5",
     "R/figures/plot_revised_paper_figures.R": "e29b1557de79080b677f631516533bf4cf23c342650cb8deacda8c72ad21f202",
     "R/scenarios/table3_revised.R": "585b5436b34d7916cacc2be693e4d60fae2720c2e9bd4284441dba0e9bbfdc59",
     "R/scenarios/gmm_transmission_grid.R": "630889d47c26f1917f0d8b74c525df64be728358797906860928f475c1893e0d",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "a1356f52e94e99e5b7b87ba6fc4231b7fc760a22898ad587f4ac8ebbfa28f218",
-    "coverage.json": "a17a1e993ee92aa69a5241626a8e55037da053b891be2ecc52c5f704ee62dccd",
+    "coverage.json": "f47fcf4d501a24d5263e67e20536898212c07aa0d112784dd629560616b2acc7",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
