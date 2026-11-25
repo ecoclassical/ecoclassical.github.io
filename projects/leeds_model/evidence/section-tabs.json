@@ -260,7 +260,7 @@
         {
           "label": "Families",
           "page": "paper-figures",
-          "native": "fig-ward-48"
+          "native": "fig-ward-groups-48"
         },
         {
           "label": "South content",
@@ -293,11 +293,6 @@
           "native": "fig-results-48"
         },
         {
-          "label": "Families, annotated",
-          "page": "paper-figures",
-          "native": "fig-ward-groups-48"
-        },
-        {
           "label": "Embodied networks",
           "page": "paper-figures",
           "native": "fig-networks"
@@ -317,6 +312,11 @@
     {
       "label": "Not in the Paper",
       "children": [
+        {
+          "label": "Families, unannotated",
+          "page": "paper-figures",
+          "native": "fig-ward-48"
+        },
         {
           "label": "Channel volumes",
           "page": "paper-figures",
