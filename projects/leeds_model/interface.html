@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Macroeconomic Consequences of Ecological Unequal Exchange — model interface</title>
+<style>
+  :root {
+    --ink: #14171c; --dim: #5b6470; --line: #d7dbe0; --bg: #ffffff;
+    --accent: #1f5f8b; --warn: #8a4b12; --note: #f5f7f9;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+  h1 { font-size: 1.42rem; line-height: 1.3; margin: 0 0 6px; }
+  h1 + p.sub { margin: 0 0 22px; color: var(--dim); }
+  .panel { border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; margin: 0 0 18px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 18px; }
+  label { display: block; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--dim); margin: 0 0 5px; }
+  select, input[type=number], input[type=search] { width: 100%; padding: 7px 9px; font: inherit;
+    color: inherit; background: #fff; border: 1px solid var(--line); border-radius: 5px; }
+  input[type=range] { width: 100%; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  button { font: inherit; padding: 9px 18px; border-radius: 6px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; cursor: pointer; }
+  button.ghost { background: #fff; color: var(--accent); }
+  button:disabled { opacity: .55; cursor: default; }
+  #status { margin: 12px 0 0; padding: 10px 12px; background: var(--note); border: 1px solid var(--line);
+    border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem;
+    white-space: pre-wrap; color: var(--dim); }
+  .note { border-left: 3px solid var(--warn); background: var(--note); padding: 12px 14px;
+    border-radius: 0 6px 6px 0; margin: 0 0 18px; font-size: .92rem; }
+  .note strong { color: var(--warn); }
+  svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; margin: 10px 0 0; font-size: .84rem; color: var(--dim); }
+  .legend i { display: inline-block; width: 22px; height: 3px; vertical-align: middle; margin-right: 6px; }
+  footer { margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line);
+    font-size: .82rem; color: var(--dim); }
+  a { color: var(--accent); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .86em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>The Macroeconomic Consequences of Ecological Unequal Exchange</h1>
+  <p class="sub">A two-region (EU and Rest of World), 54-industry ecological stock–flow consistent model with a
+  multi-regional input–output structure. This page runs the model in your browser: it computes the baseline and
+  the scenario you select, from the model's own exported initial state.</p>
+
+  <div class="note" id="armnote">
+    <strong>Read this before comparing with the paper.</strong> The arm selector offers four versions of the
+    model. It opens on <em>Revised</em>, which corrects two sector indices in the material and waste reporting
+    blocks; the <em>Submitted</em> arm reproduces the model exactly as the manuscript currently under review
+    reports it. Between those two arms, <strong>EU material extraction differs by about 65% and the sign pattern
+    across scenarios inverts</strong>. That difference is a corrected sector index, not a modelling choice, and
+    a revision is in progress.
+    <span id="armdetail"></span>
+  </div>
+
+  <div class="panel">
+    <div class="grid">
+      <div>
+        <label for="arm">Model arm</label>
+        <select id="arm"></select>
+      </div>
+      <div>
+        <label for="scenario">Scenario</label>
+        <select id="scenario"></select>
+      </div>
+      <div>
+        <label for="fam">Variable</label>
+        <input type="search" id="famfilter" placeholder="filter, e.g. va_g, x, cons" autocomplete="off">
+        <select id="fam" size="6" style="margin-top:6px"></select>
+      </div>
+      <div>
+        <label for="inst">Sector / instance</label>
+        <select id="inst"></select>
+        <label for="rho" style="margin-top:12px">Substitution intensity &rho; <span id="rhoval" style="text-transform:none;letter-spacing:0"></span></label>
+        <input type="range" id="rho" min="0" max="0.5" step="0.05">
+        <label for="tshock" style="margin-top:12px">Shock period <code>t.shock</code></label>
+        <input type="number" id="tshock" min="1" step="1">
+      </div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button id="run">Run</button>
+      <button id="csv" class="ghost" disabled>Download CSV</button>
+    </div>
+    <div id="status">Choose a variable and press Run. A 99-period run takes a few seconds.</div>
+  </div>
+
+  <div class="panel">
+    <div class="legend">
+      <span><i style="background:#9aa3ad"></i><span id="legbase">Baseline</span></span>
+      <span><i style="background:var(--accent)"></i><span id="legscen">Scenario</span></span>
+      <span><i style="background:#c9ced5"></i>dashed: <code>t.shock</code></span>
+    </div>
+    <div id="chart"></div>
+  </div>
+
+  <footer>
+    <p><strong>Source and licence.</strong> The model is calibrated on
+    <strong>EXIOBASE 3, version 3.8.2</strong> (Stadler et al. 2018, <em>Journal of Industrial Ecology</em>
+    22(3): 502–515; versioned dataset: Zenodo, <a href="https://doi.org/10.5281/zenodo.5589597">doi:10.5281/zenodo.5589597</a>),
+    © the EXIOBASE consortium, released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+    This page ships derived from those coefficients and is therefore itself offered under CC BY-SA 4.0.</p>
+    <p>The engine is a JavaScript port of the model's own R source, validated against R period by period across
+    the whole 99-period horizon. It runs entirely in your browser: nothing is sent anywhere, and the payload is
+    the model's initial state, not a set of cached results.</p>
+  </footer>
+</div>
+
+<script type="module" src="./app/main.mjs"></script>
+</body>
+</html>
