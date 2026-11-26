@@ -316,6 +316,11 @@
           "label": "Regime counts",
           "page": "paper-figures",
           "native": "fig-regime-counts-48"
+        },
+        {
+          "label": "Emission grid",
+          "page": "paper-figures",
+          "native": "fig-emis-impact"
         }
       ]
     },
@@ -351,11 +356,6 @@
           "label": "Channel reach",
           "page": "paper-figures",
           "native": "fig-portfolio"
-        },
-        {
-          "label": "Emission grid",
-          "page": "paper-figures",
-          "native": "fig-emis-impact"
         },
         {
           "label": "Material grid",
