@@ -253,9 +253,14 @@
           "native": "fig-leontief-paper"
         },
         {
-          "label": "Embodied balance",
+          "label": "Intervention effects",
           "page": "paper-figures",
-          "native": "fig-embodied-48"
+          "native": "fig-results-48"
+        },
+        {
+          "label": "ANOVA",
+          "page": "paper-figures",
+          "native": "fig-anova-48"
         },
         {
           "label": "Families",
@@ -263,10 +268,30 @@
           "native": "fig-ward-groups-48"
         },
         {
+          "label": "PCA",
+          "page": "paper-figures",
+          "native": "fig-pca-48"
+        },
+        {
           "label": "South content",
           "page": "paper-figures",
           "native": "fig-south-content-48"
         },
+        {
+          "label": "Who adjusts",
+          "page": "paper-figures",
+          "native": "fig-adjuster-law-48"
+        },
+        {
+          "label": "Embodied networks",
+          "page": "paper-figures",
+          "native": "fig-networks"
+        }
+      ]
+    },
+    {
+      "label": "Candidates",
+      "children": [
         {
           "label": "Response profile",
           "page": "paper-figures",
@@ -276,26 +301,6 @@
           "label": "Extraction vs CO2",
           "page": "paper-figures",
           "native": "fig-extraction-co2-48"
-        },
-        {
-          "label": "Who adjusts",
-          "page": "paper-figures",
-          "native": "fig-adjuster-law-48"
-        }
-      ]
-    },
-    {
-      "label": "Candidates",
-      "children": [
-        {
-          "label": "Intervention effects",
-          "page": "paper-figures",
-          "native": "fig-results-48"
-        },
-        {
-          "label": "Embodied networks",
-          "page": "paper-figures",
-          "native": "fig-networks"
         },
         {
           "label": "Industry network",
@@ -312,6 +317,11 @@
     {
       "label": "Not in the Paper",
       "children": [
+        {
+          "label": "Embodied balance",
+          "page": "paper-figures",
+          "native": "fig-embodied-48"
+        },
         {
           "label": "Families, unannotated",
           "page": "paper-figures",
