@@ -454,5 +454,87 @@
       "label": "ANOVA 2026-10-02",
       "page": "anova-20261002"
     }
+  ],
+  "Appendices": [
+    {
+      "label": "In the Paper",
+      "children": [
+        {
+          "label": "A1 Model equations",
+          "page": "paper-appendices",
+          "native": "app-a1"
+        },
+        {
+          "label": "A2 Alternative exchange-rate closures",
+          "page": "paper-appendices",
+          "native": "app-a2"
+        },
+        {
+          "label": "A3 Dynamics and calibration",
+          "page": "paper-appendices",
+          "native": "app-a3"
+        },
+        {
+          "label": "B1 Sector List",
+          "page": "paper-appendices",
+          "native": "app-b1"
+        },
+        {
+          "label": "B2 Calibration, parameters, initial conditions and convergence",
+          "page": "paper-appendices",
+          "native": "app-b2"
+        },
+        {
+          "label": "B4 The model as an implicit first-order dynamical system",
+          "page": "paper-appendices",
+          "native": "app-b4"
+        },
+        {
+          "label": "B5 The household portfolio block as run",
+          "page": "paper-appendices",
+          "native": "app-b5"
+        },
+        {
+          "label": "B7 Scenario highlights",
+          "page": "paper-appendices",
+          "native": "app-b7"
+        }
+      ]
+    },
+    {
+      "label": "Candidates",
+      "children": [
+        {
+          "label": "A4 The balance-sheet and transaction-flow matrices",
+          "page": "paper-appendices",
+          "native": "app-a4"
+        },
+        {
+          "label": "B3 What determines what — the dependency structure of the model",
+          "page": "paper-appendices",
+          "native": "app-b3"
+        },
+        {
+          "label": "B6 Cluster structure of the 48 runs",
+          "page": "paper-appendices",
+          "native": "app-b6"
+        },
+        {
+          "label": "B9 List of supplementary tables and figures",
+          "page": "paper-appendices",
+          "native": "app-b9"
+        }
+      ]
+    },
+    {
+      "label": "Not in the Paper",
+      "children": [
+        {
+          "label": "B8 The fiscal programme under OPENFIXG",
+          "page": "paper-appendices",
+          "native": "app-b8"
+        }
+      ]
+    }
   ]
 }

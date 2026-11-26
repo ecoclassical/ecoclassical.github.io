@@ -450,6 +450,15 @@
     "href": "pages/paper-figures.html"
   },
   {
+    "id": "paper-appendices",
+    "section": "Appendices",
+    "title": "Supplementary appendices",
+    "source": "output/html/site/paper-appendices.html",
+    "description": "Each appendix of Supplements A and B as rendered with the paper, sorted into In the Paper, Candidates and Not in the Paper, with the passages still to move to North/South.",
+    "artifact": "evidence/output/html/site/paper-appendices.html",
+    "href": "pages/paper-appendices.html"
+  },
+  {
     "id": "tables-scenario-highlights",
     "section": "Tables",
     "title": "Scenario Highlights",

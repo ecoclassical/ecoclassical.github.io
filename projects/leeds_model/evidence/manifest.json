@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-26",
-  "commit": "4a8fdeed3fb15925f9a3a7095d0114954c90b4cb",
+  "commit": "c1efd5b0b0da3357f7deeabfa316aaa918116bd8",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -20,13 +20,13 @@
     },
     "sections.json": {
       "source": "web/evidence/sections.json",
-      "sha256": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-      "bytes": 136
+      "sha256": "7c0c54e144510c1e647304b0a5861e1afcad69c009a34434eac6e91abec9a6a9",
+      "bytes": 152
     },
     "section-tabs.json": {
       "source": "web/evidence/section-tabs.json",
-      "sha256": "c891bda3626c1aa346599cba9dcd5d4775590e3e201da4076322abee77c0b4b0",
-      "bytes": 10576
+      "sha256": "62e66da7c65bd19ff15715f2b6e957206520650ab0aa317c3bcd5ade48941071",
+      "bytes": 12762
     },
     "simulation-manifest.json": {
       "source": "output/calibration/simulation_manifest_20261012_hf.json",
@@ -282,6 +282,11 @@
       "source": "output/html/site/paper-figures.html",
       "sha256": "eaeb6f0c77e383100b28eb3c9680b06fb523df882134490893ad23db80fd50f2",
       "bytes": 14564325
+    },
+    "evidence/output/html/site/paper-appendices.html": {
+      "source": "output/html/site/paper-appendices.html",
+      "sha256": "8b4139cf02d2f7e296ff2896b879c09550810c244e3ac18a797d7e0c9c2b3a07",
+      "bytes": 1559397
     },
     "evidence/output/html/site/paper-tables.html": {
       "source": "output/html/site/paper-tables.html",
@@ -685,9 +690,9 @@
     }
   },
   "inputs": {
-    "web/evidence/sections.json": "817e9e12d44b61d0fdda90ba8cd55e08742d80cb8ef804b3e4df08b36a4b0c8d",
-    "web/evidence/pages.json": "957183f1f12246d6311335b78e2dd680e4c93c077a079e1060a9bd6c6bd9dd06",
-    "tools/site/build_evidence_site.py": "7369ec812c10f9f95b5f54a0cd4317128b0160ac8df27b42d88864adf8a52e7a",
+    "web/evidence/sections.json": "7c0c54e144510c1e647304b0a5861e1afcad69c009a34434eac6e91abec9a6a9",
+    "web/evidence/pages.json": "9a4d79ee20a982a70d7164bd0477434e3dcdd54f1bb8a18d74ad3b0fdcd07157",
+    "tools/site/build_evidence_site.py": "302e7e810db16b612e9ec5aa9ef7d93f13d8291db6adba8b621d7c967ed8618f",
     "tools/site/comparison-viewer.html": "161eb304d803ddc6a641d801cc3dc798e2fe90351cb599dd195ae89cbe86371f",
     "tools/site/cluster-explorer.html": "6fdfd52d50b5c361ab4eb0ebcda56c966d42d09150624573f693787c2b082ffe",
     "tools/site/export_comparison_data.R": "c97e22a1c5e711f469aa9ba9fbd27d904b05140574a15208a132e806d218bbcf",
@@ -712,7 +717,7 @@
     "tools/site/dendrogram-explorer.html": "a503f1a4e9ec188c9ddb825a26e8c42665916bcc3e69757610c103234aabea98",
     "tools/site/silhouette-grid.html": "db963cf748ef03871fb83645123697e25a4e0f8923fe2df983d15db8b80238bc",
     "R/scenarios/silhouette_pooled_vs_separate.R": "869c85c5ddf047db8c2666302b5aed635207f65e4bda2849545f4b2d93c06dda",
-    "web/evidence/section-tabs.json": "c891bda3626c1aa346599cba9dcd5d4775590e3e201da4076322abee77c0b4b0",
+    "web/evidence/section-tabs.json": "62e66da7c65bd19ff15715f2b6e957206520650ab0aa317c3bcd5ade48941071",
     "tools/site/generate_analysis_visuals.R": "833d1bc925296a3d42ac3e2ba73591a5528df641b4a02aa51cdb59850cfe61f6",
     "tools/site/analysis-visuals.js": "f40d901d01f9cac30e47b7675075b30870581a18ff2b8e48adab091bba53969d",
     "tools/site/regime-table.html": "546540ff015f64dfe3161eee8f6ec7627e7b5ed9ba3c7fc7dbc06c39e5265d4b",
@@ -720,6 +725,7 @@
     "tools/site/regime-map.html": "90da69218dd66544037eecd8a35d956fc356999e8eb91b9c0ff4099885cbce75",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
     "tools/site/generate_paper_pages.R": "20fd02e653d271553b3b7ceead415cf7ac56f7950c27c566c60db8bcc43cb569",
+    "tools/site/generate_appendix_pages.py": "9750acea5dffaf24396b54a78da3330d8fd2bdab3138258000a7e980206e1002",
     "R/figures/plot_revised_paper_figures.R": "e29b1557de79080b677f631516533bf4cf23c342650cb8deacda8c72ad21f202",
     "R/scenarios/table3_revised.R": "be136f98be02281dd328a0cbc02b8fdc0b9dc0a0671048a40021b46edbce23b9",
     "R/scenarios/gmm_transmission_grid.R": "630889d47c26f1917f0d8b74c525df64be728358797906860928f475c1893e0d",
@@ -795,6 +801,7 @@
     "pages/synthesis.html",
     "pages/closure-description.html",
     "pages/paper-figures.html",
+    "pages/paper-appendices.html",
     "pages/tables-scenario-highlights.html",
     "pages/tables-regime-table.html",
     "pages/paper-tables.html",
@@ -808,8 +815,8 @@
   ],
   "publication_scope": "public",
   "generated_sha256": {
-    "pages.json": "a1356f52e94e99e5b7b87ba6fc4231b7fc760a22898ad587f4ac8ebbfa28f218",
-    "coverage.json": "9ca08b8cb0ec673851e24870e3c8ea90ae690606bf0e8816a2b54611839cf337",
+    "pages.json": "07d7bca7f06b7ee449f5b8215f960c13b4e7d9e22d7dadadf6c54d02fb7f0247",
+    "coverage.json": "85bea4835a05ff3b8e54802e635e0e4bdebd4d046e57c830f76bbf05790041c9",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
@@ -860,6 +867,7 @@
     "pages/synthesis.html": "3fa7b3c0169d0829f800df447135a323525d809bb227119fe65703f3db628967",
     "pages/closure-description.html": "c23ce0e70e4c68672febd09181f86458d6ae184d597aed31bb72be4ea60f8148",
     "pages/paper-figures.html": "d3090940649ffba1034d6d210738c402cc36352aa328d67d5d09ce29c331a197",
+    "pages/paper-appendices.html": "4e083195fa73dd46bea234e72a4b82449354f6a6a90e3924d7f7b76665f87ecc",
     "pages/tables-scenario-highlights.html": "3fab94160604b4f555e45a93c768977e1b630927ed643da4c8808f3e394c41a3",
     "pages/tables-regime-table.html": "1792e33823c6396e04cf3d865a083a99368149a54a5c9585579f7373b3702938",
     "pages/paper-tables.html": "4d9f9cf71242361b6fbd7e1af6ed2e4678d51525f12dd16acfd52939af750189",
