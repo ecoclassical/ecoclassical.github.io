@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-25",
-  "commit": "54b63ad4a7cf061e9216ffa569294eb7bc8243eb",
+  "commit": "9c71ae6d5bdc58f3ed7bb15458471206bf83ec8a",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -115,28 +115,28 @@
     },
     "evidence/output/html/site/main-findings.html": {
       "source": "output/html/site/main-findings.html",
-      "sha256": "5538de53ae544a675c7b8e22ba8a2ba9b3033f591f0492ec4106730c299cedc9",
-      "bytes": 2017202
+      "sha256": "ea0301281a7912dffcda3542faa7351594466c5b1576d636553710fc53bab33b",
+      "bytes": 2017208
     },
     "evidence/output/html/site/scenario-highlights-180.html": {
       "source": "output/html/site/scenario-highlights-180.html",
-      "sha256": "69d74db5e816683e0eb1b961751560476869970c8cb7541c760ddcb56cdf29ed",
-      "bytes": 103720
+      "sha256": "2303e1530f875bc6f26f0610e91742d0c4a3c6ae75372a3ed0e7d858fab78949",
+      "bytes": 103770
     },
     "evidence/output/html/site/scenario-regimes-180.html": {
       "source": "output/html/site/scenario-regimes-180.html",
-      "sha256": "095223732961b568af9d4b31ac04869c46af08dd8038a8385c182ba9eecba7a3",
-      "bytes": 1435113
+      "sha256": "e34ae124d31e6a92da89a60843723100257d8c66d52e7e4e90aac4885275acf1",
+      "bytes": 1467262
     },
     "evidence/output/html/site/scenario-results-180.html": {
       "source": "output/html/site/scenario-results-180.html",
-      "sha256": "a4989258e3eaaed0f5335ea08510e11dc76f74874a918b6715682ee0ea179a90",
-      "bytes": 1860756
+      "sha256": "63ba47869b159e7154fbb9d3f99467826d65f3a4dc31c5da16b2c541d98daaa3",
+      "bytes": 1860750
     },
     "evidence/output/html/site/analysis-adjustment.html": {
       "source": "output/html/site/analysis-adjustment.html",
-      "sha256": "080c7acff29d802a22b29b07a320a9a179beed212fafe1f7d13ef92b4c6d8e06",
-      "bytes": 1956775
+      "sha256": "cacd5694a1ab7b9194152db93ff5820e2c1b20dfa19936766b1c7f525c4b0705",
+      "bytes": 1952398
     },
     "evidence/output/html/site/analysis-visuals.html": {
       "source": "output/html/site/analysis-visuals.html",
@@ -280,8 +280,8 @@
     },
     "evidence/output/html/site/paper-figures.html": {
       "source": "output/html/site/paper-figures.html",
-      "sha256": "78c159098931f71f23e859859dc6a21e4412a4269c15dc8dc245e8fc588d9f2d",
-      "bytes": 12314499
+      "sha256": "506809b64a7282aa6d621e686a91cc847b3ca1a5972e98c371e5963b582a9848",
+      "bytes": 12803913
     },
     "evidence/output/html/site/paper-tables.html": {
       "source": "output/html/site/paper-tables.html",
@@ -693,7 +693,7 @@
     "tools/site/export_comparison_data.R": "c97e22a1c5e711f469aa9ba9fbd27d904b05140574a15208a132e806d218bbcf",
     "data/scenario_labels.csv": "c91d40cae712f48baef13b7f9fc799935914100917d31d01c7ce6d0a1407ecf3",
     "output/calibration/scenario_grid_20261012_hf_status.csv": "5757b38addb60b21101371f0505588fa49d475e03e7024b84c4903982a738ede",
-    "qmd/site/background.qmd": "43fd4c2f8fb5a1ac89008c2cb19467d0992672dad176d5a3cc42a1eebb00fb69",
+    "qmd/site/background.qmd": "4a7d3652cf263bda33f5e16fad27d4318223b0f3c3b38ca26a38f717439607cb",
     "qmd/site/calibration-section-draft.qmd": "394f3199275395a62b46df500d7e941ccfa7fb07b5ff16ae1d80868db07ad4c8",
     "qmd/site/closure-descriptions.qmd": "e277d0f9e5a6f3ed9f42fb66e085cf09917c12007db1981117273cc5dc591758",
     "qmd/site/cross-border-anova.qmd": "a25395114e6960dfb5800b6f7d74d6a8dfb1522d9327395280217220a1fadfbd",
@@ -701,7 +701,7 @@
     "qmd/site/findings.qmd": "b111c9896d338a377fb3470c3b4092ac21d9ebf2352a1dce15f812f7131a4742",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/io-structure.qmd": "ff27859920d1e14b5fe58eae1bc30d2f78224db052c163635c7d8f207a6ec14a",
-    "qmd/site/main-findings.qmd": "a88d0b05709343eb26c41c26e7a422576d4e88dd1e757645de125018a88c070d",
+    "qmd/site/main-findings.qmd": "d74d3e67b3f7972611b61590eeef3f6a895fd0f20fe6d4ccd4c2a3ae27dbbf1e",
     "qmd/site/model-overview-submitted.qmd": "5e9b3def86285177dcb1d71b03c104be30c992d4b40ded551a701491fbf19d21",
     "qmd/site/model-section-draft.qmd": "a3e0f4f0a5f5643730029350e84d41309a2384e4a6d6ffc5f74d5746ff0e43d3",
     "qmd/site/scenario-adjustment.qmd": "92f67b0405107a9938ad10fc0e4b3f9abc3fe560885d95ba96a4b32f5cba1a9a",
@@ -719,9 +719,9 @@
     "tools/site/group-table.html": "2cefa19447ef72bd5f1585cab6f370a39c810784b7831d8a7f31ecbb5033604c",
     "tools/site/regime-map.html": "90da69218dd66544037eecd8a35d956fc356999e8eb91b9c0ff4099885cbce75",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
-    "tools/site/generate_paper_pages.R": "83a79138bab86e2a5d7046b09285580528c95fe8184418a0537095d4186669af",
+    "tools/site/generate_paper_pages.R": "8786eea22581c98f930b289ed82f8d1a7f152897a4dd1c16038d9100790cebf9",
     "R/figures/plot_revised_paper_figures.R": "e29b1557de79080b677f631516533bf4cf23c342650cb8deacda8c72ad21f202",
-    "R/scenarios/table3_revised.R": "585b5436b34d7916cacc2be693e4d60fae2720c2e9bd4284441dba0e9bbfdc59",
+    "R/scenarios/table3_revised.R": "be136f98be02281dd328a0cbc02b8fdc0b9dc0a0671048a40021b46edbce23b9",
     "R/scenarios/gmm_transmission_grid.R": "630889d47c26f1917f0d8b74c525df64be728358797906860928f475c1893e0d",
     "tools/site/heatmap-explorer.html": "2109a731463714a9f95a30c3dbc1b5ea7a712363950bb71358b125c165a4a565",
     "tools/site/channel-grid.html": "af7ee7edf418c6bf200fe9955b4d155fd9535ad26aaeac9e35003c1b73615d26",
@@ -809,7 +809,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "a1356f52e94e99e5b7b87ba6fc4231b7fc760a22898ad587f4ac8ebbfa28f218",
-    "coverage.json": "a3f8bc6a2ab549df9a2c35cec1f3479a7dd5d14c813a48f1f1ac26051c1e6575",
+    "coverage.json": "a5d2844bc56bcd7abf405ae1f34d6f479d8ecf758abb9455178af61b34e1e6b7",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
