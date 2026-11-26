@@ -288,6 +288,16 @@
           "native": "fig-south-content-48"
         },
         {
+          "label": "Response profile",
+          "page": "paper-figures",
+          "native": "fig-response-profile-48"
+        },
+        {
+          "label": "Emission grid",
+          "page": "paper-figures",
+          "native": "fig-emis-impact"
+        },
+        {
           "label": "Who adjusts",
           "page": "paper-figures",
           "native": "fig-adjuster-law-48"
@@ -297,11 +307,6 @@
     {
       "label": "Candidates",
       "children": [
-        {
-          "label": "Response profile",
-          "page": "paper-figures",
-          "native": "fig-response-profile-48"
-        },
         {
           "label": "Extraction vs CO2",
           "page": "paper-figures",
@@ -316,11 +321,6 @@
           "label": "Regime counts",
           "page": "paper-figures",
           "native": "fig-regime-counts-48"
-        },
-        {
-          "label": "Emission grid",
-          "page": "paper-figures",
-          "native": "fig-emis-impact"
         }
       ]
     },
