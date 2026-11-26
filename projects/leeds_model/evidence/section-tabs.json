@@ -233,6 +233,16 @@
       "label": "In the Paper",
       "children": [
         {
+          "label": "Embodied networks",
+          "page": "paper-figures",
+          "native": "fig-networks"
+        },
+        {
+          "label": "Net positions",
+          "page": "paper-figures",
+          "native": "fig-net-positions"
+        },
+        {
           "label": "Pair intensities",
           "page": "paper-figures",
           "native": "fig-pair-intensities"
@@ -281,11 +291,6 @@
           "label": "Who adjusts",
           "page": "paper-figures",
           "native": "fig-adjuster-law-48"
-        },
-        {
-          "label": "Embodied networks",
-          "page": "paper-figures",
-          "native": "fig-networks"
         }
       ]
     },
