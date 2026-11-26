@@ -283,6 +283,11 @@
           "native": "fig-pca-48"
         },
         {
+          "label": "Cross-border",
+          "page": "paper-figures",
+          "native": "fig-cross-border-48"
+        },
+        {
           "label": "South content",
           "page": "paper-figures",
           "native": "fig-south-content-48"
