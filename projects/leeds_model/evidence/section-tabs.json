@@ -313,6 +313,26 @@
       "label": "Candidates",
       "children": [
         {
+          "label": "Effects by regime",
+          "page": "paper-figures",
+          "native": "fig-effects-split-48"
+        },
+        {
+          "label": "Leverage effects",
+          "page": "paper-figures",
+          "native": "fig-leverage-effects-48"
+        },
+        {
+          "label": "Size by fiscal rule",
+          "page": "paper-figures",
+          "native": "fig-response-profile-rules-48"
+        }
+      ]
+    },
+    {
+      "label": "Not in the Paper",
+      "children": [
+        {
           "label": "Extraction vs CO2",
           "page": "paper-figures",
           "native": "fig-extraction-co2-48"
@@ -326,12 +346,7 @@
           "label": "Regime counts",
           "page": "paper-figures",
           "native": "fig-regime-counts-48"
-        }
-      ]
-    },
-    {
-      "label": "Not in the Paper",
-      "children": [
+        },
         {
           "label": "Embodied balance",
           "page": "paper-figures",
