@@ -2361,6 +2361,14 @@ sel.addEventListener("change",()=>show(sel.value));show(v);});
 </script>
 <div class="runset" data-set="s48">
 <p><strong>The 48-run design.</strong> Twelve interventions, each made by the North, crossed with four fiscal rules: no rule, the South adjusts, the North adjusts, and both adjust. All runs are under North money, the paper’s setting, with the OPENFIX-fiat closure. Every value is the mean over periods 79–100 of the run’s difference from its own no-intervention baseline. South emissions are corrected as in D-77. The 74 responses are standardised over the 48 runs, and each of the six blocks carries equal weight. The 12 no-rule runs under South money are not part of the design. They are a counterfactual, reported in Finding 10.</p>
+<p><strong>Headline findings.</strong></p>
+<ul>
+<li><strong>Northern decarbonisation can coexist with greater dependence on emissions embodied abroad.</strong> When Northern producers switch from fossil to renewable electricity without fiscal adjustment (sc11 Int-Energy), world emissions fall 1.26%. The North’s territorial emissions fall faster (−3.61%) than its consumption footprint (−2.57%), so its net imports of embodied emissions rise 1.13%.</li>
+<li><strong>Material savings are more consistent than emissions savings.</strong> World extraction falls in 46 of 48 runs, emissions in 28, and both in 26. Secondary metal (sc8 Int-Metal) gives the largest extraction saving among the twelve no-rule interventions (−0.85%) while raising world emissions (+0.24%). Finding 9.</li>
+<li><strong>Which government adjusts spending matters for both regions.</strong> Compared with the same intervention without fiscal adjustment, both regions gain value added in 11 of 12 cases when the surplus government adjusts, and both lose in 11 of 12 when the deficit government adjusts. Finding 5.</li>
+<li><strong>Workers’ income shares rise in both regions in 22 of 48 runs.</strong> Twenty of these also reduce world extraction, but only two maintain world value added (sc8 Int-Metal and sc9 Int-Glass, both with the North adjusting). Both raise world emissions. Finding 9.</li>
+</ul>
+<p><em>Basis:</em> <code>results48_numbers.json</code> (<code>output/calibration/intervener_20261121_ce79/</code>, written by <code>R/scenarios/results48_numbers.R</code>): <code>sc11_F1</code>, <code>sc11_T1</code>, <code>eb_sc11_emis</code>, <code>norule_emis</code>, <code>norule_mat</code>, <code>mat_falls</code>, <code>emis_falls</code>, <code>both_fall</code>, <code>surplus_both_gain</code>, <code>deficit_both_lose</code>, <code>tri_runs</code>, <code>tri_emis</code>; the 22 and 20 recounted on 2026-11-27 from the same inputs (<code>shw</code> of both regions &gt; 0; and world extraction &lt; 0).</p>
 </div>
 <section id="f48-1" class="level2 rs48">
 <h2 class="rs48 anchored" data-anchor-id="f48-1">1. What drives the variation: the intervention, and the fiscal rule only through the imbalance it meets</h2>
@@ -2411,7 +2419,7 @@ sel.addEventListener("change",()=>show(sel.value));show(v);});
 </tbody>
 </table>
 <p><em>Interpretation.</em> When the North replaces a good with a large South content (energy, metal ores) by one with less, demand for South output falls and the North gains: displacement. When it replaces a good with little South content by one with more (secondary food and wood draw on South inputs), the South gains and the North contracts: leakage. This is the embodied-flow network of ecologically unequal exchange seen from its demand side.</p>
-<p><strong>Basis.</strong> <code>south_content_48.csv</code> (<code>R/scenarios/response_profile_south_content.R</code>); regimes from <code>runs180.csv</code>; figure <code>output/figures/south_content_48.png</code>.</p>
+<p><strong>Basis.</strong> <code>south_content_48.csv</code> (<code>R/scenarios/response_profile_south_content.R</code>); regimes from <code>runs180.csv</code>; figure <code>figures/results/south_content_48.png</code>.</p>
 </section>
 <section id="f48-3" class="level2 rs48">
 <h2 class="rs48 anchored" data-anchor-id="f48-3">3. Size: the response grows with the volume substituted</h2>

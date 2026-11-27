@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
-  "built_date": "2026-11-26",
-  "commit": "f82b4270b58e41668b221c026f853881b29d8bb5",
+  "built_date": "2026-11-27",
+  "commit": "554642cf91dc97ceab79f2666593f7e683f79f8d",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -115,8 +115,8 @@
     },
     "evidence/output/html/site/main-findings.html": {
       "source": "output/html/site/main-findings.html",
-      "sha256": "ea0301281a7912dffcda3542faa7351594466c5b1576d636553710fc53bab33b",
-      "bytes": 2017208
+      "sha256": "1ec1946a4b4c192a408cc9038af780626157837a7562d5d7a028326e873bd1cb",
+      "bytes": 2019208
     },
     "evidence/output/html/site/scenario-highlights-180.html": {
       "source": "output/html/site/scenario-highlights-180.html",
@@ -706,7 +706,7 @@
     "qmd/site/findings.qmd": "b111c9896d338a377fb3470c3b4092ac21d9ebf2352a1dce15f812f7131a4742",
     "qmd/site/highfinance-cross-border.qmd": "2d38ebffe411b627f509c8728f1c05ae46bccd240c6373c65a9eafff6b74b586",
     "qmd/site/io-structure.qmd": "ff27859920d1e14b5fe58eae1bc30d2f78224db052c163635c7d8f207a6ec14a",
-    "qmd/site/main-findings.qmd": "d74d3e67b3f7972611b61590eeef3f6a895fd0f20fe6d4ccd4c2a3ae27dbbf1e",
+    "qmd/site/main-findings.qmd": "e96779f53ced140563c120e4ec2f23c78ea35fc3325f44363511f33e061d0093",
     "qmd/site/model-overview-submitted.qmd": "5e9b3def86285177dcb1d71b03c104be30c992d4b40ded551a701491fbf19d21",
     "qmd/site/model-section-draft.qmd": "a3e0f4f0a5f5643730029350e84d41309a2384e4a6d6ffc5f74d5746ff0e43d3",
     "qmd/site/scenario-adjustment.qmd": "92f67b0405107a9938ad10fc0e4b3f9abc3fe560885d95ba96a4b32f5cba1a9a",
@@ -724,7 +724,7 @@
     "tools/site/group-table.html": "2cefa19447ef72bd5f1585cab6f370a39c810784b7831d8a7f31ecbb5033604c",
     "tools/site/regime-map.html": "90da69218dd66544037eecd8a35d956fc356999e8eb91b9c0ff4099885cbce75",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
-    "tools/site/generate_paper_pages.R": "20fd02e653d271553b3b7ceead415cf7ac56f7950c27c566c60db8bcc43cb569",
+    "tools/site/generate_paper_pages.R": "1d83de0fde57d12846f9307da95e36fae663c7d0d7a31c15e7361154733bc3bd",
     "tools/site/generate_appendix_pages.py": "f5972c4ac394a13bec2e468cdbb5cffa43e4ced5418422a71252a964d7d464d0",
     "R/figures/plot_revised_paper_figures.R": "e29b1557de79080b677f631516533bf4cf23c342650cb8deacda8c72ad21f202",
     "R/scenarios/table3_revised.R": "be136f98be02281dd328a0cbc02b8fdc0b9dc0a0671048a40021b46edbce23b9",
@@ -816,7 +816,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "07d7bca7f06b7ee449f5b8215f960c13b4e7d9e22d7dadadf6c54d02fb7f0247",
-    "coverage.json": "33c099bb8a8d86c948f3a1a3d756c9c1f2e5f4393e4112a6b17882a149c60b16",
+    "coverage.json": "82b77accb4ecfdb798585621107a0c990ec12ab85b13835b7e399d3e77bf64e4",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
