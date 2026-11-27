@@ -465,34 +465,49 @@
           "native": "app-a1"
         },
         {
-          "label": "A2 Alternative exchange-rate closures",
+          "label": "A2 The household portfolio block as run",
           "page": "paper-appendices",
           "native": "app-a2"
         },
         {
-          "label": "A3 Dynamics and calibration",
+          "label": "A3 The balance-sheet and transaction-flow matrices",
           "page": "paper-appendices",
           "native": "app-a3"
         },
         {
-          "label": "B1 Sector List",
+          "label": "B1 Calibration, parameters and initial conditions",
           "page": "paper-appendices",
           "native": "app-b1"
         },
         {
-          "label": "B2 Calibration, parameters, initial conditions and convergence",
+          "label": "B2 Dependency structure of the model",
           "page": "paper-appendices",
           "native": "app-b2"
         },
         {
-          "label": "B4 The model as an implicit first-order dynamical system",
+          "label": "B3 The model as a dynamical system",
           "page": "paper-appendices",
-          "native": "app-b4"
+          "native": "app-b3"
         },
         {
-          "label": "B5 The household portfolio block as run",
+          "label": "C1 Sector list",
           "page": "paper-appendices",
-          "native": "app-b5"
+          "native": "app-c1"
+        },
+        {
+          "label": "C2 Country list",
+          "page": "paper-appendices",
+          "native": "app-c2"
+        },
+        {
+          "label": "D1 Cluster structure of the 48 runs",
+          "page": "paper-appendices",
+          "native": "app-d1"
+        },
+        {
+          "label": "D2 Scenario highlights",
+          "page": "paper-appendices",
+          "native": "app-d2"
         }
       ]
     },
@@ -500,29 +515,9 @@
       "label": "Candidates",
       "children": [
         {
-          "label": "A4 The balance-sheet and transaction-flow matrices",
+          "label": "C3 List of supplementary tables and figures",
           "page": "paper-appendices",
-          "native": "app-a4"
-        },
-        {
-          "label": "B3 What determines what — the dependency structure of the model",
-          "page": "paper-appendices",
-          "native": "app-b3"
-        },
-        {
-          "label": "B6 Cluster structure of the 48 runs",
-          "page": "paper-appendices",
-          "native": "app-b6"
-        },
-        {
-          "label": "B7 Scenario highlights",
-          "page": "paper-appendices",
-          "native": "app-b7"
-        },
-        {
-          "label": "B8 List of supplementary tables and figures",
-          "page": "paper-appendices",
-          "native": "app-b8"
+          "native": "app-c3"
         }
       ]
     },
@@ -533,6 +528,21 @@
           "label": "B8 The fiscal programme under OPENFIXG (removed)",
           "page": "paper-appendices",
           "native": "app-b8-openfixg"
+        },
+        {
+          "label": "A2 Alternative exchange-rate closures (removed)",
+          "page": "paper-appendices",
+          "native": "app-a2-closures"
+        },
+        {
+          "label": "A3 Dynamics and calibration (removed)",
+          "page": "paper-appendices",
+          "native": "app-a3-dyncal"
+        },
+        {
+          "label": "B7 Scenario highlights (removed)",
+          "page": "paper-appendices",
+          "native": "app-b7-highlights-96"
         }
       ]
     }
