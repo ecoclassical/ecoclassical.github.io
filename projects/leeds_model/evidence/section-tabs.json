@@ -493,11 +493,6 @@
           "label": "B5 The household portfolio block as run",
           "page": "paper-appendices",
           "native": "app-b5"
-        },
-        {
-          "label": "B7 Scenario highlights",
-          "page": "paper-appendices",
-          "native": "app-b7"
         }
       ]
     },
@@ -520,9 +515,14 @@
           "native": "app-b6"
         },
         {
-          "label": "B9 List of supplementary tables and figures",
+          "label": "B7 Scenario highlights",
           "page": "paper-appendices",
-          "native": "app-b9"
+          "native": "app-b7"
+        },
+        {
+          "label": "B8 List of supplementary tables and figures",
+          "page": "paper-appendices",
+          "native": "app-b8"
         }
       ]
     },
@@ -530,9 +530,9 @@
       "label": "Not in the Paper",
       "children": [
         {
-          "label": "B8 The fiscal programme under OPENFIXG",
+          "label": "B8 The fiscal programme under OPENFIXG (removed)",
           "page": "paper-appendices",
-          "native": "app-b8"
+          "native": "app-b8-openfixg"
         }
       ]
     }
