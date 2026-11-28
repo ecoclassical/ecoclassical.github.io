@@ -268,11 +268,6 @@
           "native": "fig-results-48"
         },
         {
-          "label": "ANOVA",
-          "page": "paper-figures",
-          "native": "fig-anova-48"
-        },
-        {
           "label": "Families",
           "page": "paper-figures",
           "native": "fig-ward-groups-48"
@@ -286,16 +281,6 @@
           "label": "Regime grid",
           "page": "paper-figures",
           "native": "fig-regime-grid-48"
-        },
-        {
-          "label": "Trilemma",
-          "page": "paper-figures",
-          "native": "fig-trilemma-48"
-        },
-        {
-          "label": "ANOVA, 48 + 24 runs",
-          "page": "paper-figures",
-          "native": "fig-anova-48-old"
         },
         {
           "label": "PCA",
@@ -333,15 +318,35 @@
       "label": "Candidates",
       "children": [
         {
-          "label": "Effects by regime",
+          "label": "ANOVA, 60 runs (paper Fig. 12)",
           "page": "paper-figures",
-          "native": "fig-effects-split-48"
+          "native": "fig-anova-48"
+        },
+        {
+          "label": "ANOVA, 60 runs, block composition",
+          "page": "paper-figures",
+          "native": "fig-anova-60-within"
+        },
+        {
+          "label": "ANOVA, 48 + 24 runs",
+          "page": "paper-figures",
+          "native": "fig-anova-48-old"
+        },
+        {
+          "label": "Trilemma",
+          "page": "paper-figures",
+          "native": "fig-trilemma-48"
         }
       ]
     },
     {
       "label": "Not in the Paper",
       "children": [
+        {
+          "label": "Effects by regime",
+          "page": "paper-figures",
+          "native": "fig-effects-split-48"
+        },
         {
           "label": "Effects, all rules",
           "page": "paper-figures",
