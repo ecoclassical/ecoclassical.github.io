@@ -288,6 +288,16 @@
           "native": "fig-regime-grid-48"
         },
         {
+          "label": "Trilemma",
+          "page": "paper-figures",
+          "native": "fig-trilemma-48"
+        },
+        {
+          "label": "ANOVA, 48 + 24 runs",
+          "page": "paper-figures",
+          "native": "fig-anova-48-old"
+        },
+        {
           "label": "PCA",
           "page": "paper-figures",
           "native": "fig-pca-48"
