@@ -1,3 +1,22 @@
+# Oriol Vallès Codina’s academic website
+
+The site brings together my CV, research, publications, talks and teaching. Browse the [academic website](https://ecoclassical.github.io/) or follow the [research overview](https://ecoclassical.github.io/research/) to individual projects.
+
+## Working on this repository
+
+Start with the [measured project state](log/context/06_CURRENT_STATE.md), [source map](log/context/04_CODEBASE_MAP.md) and [open evidence checks](log/context/07_OPEN_PROBLEMS.md). The [overview](log/context/00_PROJECT_OVERVIEW.md) explains how the site relates to the companion research repositories.
+
+| Task | Where to work |
+|---|---|
+| Edit public prose or navigation | `_pages/` and `_data/navigation.yml` |
+| Update the publications list or grid | Follow the two generation paths in the source map. The grid is on `/publications/#grid`. |
+| Refresh project figures | Refresh the producing project's outputs before updating the public copy in `projects/`. |
+| Preview pages | With dependencies installed, run `bundle exec jekyll serve` from the repository root and check the affected paths and incoming links at `http://localhost:4000`. |
+
+Everything in `files/` can be accessed directly by URL. Keep public copies there. The local Jekyll build excludes `log/`, where dated logs, period rollups and the maintained project context live. GitHub Pages builds the site from `master`.
+
+## Template and installation reference
+
 # Academic Pages
 **Academic Pages is a GitHub Pages template for personal and professional portfolio-oriented websites.**
 
