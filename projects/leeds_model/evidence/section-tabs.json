@@ -278,6 +278,16 @@
           "native": "fig-ward-groups-48"
         },
         {
+          "label": "Family highlights",
+          "page": "paper-figures",
+          "native": "fig-family-highlights-48"
+        },
+        {
+          "label": "Regime grid",
+          "page": "paper-figures",
+          "native": "fig-regime-grid-48"
+        },
+        {
           "label": "PCA",
           "page": "paper-figures",
           "native": "fig-pca-48"
