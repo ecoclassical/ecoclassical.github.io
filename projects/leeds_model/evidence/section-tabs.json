@@ -316,11 +316,6 @@
           "label": "Effects by regime",
           "page": "paper-figures",
           "native": "fig-effects-split-48"
-        },
-        {
-          "label": "Response profile, redrawn",
-          "page": "paper-figures",
-          "native": "fig-response-profile-rules-48"
         }
       ]
     },
@@ -331,6 +326,11 @@
           "label": "Effects, all rules",
           "page": "paper-figures",
           "native": "fig-results-rules-48"
+        },
+        {
+          "label": "Response profile, four panels",
+          "page": "paper-figures",
+          "native": "fig-response-profile-rules-48"
         },
         {
           "label": "Extraction vs CO2",
