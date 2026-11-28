@@ -1,7 +1,7 @@
 {
   "working_tree_dirty": true,
   "built_date": "2026-11-27",
-  "commit": "12a5ed268ff39d3e1375cc0454fdf6bde4b5236f",
+  "commit": "7480f54b59fcf96d275915e3344c12e4dc481124",
   "files": {
     "index.html": {
       "source": "web/evidence/index.html",
@@ -280,8 +280,8 @@
     },
     "evidence/output/html/site/paper-figures.html": {
       "source": "output/html/site/paper-figures.html",
-      "sha256": "8bc0cc4709fc97e5afd5aa8097d0b0c1a7f51f92f54f57dfddeec90cfad96a93",
-      "bytes": 16000516
+      "sha256": "d094e99b79d86d30b6ca529918e04d6e1ba940bced17fb4c3efa10e5ce6e6d96",
+      "bytes": 16013067
     },
     "evidence/output/html/site/paper-appendices.html": {
       "source": "output/html/site/paper-appendices.html",
@@ -724,7 +724,7 @@
     "tools/site/group-table.html": "2cefa19447ef72bd5f1585cab6f370a39c810784b7831d8a7f31ecbb5033604c",
     "tools/site/regime-map.html": "90da69218dd66544037eecd8a35d956fc356999e8eb91b9c0ff4099885cbce75",
     "tools/site/quadrant-grid.html": "8547dd567580d6192a302f7a83dd3d5577ad67ca27232efd6dfc6db04fb860e4",
-    "tools/site/generate_paper_pages.R": "790bd1f9f71fa5da7da6d84a73dde601c3330ca175c3e5d150d89fa936c3f0fd",
+    "tools/site/generate_paper_pages.R": "7778c6006efd3d04cd76545b23d2cbda15a00e8f483ca9b931c1e2d9407bfa66",
     "tools/site/generate_appendix_pages.py": "f5972c4ac394a13bec2e468cdbb5cffa43e4ced5418422a71252a964d7d464d0",
     "R/figures/plot_revised_paper_figures.R": "e29b1557de79080b677f631516533bf4cf23c342650cb8deacda8c72ad21f202",
     "R/scenarios/table3_revised.R": "be136f98be02281dd328a0cbc02b8fdc0b9dc0a0671048a40021b46edbce23b9",
@@ -816,7 +816,7 @@
   "publication_scope": "public",
   "generated_sha256": {
     "pages.json": "07d7bca7f06b7ee449f5b8215f960c13b4e7d9e22d7dadadf6c54d02fb7f0247",
-    "coverage.json": "41837b540b3736be9d2f6c7a65ab26e3286d3d0ecb9b384598c686cffcbf9c52",
+    "coverage.json": "dd4c522a6a131c740a41fa2ecbe4eb22df0ddb4274c663c05acc12d442064a53",
     "pages/background.html": "c088ca43f00abda36776a471cf654f73337d3c6fcf2ee5a3287c6435694fb52f",
     "pages/model-section-draft.html": "ba3e613fcd8c071c095ae07b73317d5a79fb682129c44c9535660b1ff38ccfb3",
     "pages/model-overview-submitted.html": "b7c43d69313bb016fbc96d0784baf6c517b9d15781e37d985359868edc7e6d66",
